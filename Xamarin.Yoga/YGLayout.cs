@@ -57,7 +57,7 @@ namespace Xamarin.Yoga
 
         public static bool operator==(YGLayout op, YGLayout layout)
         {
-            bool isEqual = 
+            var isEqual = 
                 YGFloatArrayEqual(op.position, layout.position) &&
                 YGFloatArrayEqual(op.dimensions, layout.dimensions) &&
                 YGFloatArrayEqual(op.margin, layout.margin) &&
@@ -70,21 +70,14 @@ namespace Xamarin.Yoga
                 op.cachedLayout == layout.cachedLayout &&
                 op.computedFlexBasis == layout.computedFlexBasis;
 
-            for (int i = 0; i < YG_MAX_CACHED_RESULT_COUNT && isEqual; ++i)
-            {
-                isEqual = isEqual && op.cachedMeasurements[i] == layout.cachedMeasurements[i];
-            }
+            for (var i = 0; i < YG_MAX_CACHED_RESULT_COUNT && isEqual; ++i) isEqual = isEqual && op.cachedMeasurements[i] == layout.cachedMeasurements[i];
 
             if (!isUndefined(op.measuredDimensions[0]) ||
                 !isUndefined(layout.measuredDimensions[0]))
-            {
-                isEqual = isEqual && (op.measuredDimensions[0] == layout.measuredDimensions[0]);
-            }
+                isEqual = isEqual && op.measuredDimensions[0] == layout.measuredDimensions[0];
             if (!isUndefined(op.measuredDimensions[1]) ||
                 !isUndefined(layout.measuredDimensions[1]))
-            {
-                isEqual = isEqual && (op.measuredDimensions[1] == layout.measuredDimensions[1]);
-            }
+                isEqual = isEqual && op.measuredDimensions[1] == layout.measuredDimensions[1];
             return isEqual;
         }
 

@@ -27,9 +27,15 @@ namespace Xamarin.Yoga
 
         private float? value;
 
-        public YGFloatOptional(float value) => this.value = value;
+        public YGFloatOptional(float value)
+        {
+            this.value = value;
+        }
 
-        public float getValue() => value ?? 0;
+        public float getValue()
+        {
+            return value ?? 0;
+        }
 
         public void setValue(float val)
         {
@@ -39,7 +45,10 @@ namespace Xamarin.Yoga
         // Sets the value of float optional, and thus isUndefined is assigned false.
         //public void setValue(float val) => value = val;
 
-        public bool isUndefined() => !value.HasValue;
+        public bool isUndefined()
+        {
+            return !value.HasValue;
+        }
 
         public override bool Equals(object obj)
         {

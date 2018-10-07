@@ -44,7 +44,7 @@ namespace Xamarin.Yoga
             if (val1 == null || val2 == null || val1.Length != val2.Length)
                 return false;
 
-            bool areEqual = true;
+            var areEqual = true;
             for (var i = 0; i < val1.Length && areEqual; ++i)
                 areEqual = YGValueEqual(val1[i], val2[i]);
 
@@ -82,32 +82,24 @@ namespace Xamarin.Yoga
 
         public static bool operator ==(YGCachedMeasurement op, YGCachedMeasurement measurement)
         {
-            bool isEqual = op.widthMeasureMode == measurement.widthMeasureMode &&
+            var isEqual = op.widthMeasureMode == measurement.widthMeasureMode &&
                 op.heightMeasureMode           == measurement.heightMeasureMode;
 
             if (!isUndefined(op.availableWidth) ||
                 !isUndefined(measurement.availableWidth))
-            {
                 isEqual = isEqual && YGFloatsEqual(op.availableWidth, measurement.availableWidth);
-            }
 
             if (!isUndefined(op.availableHeight) ||
                 !isUndefined(measurement.availableHeight))
-            {
                 isEqual = isEqual && YGFloatsEqual(op.availableHeight, measurement.availableHeight);
-            }
 
             if (!isUndefined(op.computedWidth) ||
                 !isUndefined(measurement.computedWidth))
-            {
                 isEqual = isEqual && YGFloatsEqual(op.computedWidth, measurement.computedWidth);
-            }
 
             if (!isUndefined(op.computedHeight) ||
                 !isUndefined(measurement.computedHeight))
-            {
                 isEqual = isEqual && YGFloatsEqual(op.computedHeight, measurement.computedHeight);
-            }
 
             return isEqual;
         }

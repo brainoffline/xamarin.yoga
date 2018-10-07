@@ -13,7 +13,7 @@ namespace Xamarin.Yoga
     {
         internal static void indent(StringBuilder sb, int level)
         {
-            for (int i = 0; i < level; ++i)
+            for (var i = 0; i < level; ++i)
                 sb.Append("  ");
         }
 
@@ -52,7 +52,7 @@ namespace Xamarin.Yoga
                 }
                 else
                 {
-                    string unit = number.unit == YGUnit.Point ? "px" : "%%";
+                    var unit = number.unit == YGUnit.Point ? "px" : "%%";
                     appendFormatedString(sb, $"{key}: {number.value}{unit}; ");
                 }
             }
@@ -60,22 +60,14 @@ namespace Xamarin.Yoga
 
         internal static void appendNumberIfNotAuto(StringBuilder sb, in string key, in YGValue number)
         {
-            if (number.unit != YGUnit.Auto)
-            {
-                appendNumberIfNotUndefined(sb, key, number);
-            }
+            if (number.unit != YGUnit.Auto) appendNumberIfNotUndefined(sb, key, number);
         }
 
         internal static void appendNumberIfNotZero(StringBuilder sb, in string str, in YGValue number)
         {
             if (number.unit == YGUnit.Auto)
-            {
                 sb.Append($"{str}: auto; ");
-            }
-            else if (!YGFloatsEqual(number.value, 0))
-            {
-                appendNumberIfNotUndefined(sb, str, number);
-            }
+            else if (!YGFloatsEqual(number.value, 0)) appendNumberIfNotUndefined(sb, str, number);
         }
 
         internal static void appendEdges(
@@ -84,17 +76,13 @@ namespace Xamarin.Yoga
             in YGValue[]  edges)
         {
             if (areFourValuesEqual(edges))
-            {
                 appendNumberIfNotZero(sb, key, edges[(int) YGEdge.Left]);
-            }
             else
-            {
-                for (int edge = (int) YGEdge.Left; edge != (int) YGEdge.All; ++edge)
+                for (var edge = (int) YGEdge.Left; edge != (int) YGEdge.All; ++edge)
                 {
-                    string str = $"{key}-{(YGEdge) edge}";
+                    var str = $"{key}-{(YGEdge) edge}";
                     appendNumberIfNotZero(sb, str, edges[edge]);
                 }
-            }
         }
 
         internal static void appendEdgeIfNotUndefined(
@@ -137,50 +125,26 @@ namespace Xamarin.Yoga
                 var defaultStyle = new YGNode().getStyle();
 
                 appendFormatedString(sb, "style=\"");
-                if (node.getStyle().flexDirection != defaultStyle.flexDirection)
-                {
-                    appendFormatedString(sb, $"flex-direction: {node.getStyle().flexDirection}; ");
-                }
+                if (node.getStyle().flexDirection != defaultStyle.flexDirection) appendFormatedString(sb, $"flex-direction: {node.getStyle().flexDirection}; ");
 
-                if (node.getStyle().justifyContent != defaultStyle.justifyContent)
-                {
-                    appendFormatedString(sb, $"justify-content: {node.getStyle().justifyContent}; ");
-                }
+                if (node.getStyle().justifyContent != defaultStyle.justifyContent) appendFormatedString(sb, $"justify-content: {node.getStyle().justifyContent}; ");
 
-                if (node.getStyle().alignItems != defaultStyle.alignItems)
-                {
-                    appendFormatedString(sb, $"align-items: {node.getStyle().alignItems}; ");
-                }
+                if (node.getStyle().alignItems != defaultStyle.alignItems) appendFormatedString(sb, $"align-items: {node.getStyle().alignItems}; ");
 
-                if (node.getStyle().alignContent != defaultStyle.alignContent)
-                {
-                    appendFormatedString(sb, $"align-content: {node.getStyle().alignContent}; ");
-                }
+                if (node.getStyle().alignContent != defaultStyle.alignContent) appendFormatedString(sb, $"align-content: {node.getStyle().alignContent}; ");
 
-                if (node.getStyle().alignSelf != defaultStyle.alignSelf)
-                {
-                    appendFormatedString(sb, $"align-self: {node.getStyle().alignSelf}; ");
-                }
+                if (node.getStyle().alignSelf != defaultStyle.alignSelf) appendFormatedString(sb, $"align-self: {node.getStyle().alignSelf}; ");
 
                 appendFloatOptionalIfDefined(sb, "flex-grow",   node.getStyle().flexGrow);
                 appendFloatOptionalIfDefined(sb, "flex-shrink", node.getStyle().flexShrink);
                 appendNumberIfNotAuto(sb, "flex-basis", node.getStyle().flexBasis);
                 appendFloatOptionalIfDefined(sb, "flex", node.getStyle().flex);
 
-                if (node.getStyle().flexWrap != defaultStyle.flexWrap)
-                {
-                    appendFormatedString(sb, $"flexWrap: {node.getStyle().flexWrap}; ");
-                }
+                if (node.getStyle().flexWrap != defaultStyle.flexWrap) appendFormatedString(sb, $"flexWrap: {node.getStyle().flexWrap}; ");
 
-                if (node.getStyle().overflow != defaultStyle.overflow)
-                {
-                    appendFormatedString(sb, $"overflow: {node.getStyle().overflow}; ");
-                }
+                if (node.getStyle().overflow != defaultStyle.overflow) appendFormatedString(sb, $"overflow: {node.getStyle().overflow}; ");
 
-                if (node.getStyle().display != defaultStyle.display)
-                {
-                    appendFormatedString(sb, $"display: {node.getStyle().display}; ");
-                }
+                if (node.getStyle().display != defaultStyle.display) appendFormatedString(sb, $"display: {node.getStyle().display}; ");
 
                 appendEdges(sb, "margin",  node.getStyle().margin);
                 appendEdges(sb, "padding", node.getStyle().padding);
@@ -193,10 +157,7 @@ namespace Xamarin.Yoga
                 appendNumberIfNotAuto(sb, "min-width",  node.getStyle().minDimensions[YGDimension.Width]);
                 appendNumberIfNotAuto(sb, "min-height", node.getStyle().minDimensions[YGDimension.Height]);
 
-                if (node.getStyle().positionType != defaultStyle.positionType)
-                {
-                    appendFormatedString(sb, $"position: {node.getStyle().positionType}; ");
-                }
+                if (node.getStyle().positionType != defaultStyle.positionType) appendFormatedString(sb, $"position: {node.getStyle().positionType}; ");
 
                 appendEdgeIfNotUndefined(sb, "left",   node.getStyle().position, YGEdge.Left);
                 appendEdgeIfNotUndefined(sb, "right",  node.getStyle().position, YGEdge.Right);
@@ -204,10 +165,7 @@ namespace Xamarin.Yoga
                 appendEdgeIfNotUndefined(sb, "bottom", node.getStyle().position, YGEdge.Bottom);
                 appendFormatedString(sb, "\" ");
 
-                if (node.getMeasure() != null)
-                {
-                    appendFormatedString(sb, "has-custom-measure=\"true\"");
-                }
+                if (node.getMeasure() != null) appendFormatedString(sb, "has-custom-measure=\"true\"");
             }
 
             appendFormatedString(sb, ">");
@@ -215,7 +173,7 @@ namespace Xamarin.Yoga
             var childCount = node.getChildren().Count;
             if (options.HasFlag(YGPrintOptions.Children) && childCount > 0)
             {
-                for (int i = 0; i < childCount; i++)
+                for (var i = 0; i < childCount; i++)
                 {
                     appendFormatedString(sb, "\n");
                     YGNodeToString(sb, YGNodeGetChild(node, i), options, level + 1);

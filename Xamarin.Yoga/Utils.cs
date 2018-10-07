@@ -70,11 +70,8 @@ namespace Xamarin.Yoga
                 val1.Length != val2.Length)
                 return false;
 
-            bool areEqual = true;
-            for (int i = 0; i < val1.Length && areEqual; ++i)
-            {
-                areEqual = YGFloatsEqual(val1[i], val2[i]);
-            }
+            var areEqual = true;
+            for (var i = 0; i < val1.Length && areEqual; ++i) areEqual = YGFloatsEqual(val1[i], val2[i]);
 
             return areEqual;
         }
@@ -117,14 +114,8 @@ namespace Xamarin.Yoga
         {
             if (direction == YGDirection.RTL)
             {
-                if (flexDirection == YGFlexDirection.Row)
-                {
-                    return YGFlexDirection.RowReverse;
-                }
-                if (flexDirection == YGFlexDirection.RowReverse)
-                {
-                    return YGFlexDirection.Row;
-                }
+                if (flexDirection == YGFlexDirection.Row) return YGFlexDirection.RowReverse;
+                if (flexDirection == YGFlexDirection.RowReverse) return YGFlexDirection.Row;
             }
             return flexDirection;
         }
@@ -155,10 +146,7 @@ namespace Xamarin.Yoga
         // compiler flag.
         public static float YGFloatMax(in float a, in float b)
         {
-            if (!isUndefined(a) && !isUndefined(b))
-            {
-                return Math.Max(a, b);
-            }
+            if (!isUndefined(a) && !isUndefined(b)) return Math.Max(a, b);
 
             return isUndefined(a) ? b : a;
         }
@@ -170,26 +158,18 @@ namespace Xamarin.Yoga
         // compiler flag.
         public static float YGFloatMin(in float a, in float b)
         {
-            if (!isUndefined(a) && !isUndefined(b))
-            {
-                return Math.Min(a, b);
-            }
+            if (!isUndefined(a) && !isUndefined(b)) return Math.Min(a, b);
 
             return isUndefined(a) ? b : a;
         }
 
         public static bool YGValueEqual(in YGValue a, in YGValue b)
         {
-            if (a.unit != b.unit)
-            {
-                return false;
-            }
+            if (a.unit != b.unit) return false;
 
             if (a.unit == YGUnit.Undefined ||
-                (isUndefined(a.value) && isUndefined(b.value)))
-            {
+                isUndefined(a.value) && isUndefined(b.value))
                 return true;
-            }
 
             return Math.Abs(a.value - b.value) < 0.0001f;
         }
@@ -198,10 +178,7 @@ namespace Xamarin.Yoga
         // difference between two floats is less than 0.0001f or both are undefined.
         public static bool YGFloatsEqual(in float a, in float b)
         {
-            if (!isUndefined(a) && !isUndefined(b))
-            {
-                return Math.Abs(a - b) < 0.0001f;
-            }
+            if (!isUndefined(a) && !isUndefined(b)) return Math.Abs(a - b) < 0.0001f;
 
             return isUndefined(a) && isUndefined(b);
         }
@@ -224,10 +201,7 @@ namespace Xamarin.Yoga
             in YGFloatOptional op1,
             in YGFloatOptional op2)
         {
-            if (!op1.isUndefined() && !op2.isUndefined())
-            {
-                return op1.getValue() > op2.getValue() ? op1 : op2;
-            }
+            if (!op1.isUndefined() && !op2.isUndefined()) return op1.getValue() > op2.getValue() ? op1 : op2;
 
             return op1.isUndefined() ? op2 : op1;
         }

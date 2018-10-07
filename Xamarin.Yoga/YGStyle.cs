@@ -15,8 +15,15 @@ namespace Xamarin.Yoga
     {
         private YGValue[] values;
 
-        public Dimensions(YGValue[] values) => this.values = values;
-        public static implicit operator Dimensions(YGValue[] values) => new Dimensions(values);
+        public Dimensions(YGValue[] values)
+        {
+            this.values = values;
+        }
+
+        public static implicit operator Dimensions(YGValue[] values)
+        {
+            return new Dimensions(values);
+        }
 
         public YGValue this[int key]
         {
@@ -110,7 +117,7 @@ namespace Xamarin.Yoga
 
         public override bool Equals(object obj)
         {
-            YGStyle style = obj as YGStyle;
+            var style = obj as YGStyle;
             return style != null &&
                    direction == style.direction &&
                    flexDirection == style.flexDirection &&
@@ -138,7 +145,7 @@ namespace Xamarin.Yoga
 
         public override int GetHashCode()
         {
-            int hashCode = 1546191664;
+            var hashCode = 1546191664;
             hashCode = hashCode * -1521134295 + direction.GetHashCode();
             hashCode = hashCode * -1521134295 + flexDirection.GetHashCode();
             hashCode = hashCode * -1521134295 + justifyContent.GetHashCode();

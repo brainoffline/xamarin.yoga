@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.28010.2041
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xamarin.Yoga", "Xamarin.Yoga\Xamarin.Yoga.csproj", "{7CFDBD4D-A9C7-4B79-BC3E-4EDFF43954DD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xamarin.Yoga.Tests", "Xamarin.Yoga.Tests\Xamarin.Yoga.Tests.csproj", "{5CF13A84-D607-49CE-8F65-60FC23671405}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{7CFDBD4D-A9C7-4B79-BC3E-4EDFF43954DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7CFDBD4D-A9C7-4B79-BC3E-4EDFF43954DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7CFDBD4D-A9C7-4B79-BC3E-4EDFF43954DD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5CF13A84-D607-49CE-8F65-60FC23671405}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5CF13A84-D607-49CE-8F65-60FC23671405}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5CF13A84-D607-49CE-8F65-60FC23671405}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5CF13A84-D607-49CE-8F65-60FC23671405}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

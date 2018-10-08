@@ -50,14 +50,6 @@ namespace Xamarin.Yoga
 
             return areEqual;
         }
-
-        // This value was chosen based on empiracle data. Even the most complicated
-        // layouts should not require more than 16 entries to fit within the cache.
-        public const int YG_MAX_CACHED_RESULT_COUNT = 16;
-
-        public const float kDefaultFlexGrow      = 0.0f;
-        public const float kDefaultFlexShrink    = 0.0f;
-        public const float kWebDefaultFlexShrink = 1.0f;
     }
 
     public class YGCachedMeasurement
@@ -82,6 +74,11 @@ namespace Xamarin.Yoga
 
         public static bool operator ==(YGCachedMeasurement op, YGCachedMeasurement measurement)
         {
+            if (ReferenceEquals(op, null) && ReferenceEquals(measurement, null))
+                return true;
+            if (ReferenceEquals(op, null) || ReferenceEquals(measurement, null))
+                return false;
+
             var isEqual = op.widthMeasureMode == measurement.widthMeasureMode &&
                 op.heightMeasureMode           == measurement.heightMeasureMode;
 

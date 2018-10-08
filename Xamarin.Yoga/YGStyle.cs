@@ -1,17 +1,14 @@
 ﻿using System.Collections.Generic;
 
-using static Xamarin.Yoga.YGGlobal;
 // ReSharper disable InconsistentNaming
 
 namespace Xamarin.Yoga
 {
-    public static partial class YGGlobal
-    {
-        public static readonly YGValue[] kYGDefaultDimensionValuesAutoUnit = { YGValueAuto, YGValueAuto };
-        public static readonly YGValue[] kYGDefaultDimensionValuesUnit = { YGValueUndefined, YGValueUndefined };
-    }
+    using static YGGlobal;
+    using static YGConst;
+    using System;
 
-    public class Dimensions
+    public class Dimensions : IEquatable<Dimensions>
     {
         private YGValue[] values;
 
@@ -25,6 +22,16 @@ namespace Xamarin.Yoga
             return new Dimensions(values);
         }
 
+        public static bool operator ==(Dimensions dimensions1, Dimensions dimensions2)
+        {
+            return EqualityComparer<Dimensions>.Default.Equals(dimensions1, dimensions2);
+        }
+
+        public static bool operator !=(Dimensions dimensions1, Dimensions dimensions2)
+        {
+            return !(dimensions1 == dimensions2);
+        }
+
         public YGValue this[int key]
         {
             get => values[key];
@@ -35,6 +42,17 @@ namespace Xamarin.Yoga
         {
             get => values[(int)key];
             set => values[(int)key] = value;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return Equals(obj as Dimensions);
+        }
+
+        public bool Equals(Dimensions other)
+        {
+            return other != null &&
+                   EqualityComparer<YGValue[]>.Default.Equals(values, other.values);
         }
     }
 
@@ -67,17 +85,17 @@ namespace Xamarin.Yoga
 
 
         //private static readonly YGValue kYGValueUndefined = YGValue.YGValueUndefined;
-        private static readonly YGValue kYGValueAuto = YGValueAuto;
+        private static readonly YGValue kYGValueAuto = YGConst.YGValueAuto;
         private static readonly YGValue[] kYGDefaultEdgeValuesUnit = {
-            YGValueUndefined,
-            YGValueUndefined,
-            YGValueUndefined,
-            YGValueUndefined,
-            YGValueUndefined,
-            YGValueUndefined,
-            YGValueUndefined,
-            YGValueUndefined,
-            YGValueUndefined};
+            YGConst.YGValueUndefined,
+            YGConst.YGValueUndefined,
+            YGConst.YGValueUndefined,
+            YGConst.YGValueUndefined,
+            YGConst.YGValueUndefined,
+            YGConst.YGValueUndefined,
+            YGConst.YGValueUndefined,
+            YGConst.YGValueUndefined,
+            YGConst.YGValueUndefined};
 
         public YGStyle()
         {
@@ -107,6 +125,11 @@ namespace Xamarin.Yoga
 
         public static bool operator ==(YGStyle style1, YGStyle style2)
         {
+            if (ReferenceEquals(style1, style2))
+                return true;
+            if (ReferenceEquals(style1, null) || ReferenceEquals(style2, null))
+                return false;
+
             return EqualityComparer<YGStyle>.Default.Equals(style1, style2);
         }
 
@@ -118,29 +141,31 @@ namespace Xamarin.Yoga
         public override bool Equals(object obj)
         {
             var style = obj as YGStyle;
-            return style != null &&
-                   direction == style.direction &&
-                   flexDirection == style.flexDirection &&
-                   justifyContent == style.justifyContent &&
-                   alignContent == style.alignContent &&
-                   alignItems == style.alignItems &&
-                   alignSelf == style.alignSelf &&
-                   positionType == style.positionType &&
-                   flexWrap == style.flexWrap &&
-                   overflow == style.overflow &&
-                   display == style.display &&
-                   EqualityComparer<YGFloatOptional>.Default.Equals(flex, style.flex) &&
-                   EqualityComparer<YGFloatOptional>.Default.Equals(flexGrow, style.flexGrow) &&
-                   EqualityComparer<YGFloatOptional>.Default.Equals(flexShrink, style.flexShrink) &&
-                   EqualityComparer<YGValue>.Default.Equals(flexBasis, style.flexBasis) &&
-                   EqualityComparer<YGValue[]>.Default.Equals(margin, style.margin) &&
-                   EqualityComparer<YGValue[]>.Default.Equals(position, style.position) &&
-                   EqualityComparer<YGValue[]>.Default.Equals(padding, style.padding) &&
-                   EqualityComparer<YGValue[]>.Default.Equals(border, style.border) &&
-                   EqualityComparer<Dimensions>.Default.Equals(dimensions, style.dimensions) &&
-                   EqualityComparer<Dimensions>.Default.Equals(minDimensions, style.minDimensions) &&
-                   EqualityComparer<Dimensions>.Default.Equals(maxDimensions, style.maxDimensions) &&
-                   EqualityComparer<YGFloatOptional>.Default.Equals(aspectRatio, style.aspectRatio);
+            if (ReferenceEquals(style, null))
+                return false;
+
+            return direction   == style.direction                                               &&
+                flexDirection  == style.flexDirection                                           &&
+                justifyContent == style.justifyContent                                          &&
+                alignContent   == style.alignContent                                            &&
+                alignItems     == style.alignItems                                              &&
+                alignSelf      == style.alignSelf                                               &&
+                positionType   == style.positionType                                            &&
+                flexWrap       == style.flexWrap                                                &&
+                overflow       == style.overflow                                                &&
+                display        == style.display                                                 &&
+                EqualityComparer<YGFloatOptional>.Default.Equals(flex,       style.flex)        &&
+                EqualityComparer<YGFloatOptional>.Default.Equals(flexGrow,   style.flexGrow)    &&
+                EqualityComparer<YGFloatOptional>.Default.Equals(flexShrink, style.flexShrink)  &&
+                EqualityComparer<YGValue>.Default.Equals(flexBasis, style.flexBasis)            &&
+                EqualityComparer<YGValue[]>.Default.Equals(margin,   style.margin)              &&
+                EqualityComparer<YGValue[]>.Default.Equals(position, style.position)            &&
+                EqualityComparer<YGValue[]>.Default.Equals(padding,  style.padding)             &&
+                EqualityComparer<YGValue[]>.Default.Equals(border,   style.border)              &&
+                EqualityComparer<Dimensions>.Default.Equals(dimensions,    style.dimensions)    &&
+                EqualityComparer<Dimensions>.Default.Equals(minDimensions, style.minDimensions) &&
+                EqualityComparer<Dimensions>.Default.Equals(maxDimensions, style.maxDimensions) &&
+                EqualityComparer<YGFloatOptional>.Default.Equals(aspectRatio, style.aspectRatio);
         }
 
         public override int GetHashCode()

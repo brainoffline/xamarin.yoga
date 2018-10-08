@@ -52,12 +52,19 @@ namespace Xamarin.Yoga
 
         public override bool Equals(object obj)
         {
-            if (obj == null) return false;
-            if (!value.HasValue) return false;
+            if (ReferenceEquals(obj, null)) return false;
             if (obj is YGFloatOptional optional)
+            {
                 return EqualityComparer<float?>.Default.Equals(value, optional.value);
+            }
+
             if (obj is float f)
+            {
+                if (!value.HasValue)
+                    return false;
                 return EqualityComparer<float?>.Default.Equals(value, f);
+            }
+
             return false;
         }
 

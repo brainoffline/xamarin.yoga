@@ -12,6 +12,7 @@ namespace Xamarin.Yoga
     using YGNodeRef = YGNode;
     using YGVector = List<YGNode>;
     using static YGGlobal;
+    using static YGConst;
 
     public struct YGSize
     {
@@ -19,7 +20,7 @@ namespace Xamarin.Yoga
         public float height;
     }
 
-    public class YGValue
+    public class YGValue : IEquatable<YGValue>
     {
         public float value;
         public YGUnit unit;
@@ -36,36 +37,30 @@ namespace Xamarin.Yoga
             this.unit = unit;
         }
 
+        /// <inheritdoc />
+        public bool Equals(YGValue other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return 
+                value.Equals(other.value) && 
+                unit == other.unit;
+        }
+
+        /// <inheritdoc />
         public override bool Equals(object obj)
         {
-            if (!(obj is YGValue))
-                return false;
-
-            var value = (YGValue)obj;
-            return YGFloatsEqual(this.value, value.value) &&
-                unit == value.unit;
-        }
-
-        public override int GetHashCode()
-        {
-            var hashCode = -1974921375;
-            hashCode = hashCode * -1521134295 + value.GetHashCode();
-            hashCode = hashCode * -1521134295 + unit.GetHashCode();
-            return hashCode;
-        }
-
-        public static bool operator ==(YGValue value1, YGValue value2)
-        {
-            return value1.Equals(value2);
-        }
-
-        public static bool operator !=(YGValue value1, YGValue value2)
-        {
-            return !(value1 == value2);
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((YGValue) obj);
         }
 
         public static bool operator ==(YGValue value1, float value2)
         {
+            if (ReferenceEquals(value1, null))
+                return true;
+
             return value1.value.Equals(value2);
         }
 
@@ -105,10 +100,6 @@ namespace Xamarin.Yoga
 
     public static partial class YGGlobal
     {
-        public static readonly YGValue YGValueUndefined = new YGValue { unit = YGUnit.Undefined };
-        public static readonly YGValue YGValueAuto = new YGValue { unit = YGUnit.Auto };
-        public static readonly YGValue YGValueZero = new YGValue { unit = YGUnit.Point, value = 0 };
-
         public static void YGDefaultLog(
             in YGConfigRef config,
             in YGNodeRef node,
@@ -159,7 +150,7 @@ namespace Xamarin.Yoga
 
             if (edges[(int)YGEdge.All].unit != YGUnit.Undefined) return edges[(int)YGEdge.All];
 
-            if (edge == YGEdge.Start || edge == YGEdge.End) return YGValueUndefined;
+            if (edge == YGEdge.Start || edge == YGEdge.End) return YGConst.YGValueUndefined;
 
             return defaultValue;
         }
@@ -330,7 +321,7 @@ namespace Xamarin.Yoga
             return node;
         }
 
-        public static void YGNodeFree(in YGNodeRef node)
+        public static void YGNodeFree(YGNodeRef node)
         {
             var owner = node.getOwner();
             if (owner != null)
@@ -427,9 +418,9 @@ namespace Xamarin.Yoga
         }
 
         public static void YGNodeInsertChild(
-            in YGNodeRef node,
-            in YGNodeRef child,
-            in int index)
+            YGNodeRef node,
+            YGNodeRef child,
+            int index)
         {
             YGAssertWithNode(
                 node,
@@ -599,8 +590,8 @@ namespace Xamarin.Yoga
         }
 
         public static void YGNodeSetChildren(
-            in YGNodeRef owner,
-            in List<YGNodeRef> children)
+            YGNodeRef owner,
+            List<YGNodeRef> children)
         {
             YGNodeSetChildrenInternal(owner, children);
         }
@@ -637,9 +628,9 @@ namespace Xamarin.Yoga
             node.markDirtyAndPropogate();
         }
 
-        public static void YGNodeCopyStyle(YGNodeRef dstNode, in YGNodeRef srcNode)
+        public static void YGNodeCopyStyle(YGNodeRef dstNode, YGNodeRef srcNode)
         {
-            if (!(dstNode.getStyle() == srcNode.getStyle()))
+            if (dstNode.getStyle() != srcNode.getStyle())
             {
                 dstNode.setStyle(srcNode.getStyle());
                 dstNode.markDirtyAndPropogate();
@@ -867,8 +858,8 @@ type, name, paramName, instanceName)                                     \
         }
 
         public static void YGNodeStyleSetFlexDirection(
-            in YGNodeRef node,
-            in YGFlexDirection flexDirection)
+            YGNodeRef node,
+            YGFlexDirection flexDirection)
         {
             if (node.getStyle().flexDirection != flexDirection)
             {
@@ -877,7 +868,7 @@ type, name, paramName, instanceName)                                     \
             }
         }
 
-        public static YGFlexDirection YGNodeStyleGetFlexDirection(in YGNodeRef node)
+        public static YGFlexDirection YGNodeStyleGetFlexDirection(YGNodeRef node)
         {
             return node.getStyle().flexDirection;
         }
@@ -986,7 +977,7 @@ type, name, paramName, instanceName)                                     \
             return node.getStyle().overflow;
         }
 
-        public static void YGNodeStyleSetDisplay(in YGNodeRef node, in YGDisplay display)
+        public static void YGNodeStyleSetDisplay(YGNodeRef node, YGDisplay display)
         {
             if (node.getStyle().display != display)
             {
@@ -1019,7 +1010,7 @@ type, name, paramName, instanceName)                                     \
         }
 
         // TODO(T26792433): Change the API to accept YGFloatOptional.
-        public static void YGNodeStyleSetFlexGrow(in YGNodeRef node, in float flexGrow)
+        public static void YGNodeStyleSetFlexGrow(YGNodeRef node, float flexGrow)
         {
             if (node.getStyle().flexGrow != flexGrow)
             {
@@ -1031,7 +1022,7 @@ type, name, paramName, instanceName)                                     \
         }
 
         // TODO(T26792433): Change the API to accept YGFloatOptional.
-        public static void YGNodeStyleSetFlexShrink(in YGNodeRef node, in float flexShrink)
+        public static void YGNodeStyleSetFlexShrink(YGNodeRef node, float flexShrink)
         {
             if (node.getStyle().flexShrink != flexShrink)
             {
@@ -1124,7 +1115,7 @@ type, name, paramName, instanceName)                                     \
         }
 
         // YG_NODE_STYLE_EDGE_PROPERTY_UNIT_IMPL(YGValue,      Margin,   margin,   margin);
-        public static void YGNodeStyleSetMargin(in YGNodeRef node, in YGEdge edge, in float margin)
+        public static void YGNodeStyleSetMargin(YGNodeRef node, YGEdge edge, float margin)
         {
             var value = new YGValue(
                 YGFloatSanitize(margin),
@@ -1166,13 +1157,13 @@ type, name, paramName, instanceName)                                     \
         {
             if (node.getStyle().margin[(int)edge].unit != YGUnit.Auto)
             {
-                node.getStyle().margin[(int)edge] = YGValueAuto;
+                node.getStyle().margin[(int)edge] = YGConst.YGValueAuto;
                 node.markDirtyAndPropogate();
             }
         }
 
         //YG_NODE_STYLE_EDGE_PROPERTY_UNIT_IMPL(YGValue,      Padding,  padding, padding);
-        public static void YGNodeStyleSetPadding(in YGNodeRef node, in YGEdge edge, in float padding)
+        public static void YGNodeStyleSetPadding(YGNodeRef node, YGEdge edge, float padding)
         {
             var value = new YGValue(
                 YGFloatSanitize(padding),
@@ -1414,7 +1405,7 @@ type, name, paramName, instanceName)                                     \
             return YGNodeStyleGetDimensions(node.getStyle().maxDimensions, YGDimension.Width);
         }
 
-        public static void YGNodeStyleSetMaxHeight(in YGNodeRef node, in float maxHeight)
+        public static void YGNodeStyleSetMaxHeight(YGNodeRef node, float maxHeight)
         {
             YGNodeStyleSetDimensions(node, node.getStyle().maxDimensions, YGDimension.Height, maxHeight, YGUnit.Point);
         }
@@ -1424,7 +1415,7 @@ type, name, paramName, instanceName)                                     \
             YGNodeStyleSetDimensions(node, node.getStyle().maxDimensions, YGDimension.Height, maxHeight, YGUnit.Percent);
         }
 
-        public static YGValue YGNodeStyleGetMaxHeight(in YGNodeRef node)
+        public static YGValue YGNodeStyleGetMaxHeight(YGNodeRef node)
         {
             return YGNodeStyleGetDimensions(node.getStyle().maxDimensions, YGDimension.Height);
         }
@@ -1523,7 +1514,7 @@ type, name, paramName, instanceName)                                     \
         }
 
         // YG_NODE_LAYOUT_RESOLVED_PROPERTY_IMPL(float, Padding, padding);
-        public static float YGNodeLayoutGetPadding(in YGNodeRef node, in YGEdge edge)
+        public static float YGNodeLayoutGetPadding(YGNodeRef node, YGEdge edge)
         {
             YGAssertWithNode(
                 node,
@@ -4950,7 +4941,7 @@ type, name, paramName, instanceName)                                     \
         }
 
         public static void YGTraversePreOrder(
-            in YGNodeRef node,
+            YGNodeRef node,
             Action<YGNodeRef> f)
         {
             if (node == null) return;

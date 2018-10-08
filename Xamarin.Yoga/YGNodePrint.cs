@@ -94,7 +94,7 @@ namespace Xamarin.Yoga
             appendNumberIfNotUndefined(
                 sb,
                 str,
-                YGComputedEdgeValue(edges, edge, YGValueUndefined));
+                YGComputedEdgeValue(edges, edge, YGConst.YGValueUndefined));
         }
 
         public static StringBuilder YGNodeToString(

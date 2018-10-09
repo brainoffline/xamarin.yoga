@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 // ReSharper disable InconsistentNaming
@@ -20,15 +21,22 @@ namespace Xamarin.Yoga
         public float height;
     }
 
+    [DebuggerDisplay("{value} {unit}")]
     public class YGValue : IEquatable<YGValue>
     {
-        public float value;
-        public YGUnit unit;
+        public readonly float value;
+        public readonly YGUnit unit;
 
         public YGValue()
         {
             value = 0f;
             unit = YGUnit.Undefined;
+        }
+
+        public YGValue(YGValue value)
+        {
+            this.value = value.value;
+            unit = value.unit;
         }
 
         public YGValue(float value, YGUnit unit)
@@ -82,15 +90,15 @@ namespace Xamarin.Yoga
         float height,
         YGMeasureMode heightMode);
 
-    public delegate float YGBaselineFunc(YGNodeRef node, in float width, in float height);
+    public delegate float YGBaselineFunc(YGNodeRef node, float width, float height);
 
     public delegate void YGDirtiedFunc(YGNodeRef node);
 
     public delegate void YGPrintFunc(YGNodeRef node);
 
     public delegate void YGLogger(
-        in YGConfigRef config,
-        in YGNodeRef node,
+        YGConfigRef config,
+        YGNodeRef node,
         YGLogLevel level,
         string format,
         params object[] args);
@@ -101,8 +109,8 @@ namespace Xamarin.Yoga
     public static partial class YGGlobal
     {
         public static void YGDefaultLog(
-            in YGConfigRef config,
-            in YGNodeRef node,
+            YGConfigRef config,
+            YGNodeRef node,
             YGLogLevel level,
             string format,
             params object[] args)
@@ -127,15 +135,15 @@ namespace Xamarin.Yoga
         }
 
 
-        public static bool YGFloatIsUndefined(in float value)
+        public static bool YGFloatIsUndefined(float value)
         {
             return isUndefined(value);
         }
 
         public static YGValue YGComputedEdgeValue(
-            in YGValue[] edges,
-            in YGEdge edge,
-            in YGValue defaultValue)
+            YGValue[] edges,
+            YGEdge edge,
+            YGValue defaultValue)
         {
             if (edges[(int)edge].unit != YGUnit.Undefined) return edges[(int)edge];
 
@@ -235,12 +243,12 @@ namespace Xamarin.Yoga
             return node.isDirty();
         }
 
-        public static bool YGNodeLayoutGetDidUseLegacyFlag(in YGNodeRef node)
+        public static bool YGNodeLayoutGetDidUseLegacyFlag(YGNodeRef node)
         {
             return node.didUseLegacyFlag();
         }
 
-        public static void YGNodeMarkDirtyAndPropogateToDescendants(in YGNodeRef node)
+        public static void YGNodeMarkDirtyAndPropogateToDescendants(YGNodeRef node)
         {
             node.markDirtyAndPropogateDownwards();
         }
@@ -249,7 +257,7 @@ namespace Xamarin.Yoga
         public static int gConfigInstanceCount = 0;
 
         // WIN_EXPORT 
-        public static YGNodeRef YGNodeNewWithConfig(in YGConfigRef config)
+        public static YGNodeRef YGNodeNewWithConfig(YGConfigRef config)
         {
             var node = new YGNode();
             YGAssertWithConfig(
@@ -292,7 +300,7 @@ namespace Xamarin.Yoga
             return node;
         }
 
-        private static YGConfigRef YGConfigClone(in YGConfig oldConfig)
+        private static YGConfigRef YGConfigClone(YGConfig oldConfig)
         {
             var config = new YGConfig(oldConfig);
             YGAssert(config != null, "Could not allocate memory for config");
@@ -342,7 +350,7 @@ namespace Xamarin.Yoga
             gNodeInstanceCount--;
         }
 
-        internal static void YGConfigFreeRecursive(in YGNodeRef root)
+        internal static void YGConfigFreeRecursive(YGNodeRef root)
         {
             if (root.getConfig() != null) gConfigInstanceCount--;
 
@@ -406,13 +414,13 @@ namespace Xamarin.Yoga
             return config;
         }
 
-        public static void YGConfigFree(in YGConfigRef config)
+        public static void YGConfigFree(YGConfigRef config)
         {
             //delete config;
             gConfigInstanceCount--;
         }
 
-        public static void YGConfigCopy(in YGConfigRef dest, in YGConfigRef src)
+        public static void YGConfigCopy(YGConfigRef dest, YGConfigRef src)
         {
             dest.CloneFrom(src);
         }
@@ -440,9 +448,9 @@ namespace Xamarin.Yoga
         }
 
         public static void YGNodeInsertSharedChild(
-            in YGNodeRef node,
-            in YGNodeRef child,
-            in int index)
+            YGNodeRef node,
+            YGNodeRef child,
+            int index)
         {
             YGAssertWithNode(
                 node,
@@ -454,7 +462,7 @@ namespace Xamarin.Yoga
             node.markDirtyAndPropogate();
         }
 
-        public static void YGNodeRemoveChild(in YGNodeRef owner, in YGNodeRef excludedChild)
+        public static void YGNodeRemoveChild(YGNodeRef owner, YGNodeRef excludedChild)
         {
             // This algorithm is a forked variant from cloneChildrenIfNeeded in YGNode
             // that excludes a child.
@@ -513,7 +521,7 @@ namespace Xamarin.Yoga
             }
         }
 
-        public static void YGNodeRemoveAllChildren(in YGNodeRef owner)
+        public static void YGNodeRemoveAllChildren(YGNodeRef owner)
         {
             var childCount = YGNodeGetChildCount(owner);
             if (childCount == 0) return;
@@ -542,7 +550,7 @@ namespace Xamarin.Yoga
         }
 
         internal static void YGNodeSetChildrenInternal(
-            in YGNodeRef owner,
+            YGNodeRef owner,
             List<YGNodeRef> children)
         {
             if (owner == null) return;
@@ -581,9 +589,9 @@ namespace Xamarin.Yoga
         }
 
         public static void YGNodeSetChildren(
-            in YGNodeRef owner,
-            in YGNodeRef[] c,
-            in int count)
+            YGNodeRef owner,
+            YGNodeRef[] c,
+            int count)
         {
             var children = c.ToList().Take(count).ToList();
             YGNodeSetChildrenInternal(owner, children);
@@ -842,8 +850,8 @@ type, name, paramName, instanceName)                                     \
   */
 
         public static void YGNodeStyleSetDirection(
-            in YGNodeRef node,
-            in YGDirection direction)
+            YGNodeRef node,
+            YGDirection direction)
         {
             if (node.getStyle().direction != direction)
             {
@@ -852,7 +860,7 @@ type, name, paramName, instanceName)                                     \
             }
         }
 
-        public static YGDirection YGNodeStyleGetDirection(in YGNodeRef node)
+        public static YGDirection YGNodeStyleGetDirection(YGNodeRef node)
         {
             return node.getStyle().direction;
         }
@@ -874,8 +882,8 @@ type, name, paramName, instanceName)                                     \
         }
 
         public static void YGNodeStyleSetJustifyContent(
-            in YGNodeRef node,
-            in YGJustify justifyContent)
+            YGNodeRef node,
+            YGJustify justifyContent)
         {
             if (node.getStyle().justifyContent != justifyContent)
             {
@@ -884,14 +892,14 @@ type, name, paramName, instanceName)                                     \
             }
         }
 
-        public static YGJustify YGNodeStyleGetJustifyContent(in YGNodeRef node)
+        public static YGJustify YGNodeStyleGetJustifyContent(YGNodeRef node)
         {
             return node.getStyle().justifyContent;
         }
 
         public static void YGNodeStyleSetAlignContent(
-            in YGNodeRef node,
-            in YGAlign alignContent)
+            YGNodeRef node,
+            YGAlign alignContent)
         {
             if (node.getStyle().alignContent != alignContent)
             {
@@ -900,12 +908,12 @@ type, name, paramName, instanceName)                                     \
             }
         }
 
-        public static YGAlign YGNodeStyleGetAlignContent(in YGNodeRef node)
+        public static YGAlign YGNodeStyleGetAlignContent(YGNodeRef node)
         {
             return node.getStyle().alignContent;
         }
 
-        public static void YGNodeStyleSetAlignItems(in YGNodeRef node, in YGAlign alignItems)
+        public static void YGNodeStyleSetAlignItems(YGNodeRef node, YGAlign alignItems)
         {
             if (node.getStyle().alignItems != alignItems)
             {
@@ -914,12 +922,12 @@ type, name, paramName, instanceName)                                     \
             }
         }
 
-        public static YGAlign YGNodeStyleGetAlignItems(in YGNodeRef node)
+        public static YGAlign YGNodeStyleGetAlignItems(YGNodeRef node)
         {
             return node.getStyle().alignItems;
         }
 
-        public static void YGNodeStyleSetAlignSelf(in YGNodeRef node, in YGAlign alignSelf)
+        public static void YGNodeStyleSetAlignSelf(YGNodeRef node, YGAlign alignSelf)
         {
             if (node.getStyle().alignSelf != alignSelf)
             {
@@ -928,14 +936,14 @@ type, name, paramName, instanceName)                                     \
             }
         }
 
-        public static YGAlign YGNodeStyleGetAlignSelf(in YGNodeRef node)
+        public static YGAlign YGNodeStyleGetAlignSelf(YGNodeRef node)
         {
             return node.getStyle().alignSelf;
         }
 
         public static void YGNodeStyleSetPositionType(
-            in YGNodeRef node,
-            in YGPositionType positionType)
+            YGNodeRef node,
+            YGPositionType positionType)
         {
             if (node.getStyle().positionType != positionType)
             {
@@ -944,12 +952,12 @@ type, name, paramName, instanceName)                                     \
             }
         }
 
-        public static YGPositionType YGNodeStyleGetPositionType(in YGNodeRef node)
+        public static YGPositionType YGNodeStyleGetPositionType(YGNodeRef node)
         {
             return node.getStyle().positionType;
         }
 
-        public static void YGNodeStyleSetFlexWrap(in YGNodeRef node, in YGWrap flexWrap)
+        public static void YGNodeStyleSetFlexWrap(YGNodeRef node, YGWrap flexWrap)
         {
             if (node.getStyle().flexWrap != flexWrap)
             {
@@ -958,12 +966,12 @@ type, name, paramName, instanceName)                                     \
             }
         }
 
-        public static YGWrap YGNodeStyleGetFlexWrap(in YGNodeRef node)
+        public static YGWrap YGNodeStyleGetFlexWrap(YGNodeRef node)
         {
             return node.getStyle().flexWrap;
         }
 
-        public static void YGNodeStyleSetOverflow(in YGNodeRef node, in YGOverflow overflow)
+        public static void YGNodeStyleSetOverflow(YGNodeRef node, YGOverflow overflow)
         {
             if (node.getStyle().overflow != overflow)
             {
@@ -972,7 +980,7 @@ type, name, paramName, instanceName)                                     \
             }
         }
 
-        public static YGOverflow YGNodeStyleGetOverflow(in YGNodeRef node)
+        public static YGOverflow YGNodeStyleGetOverflow(YGNodeRef node)
         {
             return node.getStyle().overflow;
         }
@@ -986,13 +994,13 @@ type, name, paramName, instanceName)                                     \
             }
         }
 
-        public static YGDisplay YGNodeStyleGetDisplay(in YGNodeRef node)
+        public static YGDisplay YGNodeStyleGetDisplay(YGNodeRef node)
         {
             return node.getStyle().display;
         }
 
         // TODO(T26792433): Change the API to accept YGFloatOptional.
-        public static void YGNodeStyleSetFlex(in YGNodeRef node, in float flex)
+        public static void YGNodeStyleSetFlex(YGNodeRef node, float flex)
         {
             if (node.getStyle().flex != flex)
             {
@@ -1002,7 +1010,7 @@ type, name, paramName, instanceName)                                     \
         }
 
         // TODO(T26792433): Change the API to accept YGFloatOptional.
-        public static float YGNodeStyleGetFlex(in YGNodeRef node)
+        public static float YGNodeStyleGetFlex(YGNodeRef node)
         {
             return node.getStyle().flex.isUndefined()
                 ? YGUndefined
@@ -1033,15 +1041,16 @@ type, name, paramName, instanceName)                                     \
             }
         }
 
-        public static YGValue YGNodeStyleGetFlexBasis(in YGNodeRef node)
+        public static YGValue YGNodeStyleGetFlexBasis(YGNodeRef node)
         {
             var flexBasis = node.getStyle().flexBasis;
-            if (flexBasis.unit == YGUnit.Undefined || flexBasis.unit == YGUnit.Auto) flexBasis.value = YGUndefined;
+            if (flexBasis.unit == YGUnit.Undefined || flexBasis.unit == YGUnit.Auto)
+                flexBasis = YGValueUndefined;
 
             return flexBasis;
         }
 
-        public static void YGNodeStyleSetFlexBasis(in YGNodeRef node, in float flexBasis)
+        public static void YGNodeStyleSetFlexBasis(YGNodeRef node, float flexBasis)
         {
             var value = new YGValue(
                 YGFloatSanitize(flexBasis),
@@ -1056,8 +1065,8 @@ type, name, paramName, instanceName)                                     \
         }
 
         public static void YGNodeStyleSetFlexBasisPercent(
-            in YGNodeRef node,
-            in float flexBasisPercent)
+            YGNodeRef node,
+            float flexBasisPercent)
         {
             if (node.getStyle().flexBasis.value != flexBasisPercent ||
                 node.getStyle().flexBasis.unit != YGUnit.Percent)
@@ -1069,7 +1078,7 @@ type, name, paramName, instanceName)                                     \
             }
         }
 
-        public static void YGNodeStyleSetFlexBasisAuto(in YGNodeRef node)
+        public static void YGNodeStyleSetFlexBasisAuto(YGNodeRef node)
         {
             if (node.getStyle().flexBasis.unit != YGUnit.Auto)
             {
@@ -1079,7 +1088,7 @@ type, name, paramName, instanceName)                                     \
         }
 
         //YG_NODE_STYLE_EDGE_PROPERTY_UNIT_IMPL(YGValue,      Position, position, position);
-        public static void YGNodeStyleSetPosition(in YGNodeRef node, in YGEdge edge, in float position)
+        public static void YGNodeStyleSetPosition(YGNodeRef node, YGEdge edge, float position)
         {
             var value = new YGValue(
                 YGFloatSanitize(position),
@@ -1094,7 +1103,7 @@ type, name, paramName, instanceName)                                     \
         }
 
         public static void YGNodeStyleSetPositionPercent(
-            in YGNodeRef node, in YGEdge edge, in float position)
+            YGNodeRef node, YGEdge edge, float position)
         {
             var value = new YGValue(
                 YGFloatSanitize(position),
@@ -1107,10 +1116,11 @@ type, name, paramName, instanceName)                                     \
             }
         }
 
-        public static YGValue YGNodeStyleGetPosition(in YGNodeRef node, in YGEdge edge)
+        public static YGValue YGNodeStyleGetPosition(YGNodeRef node, YGEdge edge)
         {
             var value = node.getStyle().position[(int)edge];
-            if (value.unit == YGUnit.Undefined || value.unit == YGUnit.Auto) value.value = YGUndefined;
+            if (value.unit == YGUnit.Undefined || value.unit == YGUnit.Auto)
+                value = YGUndefined;
             return value;
         }
 
@@ -1145,15 +1155,16 @@ type, name, paramName, instanceName)                                     \
             }
         }
 
-        public static YGValue YGNodeStyleGetMargin(in YGNodeRef node, in YGEdge edge)
+        public static YGValue YGNodeStyleGetMargin(YGNodeRef node, YGEdge edge)
         {
             var value = node.getStyle().margin[(int)edge];
-            if (value.unit == YGUnit.Undefined || value.unit == YGUnit.Auto) value.value = YGUndefined;
+            if (value.unit == YGUnit.Undefined || value.unit == YGUnit.Auto)
+                value = YGUndefined;
             return value;
         }
 
         // YG_NODE_STYLE_EDGE_PROPERTY_UNIT_AUTO_IMPL(YGValue, Margin,   margin);
-        public static void YGNodeStyleSetMarginAuto(in YGNodeRef node, in YGEdge edge)
+        public static void YGNodeStyleSetMarginAuto(YGNodeRef node, YGEdge edge)
         {
             if (node.getStyle().margin[(int)edge].unit != YGUnit.Auto)
             {
@@ -1178,7 +1189,7 @@ type, name, paramName, instanceName)                                     \
         }
 
         public static void YGNodeStyleSetPaddingPercent(
-            in YGNodeRef node, in YGEdge edge, in float padding)
+            YGNodeRef node, YGEdge edge, float padding)
         {
             var value = new YGValue(
                 YGFloatSanitize(padding),
@@ -1191,19 +1202,20 @@ type, name, paramName, instanceName)                                     \
             }
         }
 
-        public static YGValue YGNodeStyleGetPadding(in YGNodeRef node, in YGEdge edge)
+        public static YGValue YGNodeStyleGetPadding(YGNodeRef node, YGEdge edge)
         {
             var value = node.getStyle().padding[(int)edge];
-            if (value.unit == YGUnit.Undefined || value.unit == YGUnit.Auto) value.value = YGUndefined;
+            if (value.unit == YGUnit.Undefined || value.unit == YGUnit.Auto)
+                value = YGUndefined;
             return value;
         }
 
 
         // TODO(T26792433): Change the API to accept YGFloatOptional.
         public static void YGNodeStyleSetBorder(
-            in YGNodeRef node,
-            in YGEdge edge,
-            in float border)
+            YGNodeRef node,
+            YGEdge edge,
+            float border)
         {
             var value = new YGValue(
                 YGFloatSanitize(border),
@@ -1217,7 +1229,7 @@ type, name, paramName, instanceName)                                     \
             }
         }
 
-        public static float YGNodeStyleGetBorder(in YGNodeRef node, in YGEdge edge)
+        public static float YGNodeStyleGetBorder(YGNodeRef node, YGEdge edge)
         {
             if (node.getStyle().border[(int)edge].unit == YGUnit.Undefined ||
                 node.getStyle().border[(int)edge].unit == YGUnit.Auto)
@@ -1229,14 +1241,14 @@ type, name, paramName, instanceName)                                     \
         // Yoga specific properties, not compatible with flexbox specification
 
         // TODO(T26792433): Change the API to accept YGFloatOptional.
-        public static float YGNodeStyleGetAspectRatio(in YGNodeRef node)
+        public static float YGNodeStyleGetAspectRatio(YGNodeRef node)
         {
             var op = node.getStyle().aspectRatio;
             return op.isUndefined() ? YGUndefined : op.getValue();
         }
 
         // TODO(T26792433): Change the API to accept YGFloatOptional.
-        public static void YGNodeStyleSetAspectRatio(in YGNodeRef node, in float aspectRatio)
+        public static void YGNodeStyleSetAspectRatio(YGNodeRef node, float aspectRatio)
         {
             if (node.getStyle().aspectRatio != aspectRatio)
             {
@@ -1260,7 +1272,7 @@ type, name, paramName, instanceName)                                     \
         }
 
         public static void YGNodeStyleSetWidthPercent(
-            in YGNodeRef node, in YGValue width)
+            YGNodeRef node, YGValue width)
         {
             if (node.getStyle().dimensions[YGDimension.Width].value != YGFloatSanitize(width.value) ||
                 node.getStyle().dimensions[YGDimension.Width].unit != YGUnit.Percent)
@@ -1272,7 +1284,7 @@ type, name, paramName, instanceName)                                     \
             }
         }
 
-        public static void YGNodeStyleSetWidthAuto(in YGNodeRef node)
+        public static void YGNodeStyleSetWidthAuto(YGNodeRef node)
         {
             if (node.getStyle().dimensions[YGDimension.Width].unit != YGUnit.Auto)
             {
@@ -1281,10 +1293,11 @@ type, name, paramName, instanceName)                                     \
             }
         }
 
-        public static YGValue YGNodeStyleGetWidth(in YGNodeRef node)
+        public static YGValue YGNodeStyleGetWidth(YGNodeRef node)
         {
             var value = node.getStyle().dimensions[YGDimension.Width];
-            if (value.unit == YGUnit.Undefined || value.unit == YGUnit.Auto) value.value = YGUndefined;
+            if (value.unit == YGUnit.Undefined || value.unit == YGUnit.Auto)
+                value = YGUndefined;
             return value;
         }
 
@@ -1304,7 +1317,7 @@ type, name, paramName, instanceName)                                     \
         }
 
         public static void YGNodeStyleSetHeightPercent(
-            in YGNodeRef node, in YGValue height)
+            YGNodeRef node, YGValue height)
         {
             if (node.getStyle().dimensions[YGDimension.Height].value != YGFloatSanitize(height.value) ||
                 node.getStyle().dimensions[YGDimension.Height].unit != YGUnit.Percent)
@@ -1316,7 +1329,7 @@ type, name, paramName, instanceName)                                     \
             }
         }
 
-        public static void YGNodeStyleSetHeightAuto(in YGNodeRef node)
+        public static void YGNodeStyleSetHeightAuto(YGNodeRef node)
         {
             if (node.getStyle().dimensions[YGDimension.Height].unit != YGUnit.Auto)
             {
@@ -1325,20 +1338,21 @@ type, name, paramName, instanceName)                                     \
             }
         }
 
-        public static YGValue YGNodeStyleGetHeight(in YGNodeRef node)
+        public static YGValue YGNodeStyleGetHeight(YGNodeRef node)
         {
             var value = node.getStyle().dimensions[YGDimension.Height];
-            if (value.unit == YGUnit.Undefined || value.unit == YGUnit.Auto) value.value = YGUndefined;
+            if (value.unit == YGUnit.Undefined || value.unit == YGUnit.Auto)
+                value = YGUndefined;
             return value;
         }
 
 
 
         internal static void YGNodeStyleSetDimensions(
-            in YGNodeRef node,
-            in Dimensions dimensions,
+            YGNodeRef node,
+            Dimensions dimensions,
             YGDimension dim,
-            in float value,
+            float value,
             YGUnit unit)
         {
             var newValue = new YGValue(YGFloatSanitize(value), YGFloatIsUndefined(value) ? YGUnit.Undefined : unit);
@@ -1351,56 +1365,56 @@ type, name, paramName, instanceName)                                     \
         }
 
         internal static YGValue YGNodeStyleGetDimensions(
-            in Dimensions dimensions,
+            Dimensions dimensions,
             YGDimension dim)
         {
             var value = dimensions[dim];
             if (value.unit == YGUnit.Undefined || value.unit == YGUnit.Auto)
-                value.value = YGUndefined;
+                value = YGUndefined;
             return value;
         }
 
-        public static void YGNodeStyleSetMinWidth(in YGNodeRef node, in float minWidth)
+        public static void YGNodeStyleSetMinWidth(YGNodeRef node, float minWidth)
         {
             YGNodeStyleSetDimensions(node, node.getStyle().minDimensions, YGDimension.Width, minWidth, YGUnit.Point);
         }
 
-        public static void YGNodeStyleSetMinWidthPercent(in YGNodeRef node, in float minWidth)
+        public static void YGNodeStyleSetMinWidthPercent(YGNodeRef node, float minWidth)
         {
             YGNodeStyleSetDimensions(node, node.getStyle().minDimensions, YGDimension.Width, minWidth, YGUnit.Percent);
         }
 
-        public static YGValue YGNodeStyleGetMinWidth(in YGNodeRef node)
+        public static YGValue YGNodeStyleGetMinWidth(YGNodeRef node)
         {
             return YGNodeStyleGetDimensions(node.getStyle().minDimensions, YGDimension.Width);
         }
 
-        public static void YGNodeStyleSetMinHeight(in YGNodeRef node, in float minHeight)
+        public static void YGNodeStyleSetMinHeight(YGNodeRef node, float minHeight)
         {
             YGNodeStyleSetDimensions(node, node.getStyle().minDimensions, YGDimension.Height, minHeight, YGUnit.Point);
         }
 
-        public static void YGNodeStyleSetMinHeightPercent(in YGNodeRef node, in float minHeight)
+        public static void YGNodeStyleSetMinHeightPercent(YGNodeRef node, float minHeight)
         {
             YGNodeStyleSetDimensions(node, node.getStyle().minDimensions, YGDimension.Height, minHeight, YGUnit.Percent);
         }
 
-        public static YGValue YGNodeStyleGetMinHeight(in YGNodeRef node)
+        public static YGValue YGNodeStyleGetMinHeight(YGNodeRef node)
         {
             return YGNodeStyleGetDimensions(node.getStyle().minDimensions, YGDimension.Height);
         }
 
-        public static void YGNodeStyleSetMaxWidth(in YGNodeRef node, in float maxWidth)
+        public static void YGNodeStyleSetMaxWidth(YGNodeRef node, float maxWidth)
         {
             YGNodeStyleSetDimensions(node, node.getStyle().maxDimensions, YGDimension.Width, maxWidth, YGUnit.Point);
         }
 
-        public static void YGNodeStyleSetMaxWidthPercent(in YGNodeRef node, in float maxWidth)
+        public static void YGNodeStyleSetMaxWidthPercent(YGNodeRef node, float maxWidth)
         {
             YGNodeStyleSetDimensions(node, node.getStyle().maxDimensions, YGDimension.Width, maxWidth, YGUnit.Percent);
         }
 
-        public static YGValue YGNodeStyleGetMaxWidth(in YGNodeRef node)
+        public static YGValue YGNodeStyleGetMaxWidth(YGNodeRef node)
         {
             return YGNodeStyleGetDimensions(node.getStyle().maxDimensions, YGDimension.Width);
         }
@@ -1410,7 +1424,7 @@ type, name, paramName, instanceName)                                     \
             YGNodeStyleSetDimensions(node, node.getStyle().maxDimensions, YGDimension.Height, maxHeight, YGUnit.Point);
         }
 
-        public static void YGNodeStyleSetMaxHeightPercent(in YGNodeRef node, in float maxHeight)
+        public static void YGNodeStyleSetMaxHeightPercent(YGNodeRef node, float maxHeight)
         {
             YGNodeStyleSetDimensions(node, node.getStyle().maxDimensions, YGDimension.Height, maxHeight, YGUnit.Percent);
         }
@@ -1421,49 +1435,49 @@ type, name, paramName, instanceName)                                     \
         }
 
         //YG_NODE_LAYOUT_PROPERTY_IMPL(float, Left, position[YGEdge.Left]);
-        public static float YGNodeLayoutGetLeft(in YGNodeRef node)
+        public static float YGNodeLayoutGetLeft(YGNodeRef node)
         {
             return node.getLayout().position[(int)YGEdge.Left];
         }
 
         //YG_NODE_LAYOUT_PROPERTY_IMPL(float,       Top,         position[   YGEdge.Top]);
-        public static float YGNodeLayoutGetTop(in YGNodeRef node)
+        public static float YGNodeLayoutGetTop(YGNodeRef node)
         {
             return node.getLayout().position[(int)YGEdge.Top];
         }
 
         //YG_NODE_LAYOUT_PROPERTY_IMPL(float,       Right,       position[   YGEdge.Right]);
-        public static float YGNodeLayoutGetRight(in YGNodeRef node)
+        public static float YGNodeLayoutGetRight(YGNodeRef node)
         {
             return node.getLayout().position[(int)YGEdge.Right];
         }
 
         // YG_NODE_LAYOUT_PROPERTY_IMPL(float,       Bottom,      position[   YGEdge.Bottom]);
-        public static float YGNodeLayoutGetBottom(in YGNodeRef node)
+        public static float YGNodeLayoutGetBottom(YGNodeRef node)
         {
             return node.getLayout().position[(int)YGEdge.Bottom];
         }
 
         // YG_NODE_LAYOUT_PROPERTY_IMPL(float,       Width,       dimensions[ YGDimension.Width]);
-        public static float YGNodeLayoutGetWidth(in YGNodeRef node)
+        public static float YGNodeLayoutGetWidth(YGNodeRef node)
         {
             return node.getLayout().dimensions[(int)YGDimension.Width];
         }
 
         //YG_NODE_LAYOUT_PROPERTY_IMPL(float,       Height,      dimensions[ YGDimension.Height]);
-        public static float YGNodeLayoutGetHeight(in YGNodeRef node)
+        public static float YGNodeLayoutGetHeight(YGNodeRef node)
         {
             return node.getLayout().dimensions[(int)YGDimension.Height];
         }
 
         //YG_NODE_LAYOUT_PROPERTY_IMPL(YGDirection, Direction,   direction);
-        public static YGDirection YGNodeLayoutGetDirection(in YGNodeRef node)
+        public static YGDirection YGNodeLayoutGetDirection(YGNodeRef node)
         {
             return node.getLayout().direction;
         }
 
         // YG_NODE_LAYOUT_PROPERTY_IMPL(bool,        HadOverflow, hadOverflow);
-        public static bool YGNodeLayoutGetHadOverflow(in YGNodeRef node)
+        public static bool YGNodeLayoutGetHadOverflow(YGNodeRef node)
         {
             return node.getLayout().hadOverflow;
         }
@@ -1492,7 +1506,7 @@ type, name, paramName, instanceName)                                     \
 
 
         // YG_NODE_LAYOUT_RESOLVED_PROPERTY_IMPL(float, Border,  border);
-        public static float YGNodeLayoutGetBorder(in YGNodeRef node, in YGEdge edge)
+        public static float YGNodeLayoutGetBorder(YGNodeRef node, YGEdge edge)
         {
             YGAssertWithNode(
                 node,
@@ -1536,7 +1550,7 @@ type, name, paramName, instanceName)                                     \
         }
 
 
-        public static bool YGNodeLayoutGetDidLegacyStretchFlagAffectLayout(in YGNodeRef node)
+        public static bool YGNodeLayoutGetDidLegacyStretchFlagAffectLayout(YGNodeRef node)
         {
             return node.getLayout().doesLegacyStretchFlagAffectsLayout;
         }
@@ -1544,15 +1558,15 @@ type, name, paramName, instanceName)                                     \
         public static int gCurrentGenerationCount = 0;
 
         internal static void YGNodePrintInternal(
-            in YGNodeRef node,
-            in YGPrintOptions options)
+            YGNodeRef node,
+            YGPrintOptions options)
         {
             var sb = YGNodeToString(null, node, options, 0);
 
             YGLog(node, YGLogLevel.Debug, sb.ToString());
         }
 
-        public static void YGNodePrint(in YGNodeRef node, in YGPrintOptions options)
+        public static void YGNodePrint(YGNodeRef node, YGPrintOptions options)
         {
             YGNodePrintInternal(node, options);
         }
@@ -1564,9 +1578,9 @@ type, name, paramName, instanceName)                                     \
         internal static YGDimension[] dim = { YGDimension.Height, YGDimension.Height, YGDimension.Width, YGDimension.Width };
 
         internal static float YGNodePaddingAndBorderForAxis(
-            in YGNodeRef node,
-            in YGFlexDirection axis,
-            in float widthSize)
+            YGNodeRef node,
+            YGFlexDirection axis,
+            float widthSize)
         {
             return YGUnwrapFloatOptional(
                 node.getLeadingPaddingAndBorder(axis, widthSize) +
@@ -1574,8 +1588,8 @@ type, name, paramName, instanceName)                                     \
         }
 
         internal static YGAlign YGNodeAlignItem(
-            in YGNodeRef node,
-            in YGNodeRef child)
+            YGNodeRef node,
+            YGNodeRef child)
         {
             var align = child.getStyle().alignSelf == YGAlign.Auto
                 ? node.getStyle().alignItems
@@ -1587,7 +1601,7 @@ type, name, paramName, instanceName)                                     \
             return align;
         }
 
-        internal static float YGBaseline(in YGNodeRef node)
+        internal static float YGBaseline(YGNodeRef node)
         {
             if (node.getBaseline() != null)
             {
@@ -1626,7 +1640,7 @@ type, name, paramName, instanceName)                                     \
             return childBaseline + baselineChild.getLayout().position[(int)YGEdge.Top];
         }
 
-        internal static bool YGIsBaselineLayout(in YGNodeRef node)
+        internal static bool YGIsBaselineLayout(YGNodeRef node)
         {
             if (YGFlexDirectionIsColumn(node.getStyle().flexDirection)) return false;
 
@@ -1646,9 +1660,9 @@ type, name, paramName, instanceName)                                     \
 
         // inline
         internal static float YGNodeDimWithMargin(
-            in YGNodeRef node,
-            in YGFlexDirection axis,
-            in float widthSize)
+            YGNodeRef node,
+            YGFlexDirection axis,
+            float widthSize)
         {
             return node.getLayout().measuredDimensions[(int)dim[(int)axis]] +
                 YGUnwrapFloatOptional(
@@ -1658,9 +1672,9 @@ type, name, paramName, instanceName)                                     \
 
         // inline
         internal static bool YGNodeIsStyleDimDefined(
-            in YGNodeRef node,
-            in YGFlexDirection axis,
-            in float ownerSize)
+            YGNodeRef node,
+            YGFlexDirection axis,
+            float ownerSize)
         {
             var isUndefined =
                 YGFloatIsUndefined(node.getResolvedDimension(dim[(int)axis]).value);
@@ -1677,18 +1691,18 @@ type, name, paramName, instanceName)                                     \
 
         // inline
         internal static bool YGNodeIsLayoutDimDefined(
-            in YGNodeRef node,
-            in YGFlexDirection axis)
+            YGNodeRef node,
+            YGFlexDirection axis)
         {
             var value = node.getLayout().measuredDimensions[(int)dim[(int)axis]];
             return !YGFloatIsUndefined(value) && value >= 0.0f;
         }
 
         internal static YGFloatOptional YGNodeBoundAxisWithinMinAndMax(
-            in YGNodeRef node,
-            in YGFlexDirection axis,
-            in float value,
-            in float axisSize)
+            YGNodeRef node,
+            YGFlexDirection axis,
+            float value,
+            float axisSize)
         {
             var min = YGFloatOptional.Empty;
             var max = YGFloatOptional.Empty;
@@ -1723,11 +1737,11 @@ type, name, paramName, instanceName)                                     \
         // go below the padding and border amount.
         // inline
         internal static float YGNodeBoundAxis(
-            in YGNodeRef node,
-            in YGFlexDirection axis,
-            in float value,
-            in float axisSize,
-            in float widthSize)
+            YGNodeRef node,
+            YGFlexDirection axis,
+            float value,
+            float axisSize,
+            float widthSize)
         {
             return YGFloatMax(
                 YGUnwrapFloatOptional(
@@ -1736,9 +1750,9 @@ type, name, paramName, instanceName)                                     \
         }
 
         internal static void YGNodeSetChildTrailingPosition(
-            in YGNodeRef node,
-            in YGNodeRef child,
-            in YGFlexDirection axis)
+            YGNodeRef node,
+            YGNodeRef child,
+            YGFlexDirection axis)
         {
             var size = child.getLayout().measuredDimensions[(int)dim[(int)axis]];
             child.setLayoutPosition(
@@ -1748,10 +1762,10 @@ type, name, paramName, instanceName)                                     \
         }
 
         internal static void YGConstrainMaxSizeForMode(
-            in YGNodeRef node,
-            in YGFlexDirection axis,
-            in float ownerAxisSize,
-            in float ownerWidth,
+            YGNodeRef node,
+            YGFlexDirection axis,
+            float ownerAxisSize,
+            float ownerWidth,
             ref YGMeasureMode mode,
             ref float size)
         {
@@ -1778,16 +1792,16 @@ type, name, paramName, instanceName)                                     \
         }
 
         internal static void YGNodeComputeFlexBasisForChild(
-            in YGNodeRef node,
-            in YGNodeRef child,
-            in float width,
-            in YGMeasureMode widthMode,
-            in float height,
-            in float ownerWidth,
-            in float ownerHeight,
-            in YGMeasureMode heightMode,
-            in YGDirection direction,
-            in YGConfigRef config)
+            YGNodeRef node,
+            YGNodeRef child,
+            float width,
+            YGMeasureMode widthMode,
+            float height,
+            float ownerWidth,
+            float ownerHeight,
+            YGMeasureMode heightMode,
+            YGDirection direction,
+            YGConfigRef config)
         {
             var mainAxis = YGResolveFlexDirection(node.getStyle().flexDirection, direction);
             var isMainAxisRow = YGFlexDirectionIsRow(mainAxis);
@@ -1991,13 +2005,13 @@ type, name, paramName, instanceName)                                     \
         }
 
         internal static void YGNodeAbsoluteLayoutChild(
-            in YGNodeRef node,
-            in YGNodeRef child,
-            in float width,
-            in YGMeasureMode widthMode,
-            in float height,
-            in YGDirection direction,
-            in YGConfigRef config)
+            YGNodeRef node,
+            YGNodeRef child,
+            float width,
+            YGMeasureMode widthMode,
+            float height,
+            YGDirection direction,
+            YGConfigRef config)
         {
             var mainAxis = YGResolveFlexDirection(node.getStyle().flexDirection, direction);
             var crossAxis = YGFlexDirectionCross(mainAxis, direction);
@@ -2201,13 +2215,13 @@ type, name, paramName, instanceName)                                     \
         }
 
         internal static void YGNodeWithMeasureFuncSetMeasuredDimensions(
-            in YGNodeRef node,
-            in float availableWidth,
-            in float availableHeight,
-            in YGMeasureMode widthMeasureMode,
-            in YGMeasureMode heightMeasureMode,
-            in float ownerWidth,
-            in float ownerHeight)
+            YGNodeRef node,
+            float availableWidth,
+            float availableHeight,
+            YGMeasureMode widthMeasureMode,
+            YGMeasureMode heightMeasureMode,
+            float ownerWidth,
+            float ownerHeight)
         {
             YGAssertWithNode(
                 node,
@@ -2282,13 +2296,13 @@ type, name, paramName, instanceName)                                     \
         // For nodes with no children, use the available values if they were provided,
         // or the minimum size as indicated by the padding and border sizes.
         internal static void YGNodeEmptyContainerSetMeasuredDimensions(
-            in YGNodeRef node,
-            in float availableWidth,
-            in float availableHeight,
-            in YGMeasureMode widthMeasureMode,
-            in YGMeasureMode heightMeasureMode,
-            in float ownerWidth,
-            in float ownerHeight)
+            YGNodeRef node,
+            float availableWidth,
+            float availableHeight,
+            YGMeasureMode widthMeasureMode,
+            YGMeasureMode heightMeasureMode,
+            float ownerWidth,
+            float ownerHeight)
         {
             var paddingAndBorderAxisRow = YGNodePaddingAndBorderForAxis(node, YGFlexDirection.Row, ownerWidth);
             var paddingAndBorderAxisColumn = YGNodePaddingAndBorderForAxis(node, YGFlexDirection.Column, ownerWidth);
@@ -2321,13 +2335,13 @@ type, name, paramName, instanceName)                                     \
         }
 
         internal static bool YGNodeFixedSizeSetMeasuredDimensions(
-            in YGNodeRef node,
-            in float availableWidth,
-            in float availableHeight,
-            in YGMeasureMode widthMeasureMode,
-            in YGMeasureMode heightMeasureMode,
-            in float ownerWidth,
-            in float ownerHeight)
+            YGNodeRef node,
+            float availableWidth,
+            float availableHeight,
+            YGMeasureMode widthMeasureMode,
+            YGMeasureMode heightMeasureMode,
+            float ownerWidth,
+            float ownerHeight)
         {
             if (!YGFloatIsUndefined(availableWidth)      &&
                 widthMeasureMode == YGMeasureMode.AtMost && availableWidth <= 0.0f ||
@@ -2372,7 +2386,7 @@ type, name, paramName, instanceName)                                     \
             return false;
         }
 
-        private static void YGZeroOutLayoutRecursivly(in YGNodeRef node)
+        private static void YGZeroOutLayoutRecursivly(YGNodeRef node)
         {
             node.setLayout(new YGLayout());
             node.setHasNewLayout(true);
@@ -2387,7 +2401,7 @@ type, name, paramName, instanceName)                                     \
         }
 
         internal static float YGNodeCalculateAvailableInnerDim(
-            in YGNodeRef node,
+            YGNodeRef node,
             YGFlexDirection axis,
             float availableDim,
             float ownerDim)
@@ -2427,14 +2441,14 @@ type, name, paramName, instanceName)                                     \
         }
 
         private static void YGNodeComputeFlexBasisForChildren(
-            in YGNodeRef node,
-            in float availableInnerWidth,
-            in float availableInnerHeight,
+            YGNodeRef node,
+            float availableInnerWidth,
+            float availableInnerHeight,
             YGMeasureMode widthMeasureMode,
             YGMeasureMode heightMeasureMode,
             YGDirection direction,
             YGFlexDirection mainAxis,
-            in YGConfigRef config,
+            YGConfigRef config,
             bool performLayout,
             float totalOuterFlexBasis)
         {
@@ -2525,13 +2539,13 @@ type, name, paramName, instanceName)                                     \
         // YGNodeComputeFlexBasisForChildren function).
         // This function calculates YGCollectFlexItemsRowMeasurement
         internal static YGCollectFlexItemsRowValues YGCalculateCollectFlexItemsRowValues(
-            in YGNodeRef node,
-            in YGDirection ownerDirection,
-            in float mainAxisownerSize,
-            in float availableInnerWidth,
-            in float availableInnerMainDim,
-            in int startOfLineIndex,
-            in int lineCount)
+            YGNodeRef node,
+            YGDirection ownerDirection,
+            float mainAxisownerSize,
+            float availableInnerWidth,
+            float availableInnerMainDim,
+            int startOfLineIndex,
+            int lineCount)
         {
             var flexAlgoRowMeasurement = new YGCollectFlexItemsRowValues
             {
@@ -2610,18 +2624,18 @@ type, name, paramName, instanceName)                                     \
         // please ensure that YGDistributeFreeSpaceFirstPass is called.
         internal static float YGDistributeFreeSpaceSecondPass(
             YGCollectFlexItemsRowValues collectedFlexItemsValues,
-            in YGNodeRef node,
-            in YGFlexDirection mainAxis,
-            in YGFlexDirection crossAxis,
-            in float mainAxisownerSize,
-            in float availableInnerMainDim,
-            in float availableInnerCrossDim,
-            in float availableInnerWidth,
-            in float availableInnerHeight,
-            in bool flexBasisOverflows,
-            in YGMeasureMode measureModeCrossDim,
-            in bool performLayout,
-            in YGConfigRef config)
+            YGNodeRef node,
+            YGFlexDirection mainAxis,
+            YGFlexDirection crossAxis,
+            float mainAxisownerSize,
+            float availableInnerMainDim,
+            float availableInnerCrossDim,
+            float availableInnerWidth,
+            float availableInnerHeight,
+            bool flexBasisOverflows,
+            YGMeasureMode measureModeCrossDim,
+            bool performLayout,
+            YGConfigRef config)
         {
             float childFlexBasis = 0;
             float flexShrinkScaledFactor = 0;
@@ -2812,10 +2826,10 @@ type, name, paramName, instanceName)                                     \
         // is removed from the remaingfreespace.
         internal static void YGDistributeFreeSpaceFirstPass(
             YGCollectFlexItemsRowValues collectedFlexItemsValues,
-            in YGFlexDirection mainAxis,
-            in float mainAxisownerSize,
-            in float availableInnerMainDim,
-            in float availableInnerWidth)
+            YGFlexDirection mainAxis,
+            float mainAxisownerSize,
+            float availableInnerMainDim,
+            float availableInnerWidth)
         {
             float flexShrinkScaledFactor = 0;
             float flexGrowFactor = 0;
@@ -2933,19 +2947,19 @@ type, name, paramName, instanceName)                                     \
         // assigned to them.
         //
         private static void YGResolveFlexibleLength(
-            in YGNodeRef node,
+            YGNodeRef node,
             YGCollectFlexItemsRowValues collectedFlexItemsValues,
-            in YGFlexDirection mainAxis,
-            in YGFlexDirection crossAxis,
-            in float mainAxisownerSize,
-            in float availableInnerMainDim,
-            in float availableInnerCrossDim,
-            in float availableInnerWidth,
-            in float availableInnerHeight,
-            in bool flexBasisOverflows,
-            in YGMeasureMode measureModeCrossDim,
-            in bool performLayout,
-            in YGConfigRef config)
+            YGFlexDirection mainAxis,
+            YGFlexDirection crossAxis,
+            float mainAxisownerSize,
+            float availableInnerMainDim,
+            float availableInnerCrossDim,
+            float availableInnerWidth,
+            float availableInnerHeight,
+            bool flexBasisOverflows,
+            YGMeasureMode measureModeCrossDim,
+            bool performLayout,
+            YGConfigRef config)
         {
             var originalFreeSpace = collectedFlexItemsValues.remainingFreeSpace;
             // First pass: detect the flex items whose min/max constraints trigger
@@ -2977,19 +2991,19 @@ type, name, paramName, instanceName)                                     \
         }
 
         internal static void YGJustifyMainAxis(
-            in YGNodeRef node,
+            YGNodeRef node,
             YGCollectFlexItemsRowValues collectedFlexItemsValues,
-            in int startOfLineIndex,
-            in YGFlexDirection mainAxis,
-            in YGFlexDirection crossAxis,
-            in YGMeasureMode measureModeMainDim,
-            in YGMeasureMode measureModeCrossDim,
-            in float mainAxisownerSize,
-            in float ownerWidth,
-            in float availableInnerMainDim,
-            in float availableInnerCrossDim,
-            in float availableInnerWidth,
-            in bool performLayout)
+            int startOfLineIndex,
+            YGFlexDirection mainAxis,
+            YGFlexDirection crossAxis,
+            YGMeasureMode measureModeMainDim,
+            YGMeasureMode measureModeCrossDim,
+            float mainAxisownerSize,
+            float ownerWidth,
+            float availableInnerMainDim,
+            float availableInnerCrossDim,
+            float availableInnerWidth,
+            bool performLayout)
         {
             var style = node.getStyle();
             var leadingPaddingAndBorderMain = YGUnwrapFloatOptional(node.getLeadingPaddingAndBorder(mainAxis, ownerWidth));
@@ -3290,16 +3304,16 @@ type, name, paramName, instanceName)                                     \
         //    mode of YGMeasureMode.Undefined in that dimension.
         //
         internal static void YGNodelayoutImpl(
-            in YGNodeRef node,
-            in float availableWidth,
-            in float availableHeight,
-            in YGDirection ownerDirection,
-            in YGMeasureMode widthMeasureMode,
-            in YGMeasureMode heightMeasureMode,
-            in float ownerWidth,
-            in float ownerHeight,
-            in bool performLayout,
-            in YGConfigRef config)
+            YGNodeRef node,
+            float availableWidth,
+            float availableHeight,
+            YGDirection ownerDirection,
+            YGMeasureMode widthMeasureMode,
+            YGMeasureMode heightMeasureMode,
+            float ownerWidth,
+            float ownerHeight,
+            bool performLayout,
+            YGConfigRef config)
         {
             YGAssertWithNode(
                 node,
@@ -4163,7 +4177,7 @@ type, name, paramName, instanceName)                                     \
 
         internal static string spacer = "                                                            ";
 
-        internal static string YGSpacer(in int level)
+        internal static string YGSpacer(int level)
         {
             var spacerLen = spacer.Length;
             if (level > spacerLen)
@@ -4172,8 +4186,8 @@ type, name, paramName, instanceName)                                     \
         }
 
         internal static string YGMeasureModeName(
-            in YGMeasureMode mode,
-            in bool performLayout)
+            YGMeasureMode mode,
+            bool performLayout)
         {
             string[] kMeasureModeNames = { "UNDEFINED", "EXACTLY", "AT_MOST" };
             string[] kLayoutModeNames = { "LAY_UNDEFINED", "LAY_EXACTLY", "LAY_AT_", "MOST" };
@@ -4221,10 +4235,10 @@ type, name, paramName, instanceName)                                     \
         }
 
         public static float YGRoundValueToPixelGrid(
-            in float value,
-            in float pointScaleFactor,
-            in bool forceCeil,
-            in bool forceFloor)
+            float value,
+            float pointScaleFactor,
+            bool forceCeil,
+            bool forceFloor)
         {
             var scaledValue = value * pointScaleFactor;
             var fractial = scaledValue % 1.0f;
@@ -4250,19 +4264,19 @@ type, name, paramName, instanceName)                                     \
         }
 
         public static bool YGNodeCanUseCachedMeasurement(
-            in YGMeasureMode widthMode,
-            in float width,
-            in YGMeasureMode heightMode,
-            in float height,
-            in YGMeasureMode lastWidthMode,
-            in float lastWidth,
-            in YGMeasureMode lastHeightMode,
-            in float lastHeight,
-            in float lastComputedWidth,
-            in float lastComputedHeight,
-            in float marginRow,
-            in float marginColumn,
-            in YGConfigRef config)
+            YGMeasureMode widthMode,
+            float width,
+            YGMeasureMode heightMode,
+            float height,
+            YGMeasureMode lastWidthMode,
+            float lastWidth,
+            YGMeasureMode lastHeightMode,
+            float lastHeight,
+            float lastComputedWidth,
+            float lastComputedHeight,
+            float marginRow,
+            float marginColumn,
+            YGConfigRef config)
         {
             if (!YGFloatIsUndefined(lastComputedHeight) && lastComputedHeight < 0 ||
                 !YGFloatIsUndefined(lastComputedWidth) && lastComputedWidth < 0)
@@ -4344,17 +4358,17 @@ type, name, paramName, instanceName)                                     \
         //  Return parameter is true if layout was performed, false if skipped
         //
         public static bool YGLayoutNodeInternal(
-            in YGNodeRef node,
-            in float availableWidth,
-            in float availableHeight,
-            in YGDirection ownerDirection,
-            in YGMeasureMode widthMeasureMode,
-            in YGMeasureMode heightMeasureMode,
-            in float ownerWidth,
-            in float ownerHeight,
-            in bool performLayout,
-            in string reason,
-            in YGConfigRef config)
+            YGNodeRef node,
+            float availableWidth,
+            float availableHeight,
+            YGDirection ownerDirection,
+            YGMeasureMode widthMeasureMode,
+            YGMeasureMode heightMeasureMode,
+            float ownerWidth,
+            float ownerHeight,
+            bool performLayout,
+            string reason,
+            YGConfigRef config)
         {
             var layout = node.getLayout();
 
@@ -4544,6 +4558,8 @@ type, name, paramName, instanceName)                                     \
                     {
                         // Allocate a new measurement cache entry.
                         newCacheEntry = layout.cachedMeasurements[layout.nextCachedMeasurementsIndex];
+                        if (newCacheEntry == null)
+                            newCacheEntry = layout.cachedMeasurements[layout.nextCachedMeasurementsIndex] = new YGCachedMeasurement();
                         layout.nextCachedMeasurementsIndex++;
                     }
 
@@ -4575,8 +4591,8 @@ type, name, paramName, instanceName)                                     \
         }
 
         public static void YGConfigSetPointScaleFactor(
-            in YGConfigRef config,
-            in float pixelsInPoint)
+            YGConfigRef config,
+            float pixelsInPoint)
         {
             YGAssertWithConfig(
                 config,
@@ -4591,10 +4607,10 @@ type, name, paramName, instanceName)                                     \
         }
 
         internal static void YGRoundToPixelGrid(
-            in YGNodeRef node,
-            in float pointScaleFactor,
-            in float absoluteLeft,
-            in float absoluteTop)
+            YGNodeRef node,
+            float pointScaleFactor,
+            float absoluteLeft,
+            float absoluteTop)
         {
             if (pointScaleFactor == 0.0f) return;
 
@@ -4821,21 +4837,21 @@ type, name, paramName, instanceName)                                     \
             }
         }
 
-        public static void YGConfigSetLogger(in YGConfigRef config, YGLogger logger)
+        public static void YGConfigSetLogger(YGConfigRef config, YGLogger logger)
         {
             config.logger = logger ?? YGDefaultLog;
         }
 
         public static void YGConfigSetShouldDiffLayoutWithoutLegacyStretchBehaviour(
-            in YGConfigRef config,
-            in bool shouldDiffLayout)
+            YGConfigRef config,
+            bool shouldDiffLayout)
         {
             config.shouldDiffLayoutWithoutLegacyStretchBehaviour = shouldDiffLayout;
         }
 
         internal static void YGVLog(
-            in YGConfigRef config,
-            in YGNodeRef node,
+            YGConfigRef config,
+            YGNodeRef node,
             YGLogLevel level,
             string format, params object[] args)
         {
@@ -4846,92 +4862,92 @@ type, name, paramName, instanceName)                                     \
             if (level == YGLogLevel.Fatal) throw new SystemException();
         }
 
-        public static void YGLogWithConfig(in YGConfigRef config, YGLogLevel level, in string message)
+        public static void YGLogWithConfig(YGConfigRef config, YGLogLevel level, string message)
         {
             YGVLog(config, null, level, message);
         }
 
-        public static void YGLog(in YGNodeRef node, YGLogLevel level, in string message)
+        public static void YGLog(YGNodeRef node, YGLogLevel level, string message)
         {
             YGVLog(
                 node == null ? null : node.getConfig(),
                 node, level, message);
         }
 
-        public static void YGAssert(in bool condition, in string message)
+        public static void YGAssert(bool condition, string message)
         {
             if (!condition) YGLog(null, YGLogLevel.Fatal, $"{message}\n");
         }
 
         public static void YGAssertWithNode(
-            in YGNodeRef node,
-            in bool condition,
-            in string message)
+            YGNodeRef node,
+            bool condition,
+            string message)
         {
             if (!condition) YGLog(node, YGLogLevel.Fatal, $"{message}\n");
         }
 
         public static void YGAssertWithConfig(
-            in YGConfigRef config,
-            in bool condition,
-            in string message)
+            YGConfigRef config,
+            bool condition,
+            string message)
         {
             if (!condition) YGLogWithConfig(config, YGLogLevel.Fatal, "{message}\n");
         }
 
         public static void YGConfigSetExperimentalFeatureEnabled(
-            in YGConfigRef config,
-            in YGExperimentalFeature feature,
-            in bool enabled)
+            YGConfigRef config,
+            YGExperimentalFeature feature,
+            bool enabled)
         {
             config.experimentalFeatures[(int)feature] = enabled;
         }
 
         // inline
         public static bool YGConfigIsExperimentalFeatureEnabled(
-            in YGConfigRef config,
-            in YGExperimentalFeature feature)
+            YGConfigRef config,
+            YGExperimentalFeature feature)
         {
             return config.experimentalFeatures[(int)feature];
         }
 
-        public static void YGConfigSetUseWebDefaults(in YGConfigRef config, in bool enabled)
+        public static void YGConfigSetUseWebDefaults(YGConfigRef config, bool enabled)
         {
             config.useWebDefaults = enabled;
         }
 
         public static void YGConfigSetUseLegacyStretchBehaviour(
-            in YGConfigRef config,
-            in bool useLegacyStretchBehaviour)
+            YGConfigRef config,
+            bool useLegacyStretchBehaviour)
         {
             config.useLegacyStretchBehaviour = useLegacyStretchBehaviour;
         }
 
-        public static bool YGConfigGetUseWebDefaults(in YGConfigRef config)
+        public static bool YGConfigGetUseWebDefaults(YGConfigRef config)
         {
             return config.useWebDefaults;
         }
 
-        public static void YGConfigSetContext(in YGConfigRef config, object context)
+        public static void YGConfigSetContext(YGConfigRef config, object context)
         {
             config.context = context;
         }
 
-        public static object YGConfigGetContext(in YGConfigRef config)
+        public static object YGConfigGetContext(YGConfigRef config)
         {
             return config.context;
         }
 
         public static void YGConfigSetCloneNodeFunc(
-            in YGConfigRef config,
-            in YGCloneNodeFunc callback)
+            YGConfigRef config,
+            YGCloneNodeFunc callback)
         {
             config.cloneNodeCallback = callback;
         }
 
         internal static void YGTraverseChildrenPreOrder(
-            in YGVector children,
-            in Action<YGNodeRef> f)
+            YGVector children,
+            Action<YGNodeRef> f)
         {
             foreach (var node in children)
             {

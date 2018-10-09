@@ -6,9 +6,9 @@ namespace Xamarin.Yoga
 {
     public static class YGConst
     {
-        public static readonly YGValue YGValueUndefined = new YGValue { unit = YGUnit.Undefined };
-        public static readonly YGValue YGValueAuto = new YGValue { unit = YGUnit.Auto };
-        public static readonly YGValue YGValueZero = new YGValue { unit = YGUnit.Point, value = 0 };
+        public static readonly YGValue YGValueUndefined = new YGValue (0, YGUnit.Undefined );
+        public static readonly YGValue YGValueAuto = new YGValue(0, YGUnit.Auto);
+        public static readonly YGValue YGValueZero = new YGValue(0, YGUnit.Point);
 
         public static readonly YGValue[] kYGDefaultDimensionValuesAutoUnit = { YGValueAuto, YGValueAuto };
         public static readonly YGValue[] kYGDefaultDimensionValuesUnit     = { YGValueUndefined, YGValueUndefined };

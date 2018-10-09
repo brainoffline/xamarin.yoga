@@ -113,13 +113,13 @@ namespace Xamarin.Yoga
             flexGrow = new YGFloatOptional();
             flexShrink = new YGFloatOptional();
             flexBasis = kYGValueAuto;
-            margin = kYGDefaultEdgeValuesUnit;
-            position = kYGDefaultEdgeValuesUnit;
-            padding = kYGDefaultEdgeValuesUnit;
-            border = kYGDefaultEdgeValuesUnit;
-            dimensions = kYGDefaultDimensionValuesAutoUnit;
-            minDimensions = kYGDefaultDimensionValuesUnit;
-            maxDimensions = kYGDefaultDimensionValuesUnit;
+            margin = (YGValue[]) kYGDefaultEdgeValuesUnit.Clone();
+            position = (YGValue[])kYGDefaultEdgeValuesUnit.Clone();
+            padding = (YGValue[])kYGDefaultEdgeValuesUnit.Clone();
+            border = (YGValue[])kYGDefaultEdgeValuesUnit.Clone();
+            dimensions = (YGValue[])kYGDefaultDimensionValuesAutoUnit.Clone();
+            minDimensions = (YGValue[])kYGDefaultDimensionValuesUnit.Clone();
+            maxDimensions = (YGValue[])kYGDefaultDimensionValuesUnit.Clone();
             aspectRatio = new YGFloatOptional();
         }
 

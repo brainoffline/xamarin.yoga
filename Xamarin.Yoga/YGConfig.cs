@@ -15,7 +15,7 @@ namespace Xamarin.Yoga
         public YGLogger        logger                                        = null;
         public YGCloneNodeFunc cloneNodeCallback                             = null;
         public object          context;
-        public bool            printTree;
+        public bool            printTree = true;
 
         public YGConfig() { }
 

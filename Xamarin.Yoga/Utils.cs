@@ -9,6 +9,7 @@ namespace Xamarin.Yoga
     using YGNodeRef = YGNode;
     using YGVector = List<YGNode>;
     using static YGGlobal;
+    using static YGConst;
 
     // This struct is an helper model to hold the data for step 4 of flexbox
     // algo, which is collecting the flex items in a line.

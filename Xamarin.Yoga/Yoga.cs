@@ -372,7 +372,7 @@ namespace Xamarin.Yoga
             YGNodeFree(root);
         }
 
-        public static void YGNodeReset(ref YGNodeRef node)
+        public static void YGNodeReset(YGNodeRef node)
         {
             YGAssertWithNode(
                 node,
@@ -4190,7 +4190,7 @@ type, name, paramName, instanceName)                                     \
             bool performLayout)
         {
             string[] kMeasureModeNames = { "UNDEFINED", "EXACTLY", "AT_MOST" };
-            string[] kLayoutModeNames = { "LAY_UNDEFINED", "LAY_EXACTLY", "LAY_AT_", "MOST" };
+            string[] kLayoutModeNames = { "LAY_UNDEFINED", "LAY_EXACTLY", "LAY_AT_MOST" };
 
             if ((int)mode >= YGMeasureModeCount) return "";
 

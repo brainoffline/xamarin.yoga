@@ -7,20 +7,6 @@ namespace Xamarin.Yoga
 {
     using static YGGlobal;
 
-    public static partial class YGGlobal
-    {
-
-
-        /** Large positive number signifies that the property(float) is undefined.
-     *Earlier we used to have YGundefined as NAN, but the downside of this is that
-     *we can't use -ffast-math compiler flag as it assumes all floating-point
-     *calculation involve and result into finite numbers. For more information
-     *regarding -ffast-math compiler flag in clang, have a look at
-     *https://clang.llvm.org/docs/UsersManual.html#cmdoption-ffast-math
-     **/
-        public const float YGUndefined = 10E20F;
-    }
-
     public struct YGFloatOptional
     {
         public static YGFloatOptional Empty = new YGFloatOptional { value = null };

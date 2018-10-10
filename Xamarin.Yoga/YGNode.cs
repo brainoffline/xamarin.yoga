@@ -787,7 +787,7 @@ namespace Xamarin.Yoga
             layout_.didUseLegacyFlag = didUseLegacyFlag;
         }
 
-        public bool isLayoutTreeEqualToNode(in YGNode node)
+        public bool isLayoutTreeEqualToNode(YGNode node)
         {
             if (children_.Count != node.children_.Count)
                 return false;

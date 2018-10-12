@@ -7,11 +7,6 @@ namespace Xamarin.Yoga
     using static YGGlobal;
     using static YGConst;
 
-    public static partial class YGGlobal
-    {
-        public static float[] kYGDefaultDimensionValues = {YGUndefined, YGUndefined};
-    }
-
     public class YGLayout : IEquatable<YGLayout>
     {
         public float[]     position   = new float[4];
@@ -41,7 +36,7 @@ namespace Xamarin.Yoga
 
         public YGLayout()
         {
-            dimensions                  = kYGDefaultDimensionValues;
+            dimensions                  = (float[]) kYGDefaultDimensionValues.Clone();
             direction                   = YGDirection.Inherit;
             computedFlexBasisGeneration = 0;
             computedFlexBasis           = new YGFloatOptional();
@@ -50,7 +45,7 @@ namespace Xamarin.Yoga
 
             lastOwnerDirection                 = YGDirection.Inherit;
             nextCachedMeasurementsIndex        = 0;
-            measuredDimensions                 = kYGDefaultDimensionValues;
+            measuredDimensions                 = (float[]) kYGDefaultDimensionValues.Clone();
             cachedLayout                       = new YGCachedMeasurement();
             didUseLegacyFlag                   = false;
             doesLegacyStretchFlagAffectsLayout = false;

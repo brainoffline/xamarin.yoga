@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace Xamarin.Yoga
@@ -595,11 +596,13 @@ namespace Xamarin.Yoga
         public void resolveDimension()
         {
             for (var dim = (int) YGDimension.Width; dim < YGDimensionCount; dim++)
+            {
                 if (getStyle().maxDimensions[dim].unit != YGUnit.Undefined &&
                     YGValueEqual(getStyle().maxDimensions[dim], style_.minDimensions[dim]))
                     resolvedDimensions_[dim] = style_.maxDimensions[dim];
                 else
                     resolvedDimensions_[dim] = style_.dimensions[dim];
+            }
         }
 
         public YGDirection resolveDirection(in YGDirection ownerDirection)

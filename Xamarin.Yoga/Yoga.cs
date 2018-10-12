@@ -29,7 +29,7 @@ namespace Xamarin.Yoga
 
         public YGValue()
         {
-            value = 0f;
+            value = YGUndefined;
             unit = YGUnit.Undefined;
         }
 
@@ -41,8 +41,28 @@ namespace Xamarin.Yoga
 
         public YGValue(float value, YGUnit unit)
         {
-            this.value = value;
             this.unit = unit;
+            if (unit == YGUnit.Auto || unit == YGUnit.Undefined)
+                this.value = YGUndefined;
+            else
+                this.value = value;
+        }
+
+        /// <inheritdoc />
+        public override string ToString()
+        {
+            switch (unit)
+            {
+                case YGUnit.Auto:
+                    return $"{value}: auto";
+                case YGUnit.Percent:
+                    return $"{value}%";
+                case YGUnit.Point:
+                    return $"{value}pt";
+                case YGUnit.Undefined:
+                default:
+                    return string.Empty;
+            }
         }
 
         /// <inheritdoc />
@@ -196,16 +216,6 @@ namespace Xamarin.Yoga
         public static YGDirtiedFunc YGNodeGetDirtiedFunc(YGNodeRef node)
         {
             return node.getDirtied();
-        }
-
-        public static void YGNodeSetDirtiedFunc(YGNodeRef node, YGDirtiedFunc dirtiedFunc)
-        {
-            node.setDirtiedFunc(dirtiedFunc);
-        }
-
-        public static YGPrintFunc YGNodeGetPrintFunc(YGNodeRef node)
-        {
-            return node.getPrintFunc();
         }
 
         public static void YGNodeSetPrintFunc(YGNodeRef node, YGPrintFunc printFunc)
@@ -1043,11 +1053,7 @@ type, name, paramName, instanceName)                                     \
 
         public static YGValue YGNodeStyleGetFlexBasis(YGNodeRef node)
         {
-            var flexBasis = node.getStyle().flexBasis;
-            if (flexBasis.unit == YGUnit.Undefined || flexBasis.unit == YGUnit.Auto)
-                flexBasis = YGValueUndefined;
-
-            return flexBasis;
+            return node.getStyle().flexBasis;
         }
 
         public static void YGNodeStyleSetFlexBasis(YGNodeRef node, float flexBasis)
@@ -1118,10 +1124,7 @@ type, name, paramName, instanceName)                                     \
 
         public static YGValue YGNodeStyleGetPosition(YGNodeRef node, YGEdge edge)
         {
-            var value = node.getStyle().position[(int)edge];
-            if (value.unit == YGUnit.Undefined || value.unit == YGUnit.Auto)
-                value = YGUndefined;
-            return value;
+            return node.getStyle().position[(int)edge];
         }
 
         // YG_NODE_STYLE_EDGE_PROPERTY_UNIT_IMPL(YGValue,      Margin,   margin,   margin);
@@ -1157,10 +1160,7 @@ type, name, paramName, instanceName)                                     \
 
         public static YGValue YGNodeStyleGetMargin(YGNodeRef node, YGEdge edge)
         {
-            var value = node.getStyle().margin[(int)edge];
-            if (value.unit == YGUnit.Undefined || value.unit == YGUnit.Auto)
-                value = YGUndefined;
-            return value;
+            return node.getStyle().margin[(int)edge];
         }
 
         // YG_NODE_STYLE_EDGE_PROPERTY_UNIT_AUTO_IMPL(YGValue, Margin,   margin);
@@ -1204,10 +1204,7 @@ type, name, paramName, instanceName)                                     \
 
         public static YGValue YGNodeStyleGetPadding(YGNodeRef node, YGEdge edge)
         {
-            var value = node.getStyle().padding[(int)edge];
-            if (value.unit == YGUnit.Undefined || value.unit == YGUnit.Auto)
-                value = YGUndefined;
-            return value;
+            return node.getStyle().padding[(int)edge];
         }
 
 
@@ -1231,10 +1228,6 @@ type, name, paramName, instanceName)                                     \
 
         public static float YGNodeStyleGetBorder(YGNodeRef node, YGEdge edge)
         {
-            if (node.getStyle().border[(int)edge].unit == YGUnit.Undefined ||
-                node.getStyle().border[(int)edge].unit == YGUnit.Auto)
-                return YGUndefined;
-
             return node.getStyle().border[(int)edge].value;
         }
 
@@ -1295,10 +1288,7 @@ type, name, paramName, instanceName)                                     \
 
         public static YGValue YGNodeStyleGetWidth(YGNodeRef node)
         {
-            var value = node.getStyle().dimensions[YGDimension.Width];
-            if (value.unit == YGUnit.Undefined || value.unit == YGUnit.Auto)
-                value = YGUndefined;
-            return value;
+            return node.getStyle().dimensions[YGDimension.Width];
         }
 
 
@@ -1340,10 +1330,7 @@ type, name, paramName, instanceName)                                     \
 
         public static YGValue YGNodeStyleGetHeight(YGNodeRef node)
         {
-            var value = node.getStyle().dimensions[YGDimension.Height];
-            if (value.unit == YGUnit.Undefined || value.unit == YGUnit.Auto)
-                value = YGUndefined;
-            return value;
+            return node.getStyle().dimensions[YGDimension.Height];
         }
 
 
@@ -1368,10 +1355,7 @@ type, name, paramName, instanceName)                                     \
             Dimensions dimensions,
             YGDimension dim)
         {
-            var value = dimensions[dim];
-            if (value.unit == YGUnit.Undefined || value.unit == YGUnit.Auto)
-                value = YGUndefined;
-            return value;
+            return dimensions[dim];
         }
 
         public static void YGNodeStyleSetMinWidth(YGNodeRef node, float minWidth)

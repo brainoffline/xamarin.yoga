@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 // ReSharper disable InconsistentNaming
 
@@ -40,8 +41,8 @@ namespace Xamarin.Yoga
 
         public YGValue this[YGDimension key]
         {
-            get => values[(int)key];
-            set => values[(int)key] = value;
+            get => values[(int) key];
+            set => values[(int) key] = value;
         }
 
         public override bool Equals(object obj)
@@ -51,42 +52,46 @@ namespace Xamarin.Yoga
 
         public bool Equals(Dimensions other)
         {
-            return other != null &&
-                   EqualityComparer<YGValue[]>.Default.Equals(values, other.values);
+            return !ReferenceEquals(other, null) &&
+                values.SequenceEqual(other.values);
         }
     }
 
     public class YGStyle
     {
-        public YGDirection direction;
+        public YGDirection     direction;
         public YGFlexDirection flexDirection;
-        public YGJustify justifyContent;
-        public YGAlign alignContent;
-        public YGAlign alignItems;
-        public YGAlign alignSelf;
-        public YGPositionType positionType;
-        public YGWrap flexWrap;
-        public YGOverflow overflow;
-        public YGDisplay display;
+        public YGJustify       justifyContent;
+        public YGAlign         alignContent;
+        public YGAlign         alignItems;
+        public YGAlign         alignSelf;
+        public YGPositionType  positionType;
+        public YGWrap          flexWrap;
+        public YGOverflow      overflow;
+        public YGDisplay       display;
         public YGFloatOptional flex;
         public YGFloatOptional flexGrow;
         public YGFloatOptional flexShrink;
-        public YGValue flexBasis;
+        public YGValue         flexBasis;
 
-        public YGValue[] margin = new YGValue[YGEdgeCount];
-        public YGValue[] position = new YGValue[YGEdgeCount];
-        public YGValue[] padding = new YGValue[YGEdgeCount];
-        public YGValue[] border = new YGValue[YGEdgeCount];
+        public YGValue[]  margin   = new YGValue[YGEdgeCount];
+        public YGValue[]  position = new YGValue[YGEdgeCount];
+        public YGValue[]  padding  = new YGValue[YGEdgeCount];
+        public YGValue[]  border   = new YGValue[YGEdgeCount];
         public Dimensions dimensions;
         public Dimensions minDimensions;
+
         public Dimensions maxDimensions;
+
         // Yoga specific properties, not compatible with flexbox specification
         public YGFloatOptional aspectRatio;
 
 
         //private static readonly YGValue kYGValueUndefined = YGValue.YGValueUndefined;
         private static readonly YGValue kYGValueAuto = YGConst.YGValueAuto;
-        private static readonly YGValue[] kYGDefaultEdgeValuesUnit = {
+
+        private static readonly YGValue[] kYGDefaultEdgeValuesUnit =
+        {
             YGConst.YGValueUndefined,
             YGConst.YGValueUndefined,
             YGConst.YGValueUndefined,
@@ -95,32 +100,33 @@ namespace Xamarin.Yoga
             YGConst.YGValueUndefined,
             YGConst.YGValueUndefined,
             YGConst.YGValueUndefined,
-            YGConst.YGValueUndefined};
+            YGConst.YGValueUndefined
+        };
 
         public YGStyle()
         {
-            direction = YGDirection.Inherit;
-            flexDirection = YGFlexDirection.Column;
+            direction      = YGDirection.Inherit;
+            flexDirection  = YGFlexDirection.Column;
             justifyContent = YGJustify.FlexStart;
-            alignContent = YGAlign.FlexStart;
-            alignItems = YGAlign.Stretch;
-            alignSelf = YGAlign.Auto;
-            positionType = YGPositionType.Relative;
-            flexWrap = YGWrap.NoWrap;
-            overflow = YGOverflow.Visible;
-            display = YGDisplay.Flex;
-            flex = new YGFloatOptional();
-            flexGrow = new YGFloatOptional();
-            flexShrink = new YGFloatOptional();
-            flexBasis = kYGValueAuto;
-            margin = (YGValue[]) kYGDefaultEdgeValuesUnit.Clone();
-            position = (YGValue[])kYGDefaultEdgeValuesUnit.Clone();
-            padding = (YGValue[])kYGDefaultEdgeValuesUnit.Clone();
-            border = (YGValue[])kYGDefaultEdgeValuesUnit.Clone();
-            dimensions = (YGValue[])kYGDefaultDimensionValuesAutoUnit.Clone();
-            minDimensions = (YGValue[])kYGDefaultDimensionValuesUnit.Clone();
-            maxDimensions = (YGValue[])kYGDefaultDimensionValuesUnit.Clone();
-            aspectRatio = new YGFloatOptional();
+            alignContent   = YGAlign.FlexStart;
+            alignItems     = YGAlign.Stretch;
+            alignSelf      = YGAlign.Auto;
+            positionType   = YGPositionType.Relative;
+            flexWrap       = YGWrap.NoWrap;
+            overflow       = YGOverflow.Visible;
+            display        = YGDisplay.Flex;
+            flex           = new YGFloatOptional();
+            flexGrow       = new YGFloatOptional();
+            flexShrink     = new YGFloatOptional();
+            flexBasis      = kYGValueAuto;
+            margin         = (YGValue[]) kYGDefaultEdgeValuesUnit.Clone();
+            position       = (YGValue[]) kYGDefaultEdgeValuesUnit.Clone();
+            padding        = (YGValue[]) kYGDefaultEdgeValuesUnit.Clone();
+            border         = (YGValue[]) kYGDefaultEdgeValuesUnit.Clone();
+            dimensions     = (YGValue[]) kYGDefaultDimensionValuesAutoUnit.Clone();
+            minDimensions  = (YGValue[]) kYGDefaultDimensionValuesUnit.Clone();
+            maxDimensions  = (YGValue[]) kYGDefaultDimensionValuesUnit.Clone();
+            aspectRatio    = new YGFloatOptional();
         }
 
         public static bool operator ==(YGStyle style1, YGStyle style2)
@@ -144,28 +150,29 @@ namespace Xamarin.Yoga
             if (ReferenceEquals(style, null))
                 return false;
 
-            return direction   == style.direction                                               &&
-                flexDirection  == style.flexDirection                                           &&
-                justifyContent == style.justifyContent                                          &&
-                alignContent   == style.alignContent                                            &&
-                alignItems     == style.alignItems                                              &&
-                alignSelf      == style.alignSelf                                               &&
-                positionType   == style.positionType                                            &&
-                flexWrap       == style.flexWrap                                                &&
-                overflow       == style.overflow                                                &&
-                display        == style.display                                                 &&
-                EqualityComparer<YGFloatOptional>.Default.Equals(flex,       style.flex)        &&
-                EqualityComparer<YGFloatOptional>.Default.Equals(flexGrow,   style.flexGrow)    &&
-                EqualityComparer<YGFloatOptional>.Default.Equals(flexShrink, style.flexShrink)  &&
-                EqualityComparer<YGValue>.Default.Equals(flexBasis, style.flexBasis)            &&
-                EqualityComparer<YGValue[]>.Default.Equals(margin,   style.margin)              &&
-                EqualityComparer<YGValue[]>.Default.Equals(position, style.position)            &&
-                EqualityComparer<YGValue[]>.Default.Equals(padding,  style.padding)             &&
-                EqualityComparer<YGValue[]>.Default.Equals(border,   style.border)              &&
-                EqualityComparer<Dimensions>.Default.Equals(dimensions,    style.dimensions)    &&
-                EqualityComparer<Dimensions>.Default.Equals(minDimensions, style.minDimensions) &&
-                EqualityComparer<Dimensions>.Default.Equals(maxDimensions, style.maxDimensions) &&
-                EqualityComparer<YGFloatOptional>.Default.Equals(aspectRatio, style.aspectRatio);
+            return
+                direction      == style.direction                                              &&
+                flexDirection  == style.flexDirection                                          &&
+                justifyContent == style.justifyContent                                         &&
+                alignContent   == style.alignContent                                           &&
+                alignItems     == style.alignItems                                             &&
+                alignSelf      == style.alignSelf                                              &&
+                positionType   == style.positionType                                           &&
+                flexWrap       == style.flexWrap                                               &&
+                overflow       == style.overflow                                               &&
+                display        == style.display                                                &&
+                EqualityComparer<YGFloatOptional>.Default.Equals(flex,       style.flex)       &&
+                EqualityComparer<YGFloatOptional>.Default.Equals(flexGrow,   style.flexGrow)   &&
+                EqualityComparer<YGFloatOptional>.Default.Equals(flexShrink, style.flexShrink) &&
+                EqualityComparer<YGValue>.Default.Equals(flexBasis, style.flexBasis)           &&
+                margin.SequenceEqual(style.margin)                                             &&
+                position.SequenceEqual(style.position)                                         &&
+                padding.SequenceEqual(style.padding)                                           &&
+                border.SequenceEqual(style.border)                                             &&
+                dimensions.Equals(style.dimensions)                                            &&
+                minDimensions.Equals(style.minDimensions)                                      &&
+                maxDimensions.Equals(style.maxDimensions)                                      &&
+                aspectRatio.Equals(style.aspectRatio);
         }
 
         public override int GetHashCode()

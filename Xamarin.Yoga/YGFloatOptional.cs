@@ -28,6 +28,15 @@ namespace Xamarin.Yoga
             value = val;
         }
 
+        /// <inheritdoc />
+        public override string ToString()
+        {
+            if (value.HasValue)
+                return value.ToString();
+            return string.Empty;
+        }
+
+
         // Sets the value of float optional, and thus isUndefined is assigned false.
         //public void setValue(float val) => value = val;
 

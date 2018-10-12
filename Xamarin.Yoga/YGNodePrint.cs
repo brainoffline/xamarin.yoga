@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Xamarin.Yoga.Extensions;
 
 namespace Xamarin.Yoga
 {
@@ -52,7 +53,7 @@ namespace Xamarin.Yoga
                 }
                 else
                 {
-                    var unit = number.unit == YGUnit.Point ? "px" : "%%";
+                    var unit = number.unit == YGUnit.Point ? "px" : "%";
                     appendFormatedString(sb, $"{key}: {number.value}{unit}; ");
                 }
             }
@@ -80,7 +81,7 @@ namespace Xamarin.Yoga
             else
                 for (var edge = (int) YGEdge.Left; edge != (int) YGEdge.All; ++edge)
                 {
-                    var str = $"{key}-{(YGEdge) edge}";
+                    var str = $"{key}-{((YGEdge)edge).ToDescription()}";
                     appendNumberIfNotZero(sb, str, edges[edge]);
                 }
         }
@@ -125,26 +126,26 @@ namespace Xamarin.Yoga
                 var defaultStyle = new YGNode().getStyle();
 
                 appendFormatedString(sb, "style=\"");
-                if (node.getStyle().flexDirection != defaultStyle.flexDirection) appendFormatedString(sb, $"flex-direction: {node.getStyle().flexDirection}; ");
+                if (node.getStyle().flexDirection != defaultStyle.flexDirection) appendFormatedString(sb, $"flex-direction: {node.getStyle().flexDirection.ToDescription()}; ");
 
-                if (node.getStyle().justifyContent != defaultStyle.justifyContent) appendFormatedString(sb, $"justify-content: {node.getStyle().justifyContent}; ");
+                if (node.getStyle().justifyContent != defaultStyle.justifyContent) appendFormatedString(sb, $"justify-content: {node.getStyle().justifyContent.ToDescription()}; ");
 
-                if (node.getStyle().alignItems != defaultStyle.alignItems) appendFormatedString(sb, $"align-items: {node.getStyle().alignItems}; ");
+                if (node.getStyle().alignItems != defaultStyle.alignItems) appendFormatedString(sb, $"align-items: {node.getStyle().alignItems.ToDescription()}; ");
 
-                if (node.getStyle().alignContent != defaultStyle.alignContent) appendFormatedString(sb, $"align-content: {node.getStyle().alignContent}; ");
+                if (node.getStyle().alignContent != defaultStyle.alignContent) appendFormatedString(sb, $"align-content: {node.getStyle().alignContent.ToDescription()}; ");
 
-                if (node.getStyle().alignSelf != defaultStyle.alignSelf) appendFormatedString(sb, $"align-self: {node.getStyle().alignSelf}; ");
+                if (node.getStyle().alignSelf != defaultStyle.alignSelf) appendFormatedString(sb, $"align-self: {node.getStyle().alignSelf.ToDescription()}; ");
 
                 appendFloatOptionalIfDefined(sb, "flex-grow",   node.getStyle().flexGrow);
                 appendFloatOptionalIfDefined(sb, "flex-shrink", node.getStyle().flexShrink);
                 appendNumberIfNotAuto(sb, "flex-basis", node.getStyle().flexBasis);
                 appendFloatOptionalIfDefined(sb, "flex", node.getStyle().flex);
 
-                if (node.getStyle().flexWrap != defaultStyle.flexWrap) appendFormatedString(sb, $"flexWrap: {node.getStyle().flexWrap}; ");
+                if (node.getStyle().flexWrap != defaultStyle.flexWrap) appendFormatedString(sb, $"flexWrap: {node.getStyle().flexWrap.ToDescription()}; ");
 
-                if (node.getStyle().overflow != defaultStyle.overflow) appendFormatedString(sb, $"overflow: {node.getStyle().overflow}; ");
+                if (node.getStyle().overflow != defaultStyle.overflow) appendFormatedString(sb, $"overflow: {node.getStyle().overflow.ToDescription()}; ");
 
-                if (node.getStyle().display != defaultStyle.display) appendFormatedString(sb, $"display: {node.getStyle().display}; ");
+                if (node.getStyle().display != defaultStyle.display) appendFormatedString(sb, $"display: {node.getStyle().display.ToDescription()}; ");
 
                 appendEdges(sb, "margin",  node.getStyle().margin);
                 appendEdges(sb, "padding", node.getStyle().padding);
@@ -157,7 +158,7 @@ namespace Xamarin.Yoga
                 appendNumberIfNotAuto(sb, "min-width",  node.getStyle().minDimensions[YGDimension.Width]);
                 appendNumberIfNotAuto(sb, "min-height", node.getStyle().minDimensions[YGDimension.Height]);
 
-                if (node.getStyle().positionType != defaultStyle.positionType) appendFormatedString(sb, $"position: {node.getStyle().positionType}; ");
+                if (node.getStyle().positionType != defaultStyle.positionType) appendFormatedString(sb, $"position: {node.getStyle().positionType.ToDescription()}; ");
 
                 appendEdgeIfNotUndefined(sb, "left",   node.getStyle().position, YGEdge.Left);
                 appendEdgeIfNotUndefined(sb, "right",  node.getStyle().position, YGEdge.Right);

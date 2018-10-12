@@ -10,14 +10,6 @@ namespace Xamarin.Yoga
     using YGVector = List<YGNode>;
     using static YGGlobal;
 
-    /*
-    WIN_EXPORT float YGRoundValueToPixelGrid(
-        const float value,
-        const float pointScaleFactor,
-        const bool forceCeil,
-        const bool forceFloor);
-    */
-
     public static partial class YGGlobal
     {
         public static bool isUndefined(float value)
@@ -32,10 +24,6 @@ namespace Xamarin.Yoga
             // value is outside a range (-10E8, 10E8) then it is undefined.
             return value >= 10E8F || value <= -10E8F;
         }
-
-        //extern const std::array<YGEdge,  4> trailing;
-        //extern const std::array<YGEdge,  4> leading;
-        //extern       bool               YGValueEqual(const YGValue a,  const YGValue b);
 
         public static bool YGValueArrayEqual(
             in YGValue[] val1, 

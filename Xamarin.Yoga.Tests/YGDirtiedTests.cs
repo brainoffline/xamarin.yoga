@@ -14,12 +14,6 @@ namespace Xamarin.Yoga.Tests
     [TestClass]
     public class YGDirtiedTests
     {
-        static void _dirtied(YGNodeRef node)
-        {
-            int dirtiedCount = (int) node.getContext();
-            node.setContext(++dirtiedCount);
-        }
-
         [TestMethod]
         public void dirtied()
         {
@@ -32,7 +26,7 @@ namespace Xamarin.Yoga.Tests
 
             int dirtiedCount = 0;
             root.setContext(dirtiedCount);
-            root.setDirtiedFunc(_dirtied);
+            root.setDirtiedFunc(n => { dirtiedCount++; });
 
             Assert.AreEqual(0, dirtiedCount);
 
@@ -67,7 +61,7 @@ namespace Xamarin.Yoga.Tests
 
             int dirtiedCount = 0;
             root.setContext(dirtiedCount);
-            root.setDirtiedFunc(_dirtied);
+            root.setDirtiedFunc(n => { dirtiedCount++; });
 
             Assert.AreEqual(0, dirtiedCount);
 
@@ -102,7 +96,7 @@ namespace Xamarin.Yoga.Tests
 
             int dirtiedCount = 0;
             root_child0.setContext(dirtiedCount);
-            root_child0.setDirtiedFunc(_dirtied);
+            root_child0.setDirtiedFunc(n => { dirtiedCount++; });
 
             Assert.AreEqual(0, dirtiedCount);
 

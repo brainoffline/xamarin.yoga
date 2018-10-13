@@ -43,12 +43,17 @@ namespace Xamarin.Yoga
             hadOverflow                 = false;
             generationCount             = 0;
 
-            lastOwnerDirection                 = YGDirection.Inherit;
+            lastOwnerDirection                 = YGDirection.NotSet;
             nextCachedMeasurementsIndex        = 0;
             measuredDimensions                 = (float[]) kYGDefaultDimensionValues.Clone();
             cachedLayout                       = new YGCachedMeasurement();
             didUseLegacyFlag                   = false;
             doesLegacyStretchFlagAffectsLayout = false;
+
+            for (int i = 0; i < YG_MAX_CACHED_RESULT_COUNT; i++)
+            {
+                cachedMeasurements[i] = new YGCachedMeasurement();
+            }
         }
 
         /// <inheritdoc />

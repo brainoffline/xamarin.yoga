@@ -41,11 +41,12 @@ namespace Xamarin.Yoga
 
         public YGValue(float value, YGUnit unit)
         {
+            this.value = value;
             this.unit = unit;
-            if (unit == YGUnit.Auto || unit == YGUnit.Undefined)
-                this.value = YGUndefined;
-            else
-                this.value = value;
+            //if (unit == YGUnit.Auto || unit == YGUnit.Undefined)
+            //    this.value = YGUndefined;
+            //else
+            //    this.value = value;
         }
 
         /// <inheritdoc />
@@ -1124,7 +1125,13 @@ type, name, paramName, instanceName)                                     \
 
         public static YGValue YGNodeStyleGetPosition(YGNodeRef node, YGEdge edge)
         {
-            return node.getStyle().position[(int)edge];
+            var value = node.getStyle().position[(int)edge];
+            if (value.unit == YGUnit.Undefined || value.unit == YGUnit.Auto)
+            {
+                return (node.getStyle().position[(int) edge] = new YGValue(YGUndefined, value.unit));
+            }
+
+            return value;
         }
 
         // YG_NODE_STYLE_EDGE_PROPERTY_UNIT_IMPL(YGValue,      Margin,   margin,   margin);
@@ -1160,7 +1167,13 @@ type, name, paramName, instanceName)                                     \
 
         public static YGValue YGNodeStyleGetMargin(YGNodeRef node, YGEdge edge)
         {
-            return node.getStyle().margin[(int)edge];
+            var value = node.getStyle().margin[(int)edge];
+            if (value.unit == YGUnit.Undefined || value.unit == YGUnit.Auto)
+            {
+                return (node.getStyle().margin[(int)edge] = new YGValue(YGUndefined, value.unit));
+            }
+
+            return value;
         }
 
         // YG_NODE_STYLE_EDGE_PROPERTY_UNIT_AUTO_IMPL(YGValue, Margin,   margin);
@@ -1204,7 +1217,14 @@ type, name, paramName, instanceName)                                     \
 
         public static YGValue YGNodeStyleGetPadding(YGNodeRef node, YGEdge edge)
         {
-            return node.getStyle().padding[(int)edge];
+            var value = node.getStyle().padding[(int)edge];
+            if (value.unit == YGUnit.Undefined || value.unit == YGUnit.Auto)
+            {
+                return (node.getStyle().padding[(int)edge] = new YGValue(YGUndefined, value.unit));
+            }
+
+            return value;
+
         }
 
 
@@ -1288,7 +1308,13 @@ type, name, paramName, instanceName)                                     \
 
         public static YGValue YGNodeStyleGetWidth(YGNodeRef node)
         {
-            return node.getStyle().dimensions[YGDimension.Width];
+            var value = node.getStyle().dimensions[YGDimension.Width];
+            if (value.unit == YGUnit.Undefined || value.unit == YGUnit.Undefined)
+            {
+                node.getStyle().dimensions[YGDimension.Width] = value = new YGValue(YGUndefined, value.unit);
+            }
+
+            return value;
         }
 
 
@@ -1330,7 +1356,13 @@ type, name, paramName, instanceName)                                     \
 
         public static YGValue YGNodeStyleGetHeight(YGNodeRef node)
         {
-            return node.getStyle().dimensions[YGDimension.Height];
+            var value = node.getStyle().dimensions[YGDimension.Height];
+            if (value.unit == YGUnit.Undefined || value.unit == YGUnit.Undefined)
+            {
+                node.getStyle().dimensions[YGDimension.Height] = value = new YGValue(YGUndefined, value.unit);
+            }
+
+            return value;
         }
 
 
@@ -4366,8 +4398,8 @@ type, name, paramName, instanceName)                                     \
             {
                 // Invalidate the cached results.
                 layout.nextCachedMeasurementsIndex = 0;
-                layout.cachedLayout.widthMeasureMode = YGMeasureMode.Undefined;
-                layout.cachedLayout.heightMeasureMode = YGMeasureMode.Undefined;
+                layout.cachedLayout.widthMeasureMode = YGMeasureMode.NotSet;
+                layout.cachedLayout.heightMeasureMode = YGMeasureMode.NotSet;
                 layout.cachedLayout.computedWidth = -1;
                 layout.cachedLayout.computedHeight = -1;
             }

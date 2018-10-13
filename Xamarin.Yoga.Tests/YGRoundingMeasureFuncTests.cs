@@ -94,16 +94,28 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void rounding_feature_with_custom_measure_func_ceil()
         {
-             YGConfigRef config = YGConfigNew();
-             YGNodeRef root = YGNodeNewWithConfig(config);
+            YGConfigRef config = YGConfigNew();
+            YGNodeRef root = YGNodeNewWithConfig(config);
 
-             YGNodeRef root_child0 = YGNodeNewWithConfig(config);
+            YGNodePrint(root, YGPrintOptions.All);
+
+            YGNodeRef root_child0 = YGNodeNewWithConfig(config);
+
+            YGNodePrint(root_child0, YGPrintOptions.All);
+
             root_child0.setMeasureFunc(_measureCeil);
+
+            YGNodePrint(root_child0, YGPrintOptions.All);
+
             YGNodeInsertChild(root, root_child0, 0);
+
+            YGNodePrint(root, YGPrintOptions.All);
 
             YGConfigSetPointScaleFactor(config, 1.0f);
 
             YGNodeCalculateLayout(root, YGUndefined, YGUndefined, YGDirection.LTR);
+
+            YGNodePrint(root, YGPrintOptions.All);
 
             Assert.AreEqual(11, YGNodeLayoutGetWidth(root_child0));
             Assert.AreEqual(11, YGNodeLayoutGetHeight(root_child0));

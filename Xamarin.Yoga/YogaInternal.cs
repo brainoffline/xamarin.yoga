@@ -54,8 +54,8 @@ namespace Xamarin.Yoga
         {
             availableWidth = 0;
             availableHeight = 0;
-            widthMeasureMode = YGMeasureMode.Undefined;
-            heightMeasureMode = YGMeasureMode.Undefined;
+            widthMeasureMode = YGMeasureMode.NotSet;
+            heightMeasureMode = YGMeasureMode.NotSet;
             computedWidth = -1;
             computedHeight = -1;
         }

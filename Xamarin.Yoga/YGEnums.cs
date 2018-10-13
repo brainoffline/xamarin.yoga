@@ -68,14 +68,17 @@ namespace Xamarin.Yoga
 
     public enum YGDirection
     {
+        [Description("NotSet-1")]
+        NotSet = -1,
+
         [Description("inherit")]
-        Inherit,
+        Inherit = 0,
 
         [Description("ltr")]
-        LTR,
+        LTR = 1,
 
         [Description("rtl")]
-        RTL,
+        RTL = 2,
     }
     /// WIN_EXPORT const char* YGDirectionToString(const YGDirection value);
 
@@ -189,14 +192,17 @@ namespace Xamarin.Yoga
 
     public enum YGMeasureMode
     {
+        [Description("NotSet-1")]
+        NotSet = -1,
+
         [Description("undefined")]
-        Undefined,
+        Undefined = 0,
 
         [Description("exactly")]
-        Exactly,
+        Exactly = 1,
 
         [Description("at-most")]
-        AtMost
+        AtMost = 2
     }
     /// WIN_EXPORT const char* YGMeasureModeToString(const YGMeasureMode value);
 
@@ -244,6 +250,9 @@ namespace Xamarin.Yoga
 
         [Description("children")]
         Children = 4,
+
+        [Description("All")]
+        All = Layout | Style | Children
     }
     /// WIN_EXPORT const char* YGPrintOptionsToString(const YGPrintOptions value);
 

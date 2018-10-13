@@ -19,9 +19,6 @@ namespace Xamarin.Yoga
         public static readonly YGValue YGValueAuto = new YGValue(YGUndefined, YGUnit.Auto);
         public static readonly YGValue YGValueZero = new YGValue(0, YGUnit.Point);
 
-        public static readonly YGValue[] kYGDefaultDimensionValuesAutoUnit = { YGValueAuto, YGValueAuto };
-        public static readonly YGValue[] kYGDefaultDimensionValuesUnit     = { YGValueUndefined, YGValueUndefined };
-
         public static readonly float[] kYGDefaultDimensionValues = { YGUndefined, YGUndefined };
 
         // This value was chosen based on empiracle data. Even the most complicated

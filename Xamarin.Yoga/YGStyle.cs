@@ -87,20 +87,23 @@ namespace Xamarin.Yoga
         public YGFloatOptional aspectRatio;
 
 
-        //private static readonly YGValue kYGValueUndefined = YGValue.YGValueUndefined;
-        private static readonly YGValue kYGValueAuto = YGConst.YGValueAuto;
+        private static readonly YGValue kYGValueUndefined = new YGValue(0, YGUnit.Undefined);
+        private static readonly YGValue kYGValueAuto = new YGValue(0, YGUnit.Auto);
+
+        public static readonly YGValue[] kYGDefaultDimensionValuesAutoUnit = { kYGValueAuto, kYGValueAuto };
+        public static readonly YGValue[] kYGDefaultDimensionValuesUnit     = { kYGValueUndefined, kYGValueUndefined };
 
         private static readonly YGValue[] kYGDefaultEdgeValuesUnit =
         {
-            YGConst.YGValueUndefined,
-            YGConst.YGValueUndefined,
-            YGConst.YGValueUndefined,
-            YGConst.YGValueUndefined,
-            YGConst.YGValueUndefined,
-            YGConst.YGValueUndefined,
-            YGConst.YGValueUndefined,
-            YGConst.YGValueUndefined,
-            YGConst.YGValueUndefined
+            kYGValueUndefined,
+            kYGValueUndefined,
+            kYGValueUndefined,
+            kYGValueUndefined,
+            kYGValueUndefined,
+            kYGValueUndefined,
+            kYGValueUndefined,
+            kYGValueUndefined,
+            kYGValueUndefined
         };
 
         public YGStyle()

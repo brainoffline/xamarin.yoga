@@ -23,11 +23,10 @@ namespace Xamarin.Yoga.Tests
             int measureCount = (int) node.getContext();
             node.setContext(++measureCount);
 
-            return new YGSize
-            {
-                width = widthMode == YGMeasureMode.Undefined ? 10 : width,
+            return new YGSize(
+                width = widthMode   == YGMeasureMode.Undefined ? 10 : width,
                 height = heightMode == YGMeasureMode.Undefined ? 10 : height
-            };
+            );
         }
 
         static YGSize _measureMin(YGNodeRef node,
@@ -38,10 +37,10 @@ namespace Xamarin.Yoga.Tests
         {
             int measureCount = (int) node.getContext();
             node.setContext(++measureCount);
-            return new YGSize{
-                width = widthMode == YGMeasureMode.Undefined || (widthMode == YGMeasureMode.AtMost && width > 10) ? 10 : width,
-               height = heightMode == YGMeasureMode.Undefined || (heightMode == YGMeasureMode.AtMost && height > 10) ? 10 : height
-            };
+            return new YGSize(
+                width = widthMode   == YGMeasureMode.Undefined || (widthMode  == YGMeasureMode.AtMost && width  > 10) ? 10 : width,
+                height = heightMode == YGMeasureMode.Undefined || (heightMode == YGMeasureMode.AtMost && height > 10) ? 10 : height
+            );
         }
 
         static YGSize _measure_84_49(YGNodeRef node,
@@ -53,11 +52,10 @@ namespace Xamarin.Yoga.Tests
             int measureCount = (int) node.getContext();
             node.setContext(++measureCount);
 
-            return new YGSize
-                {
-                    width = 84f,
-                    height = 49f
-                };
+            return new YGSize(
+                width = 84f,
+                height = 49f
+            );
         }
 
         [TestMethod]

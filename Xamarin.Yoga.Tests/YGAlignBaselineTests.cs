@@ -26,7 +26,7 @@ namespace Xamarin.Yoga.Tests
             float         height,
             YGMeasureMode heightMode)
         {
-            return new YGSize { width = 42, height = 50 };
+            return new YGSize(width = 42, height = 50);
         }
 
         private static YGSize _measure2(
@@ -36,7 +36,7 @@ namespace Xamarin.Yoga.Tests
             float         height,
             YGMeasureMode heightMode)
         {
-            return new YGSize{ width = 279, height = 126 };
+            return new YGSize(width = 279, height = 126);
         }
 
         // Test case for bug in T32999822

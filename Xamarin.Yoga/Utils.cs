@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 // ReSharper disable InconsistentNaming
 
@@ -37,7 +38,8 @@ namespace Xamarin.Yoga
     // - relativeChildren: Maintain a vector of the child nodes that can shrink
     // and/or grow.
 
-    public struct YGCollectFlexItemsRowValues
+    [DebuggerDisplay("items:{itemsOnLine} sizeConsumed:{sizeConsumedOnCurrentLine} TFG:{totalFlexGrowFactors} TFS:{totalFlexShrinkScaledFactors} EOL:{endOfLineIndex} RFS:{remainingFreeSpace} Main:{mainDim} Cross:{crossDim}")]
+    public class YGCollectFlexItemsRowValues
     {
         public uint itemsOnLine;
         public float sizeConsumedOnCurrentLine;

@@ -15,16 +15,15 @@ namespace Xamarin.Yoga.Tests
     public class YGAspectRatioTests
     {
         private static YGSize _measure(YGNodeRef node,
-            float                        width,
-            YGMeasureMode                widthMode,
-            float                        height,
-            YGMeasureMode                heightMode)
+            float                                width,
+            YGMeasureMode                        widthMode,
+            float                                height,
+            YGMeasureMode                        heightMode)
         {
-            return new YGSize
-                {
-                    width = widthMode == YGMeasureMode.Exactly ? width : 50,
-                    height = heightMode == YGMeasureMode.Exactly ? height : 50
-                };
+            return new YGSize(
+                width = widthMode   == YGMeasureMode.Exactly ? width : 50,
+                height = heightMode == YGMeasureMode.Exactly ? height : 50
+            );
         }
 
         [TestMethod]

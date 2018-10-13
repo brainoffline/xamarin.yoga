@@ -15,39 +15,39 @@ namespace Xamarin.Yoga.Tests
     public class YGRoundingMeasureFuncTests
     {
         static YGSize _measureFloor(YGNodeRef node,
-                            float width,
-                            YGMeasureMode widthMode,
-                            float height,
-                            YGMeasureMode heightMode)
+            float                             width,
+            YGMeasureMode                     widthMode,
+            float                             height,
+            YGMeasureMode                     heightMode)
         {
-            return new YGSize {width = 10.2f, height = 10.2f};
+            return new YGSize(width = 10.2f, height = 10.2f);
         }
 
         static YGSize _measureCeil(YGNodeRef node,
-                                   float width,
-                                   YGMeasureMode widthMode,
-                                   float height,
-                                   YGMeasureMode heightMode)
+            float                            width,
+            YGMeasureMode                    widthMode,
+            float                            height,
+            YGMeasureMode                    heightMode)
         {
-            return new YGSize{width = 10.5f, height = 10.5f};
+            return new YGSize(width = 10.5f, height = 10.5f);
         }
 
         static YGSize _measureFractial(YGNodeRef node,
-          float width,
-          YGMeasureMode widthMode,
-          float height,
-          YGMeasureMode heightMode)
+            float                                width,
+            YGMeasureMode                        widthMode,
+            float                                height,
+            YGMeasureMode                        heightMode)
         {
-            return new YGSize{width = 0.5f, height = 0.5f};
+            return new YGSize(width = 0.5f, height = 0.5f);
         }
 
         [TestMethod]
         public void rounding_feature_with_custom_measure_func_floor()
         {
-             YGConfigRef config = YGConfigNew();
-             YGNodeRef root = YGNodeNewWithConfig(config);
+            YGConfigRef config = YGConfigNew();
+            YGNodeRef   root   = YGNodeNewWithConfig(config);
 
-             YGNodeRef root_child0 = YGNodeNewWithConfig(config);
+            YGNodeRef root_child0 = YGNodeNewWithConfig(config);
             root_child0.setMeasureFunc(_measureFloor);
             YGNodeInsertChild(root, root_child0, 0);
 
@@ -95,7 +95,7 @@ namespace Xamarin.Yoga.Tests
         public void rounding_feature_with_custom_measure_func_ceil()
         {
             YGConfigRef config = YGConfigNew();
-            YGNodeRef root = YGNodeNewWithConfig(config);
+            YGNodeRef   root   = YGNodeNewWithConfig(config);
 
             YGNodePrint(root, YGPrintOptions.All);
 
@@ -128,10 +128,10 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void rounding_feature_with_custom_measure_and_fractial_matching_scale()
         {
-             YGConfigRef config = YGConfigNew();
-             YGNodeRef root = YGNodeNewWithConfig(config);
+            YGConfigRef config = YGConfigNew();
+            YGNodeRef   root   = YGNodeNewWithConfig(config);
 
-             YGNodeRef root_child0 = YGNodeNewWithConfig(config);
+            YGNodeRef root_child0 = YGNodeNewWithConfig(config);
             YGNodeStyleSetPosition(root_child0, YGEdge.Left, 73.625f);
             root_child0.setMeasureFunc(_measureFractial);
             YGNodeInsertChild(root, root_child0, 0);
@@ -140,14 +140,13 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeCalculateLayout(root, YGUndefined, YGUndefined, YGDirection.LTR);
 
-            Assert.AreEqual(0.5, YGNodeLayoutGetWidth(root_child0));
-            Assert.AreEqual(0.5, YGNodeLayoutGetHeight(root_child0));
+            Assert.AreEqual(0.5,  YGNodeLayoutGetWidth(root_child0));
+            Assert.AreEqual(0.5,  YGNodeLayoutGetHeight(root_child0));
             Assert.AreEqual(73.5, YGNodeLayoutGetLeft(root_child0));
 
             YGNodeFreeRecursive(root);
 
             YGConfigFree(config);
         }
-
     }
 }

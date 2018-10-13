@@ -23,25 +23,25 @@ namespace Xamarin.Yoga.Tests
         };
 
         private static YGSize _measure(YGNodeRef node,
-            float                        width,
-            YGMeasureMode                widthMode,
-            float                        height,
-            YGMeasureMode                heightMode)
+            float                                width,
+            YGMeasureMode                        widthMode,
+            float                                height,
+            YGMeasureMode                        heightMode)
         {
-            var constraintList = (List<_MeasureConstraint>)node.getContext();
+            var constraintList = (List<_MeasureConstraint>) node.getContext();
             var constraint = new _MeasureConstraint
             {
-                width = width,
-                widthMode = widthMode,
-                height = height,
+                width      = width,
+                widthMode  = widthMode,
+                height     = height,
                 heightMode = heightMode
             };
             constraintList.Add(constraint);
 
-            return new YGSize{
-                width = widthMode == YGMeasureMode.Undefined ? 10 : width,
+            return new YGSize(
+                width = widthMode   == YGMeasureMode.Undefined ? 10 : width,
                 height = heightMode == YGMeasureMode.Undefined ? 10 : width
-            };
+            );
         }
 
         [TestMethod]
@@ -64,7 +64,7 @@ namespace Xamarin.Yoga.Tests
 
             Assert.AreEqual(1, constraintList.Count);
 
-            Assert.AreEqual(100, constraintList[0].width);
+            Assert.AreEqual(100,                   constraintList[0].width);
             Assert.AreEqual(YGMeasureMode.Exactly, constraintList[0].widthMode);
 
             ////free(constraintList.constraints);
@@ -91,7 +91,7 @@ namespace Xamarin.Yoga.Tests
 
             Assert.AreEqual(1, constraintList.Count);
 
-            Assert.AreEqual(100, constraintList[0].height);
+            Assert.AreEqual(100,                   constraintList[0].height);
             Assert.AreEqual(YGMeasureMode.Exactly, constraintList[0].heightMode);
 
             ////free(constraintList.constraints);
@@ -116,7 +116,7 @@ namespace Xamarin.Yoga.Tests
 
             Assert.AreEqual(1, constraintList.Count);
 
-            Assert.AreEqual(100, constraintList[0].height);
+            Assert.AreEqual(100,                  constraintList[0].height);
             Assert.AreEqual(YGMeasureMode.AtMost, constraintList[0].heightMode);
 
             ////free(constraintList.constraints);
@@ -142,7 +142,7 @@ namespace Xamarin.Yoga.Tests
 
             Assert.AreEqual(1, constraintList.Count);
 
-            Assert.AreEqual(100, constraintList[0].width);
+            Assert.AreEqual(100,                  constraintList[0].width);
             Assert.AreEqual(YGMeasureMode.AtMost, constraintList[0].widthMode);
 
             ////free(constraintList.constraints);
@@ -168,7 +168,7 @@ namespace Xamarin.Yoga.Tests
 
             Assert.AreEqual(1, constraintList.Count);
 
-            Assert.AreEqual(100, constraintList[0].width);
+            Assert.AreEqual(100,                  constraintList[0].width);
             Assert.AreEqual(YGMeasureMode.AtMost, constraintList[0].widthMode);
 
             //free(constraintList.constraints);
@@ -195,7 +195,7 @@ namespace Xamarin.Yoga.Tests
 
             Assert.AreEqual(1, constraintList.Count);
 
-            Assert.AreEqual(100, constraintList[0].height);
+            Assert.AreEqual(100,                  constraintList[0].height);
             Assert.AreEqual(YGMeasureMode.AtMost, constraintList[0].heightMode);
 
             //free(constraintList.constraints);
@@ -220,10 +220,10 @@ namespace Xamarin.Yoga.Tests
 
             Assert.AreEqual(2, constraintList.Count);
 
-            Assert.AreEqual(100, constraintList[0].height);
+            Assert.AreEqual(100,                  constraintList[0].height);
             Assert.AreEqual(YGMeasureMode.AtMost, constraintList[0].heightMode);
 
-            Assert.AreEqual(100, constraintList[1].height);
+            Assert.AreEqual(100,                   constraintList[1].height);
             Assert.AreEqual(YGMeasureMode.Exactly, constraintList[1].heightMode);
 
             //free(constraintList.constraints);
@@ -249,7 +249,7 @@ namespace Xamarin.Yoga.Tests
 
             Assert.AreEqual(1, constraintList.Count);
 
-            Assert.AreEqual(100, constraintList[0].height);
+            Assert.AreEqual(100,                   constraintList[0].height);
             Assert.AreEqual(YGMeasureMode.Exactly, constraintList[0].heightMode);
 
             //free(constraintList.constraints);
@@ -276,7 +276,7 @@ namespace Xamarin.Yoga.Tests
 
             Assert.AreEqual(1, constraintList.Count);
 
-            Assert.AreEqual(100, constraintList[0].width);
+            Assert.AreEqual(100,                  constraintList[0].width);
             Assert.AreEqual(YGMeasureMode.AtMost, constraintList[0].widthMode);
 
             Assert.IsTrue(YGFloatIsUndefined(constraintList[0].height));
@@ -310,7 +310,7 @@ namespace Xamarin.Yoga.Tests
             Assert.IsTrue(YGFloatIsUndefined(constraintList[0].width));
             Assert.AreEqual(YGMeasureMode.Undefined, constraintList[0].widthMode);
 
-            Assert.AreEqual(100, constraintList[0].height);
+            Assert.AreEqual(100,                  constraintList[0].height);
             Assert.AreEqual(YGMeasureMode.AtMost, constraintList[0].heightMode);
 
             //free(constraintList.constraints);

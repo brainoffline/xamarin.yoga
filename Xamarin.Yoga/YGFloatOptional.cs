@@ -7,11 +7,16 @@ namespace Xamarin.Yoga
 {
     using static YGGlobal;
 
-    public struct YGFloatOptional
+    public class YGFloatOptional
     {
-        public static YGFloatOptional Empty = new YGFloatOptional { value = null };
+        public static readonly YGFloatOptional Empty = new YGFloatOptional();
 
         private float? value;
+
+        public YGFloatOptional()
+        {
+            value = null;
+        }
 
         public YGFloatOptional(float value)
         {

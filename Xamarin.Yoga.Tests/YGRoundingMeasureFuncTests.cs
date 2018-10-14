@@ -55,36 +55,36 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeCalculateLayout(root, YGUndefined, YGUndefined, YGDirection.RTL);
 
-            Assert.AreEqual(10.2, YGNodeLayoutGetWidth(root_child0));
-            Assert.AreEqual(10.2, YGNodeLayoutGetHeight(root_child0));
+            Assert.AreEqual(10.2f, YGNodeLayoutGetWidth(root_child0));
+            Assert.AreEqual(10.2f, YGNodeLayoutGetHeight(root_child0));
 
             YGConfigSetPointScaleFactor(config, 1.0f);
 
             YGNodeCalculateLayout(root, YGUndefined, YGUndefined, YGDirection.LTR);
 
-            Assert.AreEqual(11, YGNodeLayoutGetWidth(root_child0));
-            Assert.AreEqual(11, YGNodeLayoutGetHeight(root_child0));
+            Assert.AreEqual(11f, YGNodeLayoutGetWidth(root_child0));
+            Assert.AreEqual(11f, YGNodeLayoutGetHeight(root_child0));
 
             YGConfigSetPointScaleFactor(config, 2.0f);
 
             YGNodeCalculateLayout(root, YGUndefined, YGUndefined, YGDirection.RTL);
 
-            Assert.AreEqual(10.5, YGNodeLayoutGetWidth(root_child0));
-            Assert.AreEqual(10.5, YGNodeLayoutGetHeight(root_child0));
+            Assert.AreEqual(10.5f, YGNodeLayoutGetWidth(root_child0));
+            Assert.AreEqual(10.5f, YGNodeLayoutGetHeight(root_child0));
 
             YGConfigSetPointScaleFactor(config, 4.0f);
 
             YGNodeCalculateLayout(root, YGUndefined, YGUndefined, YGDirection.LTR);
 
-            Assert.AreEqual(10.25, YGNodeLayoutGetWidth(root_child0));
-            Assert.AreEqual(10.25, YGNodeLayoutGetHeight(root_child0));
+            Assert.AreEqual(10.25f, YGNodeLayoutGetWidth(root_child0));
+            Assert.AreEqual(10.25f, YGNodeLayoutGetHeight(root_child0));
 
             YGConfigSetPointScaleFactor(config, 1.0f / 3.0f);
 
             YGNodeCalculateLayout(root, YGUndefined, YGUndefined, YGDirection.RTL);
 
-            Assert.AreEqual(12.0, YGNodeLayoutGetWidth(root_child0));
-            Assert.AreEqual(12.0, YGNodeLayoutGetHeight(root_child0));
+            Assert.AreEqual(12.0f, YGNodeLayoutGetWidth(root_child0));
+            Assert.AreEqual(12.0f, YGNodeLayoutGetHeight(root_child0));
 
             YGNodeFreeRecursive(root);
 
@@ -94,28 +94,15 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void rounding_feature_with_custom_measure_func_ceil()
         {
-            YGConfigRef config = YGConfigNew();
-            YGNodeRef   root   = YGNodeNewWithConfig(config);
-
-            YGNodePrint(root, YGPrintOptions.All);
-
-            YGNodeRef root_child0 = YGNodeNewWithConfig(config);
-
-            YGNodePrint(root_child0, YGPrintOptions.All);
+            YGConfigRef config      = YGConfigNew();
+            YGNodeRef   root        = YGNodeNewWithConfig(config);
+            YGNodeRef   root_child0 = YGNodeNewWithConfig(config);
 
             root_child0.setMeasureFunc(_measureCeil);
-
-            YGNodePrint(root_child0, YGPrintOptions.All);
-
             YGNodeInsertChild(root, root_child0, 0);
-
-            YGNodePrint(root, YGPrintOptions.All);
-
             YGConfigSetPointScaleFactor(config, 1.0f);
 
             YGNodeCalculateLayout(root, YGUndefined, YGUndefined, YGDirection.LTR);
-
-            YGNodePrint(root, YGPrintOptions.All);
 
             Assert.AreEqual(11, YGNodeLayoutGetWidth(root_child0));
             Assert.AreEqual(11, YGNodeLayoutGetHeight(root_child0));
@@ -140,9 +127,9 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeCalculateLayout(root, YGUndefined, YGUndefined, YGDirection.LTR);
 
-            Assert.AreEqual(0.5,  YGNodeLayoutGetWidth(root_child0));
-            Assert.AreEqual(0.5,  YGNodeLayoutGetHeight(root_child0));
-            Assert.AreEqual(73.5, YGNodeLayoutGetLeft(root_child0));
+            Assert.AreEqual(0.5f,  YGNodeLayoutGetWidth(root_child0));
+            Assert.AreEqual(0.5f,  YGNodeLayoutGetHeight(root_child0));
+            Assert.AreEqual(73.5f, YGNodeLayoutGetLeft(root_child0));
 
             YGNodeFreeRecursive(root);
 

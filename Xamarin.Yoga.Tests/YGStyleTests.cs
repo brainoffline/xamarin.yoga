@@ -19,10 +19,10 @@ namespace Xamarin.Yoga.Tests
         {
             YGNodeRef node0 = YGNodeNew();
             YGNodeRef node1 = YGNodeNew();
-            Assert.IsFalse(node0.isDirty());
+            Assert.IsFalse(node0.IsDirty);
 
             YGNodeCopyStyle(node0, node1);
-            Assert.IsFalse(node0.isDirty());
+            Assert.IsFalse(node0.IsDirty);
 
             YGNodeFree(node0);
             YGNodeFree(node1);
@@ -32,7 +32,7 @@ namespace Xamarin.Yoga.Tests
         public void copy_style_modified()
         {
             YGNodeRef node0 = YGNodeNew();
-            Assert.IsFalse(node0.isDirty());
+            Assert.IsFalse(node0.IsDirty);
             Assert.AreEqual(YGFlexDirection.Column, YGNodeStyleGetFlexDirection(node0));
             Assert.IsFalse(YGNodeStyleGetMaxHeight(node0).unit != YGUnit.Undefined);
 
@@ -41,7 +41,7 @@ namespace Xamarin.Yoga.Tests
             YGNodeStyleSetMaxHeight(node1, 10);
 
             YGNodeCopyStyle(node0, node1);
-            Assert.IsTrue(node0.isDirty());
+            Assert.IsTrue(node0.IsDirty);
             Assert.AreEqual(YGFlexDirection.Row, YGNodeStyleGetFlexDirection(node0));
             Assert.AreEqual(10, YGNodeStyleGetMaxHeight(node0).value);
 
@@ -56,14 +56,14 @@ namespace Xamarin.Yoga.Tests
             YGNodeStyleSetFlexDirection(node0, YGFlexDirection.Row);
             YGNodeStyleSetMaxHeight(node0, 10);
             YGNodeCalculateLayout(node0, YGUndefined, YGUndefined, YGDirection.LTR);
-            Assert.IsFalse(node0.isDirty());
+            Assert.IsFalse(node0.IsDirty);
 
             YGNodeRef node1 = YGNodeNew();
             YGNodeStyleSetFlexDirection(node1, YGFlexDirection.Row);
             YGNodeStyleSetMaxHeight(node1, 10);
 
             YGNodeCopyStyle(node0, node1);
-            Assert.IsFalse(node0.isDirty());
+            Assert.IsFalse(node0.IsDirty);
 
             YGNodeFree(node0);
             YGNodeFree(node1);

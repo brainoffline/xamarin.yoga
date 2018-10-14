@@ -13,6 +13,7 @@ namespace Xamarin.Yoga
 
     public class YGNode : IEquatable<YGNode>
     {
+        public string Name { get; set; }
         private          object         context_            = null;
         private          YGPrintFunc    print_              = null;
         private          bool           hasNewLayout_       = true;
@@ -20,7 +21,6 @@ namespace Xamarin.Yoga
         private          YGMeasureFunc  measure_            = null;
         private          YGBaselineFunc baseline_           = null;
         private          YGDirtiedFunc  dirtied_            = null;
-        private          YGStyle        style_              = new YGStyle();
         private          YGLayout       layout_             = new YGLayout();
         private          int            lineIndex_          = 0;
         private          YGNodeRef      owner_              = null;
@@ -41,10 +41,7 @@ namespace Xamarin.Yoga
             if (ReferenceEquals(node, this))
                 return;
 
-            foreach (var child in children_)
-            {
-                // delete child;
-            }
+            children_.Clear();
 
             context_            = node.getContext();
             print_              = node.getPrintFunc();
@@ -53,14 +50,16 @@ namespace Xamarin.Yoga
             measure_            = node.getMeasure();
             baseline_           = node.getBaseline();
             dirtied_            = node.getDirtied();
-            style_              = node.style_;
-            layout_             = node.layout_;
+            Style               = new YGStyle(node.Style);
+            layout_             = new YGLayout(node.layout_);
             lineIndex_          = node.getLineIndex();
-            owner_              = node.getOwner();
-            children_           = node.getChildren();
-            config_             = node.getConfig();
-            isDirty_            = node.isDirty();
-            resolvedDimensions_ = node.getResolvedDimensions();
+            owner_              = null;
+            config_             = new YGConfigRef(node.getConfig());
+            isDirty_            = node.IsDirty;
+            resolvedDimensions_ = (YGValue[])node.getResolvedDimensions().Clone();
+
+            foreach (var child in node.getChildren())
+                children_.Add(new YGNode(child));
         }
 
         // Getters
@@ -99,15 +98,14 @@ namespace Xamarin.Yoga
             return dirtied_;
         }
 
-        public YGStyle getStyle()
-        {
-            return style_;
-        }
+        public YGStyle Style { get; set; } = new YGStyle();
+
 
         // For Performance reasons passing as reference.
-        public YGLayout getLayout()
+        public YGLayout Layout
         {
-            return layout_;
+            get => layout_;
+            set => layout_ = value;
         }
 
         public int getLineIndex()
@@ -146,9 +144,18 @@ namespace Xamarin.Yoga
             return config_;
         }
 
-        public bool isDirty()
+        public bool IsDirty
         {
-            return isDirty_;
+            get => isDirty_;
+            set
+            {
+                if (value == isDirty_)
+                    return;
+
+                isDirty_ = value;
+                if (value)
+                    dirtied_?.Invoke(this);
+            }
         }
 
         public YGValue[] getResolvedDimensions()
@@ -217,12 +224,12 @@ namespace Xamarin.Yoga
 
         public void setStyleFlexDirection(YGFlexDirection direction)
         {
-            style_.flexDirection = direction;
+            Style.flexDirection = direction;
         }
 
         public void setStyleAlignContent(YGAlign alignContent)
         {
-            style_.alignContent = alignContent;
+            Style.alignContent = alignContent;
         }
 
         public void setBaseLineFunc(YGBaselineFunc baseLineFunc)
@@ -233,16 +240,6 @@ namespace Xamarin.Yoga
         public void setDirtiedFunc(YGDirtiedFunc dirtiedFunc)
         {
             dirtied_ = dirtiedFunc;
-        }
-
-        public void setStyle(in YGStyle style)
-        {
-            style_ = style;
-        }
-
-        public void setLayout(in YGLayout layout)
-        {
-            layout_ = layout;
         }
 
         public void setLineIndex(int lineIndex)
@@ -325,12 +322,12 @@ namespace Xamarin.Yoga
             if (YGFlexDirectionIsRow(axis))
             {
                 var leadingPosition =
-                    YGComputedEdgeValue(style_.position, YGEdge.Start, YGConst.YGValueUndefined);
+                    YGComputedEdgeValue(Style.position, YGEdge.Start, YGConst.YGValueUndefined);
                 if (leadingPosition.unit != YGUnit.Undefined) return YGResolveValue(leadingPosition, axisSize);
             }
 
             var leadingPos =
-                YGComputedEdgeValue(style_.position, leading[(int) axis], YGConst.YGValueUndefined);
+                YGComputedEdgeValue(Style.position, leading[(int) axis], YGConst.YGValueUndefined);
 
             return leadingPos.unit == YGUnit.Undefined
                 ? new YGFloatOptional(0)
@@ -344,12 +341,12 @@ namespace Xamarin.Yoga
             if (YGFlexDirectionIsRow(axis))
             {
                 var trailingPosition =
-                    YGComputedEdgeValue(style_.position, YGEdge.End, YGConst.YGValueUndefined);
+                    YGComputedEdgeValue(Style.position, YGEdge.End, YGConst.YGValueUndefined);
                 if (trailingPosition.unit != YGUnit.Undefined) return YGResolveValue(trailingPosition, axisSize);
             }
 
             var trailingPos =
-                YGComputedEdgeValue(style_.position, trailing[(int) axis], YGConst.YGValueUndefined);
+                YGComputedEdgeValue(Style.position, trailing[(int) axis], YGConst.YGValueUndefined);
 
             return trailingPos.unit == YGUnit.Undefined
                 ? new YGFloatOptional(0)
@@ -359,17 +356,17 @@ namespace Xamarin.Yoga
         public bool isLeadingPositionDefined(in YGFlexDirection axis)
         {
             return YGFlexDirectionIsRow(axis) &&
-                YGComputedEdgeValue(style_.position, YGEdge.Start, YGConst.YGValueUndefined)
+                YGComputedEdgeValue(Style.position, YGEdge.Start, YGConst.YGValueUndefined)
                     .unit != YGUnit.Undefined ||
-                YGComputedEdgeValue(style_.position, leading[(int) axis], YGConst.YGValueUndefined)
+                YGComputedEdgeValue(Style.position, leading[(int) axis], YGConst.YGValueUndefined)
                     .unit != YGUnit.Undefined;
         }
 
         public bool isTrailingPosDefined(in YGFlexDirection axis)
         {
             return YGFlexDirectionIsRow(axis) &&
-                YGComputedEdgeValue(style_.position, YGEdge.End, YGConst.YGValueUndefined).unit != YGUnit.Undefined ||
-                YGComputedEdgeValue(style_.position, trailing[(int) axis], YGConst.YGValueUndefined).unit != YGUnit.Undefined;
+                YGComputedEdgeValue(Style.position, YGEdge.End, YGConst.YGValueUndefined).unit != YGUnit.Undefined ||
+                YGComputedEdgeValue(Style.position, trailing[(int) axis], YGConst.YGValueUndefined).unit != YGUnit.Undefined;
         }
 
         public YGFloatOptional getLeadingMargin(
@@ -377,11 +374,11 @@ namespace Xamarin.Yoga
             in float           widthSize)
         {
             if (YGFlexDirectionIsRow(axis) &&
-                style_.margin[(int) YGEdge.Start].unit != YGUnit.Undefined)
-                return YGResolveValueMargin(style_.margin[(int) YGEdge.Start], widthSize);
+                Style.margin[(int) YGEdge.Start].unit != YGUnit.Undefined)
+                return YGResolveValueMargin(Style.margin[(int) YGEdge.Start], widthSize);
 
             return YGResolveValueMargin(
-                YGComputedEdgeValue(style_.margin, leading[(int) axis], YGConst.YGValueZero),
+                YGComputedEdgeValue(Style.margin, leading[(int) axis], YGConst.YGValueZero),
                 widthSize);
         }
 
@@ -390,11 +387,11 @@ namespace Xamarin.Yoga
             in float           widthSize)
         {
             if (YGFlexDirectionIsRow(axis) &&
-                style_.margin[(int) YGEdge.End].unit != YGUnit.Undefined)
-                return YGResolveValueMargin(style_.margin[(int) YGEdge.End], widthSize);
+                Style.margin[(int) YGEdge.End].unit != YGUnit.Undefined)
+                return YGResolveValueMargin(Style.margin[(int) YGEdge.End], widthSize);
 
             return YGResolveValueMargin(
-                YGComputedEdgeValue(style_.margin, trailing[(int) axis], YGConst.YGValueZero),
+                YGComputedEdgeValue(Style.margin, trailing[(int) axis], YGConst.YGValueZero),
                 widthSize);
         }
 
@@ -446,16 +443,6 @@ namespace Xamarin.Yoga
         public void insertChild(YGNodeRef child, int index)
         {
             children_.Insert(index, child);
-        }
-
-        public void setDirty(bool isDirty)
-        {
-            if (isDirty == isDirty_)
-                return;
-
-            isDirty_ = isDirty;
-            if (isDirty)
-                dirtied_?.Invoke(this);
         }
 
         public bool removeChild(YGNodeRef child)
@@ -551,7 +538,7 @@ namespace Xamarin.Yoga
             /* Root nodes should be always layouted as LTR, so we don't return negative
              * values. */
             var directionRespectingRoot = owner_ != null ? direction : YGDirection.LTR;
-            var mainAxis                = YGResolveFlexDirection(style_.flexDirection, directionRespectingRoot);
+            var mainAxis                = YGResolveFlexDirection(Style.flexDirection, directionRespectingRoot);
             var crossAxis               = YGFlexDirectionCross(mainAxis, directionRespectingRoot);
 
             var relativePositionMain  = relativePosition(mainAxis,  mainSize);
@@ -573,23 +560,23 @@ namespace Xamarin.Yoga
 
         public YGValue marginLeadingValue(in YGFlexDirection axis)
         {
-            if (YGFlexDirectionIsRow(axis) && style_.margin[(int) YGEdge.Start].unit != YGUnit.Undefined)
-                return style_.margin[(int) YGEdge.Start];
-            return style_.margin[(int) leading[(int) axis]];
+            if (YGFlexDirectionIsRow(axis) && Style.margin[(int) YGEdge.Start].unit != YGUnit.Undefined)
+                return Style.margin[(int) YGEdge.Start];
+            return Style.margin[(int) leading[(int) axis]];
         }
 
         public YGValue marginTrailingValue(in YGFlexDirection axis)
         {
-            if (YGFlexDirectionIsRow(axis) && style_.margin[(int) YGEdge.End].unit != YGUnit.Undefined)
-                return style_.margin[(int) YGEdge.End];
-            return style_.margin[(int) trailing[(int) axis]];
+            if (YGFlexDirectionIsRow(axis) && Style.margin[(int) YGEdge.End].unit != YGUnit.Undefined)
+                return Style.margin[(int) YGEdge.End];
+            return Style.margin[(int) trailing[(int) axis]];
         }
 
         public YGValue resolveFlexBasisPtr()
         {
-            var flexBasis = style_.flexBasis;
+            var flexBasis = Style.flexBasis;
             if (flexBasis.unit != YGUnit.Auto && flexBasis.unit         != YGUnit.Undefined) return flexBasis;
-            if (!style_.flex.isUndefined()    && style_.flex.getValue() > 0.0f) return config_.useWebDefaults ? YGConst.YGValueAuto : YGConst.YGValueZero;
+            if (!Style.flex.isUndefined()    && Style.flex.getValue() > 0.0f) return config_.useWebDefaults ? YGConst.YGValueAuto : YGConst.YGValueZero;
             return YGConst.YGValueAuto;
         }
 
@@ -597,21 +584,21 @@ namespace Xamarin.Yoga
         {
             for (var dim = (int) YGDimension.Width; dim < YGDimensionCount; dim++)
             {
-                if (getStyle().maxDimensions[dim].unit != YGUnit.Undefined &&
-                    YGValueEqual(getStyle().maxDimensions[dim], style_.minDimensions[dim]))
-                    resolvedDimensions_[dim] = style_.maxDimensions[dim];
+                if (Style.maxDimensions[dim].unit != YGUnit.Undefined &&
+                    YGValueEqual(Style.maxDimensions[dim], Style.minDimensions[dim]))
+                    resolvedDimensions_[dim] = Style.maxDimensions[dim];
                 else
-                    resolvedDimensions_[dim] = style_.dimensions[dim];
+                    resolvedDimensions_[dim] = Style.dimensions[dim];
             }
         }
 
         public YGDirection resolveDirection(in YGDirection ownerDirection)
         {
-            if (style_.direction == YGDirection.Inherit)
+            if (Style.direction == YGDirection.Inherit)
                 return ownerDirection > YGDirection.Inherit
                     ? ownerDirection
                     : YGDirection.LTR;
-            return style_.direction;
+            return Style.direction;
         }
 
         public void clearChildren()
@@ -648,7 +635,7 @@ namespace Xamarin.Yoga
         {
             if (!isDirty_)
             {
-                setDirty(true);
+                IsDirty = true;
                 setLayoutComputedFlexBasis(new YGFloatOptional());
                 owner_?.markDirtyAndPropogate();
             }
@@ -665,50 +652,50 @@ namespace Xamarin.Yoga
         {
             // Root nodes flexGrow should always be 0
             if (owner_ == null) return 0.0f;
-            if (!style_.flexGrow.isUndefined()) return style_.flexGrow.getValue();
-            if (!style_.flex.isUndefined() && style_.flex.getValue() > 0.0f) return style_.flex.getValue();
+            if (!Style.flexGrow.isUndefined()) return Style.flexGrow.getValue();
+            if (!Style.flex.isUndefined() && Style.flex.getValue() > 0.0f) return Style.flex.getValue();
             return kDefaultFlexGrow;
         }
 
         public float resolveFlexShrink()
         {
             if (owner_ == null) return 0.0f;
-            if (!style_.flexShrink.isUndefined()) return style_.flexShrink.getValue();
-            if (!config_.useWebDefaults && !style_.flex.isUndefined() &&
-                style_.flex.getValue() < 0.0f)
-                return -style_.flex.getValue();
+            if (!Style.flexShrink.isUndefined()) return Style.flexShrink.getValue();
+            if (!config_.useWebDefaults && !Style.flex.isUndefined() &&
+                Style.flex.getValue() < 0.0f)
+                return -Style.flex.getValue();
             return config_.useWebDefaults ? kWebDefaultFlexShrink : kDefaultFlexShrink;
         }
 
         public bool isNodeFlexible()
         {
-            return style_.positionType == YGPositionType.Relative &&
+            return Style.positionType == YGPositionType.Relative &&
                 (resolveFlexGrow() != 0 || resolveFlexShrink() != 0);
         }
 
         public float getLeadingBorder(in YGFlexDirection axis)
         {
             if (YGFlexDirectionIsRow(axis)                                 &&
-                style_.border[(int) YGEdge.Start].unit != YGUnit.Undefined &&
-                !isUndefined(style_.border[(int) YGEdge.Start].value)      &&
-                style_.border[(int) YGEdge.Start].value >= 0.0f)
-                return style_.border[(int) YGEdge.Start].value;
+                Style.border[(int) YGEdge.Start].unit != YGUnit.Undefined &&
+                !isUndefined(Style.border[(int) YGEdge.Start].value)      &&
+                Style.border[(int) YGEdge.Start].value >= 0.0f)
+                return Style.border[(int) YGEdge.Start].value;
 
             var computedEdgeValue =
-                YGComputedEdgeValue(style_.border, leading[(int) axis], YGConst.YGValueZero).value;
+                YGComputedEdgeValue(Style.border, leading[(int) axis], YGConst.YGValueZero).value;
             return YGFloatMax(computedEdgeValue, 0.0f);
         }
 
         public float getTrailingBorder(in YGFlexDirection flexDirection)
         {
             if (YGFlexDirectionIsRow(flexDirection)                      &&
-                style_.border[(int) YGEdge.End].unit != YGUnit.Undefined &&
-                !isUndefined(style_.border[(int) YGEdge.End].value)      &&
-                style_.border[(int) YGEdge.End].value >= 0.0f)
-                return style_.border[(int) YGEdge.End].value;
+                Style.border[(int) YGEdge.End].unit != YGUnit.Undefined &&
+                !isUndefined(Style.border[(int) YGEdge.End].value)      &&
+                Style.border[(int) YGEdge.End].value >= 0.0f)
+                return Style.border[(int) YGEdge.End].value;
 
             var computedEdgeValue =
-                YGComputedEdgeValue(style_.border, trailing[(int) flexDirection], YGConst.YGValueZero)
+                YGComputedEdgeValue(Style.border, trailing[(int) flexDirection], YGConst.YGValueZero)
                     .value;
             return YGFloatMax(computedEdgeValue, 0.0f);
         }
@@ -718,13 +705,13 @@ namespace Xamarin.Yoga
             in float           widthSize)
         {
             var paddingEdgeStart =
-                YGResolveValue(style_.padding[(int) YGEdge.Start], widthSize);
+                YGResolveValue(Style.padding[(int) YGEdge.Start], widthSize);
             if (YGFlexDirectionIsRow(axis)                                  &&
-                style_.padding[(int) YGEdge.Start].unit != YGUnit.Undefined &&
+                Style.padding[(int) YGEdge.Start].unit != YGUnit.Undefined &&
                 !paddingEdgeStart.isUndefined()                             && paddingEdgeStart.getValue() > 0.0f)
                 return paddingEdgeStart;
 
-            var resolvedValue = YGResolveValue(YGComputedEdgeValue(style_.padding, leading[(int) axis], YGConst.YGValueZero), widthSize);
+            var resolvedValue = YGResolveValue(YGComputedEdgeValue(Style.padding, leading[(int) axis], YGConst.YGValueZero), widthSize);
             return YGFloatOptionalMax(resolvedValue, new YGFloatOptional(0.0f));
         }
 
@@ -733,13 +720,13 @@ namespace Xamarin.Yoga
             in float           widthSize)
         {
             if (YGFlexDirectionIsRow(axis)                                                 &&
-                style_.padding[(int) YGEdge.End].unit != YGUnit.Undefined                  &&
-                !YGResolveValue(style_.padding[(int) YGEdge.End], widthSize).isUndefined() &&
-                YGResolveValue(style_.padding[(int) YGEdge.End], widthSize).getValue() >= 0.0f)
-                return YGResolveValue(style_.padding[(int) YGEdge.End], widthSize);
+                Style.padding[(int) YGEdge.End].unit != YGUnit.Undefined                  &&
+                !YGResolveValue(Style.padding[(int) YGEdge.End], widthSize).isUndefined() &&
+                YGResolveValue(Style.padding[(int) YGEdge.End], widthSize).getValue() >= 0.0f)
+                return YGResolveValue(Style.padding[(int) YGEdge.End], widthSize);
 
             var resolvedValue = YGResolveValue(
-                YGComputedEdgeValue(style_.padding, trailing[(int) axis], YGConst.YGValueZero),
+                YGComputedEdgeValue(Style.padding, trailing[(int) axis], YGConst.YGValueZero),
                 widthSize);
 
             return YGFloatOptionalMax(resolvedValue, new YGFloatOptional(0.0f));
@@ -817,33 +804,37 @@ namespace Xamarin.Yoga
         /// <inheritdoc />
         public bool Equals(YGNode other)
         {
-            if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            return
+            if (ReferenceEquals(null, other)) return false;
+
+            var result =
                 Equals(context_, other.context_)     &&
                 Equals(print_,   other.print_)       &&
                 hasNewLayout_ == other.hasNewLayout_ &&
                 nodeType_     == other.nodeType_     &&
-                Equals(measure_,  other.measure_)    &&
-                Equals(baseline_, other.baseline_)   &&
-                Equals(dirtied_,  other.dirtied_)    &&
-                Equals(style_,    other.style_)      &&
-                Equals(layout_,   other.layout_)     &&
-                lineIndex_ == other.lineIndex_       &&
-                Equals(owner_,    other.owner_)      &&
-                Equals(children_, other.children_)   &&
+                Equals(measure_, other.measure_);
+            result = result                        &&
+                Equals(baseline_, other.baseline_) &&
+                Equals(dirtied_,  other.dirtied_);
+            result = result &&
+                Equals(Style, other.Style);
+            result = result &&
+                Equals(layout_, other.layout_);
+            result = result                    &&
+                lineIndex_ == other.lineIndex_;
+            result = result &&
+                children_.SequenceEqual(other.children_);
+            result = result &&
                 Equals(config_,   other.config_)     &&
                 isDirty_ == other.isDirty_           &&
-                Equals(resolvedDimensions_, other.resolvedDimensions_);
+                resolvedDimensions_.SequenceEqual(other.resolvedDimensions_);
+            return result;
         }
 
         /// <inheritdoc />
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
-            return Equals((YGNode) obj);
+            return Equals(obj as YGNode);
         }
 
         /// <inheritdoc />
@@ -851,20 +842,9 @@ namespace Xamarin.Yoga
         {
             unchecked
             {
-                var hashCode = (context_ != null ? context_.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (print_ != null ? print_.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ hasNewLayout_.GetHashCode();
-                hashCode = (hashCode * 397) ^ (int) nodeType_;
-                hashCode = (hashCode * 397) ^ (measure_  != null ? measure_.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (baseline_ != null ? baseline_.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (dirtied_  != null ? dirtied_.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (style_    != null ? style_.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (layout_   != null ? layout_.GetHashCode() : 0);
+                var hashCode = (int) nodeType_;
+                hashCode = (hashCode * 397) ^ (measure_?.GetHashCode() ?? 0);
                 hashCode = (hashCode * 397) ^ lineIndex_;
-                hashCode = (hashCode * 397) ^ (owner_    != null ? owner_.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (children_ != null ? children_.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (config_   != null ? config_.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ isDirty_.GetHashCode();
                 hashCode = (hashCode * 397) ^ (resolvedDimensions_ != null ? resolvedDimensions_.GetHashCode() : 0);
                 return hashCode;
             }
@@ -872,12 +852,14 @@ namespace Xamarin.Yoga
 
         public static bool operator ==(YGNode left, YGNode right)
         {
-            return Equals(left, right);
+            return (object)left == null || (object)right == null ? 
+                ReferenceEquals(left, right) :
+                Equals(left, right);
         }
 
         public static bool operator !=(YGNode left, YGNode right)
         {
-            return !Equals(left, right);
+            return !(left == right);
         }
     }
 }

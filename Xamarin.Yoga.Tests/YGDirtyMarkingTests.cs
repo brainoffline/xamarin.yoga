@@ -36,15 +36,15 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeStyleSetWidth(root_child0, 20);
 
-            Assert.IsTrue(root_child0.isDirty());
-            Assert.IsFalse(root_child1.isDirty());
-            Assert.IsTrue(root.isDirty());
+            Assert.IsTrue(root_child0.IsDirty);
+            Assert.IsFalse(root_child1.IsDirty);
+            Assert.IsTrue(root.IsDirty);
 
             YGNodeCalculateLayout(root, YGUndefined, YGUndefined, YGDirection.LTR);
 
-            Assert.IsFalse(root_child0.isDirty());
-            Assert.IsFalse(root_child1.isDirty());
-            Assert.IsFalse(root.isDirty());
+            Assert.IsFalse(root_child0.IsDirty);
+            Assert.IsFalse(root_child1.IsDirty);
+            Assert.IsFalse(root.IsDirty);
 
             YGNodeFreeRecursive(root);
         }
@@ -71,9 +71,9 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeStyleSetWidth(root_child0, 50);
 
-            Assert.IsFalse(root_child0.isDirty());
-            Assert.IsFalse(root_child1.isDirty());
-            Assert.IsFalse(root.isDirty());
+            Assert.IsFalse(root_child0.IsDirty);
+            Assert.IsFalse(root_child1.IsDirty);
+            Assert.IsFalse(root.IsDirty);
 
             YGNodeFreeRecursive(root);
         }
@@ -145,11 +145,11 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeRef child1 = YGNodeNew();
             YGNodeRemoveChild(root, child1);
-            Assert.IsFalse(root.isDirty());
+            Assert.IsFalse(root.IsDirty);
             YGNodeFree(child1);
 
             YGNodeRemoveChild(root, child0);
-            Assert.IsTrue(root.isDirty());
+            Assert.IsTrue(root.IsDirty);
             YGNodeFree(child0);
 
             YGNodeFreeRecursive(root);
@@ -165,11 +165,11 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeCalculateLayout(root, YGUndefined, YGUndefined, YGDirection.LTR);
 
-            Assert.IsFalse(root.isDirty());
+            Assert.IsFalse(root.IsDirty);
 
             YGNodeStyleSetMinWidth(root, YGUndefined);
 
-            Assert.IsFalse(root.isDirty());
+            Assert.IsFalse(root.IsDirty);
 
             YGNodeFreeRecursive(root);
         }

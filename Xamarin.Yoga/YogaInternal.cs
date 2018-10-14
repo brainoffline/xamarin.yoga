@@ -60,6 +60,56 @@ namespace Xamarin.Yoga
             computedHeight = -1;
         }
 
+        public YGCachedMeasurement Clone()
+        {
+            return (YGCachedMeasurement)MemberwiseClone();
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(this, obj)) return true;
+            if (ReferenceEquals(null, obj)) return false;
+            if (obj is YGCachedMeasurement other)
+                return Equals(other);
+            return false;
+        }
+
+        public bool Equals(YGCachedMeasurement other)
+        {
+            return other    != null                          &&
+                widthMeasureMode  == other.widthMeasureMode  &&
+                heightMeasureMode == other.heightMeasureMode &&
+                YGFloatsEqual(availableWidth, other.availableWidth)    &&
+                YGFloatsEqual(availableHeight, other.availableHeight)   &&
+                YGFloatsEqual(computedWidth, other.computedWidth)     &&
+                YGFloatsEqual(computedHeight, other.computedHeight);
+
+        }
+
+        public override int GetHashCode()
+        {
+            var hashCode = 838407653;
+            hashCode = hashCode * -1521134295 + availableWidth.GetHashCode();
+            hashCode = hashCode * -1521134295 + availableHeight.GetHashCode();
+            hashCode = hashCode * -1521134295 + widthMeasureMode.GetHashCode();
+            hashCode = hashCode * -1521134295 + heightMeasureMode.GetHashCode();
+            hashCode = hashCode * -1521134295 + computedWidth.GetHashCode();
+            hashCode = hashCode * -1521134295 + computedHeight.GetHashCode();
+            return hashCode;
+        }
+
+        public static bool operator ==(YGCachedMeasurement measurement1, YGCachedMeasurement measurement2)
+        {
+            return EqualityComparer<YGCachedMeasurement>.Default.Equals(measurement1, measurement2);
+        }
+
+        public static bool operator !=(YGCachedMeasurement measurement1, YGCachedMeasurement measurement2)
+        {
+            return !(measurement1 == measurement2);
+        }
+
+
+        /*
         public static bool operator ==(YGCachedMeasurement op, YGCachedMeasurement measurement)
         {
             if (ReferenceEquals(op, null) && ReferenceEquals(measurement, null))
@@ -93,6 +143,7 @@ namespace Xamarin.Yoga
         {
             return !(op == measurement);
         }
+        */
     }
 
 }

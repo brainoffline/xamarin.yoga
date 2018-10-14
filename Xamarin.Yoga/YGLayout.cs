@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Xamarin.Yoga
@@ -56,29 +57,56 @@ namespace Xamarin.Yoga
             }
         }
 
+        public YGLayout(YGLayout other)
+        {
+            position                    = (float[]) other.position.Clone();
+            dimensions                  = (float[]) other.dimensions.Clone();
+            margin                      = (float[]) other.margin.Clone();
+            border                      = (float[]) other.border.Clone();
+            padding                     = (float[]) other.padding.Clone();
+            direction                   = other.direction;
+            computedFlexBasisGeneration = other.computedFlexBasisGeneration;
+            computedFlexBasis           = other.computedFlexBasis.Clone();
+            hadOverflow                 = other.hadOverflow;
+
+            lastOwnerDirection                 = other.lastOwnerDirection;
+            nextCachedMeasurementsIndex        = other.nextCachedMeasurementsIndex;
+            measuredDimensions                 = (float[]) other.measuredDimensions.Clone();
+            cachedLayout                       = other.cachedLayout.Clone();
+            didUseLegacyFlag                   = false;
+            doesLegacyStretchFlagAffectsLayout = false;
+
+            for (int i = 0; i < YG_MAX_CACHED_RESULT_COUNT; i++)
+                cachedMeasurements[i] = other.cachedMeasurements[i].Clone();
+        }
+
         /// <inheritdoc />
         public bool Equals(YGLayout other)
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            return
-                Equals(position,   other.position)                               &&
-                Equals(dimensions, other.dimensions)                             &&
-                Equals(margin,     other.margin)                                 &&
-                Equals(border,     other.border)                                 &&
-                Equals(padding,    other.padding)                                &&
-                direction                   == other.direction                   &&
-                computedFlexBasisGeneration == other.computedFlexBasisGeneration &&
-                computedFlexBasis.Equals(other.computedFlexBasis)                &&
-                hadOverflow                 == other.hadOverflow                 &&
-                generationCount             == other.generationCount             &&
-                lastOwnerDirection          == other.lastOwnerDirection          &&
-                nextCachedMeasurementsIndex == other.nextCachedMeasurementsIndex &&
-                Equals(cachedMeasurements, other.cachedMeasurements)             &&
-                Equals(measuredDimensions, other.measuredDimensions)             &&
-                Equals(cachedLayout,       other.cachedLayout)                   &&
-                didUseLegacyFlag                   == other.didUseLegacyFlag     &&
+            var result =
+                position.SequenceEqual(other.position)     &&
+                dimensions.SequenceEqual(other.dimensions) &&
+                margin.SequenceEqual(other.margin)         &&
+                border.SequenceEqual(other.border)         &&
+                padding.SequenceEqual(other.padding);
+            result = result &
+                direction == other.direction                      &&
+                computedFlexBasis.Equals(other.computedFlexBasis) &&
+                hadOverflow == other.hadOverflow;
+            result = result &
+                lastOwnerDirection == other.lastOwnerDirection &&
+                nextCachedMeasurementsIndex == other.nextCachedMeasurementsIndex;
+            result = result &
+                cachedMeasurements.SequenceEqual(other.cachedMeasurements);
+            result = result &
+                measuredDimensions.SequenceEqual(other.measuredDimensions);
+            result = result &
+                Equals(cachedLayout, other.cachedLayout)                     &&
+                didUseLegacyFlag                   == other.didUseLegacyFlag &&
                 doesLegacyStretchFlagAffectsLayout == other.doesLegacyStretchFlagAffectsLayout;
+            return result;
         }
 
         /// <inheritdoc />
@@ -86,8 +114,9 @@ namespace Xamarin.Yoga
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
-            return Equals((YGLayout) obj);
+            if (obj is YGLayout layout)
+                return Equals(layout);
+            return false;
         }
 
         /// <inheritdoc />

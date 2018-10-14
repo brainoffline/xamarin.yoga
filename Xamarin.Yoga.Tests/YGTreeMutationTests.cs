@@ -128,12 +128,16 @@ namespace Xamarin.Yoga.Tests
             YGNodeRef root_child0  = YGNodeNew();
             YGNodeRef root_child1  = YGNodeNew();
             YGNodeRef root_child2  = YGNodeNew();
+            YGNodeRef root_child3  = YGNodeNew();
+
+            root_child0.Name = "Child0";
+            root_child1.Name = "Child1";
+            root_child2.Name = "Child2";
+            root_child3.Name = "Child3";
 
             YGNodeSetChildren(root, new YGVector {
                 root_child0, root_child1, root_child2
             });
-
-            YGNodeRef root_child3  = YGNodeNew();
 
             YGNodeSetChildren(root, new YGVector {
                 root_child2, root_child1, root_child3

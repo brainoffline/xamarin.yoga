@@ -114,56 +114,56 @@ namespace Xamarin.Yoga
             if (options.HasFlag(YGPrintOptions.Layout))
             {
                 appendFormatedString(sb, "layout=\"");
-                appendFormatedString(sb, $"width: {node.getLayout().dimensions[(int) YGDimension.Width]}; ");
-                appendFormatedString(sb, $"height: {node.getLayout().dimensions[(int) YGDimension.Height]}; ");
-                appendFormatedString(sb, $"top: {node.getLayout().position[(int) YGEdge.Top]}; ");
-                appendFormatedString(sb, $"left: {node.getLayout().position[(int) YGEdge.Left]};");
+                appendFormatedString(sb, $"width: {node.Layout.dimensions[(int) YGDimension.Width]}; ");
+                appendFormatedString(sb, $"height: {node.Layout.dimensions[(int) YGDimension.Height]}; ");
+                appendFormatedString(sb, $"top: {node.Layout.position[(int) YGEdge.Top]}; ");
+                appendFormatedString(sb, $"left: {node.Layout.position[(int) YGEdge.Left]};");
                 appendFormatedString(sb, "\" ");
             }
 
             if (options.HasFlag(YGPrintOptions.Style))
             {
-                var defaultStyle = new YGNode().getStyle();
+                var defaultStyle = new YGNode().Style;
 
                 appendFormatedString(sb, "style=\"");
-                if (node.getStyle().flexDirection != defaultStyle.flexDirection) appendFormatedString(sb, $"flex-direction: {node.getStyle().flexDirection.ToDescription()}; ");
+                if (node.Style.flexDirection != defaultStyle.flexDirection) appendFormatedString(sb, $"flex-direction: {node.Style.flexDirection.ToDescription()}; ");
 
-                if (node.getStyle().justifyContent != defaultStyle.justifyContent) appendFormatedString(sb, $"justify-content: {node.getStyle().justifyContent.ToDescription()}; ");
+                if (node.Style.justifyContent != defaultStyle.justifyContent) appendFormatedString(sb, $"justify-content: {node.Style.justifyContent.ToDescription()}; ");
 
-                if (node.getStyle().alignItems != defaultStyle.alignItems) appendFormatedString(sb, $"align-items: {node.getStyle().alignItems.ToDescription()}; ");
+                if (node.Style.alignItems != defaultStyle.alignItems) appendFormatedString(sb, $"align-items: {node.Style.alignItems.ToDescription()}; ");
 
-                if (node.getStyle().alignContent != defaultStyle.alignContent) appendFormatedString(sb, $"align-content: {node.getStyle().alignContent.ToDescription()}; ");
+                if (node.Style.alignContent != defaultStyle.alignContent) appendFormatedString(sb, $"align-content: {node.Style.alignContent.ToDescription()}; ");
 
-                if (node.getStyle().alignSelf != defaultStyle.alignSelf) appendFormatedString(sb, $"align-self: {node.getStyle().alignSelf.ToDescription()}; ");
+                if (node.Style.alignSelf != defaultStyle.alignSelf) appendFormatedString(sb, $"align-self: {node.Style.alignSelf.ToDescription()}; ");
 
-                appendFloatOptionalIfDefined(sb, "flex-grow",   node.getStyle().flexGrow);
-                appendFloatOptionalIfDefined(sb, "flex-shrink", node.getStyle().flexShrink);
-                appendNumberIfNotAuto(sb, "flex-basis", node.getStyle().flexBasis);
-                appendFloatOptionalIfDefined(sb, "flex", node.getStyle().flex);
+                appendFloatOptionalIfDefined(sb, "flex-grow",   node.Style.flexGrow);
+                appendFloatOptionalIfDefined(sb, "flex-shrink", node.Style.flexShrink);
+                appendNumberIfNotAuto(sb, "flex-basis", node.Style.flexBasis);
+                appendFloatOptionalIfDefined(sb, "flex", node.Style.flex);
 
-                if (node.getStyle().flexWrap != defaultStyle.flexWrap) appendFormatedString(sb, $"flexWrap: {node.getStyle().flexWrap.ToDescription()}; ");
+                if (node.Style.flexWrap != defaultStyle.flexWrap) appendFormatedString(sb, $"flexWrap: {node.Style.flexWrap.ToDescription()}; ");
 
-                if (node.getStyle().overflow != defaultStyle.overflow) appendFormatedString(sb, $"overflow: {node.getStyle().overflow.ToDescription()}; ");
+                if (node.Style.overflow != defaultStyle.overflow) appendFormatedString(sb, $"overflow: {node.Style.overflow.ToDescription()}; ");
 
-                if (node.getStyle().display != defaultStyle.display) appendFormatedString(sb, $"display: {node.getStyle().display.ToDescription()}; ");
+                if (node.Style.display != defaultStyle.display) appendFormatedString(sb, $"display: {node.Style.display.ToDescription()}; ");
 
-                appendEdges(sb, "margin",  node.getStyle().margin);
-                appendEdges(sb, "padding", node.getStyle().padding);
-                appendEdges(sb, "border",  node.getStyle().border);
+                appendEdges(sb, "margin",  node.Style.margin);
+                appendEdges(sb, "padding", node.Style.padding);
+                appendEdges(sb, "border",  node.Style.border);
 
-                appendNumberIfNotAuto(sb, "width",      node.getStyle().dimensions[YGDimension.Width]);
-                appendNumberIfNotAuto(sb, "height",     node.getStyle().dimensions[YGDimension.Height]);
-                appendNumberIfNotAuto(sb, "max-width",  node.getStyle().maxDimensions[YGDimension.Width]);
-                appendNumberIfNotAuto(sb, "max-height", node.getStyle().maxDimensions[YGDimension.Height]);
-                appendNumberIfNotAuto(sb, "min-width",  node.getStyle().minDimensions[YGDimension.Width]);
-                appendNumberIfNotAuto(sb, "min-height", node.getStyle().minDimensions[YGDimension.Height]);
+                appendNumberIfNotAuto(sb, "width",      node.Style.dimensions[YGDimension.Width]);
+                appendNumberIfNotAuto(sb, "height",     node.Style.dimensions[YGDimension.Height]);
+                appendNumberIfNotAuto(sb, "max-width",  node.Style.maxDimensions[YGDimension.Width]);
+                appendNumberIfNotAuto(sb, "max-height", node.Style.maxDimensions[YGDimension.Height]);
+                appendNumberIfNotAuto(sb, "min-width",  node.Style.minDimensions[YGDimension.Width]);
+                appendNumberIfNotAuto(sb, "min-height", node.Style.minDimensions[YGDimension.Height]);
 
-                if (node.getStyle().positionType != defaultStyle.positionType) appendFormatedString(sb, $"position: {node.getStyle().positionType.ToDescription()}; ");
+                if (node.Style.positionType != defaultStyle.positionType) appendFormatedString(sb, $"position: {node.Style.positionType.ToDescription()}; ");
 
-                appendEdgeIfNotUndefined(sb, "left",   node.getStyle().position, YGEdge.Left);
-                appendEdgeIfNotUndefined(sb, "right",  node.getStyle().position, YGEdge.Right);
-                appendEdgeIfNotUndefined(sb, "top",    node.getStyle().position, YGEdge.Top);
-                appendEdgeIfNotUndefined(sb, "bottom", node.getStyle().position, YGEdge.Bottom);
+                appendEdgeIfNotUndefined(sb, "left",   node.Style.position, YGEdge.Left);
+                appendEdgeIfNotUndefined(sb, "right",  node.Style.position, YGEdge.Right);
+                appendEdgeIfNotUndefined(sb, "top",    node.Style.position, YGEdge.Top);
+                appendEdgeIfNotUndefined(sb, "bottom", node.Style.position, YGEdge.Bottom);
                 appendFormatedString(sb, "\" ");
 
                 if (node.getMeasure() != null) appendFormatedString(sb, "has-custom-measure=\"true\"");

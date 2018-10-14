@@ -174,16 +174,16 @@ namespace Xamarin.Yoga
                 isUndefined(a.value) && isUndefined(b.value))
                 return true;
 
-            return Math.Abs(a.value - b.value) < 0.0001f;
+            return YGFloatsEqual(a.value, b.value);
         }
 
         // This custom float equality function returns true if either absolute
         // difference between two floats is less than 0.0001f or both are undefined.
         public static bool YGFloatsEqual(in float a, in float b)
         {
-            if (!isUndefined(a) && !isUndefined(b)) return Math.Abs(a - b) < 0.0001f;
-
-            return isUndefined(a) && isUndefined(b);
+            if (isUndefined(a) && isUndefined(b))
+                return true;
+            return Math.Abs(a - b) < 0.0001f;
         }
 
         // This function returns 0 if YGFloatIsUndefined(val) is true and val otherwise

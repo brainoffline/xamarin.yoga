@@ -31,11 +31,11 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(0, dirtiedCount);
 
             // `_dirtied` MUST be called in case of explicit dirtying.
-            root.setDirty(true);
+            root.IsDirty = true;
             Assert.AreEqual(1, dirtiedCount);
 
             // `_dirtied` MUST be called ONCE.
-            root.setDirty(true);
+            root.IsDirty = true;
             Assert.AreEqual(1, dirtiedCount);
         }
 

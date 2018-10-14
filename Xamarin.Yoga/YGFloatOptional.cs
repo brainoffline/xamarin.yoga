@@ -33,6 +33,11 @@ namespace Xamarin.Yoga
             value = val;
         }
 
+        public YGFloatOptional Clone()
+        {
+            return new YGFloatOptional { value = this.value };
+        }
+
         /// <inheritdoc />
         public override string ToString()
         {

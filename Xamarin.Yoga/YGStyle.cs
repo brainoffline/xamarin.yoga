@@ -18,6 +18,11 @@ namespace Xamarin.Yoga
             this.values = values;
         }
 
+        public Dimensions Clone()
+        {
+            return new Dimensions((YGValue[])values.Clone());
+        }
+
         public static implicit operator Dimensions(YGValue[] values)
         {
             return new Dimensions(values);
@@ -131,6 +136,33 @@ namespace Xamarin.Yoga
             maxDimensions  = (YGValue[]) kYGDefaultDimensionValuesUnit.Clone();
             aspectRatio    = new YGFloatOptional();
         }
+
+        public YGStyle(YGStyle style)
+        {
+            direction      = style.direction;
+            flexDirection  = style.flexDirection;
+            justifyContent = style.justifyContent;
+            alignContent   = style.alignContent;
+            alignItems     = style.alignItems;
+            alignSelf      = style.alignSelf;
+            positionType   = style.positionType;
+            flexWrap       = style.flexWrap;
+            overflow       = style.overflow;
+            display        = style.display;
+            flex = style.flex.Clone();
+            flexGrow = style.flexGrow.Clone();
+            flexShrink = style.flexShrink.Clone();
+            flexBasis      = style.flexBasis;
+            margin         = (YGValue[])style.margin.Clone();
+            position       = (YGValue[])style.position.Clone();
+            padding        = (YGValue[])style.padding.Clone();
+            border         = (YGValue[])style.border.Clone();
+            dimensions     = style.dimensions.Clone();
+            minDimensions = style.minDimensions.Clone();
+            maxDimensions = style.maxDimensions.Clone();
+            aspectRatio    = style.aspectRatio.Clone();
+        }
+
 
         public static bool operator ==(YGStyle style1, YGStyle style2)
         {

@@ -17,7 +17,7 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void percentage_width_height()
         {
-            YGConfigRef config = YGConfigNew();
+            YGConfigRef config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexDirection(root, YGFlexDirection.Row);
@@ -54,13 +54,13 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeFreeRecursive(root);
 
-            YGConfigFree(config);
+            
         }
 
         [TestMethod]
         public void percentage_position_left_top()
         {
-            YGConfigRef config = YGConfigNew();
+            YGConfigRef config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexDirection(root, YGFlexDirection.Row);
@@ -99,13 +99,13 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeFreeRecursive(root);
 
-            YGConfigFree(config);
+            
         }
 
         [TestMethod]
         public void percentage_position_bottom_right()
         {
-            YGConfigRef config = YGConfigNew();
+            YGConfigRef config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexDirection(root, YGFlexDirection.Row);
@@ -144,13 +144,13 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeFreeRecursive(root);
 
-            YGConfigFree(config);
+            
         }
 
         [TestMethod]
         public void percentage_flex_basis()
         {
-            YGConfigRef config = YGConfigNew();
+            YGConfigRef config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexDirection(root, YGFlexDirection.Row);
@@ -202,13 +202,13 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeFreeRecursive(root);
 
-            YGConfigFree(config);
+            
         }
 
         [TestMethod]
         public void percentage_flex_basis_cross()
         {
-            YGConfigRef config = YGConfigNew();
+            YGConfigRef config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetWidth(root, 200);
@@ -259,13 +259,13 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeFreeRecursive(root);
 
-            YGConfigFree(config);
+            
         }
 
         [TestMethod]
         public void percentage_flex_basis_cross_min_height()
         {
-            YGConfigRef config = YGConfigNew();
+            YGConfigRef config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetWidth(root, 200);
@@ -316,13 +316,13 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeFreeRecursive(root);
 
-            YGConfigFree(config);
+            
         }
 
         [TestMethod]
         public void percentage_flex_basis_main_max_height()
         {
-            YGConfigRef config = YGConfigNew();
+            YGConfigRef config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexDirection(root, YGFlexDirection.Row);
@@ -376,13 +376,13 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeFreeRecursive(root);
 
-            YGConfigFree(config);
+            
         }
 
         [TestMethod]
         public void percentage_flex_basis_cross_max_height()
         {
-            YGConfigRef config = YGConfigNew();
+            YGConfigRef config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetWidth(root, 200);
@@ -435,13 +435,13 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeFreeRecursive(root);
 
-            YGConfigFree(config);
+            
         }
 
         [TestMethod]
         public void percentage_flex_basis_main_max_width()
         {
-            YGConfigRef config = YGConfigNew();
+            YGConfigRef config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexDirection(root, YGFlexDirection.Row);
@@ -495,13 +495,13 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeFreeRecursive(root);
 
-            YGConfigFree(config);
+            
         }
 
         [TestMethod]
         public void percentage_flex_basis_cross_max_width()
         {
-            YGConfigRef config = YGConfigNew();
+            YGConfigRef config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetWidth(root, 200);
@@ -554,13 +554,13 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeFreeRecursive(root);
 
-            YGConfigFree(config);
+            
         }
 
         [TestMethod]
         public void percentage_flex_basis_main_min_width()
         {
-            YGConfigRef config = YGConfigNew();
+            YGConfigRef config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexDirection(root, YGFlexDirection.Row);
@@ -614,13 +614,13 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeFreeRecursive(root);
 
-            YGConfigFree(config);
+            
         }
 
         [TestMethod]
         public void percentage_flex_basis_cross_min_width()
         {
-            YGConfigRef config = YGConfigNew();
+            YGConfigRef config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetWidth(root, 200f);
@@ -673,13 +673,13 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeFreeRecursive(root);
 
-            YGConfigFree(config);
+            
         }
 
         [TestMethod]
         public void percentage_multiple_nested_with_padding_margin_and_percentage_values()
         {
-            YGConfigRef config = YGConfigNew();
+            YGConfigRef config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetWidth(root, 200f);
@@ -784,13 +784,13 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeFreeRecursive(root);
 
-            YGConfigFree(config);
+            
         }
 
         [TestMethod]
         public void percentage_margin_should_calculate_based_only_on_width()
         {
-            YGConfigRef config = YGConfigNew();
+            YGConfigRef config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetWidth(root, 200f);
@@ -844,13 +844,13 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeFreeRecursive(root);
 
-            YGConfigFree(config);
+            
         }
 
         [TestMethod]
         public void percentage_padding_should_calculate_based_only_on_width()
         {
-            YGConfigRef config = YGConfigNew();
+            YGConfigRef config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetWidth(root, 200f);
@@ -904,13 +904,13 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeFreeRecursive(root);
 
-            YGConfigFree(config);
+            
         }
 
         [TestMethod]
         public void percentage_absolute_position()
         {
-            YGConfigRef config = YGConfigNew();
+            YGConfigRef config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetWidth(root, 200f);
@@ -949,13 +949,13 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeFreeRecursive(root);
 
-            YGConfigFree(config);
+            
         }
 
         [TestMethod]
         public void percentage_width_height_undefined_parent_size()
         {
-            YGConfigRef config = YGConfigNew();
+            YGConfigRef config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
 
@@ -989,13 +989,13 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeFreeRecursive(root);
 
-            YGConfigFree(config);
+            
         }
 
         [TestMethod]
         public void percent_within_flex_grow()
         {
-            YGConfigRef config = YGConfigNew();
+            YGConfigRef config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexDirection(root, YGFlexDirection.Row);
@@ -1073,13 +1073,13 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeFreeRecursive(root);
 
-            YGConfigFree(config);
+            
         }
 
         [TestMethod]
         public void percentage_container_in_wrapping_container()
         {
-            YGConfigRef config = YGConfigNew();
+            YGConfigRef config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetJustifyContent(root, YGJustify.Center);
@@ -1161,13 +1161,13 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeFreeRecursive(root);
 
-            YGConfigFree(config);
+            
         }
 
         [TestMethod]
         public void percent_absolute_position()
         {
-            YGConfigRef config = YGConfigNew();
+            YGConfigRef config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetWidth(root, 60f);
@@ -1234,7 +1234,7 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeFreeRecursive(root);
 
-            YGConfigFree(config);
+            
         }
     }
 }

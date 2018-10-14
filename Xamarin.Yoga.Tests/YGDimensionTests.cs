@@ -16,7 +16,7 @@ namespace Xamarin.Yoga.Tests
     {
         [TestMethod] public void wrap_child()
         {
-             YGConfigRef config = YGConfigNew();
+             YGConfigRef config = new YGConfig();
 
              YGNodeRef root = YGNodeNewWithConfig(config);
 
@@ -50,12 +50,12 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeFreeRecursive(root);
 
-            YGConfigFree(config);
+            
         }
 
         [TestMethod] public void wrap_grandchild()
         {
-             YGConfigRef config = YGConfigNew();
+             YGConfigRef config = new YGConfig();
 
              YGNodeRef root = YGNodeNewWithConfig(config);
 
@@ -102,7 +102,7 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeFreeRecursive(root);
 
-            YGConfigFree(config);
+            
         }
 
     }

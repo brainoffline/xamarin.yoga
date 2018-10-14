@@ -13,6 +13,8 @@ namespace Xamarin.Yoga
 
     public class YGNode : IEquatable<YGNode>
     {
+        public YGConfigRef Config { get; set; }
+
         public           string         Name { get; set; }
         private          object         context_            = null;
         private          YGPrintFunc    print_              = null;
@@ -25,15 +27,14 @@ namespace Xamarin.Yoga
         private          int            lineIndex_          = 0;
         private          YGNodeRef      owner_              = null;
         private          YGVector       children_           = new YGVector();
-        private          YGConfigRef    config_             = null;
         private          bool           isDirty_            = false;
         private readonly YGValue[]      resolvedDimensions_ = {YGConst.YGValueUndefined, YGConst.YGValueUndefined};
 
         public YGNode() { }
 
-        public YGNode(in YGConfigRef newConfig)
+        public YGNode(YGConfigRef newConfig)
         {
-            config_ = newConfig;
+            Config = newConfig;
         }
 
         public YGNode(YGNode node)
@@ -54,7 +55,7 @@ namespace Xamarin.Yoga
             layout_             = new YGLayout(node.layout_);
             lineIndex_          = node.getLineIndex();
             owner_              = null;
-            config_             = new YGConfigRef(node.getConfig());
+            Config              = new YGConfigRef(node.Config);
             isDirty_            = node.IsDirty;
             resolvedDimensions_ = (YGValue[]) node.getResolvedDimensions().Clone();
 
@@ -137,11 +138,6 @@ namespace Xamarin.Yoga
         public YGNodeRef getChild(int index)
         {
             return children_[index];
-        }
-
-        public YGConfigRef getConfig()
-        {
-            return config_;
         }
 
         public bool IsDirty
@@ -258,59 +254,6 @@ namespace Xamarin.Yoga
         }
 
         // TODO: rvalue override for setChildren
-
-        public void setConfig(YGConfigRef config)
-        {
-            config_ = config;
-        }
-
-        //void setDirty(bool                           isDirty);
-        //void setLayoutLastOwnerDirection(YGDirection direction);
-        //void setLayoutComputedFlexBasis(const YGFloatOptional & computedFlexBasis);
-
-        //void setLayoutComputedFlexBasisGeneration(
-        //    uint computedFlexBasisGeneration);
-
-        //void              setLayoutDimension(float         dimension, int index);
-        //void              setLayoutDirection(YGDirection   direction);
-        //void              setLayoutMargin(float            margin,   int index);
-        //void              setLayoutBorder(float            border,   int index);
-        //void              setLayoutPadding(float           padding,  int index);
-        //void              setLayoutPosition(float          position, int index);
-        //void              setPosition(
-        //const YGDirection direction, 
-        //const float       mainSize,  
-        //const float       crossSize, 
-        //const float       ownerWidth);
-        //void              setAndPropogateUseLegacyFlag(bool         useLegacyFlag);
-        //void              setLayoutDoesLegacyFlagAffectsLayout(bool doesLegacyFlagAffectsLayout);
-        //void              setLayoutDidUseLegacyFlag(bool            didUseLegacyFlag);
-        //void              markDirtyAndPropogateDownwards();
-
-        // Other methods
-        //YGValue     marginLeadingValue(const  YGFlexDirection axis) const;
-        //YGValue     marginTrailingValue(const YGFlexDirection axis) const;
-        //YGValue     resolveFlexBasisPtr() const;
-        //void        resolveDimension();
-        //YGDirection resolveDirection(const YGDirection ownerDirection);
-        //void        clearChildren();
-
-        // Replaces the occurrences of oldChild with newChild
-        //void replaceChild(YGNodeRef oldChild, YGNodeRef newChild);
-        //void replaceChild(YGNodeRef child, uint index);
-        //void insertChild(YGNodeRef  child, uint index);
-
-        // Removes the first occurrence of child
-        //bool removeChild(YGNodeRef child);
-        //void removeChild(uint index);
-
-        //void  cloneChildrenIfNeeded();
-        //void  markDirtyAndPropogate();
-        //float resolveFlexGrow();
-        //float resolveFlexShrink();
-        //bool  isNodeFlexible();
-        //bool  didUseLegacyFlag();
-        //bool  isLayoutTreeEqualToNode(const YGNode & node) const;
 
 
         public YGFloatOptional getLeadingPosition(
@@ -507,13 +450,13 @@ namespace Xamarin.Yoga
             var relativePositionMain  = relativePosition(mainAxis,  mainSize);
             var relativePositionCross = relativePosition(crossAxis, crossSize);
 
-            Layout.Position[leading[(int)mainAxis]] = 
+            Layout.Position[leading[(int) mainAxis]] =
                 YGUnwrapFloatOptional(getLeadingMargin(mainAxis, ownerWidth) + relativePositionMain);
-            Layout.Position[trailing[(int)mainAxis]] = 
+            Layout.Position[trailing[(int) mainAxis]] =
                 YGUnwrapFloatOptional(getTrailingMargin(mainAxis, ownerWidth) + relativePositionMain);
-            Layout.Position[leading[(int)crossAxis]] = 
+            Layout.Position[leading[(int) crossAxis]] =
                 YGUnwrapFloatOptional(getLeadingMargin(crossAxis, ownerWidth) + relativePositionCross);
-            Layout.Position[trailing[(int)crossAxis]] = 
+            Layout.Position[trailing[(int) crossAxis]] =
                 YGUnwrapFloatOptional(getTrailingMargin(crossAxis, ownerWidth) + relativePositionCross);
         }
 
@@ -535,7 +478,7 @@ namespace Xamarin.Yoga
         {
             var flexBasis = Style.flexBasis;
             if (flexBasis.unit != YGUnit.Auto && flexBasis.unit        != YGUnit.Undefined) return flexBasis;
-            if (!Style.flex.isUndefined()     && Style.flex.getValue() > 0.0f) return config_.useWebDefaults ? YGConst.YGValueAuto : YGConst.YGValueZero;
+            if (!Style.flex.isUndefined()     && Style.flex.getValue() > 0.0f) return Config.UseWebDefaults ? YGConst.YGValueAuto : YGConst.YGValueZero;
             return YGConst.YGValueAuto;
         }
 
@@ -560,7 +503,7 @@ namespace Xamarin.Yoga
             return Style.direction;
         }
 
-        public void clearChildren()
+        public void ClearChildren()
         {
             children_.Clear();
         }
@@ -578,13 +521,10 @@ namespace Xamarin.Yoga
             var firstChild = children_.First();
             if (firstChild.getOwner() == this) return;
 
-            var cloneNodeCallback = config_.cloneNodeCallback;
             for (var i = 0; i < childCount; ++i)
             {
-                var       oldChild                      = children_[i];
-                YGNodeRef newChild                      = null;
-                if (cloneNodeCallback != null) newChild = cloneNodeCallback(oldChild, this, i);
-                if (newChild          == null) newChild = YGNodeClone(oldChild);
+                var       oldChild = children_[i];
+                YGNodeRef newChild = YGNodeClone(oldChild);
                 replaceChild(newChild, i);
                 newChild.setOwner(this);
             }
@@ -594,7 +534,7 @@ namespace Xamarin.Yoga
         {
             if (!isDirty_)
             {
-                IsDirty = true;
+                IsDirty                  = true;
                 Layout.ComputedFlexBasis = new YGFloatOptional();
                 owner_?.markDirtyAndPropogate();
             }
@@ -620,10 +560,10 @@ namespace Xamarin.Yoga
         {
             if (owner_ == null) return 0.0f;
             if (!Style.flexShrink.isUndefined()) return Style.flexShrink.getValue();
-            if (!config_.useWebDefaults && !Style.flex.isUndefined() &&
+            if (!Config.UseWebDefaults && !Style.flex.isUndefined() &&
                 Style.flex.getValue() < 0.0f)
                 return -Style.flex.getValue();
-            return config_.useWebDefaults ? kWebDefaultFlexShrink : kDefaultFlexShrink;
+            return Config.UseWebDefaults ? kWebDefaultFlexShrink : kDefaultFlexShrink;
         }
 
         public bool isNodeFlexible()
@@ -705,26 +645,6 @@ namespace Xamarin.Yoga
             return getTrailingPadding(axis, widthSize) + new YGFloatOptional(getTrailingBorder(axis));
         }
 
-        public bool didUseLegacyFlag()
-        {
-            var didUseLegacyFlag = layout_.DidUseLegacyFlag;
-            if (didUseLegacyFlag) return true;
-            foreach (var child in children_)
-                if (child.layout_.DidUseLegacyFlag)
-                {
-                    didUseLegacyFlag = true;
-                    break;
-                }
-
-            return didUseLegacyFlag;
-        }
-
-        public void setAndPropogateUseLegacyFlag(bool useLegacyFlag)
-        {
-            config_.useLegacyStretchBehaviour = useLegacyFlag;
-            foreach (var child in children_) child.getConfig().useLegacyStretchBehaviour = useLegacyFlag;
-        }
-
         public bool isLayoutTreeEqualToNode(YGNode node)
         {
             if (children_.Count != node.children_.Count)
@@ -772,9 +692,9 @@ namespace Xamarin.Yoga
                 lineIndex_ == other.lineIndex_;
             result = result &&
                 children_.SequenceEqual(other.children_);
-            result = result                    &&
-                Equals(config_, other.config_) &&
-                isDirty_ == other.isDirty_     &&
+            result = result                &&
+                Config   == other.Config   &&
+                isDirty_ == other.isDirty_ &&
                 resolvedDimensions_.SequenceEqual(other.resolvedDimensions_);
             return result;
         }

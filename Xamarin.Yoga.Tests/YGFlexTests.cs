@@ -17,7 +17,7 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void flex_basis_flex_grow_column()
         {
-            YGConfigRef config = YGConfigNew();
+            YGConfigRef config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetWidth(root, 100);
@@ -67,13 +67,13 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeFreeRecursive(root);
 
-            YGConfigFree(config);
+            
         }
 
         [TestMethod]
         public void flex_shrink_flex_grow_row()
         {
-            YGConfigRef config = YGConfigNew();
+            YGConfigRef config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexDirection(root, YGFlexDirection.Row);
@@ -111,13 +111,13 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(100, root_child1.Layout.Height);
             YGNodeFreeRecursive(root);
 
-            YGConfigFree(config);
+            
         }
 
         [TestMethod]
         public void flex_shrink_flex_grow_child_flex_shrink_other_child()
         {
-            YGConfigRef config = YGConfigNew();
+            YGConfigRef config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexDirection(root, YGFlexDirection.Row);
@@ -155,13 +155,13 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(100, root_child1.Layout.Height);
             YGNodeFreeRecursive(root);
 
-            YGConfigFree(config);
+            
         }
 
         [TestMethod]
         public void flex_basis_flex_grow_row()
         {
-            YGConfigRef config = YGConfigNew();
+            YGConfigRef config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexDirection(root, YGFlexDirection.Row);
@@ -212,13 +212,13 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeFreeRecursive(root);
 
-            YGConfigFree(config);
+            
         }
 
         [TestMethod]
         public void flex_basis_flex_shrink_column()
         {
-            YGConfigRef config = YGConfigNew();
+            YGConfigRef config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetWidth(root, 100);
@@ -268,13 +268,13 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeFreeRecursive(root);
 
-            YGConfigFree(config);
+            
         }
 
         [TestMethod]
         public void flex_basis_flex_shrink_row()
         {
-            YGConfigRef config = YGConfigNew();
+            YGConfigRef config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexDirection(root, YGFlexDirection.Row);
@@ -325,13 +325,13 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeFreeRecursive(root);
 
-            YGConfigFree(config);
+            
         }
 
         [TestMethod]
         public void flex_shrink_to_zero()
         {
-            YGConfigRef config = YGConfigNew();
+            YGConfigRef config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetHeight(root, 75);
@@ -397,13 +397,13 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeFreeRecursive(root);
 
-            YGConfigFree(config);
+            
         }
 
         [TestMethod]
         public void flex_basis_overrides_main_size()
         {
-            YGConfigRef config = YGConfigNew();
+            YGConfigRef config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetWidth(root, 100);
@@ -470,13 +470,13 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeFreeRecursive(root);
 
-            YGConfigFree(config);
+            
         }
 
         [TestMethod]
         public void flex_grow_shrink_at_most()
         {
-            YGConfigRef config = YGConfigNew();
+            YGConfigRef config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetWidth(root, 100);
@@ -525,13 +525,13 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeFreeRecursive(root);
 
-            YGConfigFree(config);
+            
         }
 
         [TestMethod]
         public void flex_grow_less_than_factor_one()
         {
-            YGConfigRef config = YGConfigNew();
+            YGConfigRef config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetWidth(root, 200);
@@ -595,7 +595,7 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeFreeRecursive(root);
 
-            YGConfigFree(config);
+            
         }
     }
 }

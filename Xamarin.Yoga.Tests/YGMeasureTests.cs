@@ -313,7 +313,7 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void measure_flex_direction_row_and_padding()
         {
-            YGConfigRef config = YGConfigNew();
+            YGConfigRef config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexDirection(root, YGFlexDirection.Row);
@@ -352,13 +352,13 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeFreeRecursive(root);
 
-            YGConfigFree(config);
+            
         }
 
         [TestMethod]
         public void measure_flex_direction_column_and_padding()
         {
-            YGConfigRef config = YGConfigNew();
+            YGConfigRef config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetMargin(root, YGEdge.Top, 20);
@@ -394,13 +394,13 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeFreeRecursive(root);
 
-            YGConfigFree(config);
+            
         }
 
         [TestMethod]
         public void measure_flex_direction_row_no_padding()
         {
-            YGConfigRef config = YGConfigNew();
+            YGConfigRef config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexDirection(root, YGFlexDirection.Row);
@@ -436,13 +436,13 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeFreeRecursive(root);
 
-            YGConfigFree(config);
+            
         }
 
         [TestMethod]
         public void measure_flex_direction_row_no_padding_align_items_flexstart()
         {
-            YGConfigRef config = YGConfigNew();
+            YGConfigRef config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexDirection(root, YGFlexDirection.Row);
@@ -478,13 +478,13 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeFreeRecursive(root);
 
-            YGConfigFree(config);
+            
         }
 
         [TestMethod]
         public void measure_with_fixed_size()
         {
-            YGConfigRef config = YGConfigNew();
+            YGConfigRef config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetMargin(root, YGEdge.Top, 20);
@@ -521,13 +521,13 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeFreeRecursive(root);
 
-            YGConfigFree(config);
+            
         }
 
         [TestMethod]
         public void measure_with_flex_shrink()
         {
-            YGConfigRef config = YGConfigNew();
+            YGConfigRef config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetMargin(root, YGEdge.Top, 20);
@@ -563,13 +563,13 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeFreeRecursive(root);
 
-            YGConfigFree(config);
+            
         }
 
         [TestMethod]
         public void measure_no_padding()
         {
-            YGConfigRef config = YGConfigNew();
+            YGConfigRef config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetMargin(root, YGEdge.Top, 20);
@@ -604,7 +604,7 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeFreeRecursive(root);
 
-            YGConfigFree(config);
+            
         }
 
 #if GTEST_HAS_DEATH_TEST
@@ -641,7 +641,7 @@ TEST(YogaDeathTest, cannot_add_nonnull_measure_func_to_non_leaf_node) {
         [TestMethod]
         public void cant_call_negative_measure()
         {
-            YGConfigRef config = YGConfigNew();
+            YGConfigRef config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexDirection(root, YGFlexDirection.Column);
@@ -656,13 +656,13 @@ TEST(YogaDeathTest, cannot_add_nonnull_measure_func_to_non_leaf_node) {
             YGNodeCalculateLayout(root, YGUndefined, YGUndefined, YGDirection.LTR);
 
             YGNodeFreeRecursive(root);
-            YGConfigFree(config);
+            
         }
 
         [TestMethod]
         public void cant_call_negative_measure_horizontal()
         {
-            YGConfigRef config = YGConfigNew();
+            YGConfigRef config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexDirection(root, YGFlexDirection.Row);
@@ -677,7 +677,7 @@ TEST(YogaDeathTest, cannot_add_nonnull_measure_func_to_non_leaf_node) {
             YGNodeCalculateLayout(root, YGUndefined, YGUndefined, YGDirection.LTR);
 
             YGNodeFreeRecursive(root);
-            YGConfigFree(config);
+            
         }
 
         static YGSize _measure_90_10(YGNodeRef node,
@@ -692,7 +692,7 @@ TEST(YogaDeathTest, cannot_add_nonnull_measure_func_to_non_leaf_node) {
         [TestMethod]
         public void percent_with_text_node()
         {
-            YGConfigRef config = YGConfigNew();
+            YGConfigRef config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexDirection(root, YGFlexDirection.Row);
@@ -729,7 +729,7 @@ TEST(YogaDeathTest, cannot_add_nonnull_measure_func_to_non_leaf_node) {
 
             YGNodeFreeRecursive(root);
 
-            YGConfigFree(config);
+            
         }
     }
 }

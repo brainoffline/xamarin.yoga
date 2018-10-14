@@ -100,8 +100,7 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void assert_webdefault_values()
         {
-            var config = YGConfigNew();
-            YGConfigSetUseWebDefaults(config, true);
+            var config = new YGConfig {UseWebDefaults = true};
             YGNodeRef root = YGNodeNewWithConfig(config);
 
             Assert.AreEqual(YGFlexDirection.Row, YGNodeStyleGetFlexDirection(root));
@@ -109,14 +108,14 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(1.0f, YGNodeStyleGetFlexShrink(root));
 
             YGNodeFreeRecursive(root);
-            YGConfigFree(config);
+            
         }
 
         [TestMethod]
         public void assert_webdefault_values_reset()
         {
-            var config = YGConfigNew();
-            YGConfigSetUseWebDefaults(config, true);
+            var config = new YGConfig { UseWebDefaults = true };
+
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeReset(root);
 
@@ -125,56 +124,6 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(1.0f, YGNodeStyleGetFlexShrink(root));
 
             YGNodeFreeRecursive(root);
-            YGConfigFree(config);
-        }
-
-        [TestMethod]
-        public void assert_legacy_stretch_behaviour()
-        {
-            var config = YGConfigNew();
-            YGConfigSetUseLegacyStretchBehaviour(config, true);
-            YGNodeRef root = YGNodeNewWithConfig(config);
-            YGNodeStyleSetWidth(root, 500);
-            YGNodeStyleSetHeight(root, 500);
-
-            YGNodeRef root_child0 = YGNodeNewWithConfig(config);
-            YGNodeStyleSetAlignItems(root_child0, YGAlign.FlexStart);
-            YGNodeInsertChild(root, root_child0, 0);
-
-            YGNodeRef root_child0_child0 = YGNodeNewWithConfig(config);
-            YGNodeStyleSetFlexGrow(root_child0_child0, 1);
-            YGNodeStyleSetFlexShrink(root_child0_child0, 1);
-            YGNodeInsertChild(root_child0, root_child0_child0, 0);
-
-            YGNodeRef root_child0_child0_child0 = YGNodeNewWithConfig(config);
-            YGNodeStyleSetFlexGrow(root_child0_child0_child0, 1);
-            YGNodeStyleSetFlexShrink(root_child0_child0_child0, 1);
-            YGNodeInsertChild(root_child0_child0, root_child0_child0_child0, 0);
-            YGNodeCalculateLayout(root, YGUndefined, YGUndefined, YGDirection.LTR);
-
-            Assert.AreEqual(0,   root.Layout.Position.Left);
-            Assert.AreEqual(0, root.Layout.Position.Top);
-            Assert.AreEqual(500, root.Layout.Width);
-            Assert.AreEqual(500, root.Layout.Height);
-
-            Assert.AreEqual(0,   root_child0.Layout.Position.Left);
-            Assert.AreEqual(0,   root_child0.Layout.Position.Top);
-            Assert.AreEqual(500, root_child0.Layout.Width);
-            Assert.AreEqual(500, root_child0.Layout.Height);
-
-            Assert.AreEqual(0,   root_child0_child0.Layout.Position.Left);
-            Assert.AreEqual(0,   root_child0_child0.Layout.Position.Top);
-            Assert.AreEqual(0,   root_child0_child0.Layout.Width);
-            Assert.AreEqual(500, root_child0_child0.Layout.Height);
-
-            Assert.AreEqual(0,   root_child0_child0_child0.Layout.Position.Left);
-            Assert.AreEqual(0,   root_child0_child0_child0.Layout.Position.Top);
-            Assert.AreEqual(0,   root_child0_child0_child0.Layout.Width);
-            Assert.AreEqual(500, root_child0_child0_child0.Layout.Height);
-
-            YGNodeFreeRecursive(root);
-
-            YGConfigFree(config);
         }
     }
 }

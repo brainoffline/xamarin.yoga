@@ -20,7 +20,7 @@ namespace Xamarin.Yoga.Tests
         [TestInitialize]
         public void YogaTest_HadOverflowTests_Init()
         {
-            config = YGConfigNew();
+            config = new YGConfig();
             root   = YGNodeNewWithConfig(config);
             YGNodeStyleSetWidth(root, 200);
             YGNodeStyleSetHeight(root, 100);
@@ -32,7 +32,7 @@ namespace Xamarin.Yoga.Tests
         public void YogaTest_HadOverflowTests_Cleanup()
         {
             YGNodeFreeRecursive(root);
-            YGConfigFree(config);
+            
         }
 
 

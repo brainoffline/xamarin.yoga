@@ -17,7 +17,7 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void align_content_flex_start()
         {
-            YGConfigRef config = YGConfigNew();
+            YGConfigRef config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexDirection(root, YGFlexDirection.Row);
@@ -115,13 +115,13 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeFreeRecursive(root);
 
-            YGConfigFree(config);
+            
         }
 
         [TestMethod]
         public void align_content_flex_start_without_height_on_children()
         {
-            YGConfigRef config = YGConfigNew();
+            YGConfigRef config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexWrap(root, YGWrap.Wrap);
@@ -215,13 +215,13 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeFreeRecursive(root);
 
-            YGConfigFree(config);
+            
         }
 
         [TestMethod]
         public void align_content_flex_start_with_flex()
         {
-            YGConfigRef config = YGConfigNew();
+            YGConfigRef config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexWrap(root, YGWrap.Wrap);
@@ -321,13 +321,13 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeFreeRecursive(root);
 
-            YGConfigFree(config);
+            
         }
 
         [TestMethod]
         public void align_content_flex_end()
         {
-            YGConfigRef config = YGConfigNew();
+            YGConfigRef config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetAlignContent(root, YGAlign.FlexEnd);
@@ -425,13 +425,13 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeFreeRecursive(root);
 
-            YGConfigFree(config);
+            
         }
 
         [TestMethod]
         public void align_content_stretch()
         {
-            YGConfigRef config = YGConfigNew();
+            YGConfigRef config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetAlignContent(root, YGAlign.Stretch);
@@ -524,13 +524,13 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeFreeRecursive(root);
 
-            YGConfigFree(config);
+            
         }
 
         [TestMethod]
         public void align_content_spacebetween()
         {
-            YGConfigRef config = YGConfigNew();
+            YGConfigRef config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexDirection(root, YGFlexDirection.Row);
@@ -629,13 +629,13 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeFreeRecursive(root);
 
-            YGConfigFree(config);
+            
         }
 
         [TestMethod]
         public void align_content_spacearound()
         {
-            YGConfigRef config = YGConfigNew();
+            YGConfigRef config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexDirection(root, YGFlexDirection.Row);
@@ -734,13 +734,13 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeFreeRecursive(root);
 
-            YGConfigFree(config);
+            
         }
 
         [TestMethod]
         public void align_content_stretch_row()
         {
-            YGConfigRef config = YGConfigNew();
+            YGConfigRef config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexDirection(root, YGFlexDirection.Row);
@@ -834,13 +834,13 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeFreeRecursive(root);
 
-            YGConfigFree(config);
+            
         }
 
         [TestMethod]
         public void align_content_stretch_row_with_children()
         {
-            YGConfigRef config = YGConfigNew();
+            YGConfigRef config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexDirection(root, YGFlexDirection.Row);
@@ -950,13 +950,13 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeFreeRecursive(root);
 
-            YGConfigFree(config);
+            
         }
 
         [TestMethod]
         public void align_content_stretch_row_with_flex()
         {
-            YGConfigRef config = YGConfigNew();
+            YGConfigRef config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexDirection(root, YGFlexDirection.Row);
@@ -1056,13 +1056,13 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeFreeRecursive(root);
 
-            YGConfigFree(config);
+            
         }
 
         [TestMethod]
         public void align_content_stretch_row_with_flex_no_shrink()
         {
-            YGConfigRef config = YGConfigNew();
+            YGConfigRef config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexDirection(root, YGFlexDirection.Row);
@@ -1161,13 +1161,13 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeFreeRecursive(root);
 
-            YGConfigFree(config);
+            
         }
 
         [TestMethod]
         public void align_content_stretch_row_with_margin()
         {
-            YGConfigRef config = YGConfigNew();
+            YGConfigRef config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexDirection(root, YGFlexDirection.Row);
@@ -1269,13 +1269,13 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeFreeRecursive(root);
 
-            YGConfigFree(config);
+            
         }
 
         [TestMethod]
         public void align_content_stretch_row_with_padding()
         {
-            YGConfigRef config = YGConfigNew();
+            YGConfigRef config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexDirection(root, YGFlexDirection.Row);
@@ -1377,13 +1377,13 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeFreeRecursive(root);
 
-            YGConfigFree(config);
+            
         }
 
         [TestMethod]
         public void align_content_stretch_row_with_single_row()
         {
-            YGConfigRef config = YGConfigNew();
+            YGConfigRef config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexDirection(root, YGFlexDirection.Row);
@@ -1435,13 +1435,13 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeFreeRecursive(root);
 
-            YGConfigFree(config);
+            
         }
 
         [TestMethod]
         public void align_content_stretch_row_with_fixed_height()
         {
-            YGConfigRef config = YGConfigNew();
+            YGConfigRef config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexDirection(root, YGFlexDirection.Row);
@@ -1536,13 +1536,13 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeFreeRecursive(root);
 
-            YGConfigFree(config);
+            
         }
 
         [TestMethod]
         public void align_content_stretch_row_with_max_height()
         {
-            YGConfigRef config = YGConfigNew();
+            YGConfigRef config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexDirection(root, YGFlexDirection.Row);
@@ -1637,13 +1637,13 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeFreeRecursive(root);
 
-            YGConfigFree(config);
+            
         }
 
         [TestMethod]
         public void align_content_stretch_row_with_min_height()
         {
-            YGConfigRef config = YGConfigNew();
+            YGConfigRef config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexDirection(root, YGFlexDirection.Row);
@@ -1738,13 +1738,13 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeFreeRecursive(root);
 
-            YGConfigFree(config);
+            
         }
 
         [TestMethod]
         public void align_content_stretch_column()
         {
-            YGConfigRef config = YGConfigNew();
+            YGConfigRef config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetAlignContent(root, YGAlign.Stretch);
@@ -1856,13 +1856,13 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeFreeRecursive(root);
 
-            YGConfigFree(config);
+            
         }
 
         [TestMethod]
         public void align_content_stretch_is_not_overriding_align_items()
         {
-            YGConfigRef config = YGConfigNew();
+            YGConfigRef config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetAlignContent(root, YGAlign.Stretch);
@@ -1916,7 +1916,7 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeFreeRecursive(root);
 
-            YGConfigFree(config);
+            
         }
     }
 }

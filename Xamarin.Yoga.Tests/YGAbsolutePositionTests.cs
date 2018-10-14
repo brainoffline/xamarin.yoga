@@ -17,7 +17,7 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void absolute_layout_width_height_start_top()
         {
-            var config = YGConfigNew();
+            var config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetWidth(root, 100);
@@ -55,12 +55,12 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeFreeRecursive(root);
 
-            YGConfigFree(config);
+            
         }
 
         [TestMethod] public void absolute_layout_width_height_end_bottom()
         {
-            var config = YGConfigNew();
+            var config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetWidth(root, 100);
@@ -99,12 +99,12 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeFreeRecursive(root);
 
-            YGConfigFree(config);
+            
         }
 
         [TestMethod] public void absolute_layout_start_top_end_bottom()
         {
-            var config = YGConfigNew();
+            var config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetWidth(root, 100);
@@ -143,12 +143,12 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeFreeRecursive(root);
 
-            YGConfigFree(config);
+            
         }
 
         [TestMethod] public void absolute_layout_width_height_start_top_end_bottom()
         {
-            var config = YGConfigNew();
+            var config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetWidth(root, 100);
@@ -189,12 +189,12 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeFreeRecursive(root);
 
-            YGConfigFree(config);
+            
         }
 
         [TestMethod] public void do_not_clamp_height_of_absolute_node_to_height_of_its_overflow_hidden_parent()
         {
-            var config = YGConfigNew();
+            var config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexDirection(root, YGFlexDirection.Row);
@@ -248,12 +248,12 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeFreeRecursive(root);
 
-            YGConfigFree(config);
+            
         }
 
         [TestMethod] public void absolute_layout_within_border()
         {
-            var config = YGConfigNew();
+            var config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetMargin(root, YGEdge.Left, 10);
@@ -366,12 +366,12 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeFreeRecursive(root);
 
-            YGConfigFree(config);
+            
         }
 
         [TestMethod] public void absolute_layout_align_items_and_justify_content_center()
         {
-            var config = YGConfigNew();
+            var config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetJustifyContent(root, YGJustify.Center);
@@ -411,12 +411,12 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeFreeRecursive(root);
 
-            YGConfigFree(config);
+            
         }
 
         [TestMethod] public void absolute_layout_align_items_and_justify_content_flex_end()
         {
-            var config = YGConfigNew();
+            var config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetJustifyContent(root, YGJustify.FlexEnd);
@@ -456,12 +456,12 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeFreeRecursive(root);
 
-            YGConfigFree(config);
+            
         }
 
         [TestMethod] public void absolute_layout_justify_content_center()
         {
-            var config = YGConfigNew();
+            var config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetJustifyContent(root, YGJustify.Center);
@@ -500,12 +500,12 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeFreeRecursive(root);
 
-            YGConfigFree(config);
+            
         }
 
         [TestMethod] public void absolute_layout_align_items_center()
         {
-            var config = YGConfigNew();
+            var config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetAlignItems(root, YGAlign.Center);
@@ -544,12 +544,12 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeFreeRecursive(root);
 
-            YGConfigFree(config);
+            
         }
 
         [TestMethod] public void absolute_layout_align_items_center_on_child_only()
         {
-            var config = YGConfigNew();
+            var config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexGrow(root, 1);
@@ -588,12 +588,12 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeFreeRecursive(root);
 
-            YGConfigFree(config);
+            
         }
 
         [TestMethod] public void absolute_layout_align_items_and_justify_content_center_and_top_position()
         {
-            var config = YGConfigNew();
+            var config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetJustifyContent(root, YGJustify.Center);
@@ -634,12 +634,12 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeFreeRecursive(root);
 
-            YGConfigFree(config);
+            
         }
 
         [TestMethod] public void absolute_layout_align_items_and_justify_content_center_and_bottom_position()
         {
-            var config = YGConfigNew();
+            var config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetJustifyContent(root, YGJustify.Center);
@@ -680,12 +680,12 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeFreeRecursive(root);
 
-            YGConfigFree(config);
+            
         }
 
         [TestMethod] public void absolute_layout_align_items_and_justify_content_center_and_left_position()
         {
-            var config = YGConfigNew();
+            var config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetJustifyContent(root, YGJustify.Center);
@@ -726,12 +726,12 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeFreeRecursive(root);
 
-            YGConfigFree(config);
+            
         }
 
         [TestMethod] public void absolute_layout_align_items_and_justify_content_center_and_right_position()
         {
-            var config = YGConfigNew();
+            var config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetJustifyContent(root, YGJustify.Center);
@@ -772,12 +772,12 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeFreeRecursive(root);
 
-            YGConfigFree(config);
+            
         }
 
         [TestMethod] public void position_root_with_rtl_should_position_withoutdirection()
         {
-            var config = YGConfigNew();
+            var config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetPosition(root, YGEdge.Left, 72);
@@ -799,12 +799,12 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeFreeRecursive(root);
 
-            YGConfigFree(config);
+            
         }
 
         [TestMethod] public void absolute_layout_percentage_bottom_based_on_parent_height()
         {
-            var config = YGConfigNew();
+            var config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetWidth(root, 100);
@@ -876,12 +876,12 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeFreeRecursive(root);
 
-            YGConfigFree(config);
+            
         }
 
         [TestMethod] public void absolute_layout_in_wrap_reverse_column_container()
         {
-            var config = YGConfigNew();
+            var config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexWrap(root, YGWrap.WrapReverse);
@@ -919,12 +919,12 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeFreeRecursive(root);
 
-            YGConfigFree(config);
+            
         }
 
         [TestMethod] public void absolute_layout_in_wrap_reverse_row_container()
         {
-            var config = YGConfigNew();
+            var config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexDirection(root, YGFlexDirection.Row);
@@ -963,12 +963,12 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeFreeRecursive(root);
 
-            YGConfigFree(config);
+            
         }
 
         [TestMethod] public void absolute_layout_in_wrap_reverse_column_container_flex_end()
         {
-            var config = YGConfigNew();
+            var config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexWrap(root, YGWrap.WrapReverse);
@@ -1007,12 +1007,12 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeFreeRecursive(root);
 
-            YGConfigFree(config);
+            
         }
 
         [TestMethod] public void absolute_layout_in_wrap_reverse_row_container_flex_end()
         {
-            var config = YGConfigNew();
+            var config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexDirection(root, YGFlexDirection.Row);
@@ -1052,7 +1052,7 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeFreeRecursive(root);
 
-            YGConfigFree(config);
+            
         }
 
     }

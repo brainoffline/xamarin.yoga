@@ -17,7 +17,7 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void padding_no_size()
         {
-             YGConfigRef config = YGConfigNew();
+             YGConfigRef config = new YGConfig();
 
              YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetPadding(root, YGEdge.Left, 10);
@@ -40,13 +40,13 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeFreeRecursive(root);
 
-            YGConfigFree(config);
+            
         }
 
         [TestMethod]
         public void padding_container_match_child()
         {
-             YGConfigRef config = YGConfigNew();
+             YGConfigRef config = new YGConfig();
 
              YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetPadding(root, YGEdge.Left, 10);
@@ -84,13 +84,13 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeFreeRecursive(root);
 
-            YGConfigFree(config);
+            
         }
 
         [TestMethod]
         public void padding_flex_child()
         {
-             YGConfigRef config = YGConfigNew();
+             YGConfigRef config = new YGConfig();
 
              YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetPadding(root, YGEdge.Left, 10);
@@ -130,13 +130,13 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeFreeRecursive(root);
 
-            YGConfigFree(config);
+            
         }
 
         [TestMethod]
         public void padding_stretch_child()
         {
-             YGConfigRef config = YGConfigNew();
+             YGConfigRef config = new YGConfig();
 
              YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetPadding(root, YGEdge.Left, 10);
@@ -175,13 +175,13 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeFreeRecursive(root);
 
-            YGConfigFree(config);
+            
         }
 
         [TestMethod]
         public void padding_center_child()
         {
-             YGConfigRef config = YGConfigNew();
+             YGConfigRef config = new YGConfig();
 
              YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetJustifyContent(root, YGJustify.Center);
@@ -222,13 +222,13 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeFreeRecursive(root);
 
-            YGConfigFree(config);
+            
         }
 
         [TestMethod]
         public void child_with_padding_align_end()
         {
-             YGConfigRef config = YGConfigNew();
+             YGConfigRef config = new YGConfig();
 
              YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetJustifyContent(root, YGJustify.FlexEnd);
@@ -270,7 +270,7 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeFreeRecursive(root);
 
-            YGConfigFree(config);
+            
         }
 
     }

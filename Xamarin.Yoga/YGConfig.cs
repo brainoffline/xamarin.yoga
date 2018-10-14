@@ -10,37 +10,27 @@ namespace Xamarin.Yoga
 
     public class YGConfig : IEquatable<YGConfig>
     {
-        public bool[]          experimentalFeatures                          = {false};
-        public bool            useWebDefaults                                = false;
-        public bool            useLegacyStretchBehaviour                     = false;
-        public bool            shouldDiffLayoutWithoutLegacyStretchBehaviour = false;
-        public float           pointScaleFactor                              = 1.0f;
-        public YGLogger        logger                                        = null;
-        public YGCloneNodeFunc cloneNodeCallback                             = null;
-        public object          context                                       = null;
-        public bool            printTree                                     = false;
+        public static readonly YGConfig DefaultConfig = new YGConfig(YGDefaultLog);
 
-        public YGConfig() { }
+        public YGExperimentalFeatures ExperimentalFeatures { get; set; }
+        public bool                   UseWebDefaults { get; set; }
 
-        public YGConfig(YGLogger logger)
+        public float                  pointScaleFactor                              = 1.0f;
+        public YGLogger               logger                                        = null;
+        public object                 context                                       = null;
+        public bool                   printTree                                     = false;
+
+        public YGConfig(YGLogger logger = null)
         {
-            this.logger = logger;
+            this.logger = logger ?? YGDefaultLog;
         }
 
         public YGConfig(YGConfig config)
         {
-            CloneFrom(config);
-        }
-
-        public void CloneFrom(YGConfig config)
-        {
-            experimentalFeatures                          = config.experimentalFeatures;
-            useWebDefaults                                = config.useWebDefaults;
-            useLegacyStretchBehaviour                     = config.useLegacyStretchBehaviour;
-            shouldDiffLayoutWithoutLegacyStretchBehaviour = config.shouldDiffLayoutWithoutLegacyStretchBehaviour;
+            ExperimentalFeatures                          = config.ExperimentalFeatures;
+            UseWebDefaults                                = config.UseWebDefaults;
             pointScaleFactor                              = config.pointScaleFactor;
             logger                                        = config.logger;
-            cloneNodeCallback                             = config.cloneNodeCallback;
             context                                       = config.context;
             printTree                                     = config.printTree;
         }
@@ -51,15 +41,10 @@ namespace Xamarin.Yoga
             if (ReferenceEquals(null, other)) return false;
 
             var result =
-                EqualityComparer<bool[]>.Default.Equals(experimentalFeatures, other.experimentalFeatures);
-            result = result &
-                useWebDefaults == other.useWebDefaults                                                               &&
-                useLegacyStretchBehaviour                     == other.useLegacyStretchBehaviour                     &&
-                shouldDiffLayoutWithoutLegacyStretchBehaviour == other.shouldDiffLayoutWithoutLegacyStretchBehaviour &&
-                YGFloatsEqual(pointScaleFactor, other.pointScaleFactor);
-            result = result &
-                EqualityComparer<object>.Default.Equals(context, other.context);
-            result = result &
+                ExperimentalFeatures                          == other.ExperimentalFeatures                          &&
+                UseWebDefaults                                == other.UseWebDefaults                                &&
+                YGFloatsEqual(pointScaleFactor, other.pointScaleFactor)                                              &&
+                EqualityComparer<object>.Default.Equals(context, other.context)                                      &&
                 printTree == other.printTree;
             return result;
         }
@@ -76,7 +61,7 @@ namespace Xamarin.Yoga
 
         public static bool operator ==(YGConfig config1, YGConfig config2)
         {
-            return EqualityComparer<YGConfig>.Default.Equals(config1, config2);
+            return Equals(config1, config2);
         }
 
         public static bool operator !=(YGConfig config1, YGConfig config2)

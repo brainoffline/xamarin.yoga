@@ -33,7 +33,7 @@ namespace Xamarin.Yoga.Tests
             
             sb.Clear();
 
-            YGConfigRef config = YGConfigNew();
+            YGConfigRef config = new YGConfig();
             YGConfigSetPrintTreeFlag(config, true);
             YGConfigSetLogger(config, _unmanagedLogger);
             YGNodeRef root   = YGNodeNewWithConfig(config);
@@ -58,7 +58,7 @@ namespace Xamarin.Yoga.Tests
         {
             sb.Clear();
             
-            YGConfigRef config = YGConfigNew();
+            YGConfigRef config = new YGConfig();
             YGConfigSetPrintTreeFlag(config, false);
             YGConfigSetLogger(config, _unmanagedLogger);
             YGNodeRef root   = YGNodeNewWithConfig(config);
@@ -79,7 +79,7 @@ namespace Xamarin.Yoga.Tests
         {
             sb.Clear();
 
-            YGConfigRef config = YGConfigNew();
+            YGConfigRef config = new YGConfig();
             YGConfigSetLogger(config, _unmanagedLogger);
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeCalculateLayout(root, YGUndefined, YGUndefined, YGDirection.LTR);
@@ -98,7 +98,7 @@ namespace Xamarin.Yoga.Tests
         {
             sb.Clear();
 
-            YGConfigRef config = YGConfigNew();
+            YGConfigRef config = new YGConfig();
             YGConfigSetLogger(config, _unmanagedLogger);
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetPositionType(root, YGPositionType.Absolute);
@@ -123,7 +123,7 @@ namespace Xamarin.Yoga.Tests
         {
             sb.Clear();
 
-            YGConfigRef config = YGConfigNew();
+            YGConfigRef config = new YGConfig();
             YGConfigSetLogger(config, _unmanagedLogger);
             YGNodeRef root   = YGNodeNewWithConfig(config);
             YGNodeRef child0 = YGNodeNewWithConfig(config);

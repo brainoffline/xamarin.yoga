@@ -17,8 +17,8 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void dont_cache_computed_flex_basis_between_layouts()
         {
-             YGConfigRef config = YGConfigNew();
-            YGConfigSetExperimentalFeatureEnabled(config, YGExperimentalFeature.WebFlexBasis, true);
+            YGConfigRef config = new YGConfig();
+            config.ExperimentalFeatures |= YGExperimentalFeatures.WebFlexBasis;
 
              YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetHeightPercent(root, 100);
@@ -35,7 +35,7 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeFreeRecursive(root);
 
-            YGConfigFree(config);
+            
         }
 
         [TestMethod]

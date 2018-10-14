@@ -17,7 +17,7 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void rounding_flex_basis_flex_grow_row_width_of_100()
         {
-             YGConfigRef config = YGConfigNew();
+             YGConfigRef config = new YGConfig();
 
              YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexDirection(root, YGFlexDirection.Row);
@@ -81,13 +81,13 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeFreeRecursive(root);
 
-            YGConfigFree(config);
+            
         }
 
         [TestMethod]
         public void rounding_flex_basis_flex_grow_row_prime_number_width()
         {
-             YGConfigRef config = YGConfigNew();
+             YGConfigRef config = new YGConfig();
 
              YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexDirection(root, YGFlexDirection.Row);
@@ -179,13 +179,13 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeFreeRecursive(root);
 
-            YGConfigFree(config);
+            
         }
 
         [TestMethod]
         public void rounding_flex_basis_flex_shrink_row()
         {
-             YGConfigRef config = YGConfigNew();
+             YGConfigRef config = new YGConfig();
 
              YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexDirection(root, YGFlexDirection.Row);
@@ -250,13 +250,13 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeFreeRecursive(root);
 
-            YGConfigFree(config);
+            
         }
 
         [TestMethod]
         public void rounding_flex_basis_overrides_main_size()
         {
-             YGConfigRef config = YGConfigNew();
+             YGConfigRef config = new YGConfig();
 
              YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetWidth(root, 100);
@@ -323,13 +323,13 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeFreeRecursive(root);
 
-            YGConfigFree(config);
+            
         }
 
         [TestMethod]
         public void rounding_total_fractial()
         {
-             YGConfigRef config = YGConfigNew();
+             YGConfigRef config = new YGConfig();
 
              YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetWidth(root, 87.4f);
@@ -396,13 +396,13 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeFreeRecursive(root);
 
-            YGConfigFree(config);
+            
         }
 
         [TestMethod]
         public void rounding_total_fractial_nested()
         {
-             YGConfigRef config = YGConfigNew();
+             YGConfigRef config = new YGConfig();
 
              YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetWidth(root, 87.4f);
@@ -502,14 +502,12 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(24, root_child2.Layout.Height);
 
             YGNodeFreeRecursive(root);
-
-            YGConfigFree(config);
         }
 
         [TestMethod]
         public void rounding_fractial_input_1()
         {
-             YGConfigRef config = YGConfigNew();
+             YGConfigRef config = new YGConfig();
 
              YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetWidth(root, 100);
@@ -576,13 +574,13 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeFreeRecursive(root);
 
-            YGConfigFree(config);
+            
         }
 
         [TestMethod]
         public void rounding_fractial_input_2()
         {
-             YGConfigRef config = YGConfigNew();
+             YGConfigRef config = new YGConfig();
 
              YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetWidth(root, 100);
@@ -649,13 +647,13 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeFreeRecursive(root);
 
-            YGConfigFree(config);
+            
         }
 
         [TestMethod]
         public void rounding_fractial_input_3()
         {
-             YGConfigRef config = YGConfigNew();
+             YGConfigRef config = new YGConfig();
 
              YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetPosition(root, YGEdge.Top, 0.3f);
@@ -723,13 +721,13 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeFreeRecursive(root);
 
-            YGConfigFree(config);
+            
         }
 
         [TestMethod]
         public void rounding_fractial_input_4()
         {
-             YGConfigRef config = YGConfigNew();
+             YGConfigRef config = new YGConfig();
 
              YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetPosition(root, YGEdge.Top, 0.7f);
@@ -797,13 +795,13 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeFreeRecursive(root);
 
-            YGConfigFree(config);
+            
         }
 
         [TestMethod]
         public void rounding_inner_node_controversy_horizontal()
         {
-             YGConfigRef config = YGConfigNew();
+             YGConfigRef config = new YGConfig();
 
              YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexDirection(root, YGFlexDirection.Row);
@@ -884,13 +882,13 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeFreeRecursive(root);
 
-            YGConfigFree(config);
+            
         }
 
         [TestMethod]
         public void rounding_inner_node_controversy_vertical()
         {
-             YGConfigRef config = YGConfigNew();
+             YGConfigRef config = new YGConfig();
 
              YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetHeight(root, 320);
@@ -970,13 +968,13 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeFreeRecursive(root);
 
-            YGConfigFree(config);
+            
         }
 
         [TestMethod]
         public void rounding_inner_node_controversy_combined()
         {
-             YGConfigRef config = YGConfigNew();
+             YGConfigRef config = new YGConfig();
 
              YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexDirection(root, YGFlexDirection.Row);
@@ -1103,7 +1101,7 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeFreeRecursive(root);
 
-            YGConfigFree(config);
+            
         }
 
     }

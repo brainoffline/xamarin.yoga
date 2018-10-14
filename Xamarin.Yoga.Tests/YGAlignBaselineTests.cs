@@ -43,7 +43,7 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void align_baseline_parent_ht_not_specified()
         {
-            var config = YGConfigNew();
+            var config = new YGConfig();
 
             var root = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexDirection(root, YGFlexDirection.Row);
@@ -83,14 +83,12 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(126, root_child1.Layout.Height);
 
             YGNodeFreeRecursive(root);
-
-            YGConfigFree(config);
         }
 
         [TestMethod]
         public void align_baseline_with_no_parent_ht()
         {
-            var config = YGConfigNew();
+            var config = new YGConfig();
 
             var root = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexDirection(root, YGFlexDirection.Row);
@@ -126,14 +124,12 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(40, root_child1.Layout.Height);
 
             YGNodeFreeRecursive(root);
-
-            YGConfigFree(config);
         }
 
         [TestMethod]
         public void align_baseline_with_no_baseline_func_and_no_parent_ht()
         {
-            var config = YGConfigNew();
+            var config = new YGConfig();
 
             var root = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexDirection(root, YGFlexDirection.Row);
@@ -169,7 +165,7 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeFreeRecursive(root);
 
-            YGConfigFree(config);
+            
         }
     }
 }

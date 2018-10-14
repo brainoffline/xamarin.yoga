@@ -44,7 +44,7 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void rounding_feature_with_custom_measure_func_floor()
         {
-            YGConfigRef config = YGConfigNew();
+            YGConfigRef config = new YGConfig();
             YGNodeRef   root   = YGNodeNewWithConfig(config);
 
             YGNodeRef root_child0 = YGNodeNewWithConfig(config);
@@ -87,14 +87,12 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(12.0f, root_child0.Layout.Height);
 
             YGNodeFreeRecursive(root);
-
-            YGConfigFree(config);
         }
 
         [TestMethod]
         public void rounding_feature_with_custom_measure_func_ceil()
         {
-            YGConfigRef config      = YGConfigNew();
+            YGConfigRef config      = new YGConfig();
             YGNodeRef   root        = YGNodeNewWithConfig(config);
             YGNodeRef   root_child0 = YGNodeNewWithConfig(config);
 
@@ -108,14 +106,12 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(11, root_child0.Layout.Height);
 
             YGNodeFreeRecursive(root);
-
-            YGConfigFree(config);
         }
 
         [TestMethod]
         public void rounding_feature_with_custom_measure_and_fractial_matching_scale()
         {
-            YGConfigRef config = YGConfigNew();
+            YGConfigRef config = new YGConfig();
             YGNodeRef   root   = YGNodeNewWithConfig(config);
 
             YGNodeRef root_child0 = YGNodeNewWithConfig(config);
@@ -132,8 +128,6 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(73.5f, root_child0.Layout.Position.Left);
 
             YGNodeFreeRecursive(root);
-
-            YGConfigFree(config);
         }
     }
 }

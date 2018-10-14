@@ -138,9 +138,6 @@ namespace Xamarin.Yoga
         string          format,
         params object[] args);
 
-    public delegate YGNodeRef YGCloneNodeFunc(YGNodeRef oldNode, YGNodeRef owner, int childIndex);
-
-
     public static partial class YGGlobal
     {
         public static void YGDefaultLog(
@@ -268,49 +265,30 @@ namespace Xamarin.Yoga
             return node.IsDirty;
         }
 
-        public static bool YGNodeLayoutGetDidUseLegacyFlag(YGNodeRef node)
-        {
-            return node.didUseLegacyFlag();
-        }
-
         public static void YGNodeMarkDirtyAndPropogateToDescendants(YGNodeRef node)
         {
             node.markDirtyAndPropogateDownwards();
         }
 
         public static int gNodeInstanceCount   = 0;
-        public static int gConfigInstanceCount = 0;
 
         // WIN_EXPORT 
         public static YGNodeRef YGNodeNewWithConfig(YGConfigRef config)
         {
-            var node = new YGNode();
-            YGAssertWithConfig(
-                config,
-                node != null,
-                "Could not allocate memory for node");
+            var node = new YGNode(config);
             gNodeInstanceCount++;
 
-            if (config.useWebDefaults)
+            if (config.UseWebDefaults)
             {
                 node.setStyleFlexDirection(YGFlexDirection.Row);
                 node.setStyleAlignContent(YGAlign.Stretch);
             }
-
-            node.setConfig(config);
             return node;
-        }
-
-        private static YGConfigRef defaultConfig = YGConfigNew();
-
-        public static YGConfigRef YGConfigGetDefault()
-        {
-            return defaultConfig;
         }
 
         public static YGNodeRef YGNodeNew()
         {
-            return YGNodeNewWithConfig(YGConfigGetDefault());
+            return YGNodeNewWithConfig( YGConfig.DefaultConfig );
         }
 
         public static YGNodeRef YGNodeClone(YGNodeRef oldNode)
@@ -319,16 +297,6 @@ namespace Xamarin.Yoga
             gNodeInstanceCount++;
             node.setOwner(null);
             return node;
-        }
-
-        private static YGConfigRef YGConfigClone(YGConfig oldConfig)
-        {
-            var config = new YGConfig(oldConfig);
-            YGAssert(config != null, "Could not allocate memory for config");
-            if (config == null) throw new NullReferenceException();
-
-            gConfigInstanceCount++;
-            return config;
         }
 
         private static YGNodeRef YGNodeDeepClone(YGNodeRef oldNode)
@@ -345,7 +313,8 @@ namespace Xamarin.Yoga
 
             node.setChildren(vec);
 
-            if (oldNode.getConfig() != null) node.setConfig(YGConfigClone(oldNode.getConfig()));
+            if (oldNode.Config != null)
+                node.Config = new YGConfig(oldNode.Config);
 
             return node;
         }
@@ -366,17 +335,16 @@ namespace Xamarin.Yoga
                 child.setOwner(null);
             }
 
-            node.clearChildren();
+            node.ClearChildren();
             //delete node;
             gNodeInstanceCount--;
         }
 
         internal static void YGConfigFreeRecursive(YGNodeRef root)
         {
-            if (root.getConfig() != null) gConfigInstanceCount--;
-
             // Delete configs recursively for childrens
-            foreach (var child in root.getChildren()) YGConfigFreeRecursive(child);
+            foreach (var child in root.getChildren())
+                YGConfigFreeRecursive(child);
         }
 
         public static void YGNodeFreeRecursive(YGNodeRef root)
@@ -404,46 +372,20 @@ namespace Xamarin.Yoga
                 node.getOwner() == null,
                 "Cannot reset a node still attached to a owner");
 
-            node.clearChildren();
+            node.ClearChildren();
 
-            var config = node.getConfig();
-            node = new YGNode();
-            if (config.useWebDefaults)
+            var config = node.Config;
+            node = new YGNode(config);
+            if (config.UseWebDefaults)
             {
                 node.setStyleFlexDirection(YGFlexDirection.Row);
                 node.setStyleAlignContent(YGAlign.Stretch);
             }
-
-            node.setConfig(config);
         }
 
         public static int YGNodeGetInstanceCount()
         {
             return gNodeInstanceCount;
-        }
-
-        public static int YGConfigGetInstanceCount()
-        {
-            return gConfigInstanceCount;
-        }
-
-        public static YGConfigRef YGConfigNew()
-        {
-            var config = new YGConfig(YGDefaultLog);
-
-            gConfigInstanceCount++;
-            return config;
-        }
-
-        public static void YGConfigFree(YGConfigRef config)
-        {
-            //delete config;
-            gConfigInstanceCount--;
-        }
-
-        public static void YGConfigCopy(YGConfigRef dest, YGConfigRef src)
-        {
-            dest.CloneFrom(src);
         }
 
         public static void YGNodeInsertChild(
@@ -509,8 +451,6 @@ namespace Xamarin.Yoga
             // Otherwise we have to clone the node list except for the child we're trying
             // to delete. We don't want to simply clone all children, because then the
             // host will need to free the clone of the child that was just deleted.
-            var cloneNodeCallback =
-                owner.getConfig().cloneNodeCallback;
             var nextInsertIndex = 0;
             for (var i = 0; i < childCount; i++)
             {
@@ -524,10 +464,7 @@ namespace Xamarin.Yoga
                     continue;
                 }
 
-                YGNodeRef newChild                      = null;
-                if (cloneNodeCallback != null) newChild = cloneNodeCallback(oldChild, owner, nextInsertIndex);
-
-                if (newChild == null) newChild = YGNodeClone(oldChild);
+                YGNodeRef newChild = YGNodeClone(oldChild);
 
                 owner.replaceChild(newChild, nextInsertIndex);
                 newChild.setOwner(owner);
@@ -559,7 +496,7 @@ namespace Xamarin.Yoga
                     oldChild.setOwner(null);
                 }
 
-                owner.clearChildren();
+                owner.ClearChildren();
                 owner.markDirtyAndPropogate();
                 return;
             }
@@ -676,7 +613,7 @@ namespace Xamarin.Yoga
         public static float YGNodeStyleGetFlexShrink(YGNodeRef node)
         {
             return node.Style.flexShrink.isUndefined()
-                ? (node.getConfig().useWebDefaults
+                ? (node.Config.UseWebDefaults
                     ? kWebDefaultFlexShrink
                     : kDefaultFlexShrink)
                 : node.Style.flexShrink.getValue();
@@ -1541,12 +1478,6 @@ type, name, paramName, instanceName)                                     \
             return node.Layout.padding[(int) edge];
         }
 
-
-        public static bool YGNodeLayoutGetDidLegacyStretchFlagAffectLayout(YGNodeRef node)
-        {
-            return node.Layout.DoesLegacyStretchFlagAffectsLayout;
-        }
-
         public static int gCurrentGenerationCount = 0;
 
         internal static void YGNodePrintInternal(
@@ -1813,9 +1744,8 @@ type, name, paramName, instanceName)                                     \
             if (!resolvedFlexBasis.isUndefined() && !YGFloatIsUndefined(mainAxisSize))
             {
                 if (child.Layout.ComputedFlexBasis.isUndefined() ||
-                    YGConfigIsExperimentalFeatureEnabled(child.getConfig(), YGExperimentalFeature.WebFlexBasis) &&
-                    child.Layout.ComputedFlexBasisGeneration !=
-                    gCurrentGenerationCount)
+                    child.Config.ExperimentalFeatures.HasFlag(YGExperimentalFeatures.WebFlexBasis) &&
+                    child.Layout.ComputedFlexBasisGeneration != gCurrentGenerationCount)
                 {
                     var paddingAndBorder = new YGFloatOptional(YGNodePaddingAndBorderForAxis(child, mainAxis, ownerWidth));
                     child.Layout.ComputedFlexBasis = YGFloatOptionalMax(resolvedFlexBasis, paddingAndBorder);
@@ -3556,18 +3486,12 @@ type, name, paramName, instanceName)                                     \
                     }
                     else
                     {
-                        if (!node.getConfig().useLegacyStretchBehaviour &&
-                            (YGFloatIsUndefined(
-                                    collectedFlexItemsValues.totalFlexGrowFactors) &&
-                                collectedFlexItemsValues.totalFlexGrowFactors == 0 ||
-                                YGFloatIsUndefined(node.resolveFlexGrow()) &&
+                        if ((YGFloatIsUndefined(collectedFlexItemsValues.totalFlexGrowFactors) &&
+                                collectedFlexItemsValues.totalFlexGrowFactors == 0 || YGFloatIsUndefined(node.resolveFlexGrow()) &&
                                 node.resolveFlexGrow() == 0))
-                            availableInnerMainDim =
-                                collectedFlexItemsValues.sizeConsumedOnCurrentLine;
+                            availableInnerMainDim = collectedFlexItemsValues.sizeConsumedOnCurrentLine;
 
-                        if (node.getConfig().useLegacyStretchBehaviour) node.Layout.DidUseLegacyFlag = true;
-
-                        sizeBasedOnContent = !node.getConfig().useLegacyStretchBehaviour;
+                        sizeBasedOnContent = true;
                     }
                 }
 
@@ -4731,73 +4655,19 @@ type, name, paramName, instanceName)                                     \
                 ownerHeight,
                 true,
                 "initial",
-                node.getConfig()))
+                node.Config))
             {
                 node.setPosition(
                     node.Layout.Direction,
                     ownerWidth,
                     ownerHeight,
                     ownerWidth);
-                YGRoundToPixelGrid(node, node.getConfig().pointScaleFactor, 0.0f, 0.0f);
+                YGRoundToPixelGrid(node, node.Config.pointScaleFactor, 0.0f, 0.0f);
 
-                if (node.getConfig().printTree)
+                if (node.Config.printTree)
                     YGNodePrint(
                         node,
                         YGPrintOptions.Layout | YGPrintOptions.Children | YGPrintOptions.Style);
-            }
-
-            // We want to get rid off `useLegacyStretchBehaviour` from YGConfig. But we
-            // aren't sure whether client's of yoga have gotten rid off this flag or not.
-            // So logging this in YGLayout would help to find out the call sites depending
-            // on this flag. This check would be removed once we are sure no one is
-            // dependent on this flag anymore. The flag
-            // `shouldDiffLayoutWithoutLegacyStretchBehaviour` in YGConfig will help to
-            // run experiments.
-            if (node.getConfig().shouldDiffLayoutWithoutLegacyStretchBehaviour &&
-                node.didUseLegacyFlag())
-            {
-                var originalNode = YGNodeDeepClone(node);
-                originalNode.resolveDimension();
-                // Recursively mark nodes as dirty
-                originalNode.markDirtyAndPropogateDownwards();
-                gCurrentGenerationCount++;
-                // Rerun the layout, and calculate the diff
-                originalNode.setAndPropogateUseLegacyFlag(false);
-                if (YGLayoutNodeInternal(
-                    originalNode,
-                    width,
-                    height,
-                    ownerDirection,
-                    widthMeasureMode,
-                    heightMeasureMode,
-                    ownerWidth,
-                    ownerHeight,
-                    true,
-                    "initial",
-                    originalNode.getConfig()))
-                {
-                    originalNode.setPosition(
-                        originalNode.Layout.Direction,
-                        ownerWidth,
-                        ownerHeight,
-                        ownerWidth);
-                    YGRoundToPixelGrid(
-                        originalNode,
-                        originalNode.getConfig().pointScaleFactor,
-                        0.0f,
-                        0.0f);
-
-                    // Set whether the two layouts are different or not.
-                    node.Layout.DoesLegacyStretchFlagAffectsLayout = !originalNode.isLayoutTreeEqualToNode(node);
-
-                    if (originalNode.getConfig().printTree)
-                        YGNodePrint(
-                            originalNode,
-                            YGPrintOptions.Layout | YGPrintOptions.Children | YGPrintOptions.Style);
-                }
-
-                YGConfigFreeRecursive(originalNode);
-                YGNodeFreeRecursive(originalNode);
             }
         }
 
@@ -4806,21 +4676,13 @@ type, name, paramName, instanceName)                                     \
             config.logger = logger ?? YGDefaultLog;
         }
 
-        public static void YGConfigSetShouldDiffLayoutWithoutLegacyStretchBehaviour(
-            YGConfigRef config,
-            bool        shouldDiffLayout)
-        {
-            config.shouldDiffLayoutWithoutLegacyStretchBehaviour = shouldDiffLayout;
-        }
-
         internal static void YGVLog(
             YGConfigRef config,
             YGNodeRef   node,
             YGLogLevel  level,
             string      format, params object[] args)
         {
-            var logConfig =
-                config != null ? config : YGConfigGetDefault();
+            var logConfig = config ?? YGConfig.DefaultConfig;
             logConfig.logger(logConfig, node, level, format, args);
 
             if (level == YGLogLevel.Fatal) throw new SystemException();
@@ -4834,7 +4696,7 @@ type, name, paramName, instanceName)                                     \
         public static void YGLog(YGNodeRef node, YGLogLevel level, string message)
         {
             YGVLog(
-                node == null ? null : node.getConfig(),
+                node == null ? null : node.Config,
                 node,
                 level,
                 message);
@@ -4858,57 +4720,8 @@ type, name, paramName, instanceName)                                     \
             bool        condition,
             string      message)
         {
-            if (!condition) YGLogWithConfig(config, YGLogLevel.Fatal, "{message}\n");
-        }
-
-        public static void YGConfigSetExperimentalFeatureEnabled(
-            YGConfigRef           config,
-            YGExperimentalFeature feature,
-            bool                  enabled)
-        {
-            config.experimentalFeatures[(int) feature] = enabled;
-        }
-
-        // inline
-        public static bool YGConfigIsExperimentalFeatureEnabled(
-            YGConfigRef           config,
-            YGExperimentalFeature feature)
-        {
-            return config.experimentalFeatures[(int) feature];
-        }
-
-        public static void YGConfigSetUseWebDefaults(YGConfigRef config, bool enabled)
-        {
-            config.useWebDefaults = enabled;
-        }
-
-        public static void YGConfigSetUseLegacyStretchBehaviour(
-            YGConfigRef config,
-            bool        useLegacyStretchBehaviour)
-        {
-            config.useLegacyStretchBehaviour = useLegacyStretchBehaviour;
-        }
-
-        public static bool YGConfigGetUseWebDefaults(YGConfigRef config)
-        {
-            return config.useWebDefaults;
-        }
-
-        public static void YGConfigSetContext(YGConfigRef config, object context)
-        {
-            config.context = context;
-        }
-
-        public static object YGConfigGetContext(YGConfigRef config)
-        {
-            return config.context;
-        }
-
-        public static void YGConfigSetCloneNodeFunc(
-            YGConfigRef     config,
-            YGCloneNodeFunc callback)
-        {
-            config.cloneNodeCallback = callback;
+            if (!condition)
+                YGLogWithConfig(config, YGLogLevel.Fatal, "{message}\n");
         }
 
         internal static void YGTraverseChildrenPreOrder(
@@ -4932,385 +4745,4 @@ type, name, paramName, instanceName)                                     \
             YGTraverseChildrenPreOrder(node.getChildren(), f);
         }
     }
-
-    /*
-    // YGNode
-    WIN_EXPORT YGNodeRef YGNodeNew(void);
-    WIN_EXPORT YGNodeRef YGNodeNewWithConfig(const YGConfigRef config);
-    WIN_EXPORT YGNodeRef YGNodeClone(const YGNodeRef node);
-    WIN_EXPORT void YGNodeFree(const YGNodeRef node);
-    WIN_EXPORT void YGNodeFreeRecursive(const YGNodeRef node);
-    WIN_EXPORT void YGNodeReset(const YGNodeRef node);
-    WIN_EXPORT int YGNodeGetInstanceCount(void);
-
-    WIN_EXPORT void YGNodeInsertChild(
-    const YGNodeRef node,
-        const YGNodeRef child,
-        const UInt32 index);
-
-    // This function inserts the child YGNodeRef as a children of the node received
-    // by parameter and set the Owner of the child object to null. This function is
-    // expected to be called when using Yoga in persistent mode in order to share a
-    // YGNodeRef object as a child of two different Yoga trees. The child YGNodeRef
-    // is expected to be referenced from its original owner and from a clone of its
-    // original owner.
-    WIN_EXPORT void YGNodeInsertSharedChild(
-    const YGNodeRef node,
-        const YGNodeRef child,
-        const UInt32 index);
-    WIN_EXPORT void YGNodeRemoveChild(const YGNodeRef node, const YGNodeRef child);
-    WIN_EXPORT void YGNodeRemoveAllChildren(const YGNodeRef node);
-    WIN_EXPORT YGNodeRef YGNodeGetChild(const YGNodeRef node, const UInt32 index);
-    WIN_EXPORT YGNodeRef YGNodeGetOwner(const YGNodeRef node);
-    WIN_EXPORT YGNodeRef YGNodeGetParent(const YGNodeRef node);
-    WIN_EXPORT UInt32 YGNodeGetChildCount(const YGNodeRef node);
-    WIN_EXPORT void YGNodeSetChildren(
-        YGNodeRef const owner,
-        const YGNodeRef children[],
-        const UInt32 count);
-
-    WIN_EXPORT void YGNodeCalculateLayout(
-    const YGNodeRef node,
-        const float availableWidth,
-        const float availableHeight,
-        const YGDirection ownerDirection);
-
-    // Mark a node as dirty. Only valid for nodes with a custom measure function
-    // set.
-    // YG knows when to mark all other nodes as dirty but because nodes with
-    // measure functions
-    // depends on information not known to YG they must perform this dirty
-    // marking manually.
-    WIN_EXPORT void YGNodeMarkDirty(const YGNodeRef node);
-
-    // This function marks the current node and all its descendants as dirty. This
-    // function is added to test yoga benchmarks. This function is not expected to
-    // be used in production as calling `YGCalculateLayout` will cause the
-    // recalculation of each and every node.
-    WIN_EXPORT void YGNodeMarkDirtyAndPropogateToDescendants(const YGNodeRef node);
-
-    WIN_EXPORT void YGNodePrint(const YGNodeRef node, const YGPrintOptions options);
-
-    WIN_EXPORT bool YGFloatIsUndefined(const float value);
-
-    WIN_EXPORT bool YGNodeCanUseCachedMeasurement(
-    const YGMeasureMode widthMode,
-        const float width,
-        const YGMeasureMode heightMode,
-        const float height,
-        const YGMeasureMode lastWidthMode,
-        const float lastWidth,
-        const YGMeasureMode lastHeightMode,
-        const float lastHeight,
-        const float lastComputedWidth,
-        const float lastComputedHeight,
-        const float marginRow,
-        const float marginColumn,
-        const YGConfigRef config);
-
-    WIN_EXPORT void YGNodeCopyStyle(
-    const YGNodeRef dstNode,
-        const YGNodeRef srcNode);
-
-    void* YGNodeGetContext(YGNodeRef node);
-    void YGNodeSetContext(YGNodeRef node, void* context);
-    void YGConfigSetPrintTreeFlag(YGConfigRef config, bool enabled);
-    YGMeasureFunc YGNodeGetMeasureFunc(YGNodeRef node);
-    void YGNodeSetMeasureFunc(YGNodeRef node, YGMeasureFunc measureFunc);
-    YGBaselineFunc YGNodeGetBaselineFunc(YGNodeRef node);
-    void YGNodeSetBaselineFunc(YGNodeRef node, YGBaselineFunc baselineFunc);
-    YGDirtiedFunc YGNodeGetDirtiedFunc(YGNodeRef node);
-    void YGNodeSetDirtiedFunc(YGNodeRef node, YGDirtiedFunc dirtiedFunc);
-    YGPrintFunc YGNodeGetPrintFunc(YGNodeRef node);
-    void YGNodeSetPrintFunc(YGNodeRef node, YGPrintFunc printFunc);
-    bool YGNodeGetHasNewLayout(YGNodeRef node);
-    void YGNodeSetHasNewLayout(YGNodeRef node, bool hasNewLayout);
-    YGNodeType YGNodeGetNodeType(YGNodeRef node);
-    void YGNodeSetNodeType(YGNodeRef node, YGNodeType nodeType);
-    bool YGNodeIsDirty(YGNodeRef node);
-    bool YGNodeLayoutGetDidUseLegacyFlag(const YGNodeRef node);
-
-    WIN_EXPORT void YGNodeStyleSetDirection(
-    const YGNodeRef node,
-        const YGDirection direction);
-    WIN_EXPORT YGDirection YGNodeStyleGetDirection(const YGNodeRef node);
-
-    WIN_EXPORT void YGNodeStyleSetFlexDirection(
-    const YGNodeRef node,
-        const YGFlexDirection flexDirection);
-    WIN_EXPORT YGFlexDirection YGNodeStyleGetFlexDirection(const YGNodeRef node);
-
-    WIN_EXPORT void YGNodeStyleSetJustifyContent(
-    const YGNodeRef node,
-        const YGJustify justifyContent);
-    WIN_EXPORT YGJustify YGNodeStyleGetJustifyContent(const YGNodeRef node);
-
-    WIN_EXPORT void YGNodeStyleSetAlignContent(
-    const YGNodeRef node,
-        const YGAlign alignContent);
-    WIN_EXPORT YGAlign YGNodeStyleGetAlignContent(const YGNodeRef node);
-
-    WIN_EXPORT void YGNodeStyleSetAlignItems(
-    const YGNodeRef node,
-        const YGAlign alignItems);
-    WIN_EXPORT YGAlign YGNodeStyleGetAlignItems(const YGNodeRef node);
-
-    WIN_EXPORT void YGNodeStyleSetAlignSelf(
-    const YGNodeRef node,
-        const YGAlign alignSelf);
-    WIN_EXPORT YGAlign YGNodeStyleGetAlignSelf(const YGNodeRef node);
-
-    WIN_EXPORT void YGNodeStyleSetPositionType(
-    const YGNodeRef node,
-        const YGPositionType positionType);
-    WIN_EXPORT YGPositionType YGNodeStyleGetPositionType(const YGNodeRef node);
-
-    WIN_EXPORT void YGNodeStyleSetFlexWrap(
-    const YGNodeRef node,
-        const YGWrap flexWrap);
-    WIN_EXPORT YGWrap YGNodeStyleGetFlexWrap(const YGNodeRef node);
-
-    WIN_EXPORT void YGNodeStyleSetOverflow(
-    const YGNodeRef node,
-        const YGOverflow overflow);
-    WIN_EXPORT YGOverflow YGNodeStyleGetOverflow(const YGNodeRef node);
-
-    WIN_EXPORT void YGNodeStyleSetDisplay(
-    const YGNodeRef node,
-        const YGDisplay display);
-    WIN_EXPORT YGDisplay YGNodeStyleGetDisplay(const YGNodeRef node);
-
-    WIN_EXPORT void YGNodeStyleSetFlex(const YGNodeRef node, const float flex);
-    WIN_EXPORT float YGNodeStyleGetFlex(const YGNodeRef node);
-
-    WIN_EXPORT void YGNodeStyleSetFlexGrow(
-    const YGNodeRef node,
-        const float flexGrow);
-    WIN_EXPORT float YGNodeStyleGetFlexGrow(const YGNodeRef node);
-
-    WIN_EXPORT void YGNodeStyleSetFlexShrink(
-    const YGNodeRef node,
-        const float flexShrink);
-    WIN_EXPORT float YGNodeStyleGetFlexShrink(const YGNodeRef node);
-
-    WIN_EXPORT void YGNodeStyleSetFlexBasis(
-    const YGNodeRef node,
-        const float flexBasis);
-    WIN_EXPORT void YGNodeStyleSetFlexBasisPercent(
-    const YGNodeRef node,
-        const float flexBasis);
-    WIN_EXPORT void YGNodeStyleSetFlexBasisAuto(const YGNodeRef node);
-    WIN_EXPORT YGValue YGNodeStyleGetFlexBasis(const YGNodeRef node);
-
-    WIN_EXPORT void YGNodeStyleSetPosition(
-    const YGNodeRef node,
-        const YGEdge edge,
-        const float position);
-    WIN_EXPORT void YGNodeStyleSetPositionPercent(
-    const YGNodeRef node,
-        const YGEdge edge,
-        const float position);
-    WIN_EXPORT WIN_STRUCT(YGValue)
-    YGNodeStyleGetPosition(const YGNodeRef node, const YGEdge edge);
-
-    WIN_EXPORT void YGNodeStyleSetMargin(
-    const YGNodeRef node,
-        const YGEdge edge,
-        const float margin);
-    WIN_EXPORT void YGNodeStyleSetMarginPercent(
-    const YGNodeRef node,
-        const YGEdge edge,
-        const float margin);
-    WIN_EXPORT void YGNodeStyleSetMarginAuto(
-    const YGNodeRef node,
-        const YGEdge edge);
-    WIN_EXPORT YGValue
-YGNodeStyleGetMargin(const YGNodeRef node, const YGEdge edge);
-
-    WIN_EXPORT void YGNodeStyleSetPadding(
-    const YGNodeRef node,
-        const YGEdge edge,
-        const float padding);
-    WIN_EXPORT void YGNodeStyleSetPaddingPercent(
-    const YGNodeRef node,
-        const YGEdge edge,
-        const float padding);
-    WIN_EXPORT YGValue
-YGNodeStyleGetPadding(const YGNodeRef node, const YGEdge edge);
-
-    WIN_EXPORT void YGNodeStyleSetBorder(
-    const YGNodeRef node,
-        const YGEdge edge,
-        const float border);
-    WIN_EXPORT float YGNodeStyleGetBorder(const YGNodeRef node, const YGEdge edge);
-
-    WIN_EXPORT void YGNodeStyleSetWidth(const YGNodeRef node, const float width);
-    WIN_EXPORT void YGNodeStyleSetWidthPercent(
-    const YGNodeRef node,
-        const float width);
-    WIN_EXPORT void YGNodeStyleSetWidthAuto(const YGNodeRef node);
-    WIN_EXPORT YGValue YGNodeStyleGetWidth(const YGNodeRef node);
-
-    WIN_EXPORT void YGNodeStyleSetHeight(const YGNodeRef node, const float height);
-    WIN_EXPORT void YGNodeStyleSetHeightPercent(
-    const YGNodeRef node,
-        const float height);
-    WIN_EXPORT void YGNodeStyleSetHeightAuto(const YGNodeRef node);
-    WIN_EXPORT YGValue YGNodeStyleGetHeight(const YGNodeRef node);
-
-    WIN_EXPORT void YGNodeStyleSetMinWidth(
-    const YGNodeRef node,
-        const float minWidth);
-    WIN_EXPORT void YGNodeStyleSetMinWidthPercent(
-    const YGNodeRef node,
-        const float minWidth);
-    WIN_EXPORT YGValue YGNodeStyleGetMinWidth(const YGNodeRef node);
-
-    WIN_EXPORT void YGNodeStyleSetMinHeight(
-    const YGNodeRef node,
-        const float minHeight);
-    WIN_EXPORT void YGNodeStyleSetMinHeightPercent(
-    const YGNodeRef node,
-        const float minHeight);
-    WIN_EXPORT YGValue YGNodeStyleGetMinHeight(const YGNodeRef node);
-
-    WIN_EXPORT void YGNodeStyleSetMaxWidth(
-    const YGNodeRef node,
-        const float maxWidth);
-    WIN_EXPORT void YGNodeStyleSetMaxWidthPercent(
-    const YGNodeRef node,
-        const float maxWidth);
-    WIN_EXPORT YGValue YGNodeStyleGetMaxWidth(const YGNodeRef node);
-
-    WIN_EXPORT void YGNodeStyleSetMaxHeight(
-    const YGNodeRef node,
-        const float maxHeight);
-    WIN_EXPORT void YGNodeStyleSetMaxHeightPercent(
-    const YGNodeRef node,
-        const float maxHeight);
-    WIN_EXPORT YGValue YGNodeStyleGetMaxHeight(const YGNodeRef node);
-
-    // Yoga specific properties, not compatible with flexbox specification
-    // Aspect ratio control the size of the undefined dimension of a node.
-    // Aspect ratio is encoded as a floating point value width/height. e.g. A value
-    // of 2 leads to a node with a width twice the size of its height while a value
-    // of 0.5 gives the opposite effect.
-    //
-    // - On a node with a set width/height aspect ratio control the size of the
-    // unset dimension
-    // - On a node with a set flex basis aspect ratio controls the size of the node
-    // in the cross axis if unset
-    // - On a node with a measure function aspect ratio works as though the measure
-    // function measures the flex basis
-    // - On a node with flex grow/shrink aspect ratio controls the size of the node
-    // in the cross axis if unset
-    // - Aspect ratio takes min/max dimensions into account
-    WIN_EXPORT void YGNodeStyleSetAspectRatio(
-    const YGNodeRef node,
-        const float aspectRatio);
-    WIN_EXPORT float YGNodeStyleGetAspectRatio(const YGNodeRef node);
-
-    WIN_EXPORT float YGNodeLayoutGetLeft(const YGNodeRef node);
-    WIN_EXPORT float YGNodeLayoutGetTop(const YGNodeRef node);
-    WIN_EXPORT float YGNodeLayoutGetRight(const YGNodeRef node);
-    WIN_EXPORT float YGNodeLayoutGetBottom(const YGNodeRef node);
-    WIN_EXPORT float YGNodeLayoutGetWidth(const YGNodeRef node);
-    WIN_EXPORT float YGNodeLayoutGetHeight(const YGNodeRef node);
-    WIN_EXPORT YGDirection YGNodeLayoutGetDirection(const YGNodeRef node);
-    WIN_EXPORT bool YGNodeLayoutGetHadOverflow(const YGNodeRef node);
-    bool YGNodeLayoutGetDidLegacyStretchFlagAffectLayout(const YGNodeRef node);
-
-    // Get the computed values for these nodes after performing layout. If they were
-    // set using point values then the returned value will be the same as
-    // YGNodeStyleGetXXX. However if they were set using a percentage value then the
-    // returned value is the computed value used during layout.
-    WIN_EXPORT float YGNodeLayoutGetMargin(const YGNodeRef node, const YGEdge edge);
-    WIN_EXPORT float YGNodeLayoutGetBorder(const YGNodeRef node, const YGEdge edge);
-    WIN_EXPORT float YGNodeLayoutGetPadding(
-    const YGNodeRef node,
-        const YGEdge edge);
-
-    WIN_EXPORT void YGConfigSetLogger(const YGConfigRef config, YGLogger logger);
-    WIN_EXPORT void
-    YGLog(const YGNodeRef node, YGLogLevel level, const char* message, ...);
-    WIN_EXPORT void YGLogWithConfig(
-    const YGConfigRef config,
-        YGLogLevel level,
-        const char* format,
-        ...);
-    WIN_EXPORT void YGAssert(const bool condition, const char* message);
-    WIN_EXPORT void YGAssertWithNode(
-    const YGNodeRef node,
-        const bool condition,
-        const char* message);
-    WIN_EXPORT void YGAssertWithConfig(
-    const YGConfigRef config,
-        const bool condition,
-        const char* message);
-    // Set this to number of pixels in 1 point to round calculation results
-    // If you want to avoid rounding - set PointScaleFactor to 0
-    WIN_EXPORT void YGConfigSetPointScaleFactor(
-    const YGConfigRef config,
-        const float pixelsInPoint);
-    void YGConfigSetShouldDiffLayoutWithoutLegacyStretchBehaviour(
-    const YGConfigRef config,
-        const bool shouldDiffLayout);
-
-    // Yoga previously had an error where containers would take the maximum space
-    // possible instead of the minimum like they are supposed to. In practice this
-    // resulted in implicit behaviour similar to align-self: stretch; Because this
-    // was such a long-standing bug we must allow legacy users to switch back to
-    // this behaviour.
-    WIN_EXPORT void YGConfigSetUseLegacyStretchBehaviour(
-    const YGConfigRef config,
-        const bool useLegacyStretchBehaviour);
-
-    // YGConfig
-    WIN_EXPORT YGConfigRef YGConfigNew(void);
-    WIN_EXPORT void YGConfigFree(const YGConfigRef config);
-    WIN_EXPORT void YGConfigCopy(const YGConfigRef dest, const YGConfigRef src);
-    WIN_EXPORT int YGConfigGetInstanceCount(void);
-
-    WIN_EXPORT void YGConfigSetExperimentalFeatureEnabled(
-    const YGConfigRef config,
-        const YGExperimentalFeature feature,
-        const bool enabled);
-    WIN_EXPORT bool YGConfigIsExperimentalFeatureEnabled(
-    const YGConfigRef config,
-        const YGExperimentalFeature feature);
-
-    // Using the web defaults is the prefered configuration for new projects.
-    // Usage of non web defaults should be considered as legacy.
-    WIN_EXPORT void YGConfigSetUseWebDefaults(
-    const YGConfigRef config,
-        const bool enabled);
-    WIN_EXPORT bool YGConfigGetUseWebDefaults(const YGConfigRef config);
-
-    WIN_EXPORT void YGConfigSetCloneNodeFunc(
-    const YGConfigRef config,
-        const YGCloneNodeFunc callback);
-
-    // Export only for C#
-    WIN_EXPORT YGConfigRef YGConfigGetDefault(void);
-
-    WIN_EXPORT void YGConfigSetContext(const YGConfigRef config, void* context);
-    WIN_EXPORT void* YGConfigGetContext(const YGConfigRef config);
-
-    WIN_EXPORT float YGRoundValueToPixelGrid(
-    const float value,
-        const float pointScaleFactor,
-        const bool forceCeil,
-        const bool forceFloor);
-
-
-// Calls f on each node in the tree including the given node argument.
-extern void YGTraversePreOrder(
-    YGNodeRef const node,
-    std::function<void(YGNodeRef node)>&& f);
-
-extern void YGNodeSetChildren(
-    YGNodeRef const owner,
-    const std::vector<YGNodeRef>& children);
-
-    */
 }

@@ -17,7 +17,7 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void align_items_stretch()
         {
-            YGConfigRef config = YGConfigNew();
+            YGConfigRef config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetWidth(root, 100);
@@ -51,14 +51,12 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(10,  root_child0.Layout.Height);
 
             YGNodeFreeRecursive(root);
-
-            YGConfigFree(config);
         }
 
         [TestMethod]
         public void align_items_center()
         {
-            YGConfigRef config = YGConfigNew();
+            YGConfigRef config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetAlignItems(root, YGAlign.Center);
@@ -94,14 +92,12 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(10, root_child0.Layout.Height);
 
             YGNodeFreeRecursive(root);
-
-            YGConfigFree(config);
         }
 
         [TestMethod]
         public void align_items_flex_start()
         {
-            YGConfigRef config = YGConfigNew();
+            YGConfigRef config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetAlignItems(root, YGAlign.FlexStart);
@@ -137,14 +133,12 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(10, root_child0.Layout.Height);
 
             YGNodeFreeRecursive(root);
-
-            YGConfigFree(config);
         }
 
         [TestMethod]
         public void align_items_flex_end()
         {
-            YGConfigRef config = YGConfigNew();
+            YGConfigRef config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetAlignItems(root, YGAlign.FlexEnd);
@@ -180,14 +174,12 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(10, root_child0.Layout.Height);
 
             YGNodeFreeRecursive(root);
-
-            YGConfigFree(config);
         }
 
         [TestMethod]
         public void align_baseline()
         {
-            YGConfigRef config = YGConfigNew();
+            YGConfigRef config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexDirection(root, YGFlexDirection.Row);
@@ -239,14 +231,12 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(20, root_child1.Layout.Height);
 
             YGNodeFreeRecursive(root);
-
-            YGConfigFree(config);
         }
 
         [TestMethod]
         public void align_baseline_child()
         {
-            YGConfigRef config = YGConfigNew();
+            YGConfigRef config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexDirection(root, YGFlexDirection.Row);
@@ -313,14 +303,12 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(10, root_child1_child0.Layout.Height);
 
             YGNodeFreeRecursive(root);
-
-            YGConfigFree(config);
         }
 
         [TestMethod]
         public void align_baseline_child_multiline()
         {
-            YGConfigRef config = YGConfigNew();
+            YGConfigRef config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexDirection(root, YGFlexDirection.Row);
@@ -434,14 +422,12 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(10, root_child1_child3.Layout.Height);
 
             YGNodeFreeRecursive(root);
-
-            YGConfigFree(config);
         }
 
         [TestMethod]
         public void align_baseline_child_multiline_override()
         {
-            YGConfigRef config = YGConfigNew();
+            YGConfigRef config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexDirection(root, YGFlexDirection.Row);
@@ -557,14 +543,12 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(10, root_child1_child3.Layout.Height);
 
             YGNodeFreeRecursive(root);
-
-            YGConfigFree(config);
         }
 
         [TestMethod]
         public void align_baseline_child_multiline_no_override_on_secondline()
         {
-            YGConfigRef config = YGConfigNew();
+            YGConfigRef config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexDirection(root, YGFlexDirection.Row);
@@ -679,14 +663,12 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(10, root_child1_child3.Layout.Height);
 
             YGNodeFreeRecursive(root);
-
-            YGConfigFree(config);
         }
 
         [TestMethod]
         public void align_baseline_child_top()
         {
-            YGConfigRef config = YGConfigNew();
+            YGConfigRef config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexDirection(root, YGFlexDirection.Row);
@@ -754,14 +736,12 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(10, root_child1_child0.Layout.Height);
 
             YGNodeFreeRecursive(root);
-
-            YGConfigFree(config);
         }
 
         [TestMethod]
         public void align_baseline_child_top2()
         {
-            YGConfigRef config = YGConfigNew();
+            YGConfigRef config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexDirection(root, YGFlexDirection.Row);
@@ -829,14 +809,12 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(10, root_child1_child0.Layout.Height);
 
             YGNodeFreeRecursive(root);
-
-            YGConfigFree(config);
         }
 
         [TestMethod]
         public void align_baseline_double_nested_child()
         {
-            YGConfigRef config = YGConfigNew();
+            YGConfigRef config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexDirection(root, YGFlexDirection.Row);
@@ -918,14 +896,12 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(15, root_child1_child0.Layout.Height);
 
             YGNodeFreeRecursive(root);
-
-            YGConfigFree(config);
         }
 
         [TestMethod]
         public void align_baseline_column()
         {
-            YGConfigRef config = YGConfigNew();
+            YGConfigRef config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetAlignItems(root, YGAlign.Baseline);
@@ -976,14 +952,12 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(20, root_child1.Layout.Height);
 
             YGNodeFreeRecursive(root);
-
-            YGConfigFree(config);
         }
 
         [TestMethod]
         public void align_baseline_child_margin()
         {
-            YGConfigRef config = YGConfigNew();
+            YGConfigRef config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexDirection(root, YGFlexDirection.Row);
@@ -1058,14 +1032,12 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(10, root_child1_child0.Layout.Height);
 
             YGNodeFreeRecursive(root);
-
-            YGConfigFree(config);
         }
 
         [TestMethod]
         public void align_baseline_child_padding()
         {
-            YGConfigRef config = YGConfigNew();
+            YGConfigRef config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexDirection(root, YGFlexDirection.Row);
@@ -1140,14 +1112,12 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(10, root_child1_child0.Layout.Height);
 
             YGNodeFreeRecursive(root);
-
-            YGConfigFree(config);
         }
 
         [TestMethod]
         public void align_baseline_multiline()
         {
-            YGConfigRef config = YGConfigNew();
+            YGConfigRef config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexDirection(root, YGFlexDirection.Row);
@@ -1260,14 +1230,12 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(50, root_child3.Layout.Height);
 
             YGNodeFreeRecursive(root);
-
-            YGConfigFree(config);
         }
 
         [TestMethod]
         public void align_baseline_multiline_column()
         {
-            YGConfigRef config = YGConfigNew();
+            YGConfigRef config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetAlignItems(root, YGAlign.Baseline);
@@ -1379,14 +1347,12 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(20, root_child3.Layout.Height);
 
             YGNodeFreeRecursive(root);
-
-            YGConfigFree(config);
         }
 
         [TestMethod]
         public void align_baseline_multiline_column2()
         {
-            YGConfigRef config = YGConfigNew();
+            YGConfigRef config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetAlignItems(root, YGAlign.Baseline);
@@ -1498,14 +1464,12 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(20, root_child3.Layout.Height);
 
             YGNodeFreeRecursive(root);
-
-            YGConfigFree(config);
         }
 
         [TestMethod]
         public void align_baseline_multiline_row_and_column()
         {
-            YGConfigRef config = YGConfigNew();
+            YGConfigRef config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexDirection(root, YGFlexDirection.Row);
@@ -1618,14 +1582,12 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(20, root_child3.Layout.Height);
 
             YGNodeFreeRecursive(root);
-
-            YGConfigFree(config);
         }
 
         [TestMethod]
         public void align_items_center_child_with_margin_bigger_than_parent()
         {
-            YGConfigRef config = YGConfigNew();
+            YGConfigRef config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetJustifyContent(root, YGJustify.Center);
@@ -1678,14 +1640,12 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(52, root_child0_child0.Layout.Height);
 
             YGNodeFreeRecursive(root);
-
-            YGConfigFree(config);
         }
 
         [TestMethod]
         public void align_items_flex_end_child_with_margin_bigger_than_parent()
         {
-            YGConfigRef config = YGConfigNew();
+            YGConfigRef config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetJustifyContent(root, YGJustify.Center);
@@ -1738,14 +1698,12 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(52, root_child0_child0.Layout.Height);
 
             YGNodeFreeRecursive(root);
-
-            YGConfigFree(config);
         }
 
         [TestMethod]
         public void align_items_center_child_without_margin_bigger_than_parent()
         {
-            YGConfigRef config = YGConfigNew();
+            YGConfigRef config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetJustifyContent(root, YGJustify.Center);
@@ -1796,14 +1754,12 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(72, root_child0_child0.Layout.Height);
 
             YGNodeFreeRecursive(root);
-
-            YGConfigFree(config);
         }
 
         [TestMethod]
         public void align_items_flex_end_child_without_margin_bigger_than_parent()
         {
-            YGConfigRef config = YGConfigNew();
+            YGConfigRef config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetJustifyContent(root, YGJustify.Center);
@@ -1854,14 +1810,12 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(72, root_child0_child0.Layout.Height);
 
             YGNodeFreeRecursive(root);
-
-            YGConfigFree(config);
         }
 
         [TestMethod]
         public void align_center_should_size_based_on_content()
         {
-            YGConfigRef config = YGConfigNew();
+            YGConfigRef config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetAlignItems(root, YGAlign.Center);
@@ -1928,14 +1882,12 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(20, root_child0_child0_child0.Layout.Height);
 
             YGNodeFreeRecursive(root);
-
-            YGConfigFree(config);
         }
 
         [TestMethod]
         public void align_strech_should_size_based_on_parent()
         {
-            YGConfigRef config = YGConfigNew();
+            YGConfigRef config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetMargin(root, YGEdge.Top, 20);
@@ -2001,14 +1953,12 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(20, root_child0_child0_child0.Layout.Height);
 
             YGNodeFreeRecursive(root);
-
-            YGConfigFree(config);
         }
 
         [TestMethod]
         public void align_flex_start_with_shrinking_children()
         {
-            YGConfigRef config = YGConfigNew();
+            YGConfigRef config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetWidth(root, 500);
@@ -2072,14 +2022,12 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(0, root_child0_child0_child0.Layout.Height);
 
             YGNodeFreeRecursive(root);
-
-            YGConfigFree(config);
         }
 
         [TestMethod]
         public void align_flex_start_with_stretching_children()
         {
-            YGConfigRef config = YGConfigNew();
+            YGConfigRef config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetWidth(root, 500);
@@ -2142,14 +2090,12 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(0,   root_child0_child0_child0.Layout.Height);
 
             YGNodeFreeRecursive(root);
-
-            YGConfigFree(config);
         }
 
         [TestMethod]
         public void align_flex_start_with_shrinking_children_with_stretch()
         {
-            YGConfigRef config = YGConfigNew();
+            YGConfigRef config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetWidth(root, 500);
@@ -2213,8 +2159,6 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(0, root_child0_child0_child0.Layout.Height);
 
             YGNodeFreeRecursive(root);
-
-            YGConfigFree(config);
         }
     }
 }

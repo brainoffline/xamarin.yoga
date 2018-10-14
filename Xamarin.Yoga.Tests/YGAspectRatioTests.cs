@@ -881,8 +881,7 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void aspect_ratio_should_prefer_explicit_height()
         {
-            YGConfigRef config = YGConfigNew();
-            YGConfigSetUseWebDefaults(config, true);
+            YGConfigRef config = new YGConfig { UseWebDefaults = true };
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexDirection(root, YGFlexDirection.Column);
@@ -914,8 +913,7 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void aspect_ratio_should_prefer_explicit_width()
         {
-            YGConfigRef config = YGConfigNew();
-            YGConfigSetUseWebDefaults(config, true);
+            YGConfigRef config = new YGConfig {UseWebDefaults = true};
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexDirection(root, YGFlexDirection.Row);
@@ -947,8 +945,7 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void aspect_ratio_should_prefer_flexed_dimension()
         {
-            YGConfigRef config = YGConfigNew();
-            YGConfigSetUseWebDefaults(config, true);
+            YGConfigRef config = new YGConfig {UseWebDefaults = true};
 
             YGNodeRef root = YGNodeNewWithConfig(config);
 

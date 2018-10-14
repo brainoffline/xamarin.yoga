@@ -30,8 +30,6 @@ namespace Xamarin.Yoga
         public          YGCachedMeasurement   CachedLayout                       { get; } = new YGCachedMeasurement();
         public          int                   ComputedFlexBasisGeneration        { get; set; }
         public          YGFloatOptional       ComputedFlexBasis                  { get; set; }
-        public          bool                  DidUseLegacyFlag                   { get; set; }
-        public          bool                  DoesLegacyStretchFlagAffectsLayout { get; set; }
 
         public YGPosition Position { get; } = new YGPosition();
         public float[] margin   = new float[6];
@@ -95,8 +93,6 @@ namespace Xamarin.Yoga
 
             LastOwnerDirection                 = YGDirection.NotSet;
             NextCachedMeasurementsIndex        = 0;
-            DidUseLegacyFlag                   = false;
-            DoesLegacyStretchFlagAffectsLayout = false;
 
             for (var i = 0; i < MaxCachedResultCount; i++) CachedMeasurements[i] = new YGCachedMeasurement();
         }
@@ -119,8 +115,6 @@ namespace Xamarin.Yoga
             LastOwnerDirection                 = other.LastOwnerDirection;
             NextCachedMeasurementsIndex        = other.NextCachedMeasurementsIndex;
             CachedLayout                       = other.CachedLayout.Clone();
-            DidUseLegacyFlag                   = false;
-            DoesLegacyStretchFlagAffectsLayout = false;
 
             for (var i = 0; i < MaxCachedResultCount; i++)
                 CachedMeasurements[i] = other.CachedMeasurements[i].Clone();
@@ -189,8 +183,6 @@ namespace Xamarin.Yoga
                 hashCode = (hashCode * 397) ^ NextCachedMeasurementsIndex;
                 hashCode = (hashCode * 397) ^ (CachedMeasurements != null ? CachedMeasurements.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (CachedLayout       != null ? CachedLayout.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ DidUseLegacyFlag.GetHashCode();
-                hashCode = (hashCode * 397) ^ DoesLegacyStretchFlagAffectsLayout.GetHashCode();
                 return hashCode;
             }
         }

@@ -123,10 +123,11 @@ namespace Xamarin.Yoga
     }
     /// WIN_EXPORT const char* YGEdgeToString(const YGEdge value);
 
-    public enum YGExperimentalFeature
+    [Flags]
+    public enum YGExperimentalFeatures
     {
         [Description("web-flex-basis")]
-        WebFlexBasis,
+        WebFlexBasis = 1
     }
     /// WIN_EXPORT const char* YGExperimentalFeatureToString(const YGExperimentalFeature value);
 

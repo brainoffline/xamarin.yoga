@@ -17,7 +17,7 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void cloning_shared_root()
         {
-            YGConfigRef config = YGConfigNew();
+            YGConfigRef config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetWidth(root, 100);
@@ -110,14 +110,14 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeFreeRecursive(root);
 
-            YGConfigFree(config);
+            
         }
 
         [Ignore("Clone works differently in .Net implementation")]
         [TestMethod]
         public void mutating_children_of_a_clone_clones()
         {
-            YGConfigRef config = YGConfigNew();
+            YGConfigRef config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             Assert.AreEqual(0, YGNodeGetChildCount(root));
@@ -156,13 +156,13 @@ namespace Xamarin.Yoga.Tests
             YGNodeFreeRecursive(root2);
             YGNodeFreeRecursive(root);
 
-            YGConfigFree(config);
+            
         }
 
         [TestMethod]
         public void cloning_two_levels()
         {
-            YGConfigRef config = YGConfigNew();
+            YGConfigRef config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetWidth(root, 100);
@@ -224,7 +224,7 @@ namespace Xamarin.Yoga.Tests
             YGNodeFreeRecursive(root2);
             YGNodeFreeRecursive(root);
 
-            YGConfigFree(config);
+            
         }
 
         [TestMethod]
@@ -232,7 +232,7 @@ namespace Xamarin.Yoga.Tests
         {
             int initialInstanceCount = YGNodeGetInstanceCount();
 
-            YGConfigRef config = YGConfigNew();
+            YGConfigRef config = new YGConfig();
 
             YGNodeRef root = YGNodeNewWithConfig(config);
             YGNodeStyleSetWidth(root, 100);
@@ -257,7 +257,7 @@ namespace Xamarin.Yoga.Tests
             YGNodeFree(root_child0);
             YGNodeFree(root_child1);
 
-            YGConfigFree(config);
+            
 
             Assert.AreEqual(initialInstanceCount, YGNodeGetInstanceCount());
         }

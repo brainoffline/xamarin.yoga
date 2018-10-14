@@ -104,26 +104,26 @@ namespace Xamarin.Yoga.Tests
             YGNodeStyleSetDisplay(child0, YGDisplay.Flex);
             YGNodeStyleSetDisplay(child1, YGDisplay.None);
             YGNodeCalculateLayout(root, YGUndefined, YGUndefined, YGDirection.LTR);
-            Assert.AreEqual(0, YGNodeLayoutGetWidth(child1_child0_child0));
-            Assert.AreEqual(0, YGNodeLayoutGetHeight(child1_child0_child0));
+            Assert.AreEqual(0, child1_child0_child0.Layout.Width);
+            Assert.AreEqual(0, child1_child0_child0.Layout.Height);
 
             YGNodeStyleSetDisplay(child0, YGDisplay.None);
             YGNodeStyleSetDisplay(child1, YGDisplay.Flex);
             YGNodeCalculateLayout(root, YGUndefined, YGUndefined, YGDirection.LTR);
-            Assert.AreEqual(8,  YGNodeLayoutGetWidth(child1_child0_child0));
-            Assert.AreEqual(16, YGNodeLayoutGetHeight(child1_child0_child0));
+            Assert.AreEqual(8,  child1_child0_child0.Layout.Width);
+            Assert.AreEqual(16, child1_child0_child0.Layout.Height);
 
             YGNodeStyleSetDisplay(child0, YGDisplay.Flex);
             YGNodeStyleSetDisplay(child1, YGDisplay.None);
             YGNodeCalculateLayout(root, YGUndefined, YGUndefined, YGDirection.LTR);
-            Assert.AreEqual(0, YGNodeLayoutGetWidth(child1_child0_child0));
-            Assert.AreEqual(0, YGNodeLayoutGetHeight(child1_child0_child0));
+            Assert.AreEqual(0, child1_child0_child0.Layout.Width);
+            Assert.AreEqual(0, child1_child0_child0.Layout.Height);
 
             YGNodeStyleSetDisplay(child0, YGDisplay.None);
             YGNodeStyleSetDisplay(child1, YGDisplay.Flex);
             YGNodeCalculateLayout(root, YGUndefined, YGUndefined, YGDirection.LTR);
-            Assert.AreEqual(8,  YGNodeLayoutGetWidth(child1_child0_child0));
-            Assert.AreEqual(16, YGNodeLayoutGetHeight(child1_child0_child0));
+            Assert.AreEqual(8,  child1_child0_child0.Layout.Width);
+            Assert.AreEqual(16, child1_child0_child0.Layout.Height);
 
             YGNodeFreeRecursive(root);
         }

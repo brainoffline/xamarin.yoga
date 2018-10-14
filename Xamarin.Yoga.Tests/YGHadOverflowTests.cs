@@ -53,7 +53,7 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeCalculateLayout(root, 200, 100, YGDirection.LTR);
 
-            Assert.IsTrue(YGNodeLayoutGetHadOverflow(root));
+            Assert.IsTrue(root.Layout.HadOverflow);
         }
 
         [TestMethod]
@@ -73,7 +73,7 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeCalculateLayout(root, 200, 100, YGDirection.LTR);
 
-            Assert.IsTrue(YGNodeLayoutGetHadOverflow(root));
+            Assert.IsTrue(root.Layout.HadOverflow);
         }
 
         [TestMethod]
@@ -94,7 +94,7 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeCalculateLayout(root, 200, 100, YGDirection.LTR);
 
-            Assert.IsFalse(YGNodeLayoutGetHadOverflow(root));
+            Assert.IsFalse(root.Layout.HadOverflow);
         }
 
         [TestMethod]
@@ -114,13 +114,13 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeCalculateLayout(root, 200, 100, YGDirection.LTR);
 
-            Assert.IsTrue(YGNodeLayoutGetHadOverflow(root));
+            Assert.IsTrue(root.Layout.HadOverflow);
 
             YGNodeStyleSetFlexShrink(child1, 1);
 
             YGNodeCalculateLayout(root, 200, 100, YGDirection.LTR);
 
-            Assert.IsFalse(YGNodeLayoutGetHadOverflow(root));
+            Assert.IsFalse(root.Layout.HadOverflow);
         }
 
         [TestMethod]
@@ -144,7 +144,7 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeCalculateLayout(root, 200, 100, YGDirection.LTR);
 
-            Assert.IsTrue(YGNodeLayoutGetHadOverflow(root));
+            Assert.IsTrue(root.Layout.HadOverflow);
         }
     }
 }

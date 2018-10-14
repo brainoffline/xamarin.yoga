@@ -26,17 +26,17 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeCalculateLayout(root, YGUndefined, YGUndefined, YGDirection.LTR);
 
-            Assert.AreEqual(0,   YGNodeLayoutGetLeft(root_child0));
-            Assert.AreEqual(0,   YGNodeLayoutGetTop(root_child0));
-            Assert.AreEqual(100, YGNodeLayoutGetWidth(root_child0));
-            Assert.AreEqual(100, YGNodeLayoutGetHeight(root_child0));
+            Assert.AreEqual(0,   root_child0.Layout.Position.Left);
+            Assert.AreEqual(0,   root_child0.Layout.Position.Top);
+            Assert.AreEqual(100, root_child0.Layout.Width);
+            Assert.AreEqual(100, root_child0.Layout.Height);
 
             YGNodeRemoveChild(root, root_child0);
 
-            Assert.AreEqual(0, YGNodeLayoutGetLeft(root_child0));
-            Assert.AreEqual(0, YGNodeLayoutGetTop(root_child0));
-            Assert.IsTrue(YGFloatIsUndefined(YGNodeLayoutGetWidth(root_child0)));
-            Assert.IsTrue(YGFloatIsUndefined(YGNodeLayoutGetHeight(root_child0)));
+            Assert.AreEqual(0, root_child0.Layout.Position.Left);
+            Assert.AreEqual(0, root_child0.Layout.Position.Top);
+            Assert.IsTrue(YGFloatIsUndefined(root_child0.Layout.Width));
+            Assert.IsTrue(YGFloatIsUndefined(root_child0.Layout.Height));
 
             YGNodeFreeRecursive(root);
         }

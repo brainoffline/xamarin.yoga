@@ -68,13 +68,12 @@ namespace Xamarin.Yoga
             in float[] val1,
             in float[] val2)
         {
-            if (val1 == null ||
-                val2 == null ||
-                val1.Length != val2.Length)
+            if (val1 == null || val2 == null || val1.Length != val2.Length)
                 return false;
 
             var areEqual = true;
-            for (var i = 0; i < val1.Length && areEqual; ++i) areEqual = YGFloatsEqual(val1[i], val2[i]);
+            for (var i = 0; i < val1.Length && areEqual; ++i)
+                areEqual = YGFloatsEqual(val1[i], val2[i]);
 
             return areEqual;
         }

@@ -133,5 +133,7 @@ namespace Xamarin.Yoga
             return !(op == other);
         }
 
+        public static implicit operator YGFloatOptional(float value) => new YGFloatOptional(value);
+
     }
 }

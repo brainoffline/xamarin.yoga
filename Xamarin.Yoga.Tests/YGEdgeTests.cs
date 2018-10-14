@@ -30,12 +30,12 @@ namespace Xamarin.Yoga.Tests
             YGNodeInsertChild(root, root_child0, 0);
 
             YGNodeCalculateLayout(root, YGUndefined, YGUndefined, YGDirection.LTR);
-            Assert.AreEqual(10, YGNodeLayoutGetLeft(root_child0));
-            Assert.AreEqual(20, YGNodeLayoutGetRight(root_child0));
+            Assert.AreEqual(10, root_child0.Layout.Position.Left);
+            Assert.AreEqual(20, root_child0.Layout.Position.Right);
 
             YGNodeCalculateLayout(root, YGUndefined, YGUndefined, YGDirection.RTL);
-            Assert.AreEqual(20, YGNodeLayoutGetLeft(root_child0));
-            Assert.AreEqual(10, YGNodeLayoutGetRight(root_child0));
+            Assert.AreEqual(20, root_child0.Layout.Position.Left);
+            Assert.AreEqual(10, root_child0.Layout.Position.Right);
 
             YGNodeFreeRecursive(root);
         }
@@ -56,12 +56,12 @@ namespace Xamarin.Yoga.Tests
             YGNodeInsertChild(root, root_child0, 0);
 
             YGNodeCalculateLayout(root, YGUndefined, YGUndefined, YGDirection.LTR);
-            Assert.AreEqual(20, YGNodeLayoutGetLeft(root_child0));
-            Assert.AreEqual(10, YGNodeLayoutGetRight(root_child0));
+            Assert.AreEqual(20, root_child0.Layout.Position.Left);
+            Assert.AreEqual(10, root_child0.Layout.Position.Right);
 
             YGNodeCalculateLayout(root, YGUndefined, YGUndefined, YGDirection.RTL);
-            Assert.AreEqual(10, YGNodeLayoutGetLeft(root_child0));
-            Assert.AreEqual(20, YGNodeLayoutGetRight(root_child0));
+            Assert.AreEqual(10, root_child0.Layout.Position.Left);
+            Assert.AreEqual(20, root_child0.Layout.Position.Right);
 
             YGNodeFreeRecursive(root);
         }
@@ -81,8 +81,8 @@ namespace Xamarin.Yoga.Tests
             YGNodeInsertChild(root, root_child0, 0);
 
             YGNodeCalculateLayout(root, YGUndefined, YGUndefined, YGDirection.LTR);
-            Assert.AreEqual(20, YGNodeLayoutGetLeft(root_child0));
-            Assert.AreEqual(10, YGNodeLayoutGetRight(root_child0));
+            Assert.AreEqual(20, root_child0.Layout.Position.Left);
+            Assert.AreEqual(10, root_child0.Layout.Position.Right);
 
             YGNodeFreeRecursive(root);
         }
@@ -102,8 +102,8 @@ namespace Xamarin.Yoga.Tests
             YGNodeInsertChild(root, root_child0, 0);
 
             YGNodeCalculateLayout(root, YGUndefined, YGUndefined, YGDirection.LTR);
-            Assert.AreEqual(20, YGNodeLayoutGetTop(root_child0));
-            Assert.AreEqual(10, YGNodeLayoutGetBottom(root_child0));
+            Assert.AreEqual(20, root_child0.Layout.Position.Top);
+            Assert.AreEqual(10, root_child0.Layout.Position.Bottom);
 
             YGNodeFreeRecursive(root);
         }
@@ -123,10 +123,10 @@ namespace Xamarin.Yoga.Tests
             YGNodeInsertChild(root, root_child0, 0);
 
             YGNodeCalculateLayout(root, YGUndefined, YGUndefined, YGDirection.LTR);
-            Assert.AreEqual(10, YGNodeLayoutGetLeft(root_child0));
-            Assert.AreEqual(20, YGNodeLayoutGetTop(root_child0));
-            Assert.AreEqual(10, YGNodeLayoutGetRight(root_child0));
-            Assert.AreEqual(20, YGNodeLayoutGetBottom(root_child0));
+            Assert.AreEqual(10, root_child0.Layout.Position.Left);
+            Assert.AreEqual(20, root_child0.Layout.Position.Top);
+            Assert.AreEqual(10, root_child0.Layout.Position.Right);
+            Assert.AreEqual(20, root_child0.Layout.Position.Bottom);
 
             YGNodeFreeRecursive(root);
         }
@@ -146,10 +146,10 @@ namespace Xamarin.Yoga.Tests
             YGNodeInsertChild(root, root_child0, 0);
 
             YGNodeCalculateLayout(root, YGUndefined, YGUndefined, YGDirection.LTR);
-            Assert.AreEqual(20, YGNodeLayoutGetLeft(root_child0));
-            Assert.AreEqual(10, YGNodeLayoutGetTop(root_child0));
-            Assert.AreEqual(20, YGNodeLayoutGetRight(root_child0));
-            Assert.AreEqual(10, YGNodeLayoutGetBottom(root_child0));
+            Assert.AreEqual(20, root_child0.Layout.Position.Left);
+            Assert.AreEqual(10, root_child0.Layout.Position.Top);
+            Assert.AreEqual(20, root_child0.Layout.Position.Right);
+            Assert.AreEqual(10, root_child0.Layout.Position.Bottom);
 
             YGNodeFreeRecursive(root);
         }
@@ -172,10 +172,10 @@ namespace Xamarin.Yoga.Tests
             YGNodeInsertChild(root, root_child0, 0);
 
             YGNodeCalculateLayout(root, YGUndefined, YGUndefined, YGDirection.LTR);
-            Assert.AreEqual(10, YGNodeLayoutGetLeft(root_child0));
-            Assert.AreEqual(10, YGNodeLayoutGetTop(root_child0));
-            Assert.AreEqual(10, YGNodeLayoutGetRight(root_child0));
-            Assert.AreEqual(10, YGNodeLayoutGetBottom(root_child0));
+            Assert.AreEqual(10, root_child0.Layout.Position.Left);
+            Assert.AreEqual(10, root_child0.Layout.Position.Top);
+            Assert.AreEqual(10, root_child0.Layout.Position.Right);
+            Assert.AreEqual(10, root_child0.Layout.Position.Bottom);
 
             YGNodeFreeRecursive(root);
         }

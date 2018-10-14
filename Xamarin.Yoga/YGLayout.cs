@@ -10,74 +10,120 @@ namespace Xamarin.Yoga
 
     public class YGLayout : IEquatable<YGLayout>
     {
-        public float[]     position   = new float[4];
-        public float[]     dimensions = new float[2];
-        public float[]     margin     = new float[6];
-        public float[]     border     = new float[6];
-        public float[]     padding    = new float[6];
-        public YGDirection direction;
+        // This value was chosen based on empiracle data. Even the most complicated
+        // layouts should not require more than 16 entries to fit within the cache.
+        private const int MaxCachedResultCount = 16;
 
-        public int             computedFlexBasisGeneration;
-        public YGFloatOptional computedFlexBasis;
-        public bool            hadOverflow;
+        public float       Width              { get; private set; } = YGUndefined;
+        public float       Height             { get; private set; } = YGUndefined;
+        public float       MeasuredWidth      { get; private set; } = YGUndefined;
+        public float       MeasuredHeight     { get; private set; } = YGUndefined;
+        public YGDirection Direction          { get; set; }
+        public YGDirection LastOwnerDirection { get; set; }
+        public bool        HadOverflow        { get; set; }
 
         // Instead of recomputing the entire layout every single time, we
         // cache some information to break early when nothing changed
-        public int         generationCount;
-        public YGDirection lastOwnerDirection;
+        public          int                   GenerationCount             { get; set; }
+        public          int                   NextCachedMeasurementsIndex { get; private set; }
+        public readonly YGCachedMeasurement[] CachedMeasurements = new YGCachedMeasurement[MaxCachedResultCount];
+        public          YGCachedMeasurement   CachedLayout                       { get; } = new YGCachedMeasurement();
+        public          int                   ComputedFlexBasisGeneration        { get; set; }
+        public          YGFloatOptional       ComputedFlexBasis                  { get; set; }
+        public          bool                  DidUseLegacyFlag                   { get; set; }
+        public          bool                  DoesLegacyStretchFlagAffectsLayout { get; set; }
 
-        public int nextCachedMeasurementsIndex;
+        public YGPosition Position { get; } = new YGPosition();
+        public float[] margin   = new float[6];
+        public float[] border   = new float[6];
+        public float[] padding  = new float[6];
 
-        public YGCachedMeasurement[] cachedMeasurements = new YGCachedMeasurement[YG_MAX_CACHED_RESULT_COUNT];
-        public float[]               measuredDimensions = new float[2];
 
-        public YGCachedMeasurement cachedLayout;
-        public bool                didUseLegacyFlag;
-        public bool                doesLegacyStretchFlagAffectsLayout;
+        public void SetDimension(YGDimension dim, float value)
+        {
+            if (dim == YGDimension.Width)
+                Width = value;
+            else
+                Height = value;
+        }
+
+        public float GetMeasuredDimension(YGDimension dim)
+        {
+            return dim == YGDimension.Width ? MeasuredWidth : MeasuredHeight;
+        }
+
+        public void SetMeasuredDimension(YGDimension dim, float value)
+        {
+            if (dim == YGDimension.Width)
+                MeasuredWidth = value;
+            else
+                MeasuredHeight = value;
+        }
+
+        public void InvalidateCache()
+        {
+            NextCachedMeasurementsIndex    = 0;
+            CachedLayout.widthMeasureMode  = YGMeasureMode.NotSet;
+            CachedLayout.heightMeasureMode = YGMeasureMode.NotSet;
+            CachedLayout.computedWidth     = -1;
+            CachedLayout.computedHeight    = -1;
+        }
+
+        public YGCachedMeasurement GetNextCachedMeasurement()
+        {
+            var cache = CachedMeasurements[NextCachedMeasurementsIndex];
+            if (cache == null)
+                cache = CachedMeasurements[NextCachedMeasurementsIndex] = new YGCachedMeasurement();
+            NextCachedMeasurementsIndex++;
+            return cache;
+        }
+
+        public void ResetNextCachedMeasurement()
+        {
+            NextCachedMeasurementsIndex = 0;
+        }
+
+        public bool CachedMeasurementFull => NextCachedMeasurementsIndex >= MaxCachedResultCount;
 
         public YGLayout()
         {
-            dimensions                  = (float[]) kYGDefaultDimensionValues.Clone();
-            direction                   = YGDirection.Inherit;
-            computedFlexBasisGeneration = 0;
-            computedFlexBasis           = new YGFloatOptional();
-            hadOverflow                 = false;
-            generationCount             = 0;
+            Direction                   = YGDirection.Inherit;
+            ComputedFlexBasisGeneration = 0;
+            ComputedFlexBasis           = new YGFloatOptional();
+            HadOverflow                 = false;
+            GenerationCount             = 0;
 
-            lastOwnerDirection                 = YGDirection.NotSet;
-            nextCachedMeasurementsIndex        = 0;
-            measuredDimensions                 = (float[]) kYGDefaultDimensionValues.Clone();
-            cachedLayout                       = new YGCachedMeasurement();
-            didUseLegacyFlag                   = false;
-            doesLegacyStretchFlagAffectsLayout = false;
+            LastOwnerDirection                 = YGDirection.NotSet;
+            NextCachedMeasurementsIndex        = 0;
+            DidUseLegacyFlag                   = false;
+            DoesLegacyStretchFlagAffectsLayout = false;
 
-            for (int i = 0; i < YG_MAX_CACHED_RESULT_COUNT; i++)
-            {
-                cachedMeasurements[i] = new YGCachedMeasurement();
-            }
+            for (var i = 0; i < MaxCachedResultCount; i++) CachedMeasurements[i] = new YGCachedMeasurement();
         }
 
         public YGLayout(YGLayout other)
         {
-            position                    = (float[]) other.position.Clone();
-            dimensions                  = (float[]) other.dimensions.Clone();
+            Width                       = other.Width;
+            Height                      = other.Height;
+            MeasuredWidth               = other.MeasuredWidth;
+            MeasuredHeight              = other.MeasuredHeight;
+            Position                    = other.Position.Clone();
             margin                      = (float[]) other.margin.Clone();
             border                      = (float[]) other.border.Clone();
             padding                     = (float[]) other.padding.Clone();
-            direction                   = other.direction;
-            computedFlexBasisGeneration = other.computedFlexBasisGeneration;
-            computedFlexBasis           = other.computedFlexBasis.Clone();
-            hadOverflow                 = other.hadOverflow;
+            Direction                   = other.Direction;
+            ComputedFlexBasisGeneration = other.ComputedFlexBasisGeneration;
+            ComputedFlexBasis           = other.ComputedFlexBasis.Clone();
+            HadOverflow                 = other.HadOverflow;
 
-            lastOwnerDirection                 = other.lastOwnerDirection;
-            nextCachedMeasurementsIndex        = other.nextCachedMeasurementsIndex;
-            measuredDimensions                 = (float[]) other.measuredDimensions.Clone();
-            cachedLayout                       = other.cachedLayout.Clone();
-            didUseLegacyFlag                   = false;
-            doesLegacyStretchFlagAffectsLayout = false;
+            LastOwnerDirection                 = other.LastOwnerDirection;
+            NextCachedMeasurementsIndex        = other.NextCachedMeasurementsIndex;
+            CachedLayout                       = other.CachedLayout.Clone();
+            DidUseLegacyFlag                   = false;
+            DoesLegacyStretchFlagAffectsLayout = false;
 
-            for (int i = 0; i < YG_MAX_CACHED_RESULT_COUNT; i++)
-                cachedMeasurements[i] = other.cachedMeasurements[i].Clone();
+            for (var i = 0; i < MaxCachedResultCount; i++)
+                CachedMeasurements[i] = other.CachedMeasurements[i].Clone();
         }
 
         /// <inheritdoc />
@@ -85,28 +131,30 @@ namespace Xamarin.Yoga
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            var result =
-                position.SequenceEqual(other.position)     &&
-                dimensions.SequenceEqual(other.dimensions) &&
-                margin.SequenceEqual(other.margin)         &&
-                border.SequenceEqual(other.border)         &&
-                padding.SequenceEqual(other.padding);
-            result = result &
-                direction == other.direction                      &&
-                computedFlexBasis.Equals(other.computedFlexBasis) &&
-                hadOverflow == other.hadOverflow;
-            result = result &
-                lastOwnerDirection == other.lastOwnerDirection &&
-                nextCachedMeasurementsIndex == other.nextCachedMeasurementsIndex;
-            result = result &
-                cachedMeasurements.SequenceEqual(other.cachedMeasurements);
-            result = result &
-                measuredDimensions.SequenceEqual(other.measuredDimensions);
-            result = result &
-                Equals(cachedLayout, other.cachedLayout)                     &&
-                didUseLegacyFlag                   == other.didUseLegacyFlag &&
-                doesLegacyStretchFlagAffectsLayout == other.doesLegacyStretchFlagAffectsLayout;
-            return result;
+
+
+            var isEqual =
+                Position == other.Position                      &&
+                YGFloatArrayEqual(margin,   other.margin)                        &&
+                YGFloatArrayEqual(border,   other.border)                        &&
+                YGFloatArrayEqual(padding,  other.padding)                       &&
+                YGFloatsEqual(Width,  other.Width)                               &&
+                YGFloatsEqual(Height, other.Height)                              &&
+                Direction                   == other.Direction                   &&
+                HadOverflow                 == other.HadOverflow                 &&
+                LastOwnerDirection          == other.LastOwnerDirection          &&
+                NextCachedMeasurementsIndex == other.NextCachedMeasurementsIndex &&
+                CachedLayout                == other.CachedLayout                &&
+                ComputedFlexBasis           == other.ComputedFlexBasis;
+
+            for (var i = 0; i < MaxCachedResultCount && isEqual; ++i)
+                isEqual = isEqual && CachedMeasurements[i] == other.CachedMeasurements[i];
+
+            if (!isUndefined(MeasuredWidth) || !isUndefined(other.MeasuredWidth))
+                isEqual = isEqual && YGFloatsEqual(MeasuredWidth, other.MeasuredWidth);
+            if (!isUndefined(MeasuredHeight) || !isUndefined(other.MeasuredHeight))
+                isEqual = isEqual && YGFloatsEqual(MeasuredHeight, other.MeasuredHeight);
+            return isEqual;
         }
 
         /// <inheritdoc />
@@ -124,29 +172,33 @@ namespace Xamarin.Yoga
         {
             unchecked
             {
-                var hashCode = (position != null ? position.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (dimensions != null ? dimensions.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (margin     != null ? margin.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (border     != null ? border.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (padding    != null ? padding.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (int) direction;
-                hashCode = (hashCode * 397) ^ computedFlexBasisGeneration;
-                hashCode = (hashCode * 397) ^ computedFlexBasis.GetHashCode();
-                hashCode = (hashCode * 397) ^ hadOverflow.GetHashCode();
-                hashCode = (hashCode * 397) ^ generationCount;
-                hashCode = (hashCode * 397) ^ (int) lastOwnerDirection;
-                hashCode = (hashCode * 397) ^ nextCachedMeasurementsIndex;
-                hashCode = (hashCode * 397) ^ (cachedMeasurements != null ? cachedMeasurements.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (measuredDimensions != null ? measuredDimensions.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (cachedLayout       != null ? cachedLayout.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ didUseLegacyFlag.GetHashCode();
-                hashCode = (hashCode * 397) ^ doesLegacyStretchFlagAffectsLayout.GetHashCode();
+                var hashCode = Position != null ? Position.GetHashCode() : 0;
+                hashCode = (hashCode * 397) ^ (int) Width;
+                hashCode = (hashCode * 397) ^ (int) Height;
+                hashCode = (hashCode * 397) ^ (int) MeasuredWidth;
+                hashCode = (hashCode * 397) ^ (int) MeasuredHeight;
+                hashCode = (hashCode * 397) ^ (margin  != null ? margin.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (border  != null ? border.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (padding != null ? padding.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (int) Direction;
+                hashCode = (hashCode * 397) ^ ComputedFlexBasisGeneration;
+                hashCode = (hashCode * 397) ^ ComputedFlexBasis.GetHashCode();
+                hashCode = (hashCode * 397) ^ HadOverflow.GetHashCode();
+                hashCode = (hashCode * 397) ^ GenerationCount;
+                hashCode = (hashCode * 397) ^ (int) LastOwnerDirection;
+                hashCode = (hashCode * 397) ^ NextCachedMeasurementsIndex;
+                hashCode = (hashCode * 397) ^ (CachedMeasurements != null ? CachedMeasurements.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (CachedLayout       != null ? CachedLayout.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ DidUseLegacyFlag.GetHashCode();
+                hashCode = (hashCode * 397) ^ DoesLegacyStretchFlagAffectsLayout.GetHashCode();
                 return hashCode;
             }
         }
 
         public static bool operator ==(YGLayout left, YGLayout right)
         {
+            if ((object) left == null || (object) right == null)
+                return ReferenceEquals(left, right);
             return Equals(left, right);
         }
 
@@ -154,38 +206,5 @@ namespace Xamarin.Yoga
         {
             return !Equals(left, right);
         }
-
-        /*
-        public static bool operator==(YGLayout op, YGLayout layout)
-        {
-            var isEqual = 
-                YGFloatArrayEqual(op.position, layout.position) &&
-                YGFloatArrayEqual(op.dimensions, layout.dimensions) &&
-                YGFloatArrayEqual(op.margin, layout.margin) &&
-                YGFloatArrayEqual(op.border, layout.border) &&
-                YGFloatArrayEqual(op.padding, layout.padding) &&
-                op.direction == layout.direction && 
-                op.hadOverflow == layout.hadOverflow &&
-                op.lastOwnerDirection == layout.lastOwnerDirection &&
-                op.nextCachedMeasurementsIndex == layout.nextCachedMeasurementsIndex &&
-                op.cachedLayout == layout.cachedLayout &&
-                op.computedFlexBasis == layout.computedFlexBasis;
-
-            for (var i = 0; i < YG_MAX_CACHED_RESULT_COUNT && isEqual; ++i) isEqual = isEqual && op.cachedMeasurements[i] == layout.cachedMeasurements[i];
-
-            if (!isUndefined(op.measuredDimensions[0]) ||
-                !isUndefined(layout.measuredDimensions[0]))
-                isEqual = isEqual && op.measuredDimensions[0] == layout.measuredDimensions[0];
-            if (!isUndefined(op.measuredDimensions[1]) ||
-                !isUndefined(layout.measuredDimensions[1]))
-                isEqual = isEqual && op.measuredDimensions[1] == layout.measuredDimensions[1];
-            return isEqual;
-        }
-
-        public static bool operator !=(YGLayout op, YGLayout layout)
-        {
-            return !(op == layout);
-        }
-        */
     }
 }

@@ -31,7 +31,7 @@ namespace Xamarin.Yoga.Tests
             YGNodeCalculateLayout(root, 100, YGUndefined, YGDirection.LTR);
             YGNodeCalculateLayout(root, 100, 100,         YGDirection.LTR);
 
-            Assert.AreEqual(100, YGNodeLayoutGetHeight(root_child0));
+            Assert.AreEqual(100, root_child0.Layout.Height);
 
             YGNodeFreeRecursive(root);
 
@@ -49,12 +49,12 @@ namespace Xamarin.Yoga.Tests
             YGNodeInsertChild(root, root_child0, 0);
 
             YGNodeCalculateLayout(root, YGUndefined, YGUndefined, YGDirection.LTR);
-            Assert.AreEqual(10, YGNodeLayoutGetHeight(root_child0));
+            Assert.AreEqual(10, root_child0.Layout.Height);
 
             YGNodeStyleSetMinHeight(root_child0, YGUndefined);
             YGNodeCalculateLayout(root, YGUndefined, YGUndefined, YGDirection.LTR);
 
-            Assert.AreEqual(0, YGNodeLayoutGetHeight(root_child0));
+            Assert.AreEqual(0, root_child0.Layout.Height);
 
             YGNodeFreeRecursive(root);
         }

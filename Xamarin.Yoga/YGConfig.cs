@@ -8,7 +8,7 @@ namespace Xamarin.Yoga
 {
     using static YGGlobal;
 
-    public class YGConfig
+    public class YGConfig : IEquatable<YGConfig>
     {
         public bool[]          experimentalFeatures                          = {false};
         public bool            useWebDefaults                                = false;
@@ -17,8 +17,8 @@ namespace Xamarin.Yoga
         public float           pointScaleFactor                              = 1.0f;
         public YGLogger        logger                                        = null;
         public YGCloneNodeFunc cloneNodeCallback                             = null;
-        public object          context;
-        public bool            printTree = false;
+        public object          context                                       = null;
+        public bool            printTree                                     = false;
 
         public YGConfig() { }
 
@@ -64,6 +64,7 @@ namespace Xamarin.Yoga
             return result;
         }
 
+        /// <inheritdoc />
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;

@@ -114,10 +114,10 @@ namespace Xamarin.Yoga
             if (options.HasFlag(YGPrintOptions.Layout))
             {
                 appendFormatedString(sb, "layout=\"");
-                appendFormatedString(sb, $"width: {node.Layout.dimensions[(int) YGDimension.Width]}; ");
-                appendFormatedString(sb, $"height: {node.Layout.dimensions[(int) YGDimension.Height]}; ");
-                appendFormatedString(sb, $"top: {node.Layout.position[(int) YGEdge.Top]}; ");
-                appendFormatedString(sb, $"left: {node.Layout.position[(int) YGEdge.Left]};");
+                appendFormatedString(sb, $"width: {node.Layout.Width}; ");
+                appendFormatedString(sb, $"height: {node.Layout.Height}; ");
+                appendFormatedString(sb, $"top: {node.Layout.Position.Top}; ");
+                appendFormatedString(sb, $"left: {node.Layout.Position.Left};");
                 appendFormatedString(sb, "\" ");
             }
 

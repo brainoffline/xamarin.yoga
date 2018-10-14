@@ -223,337 +223,337 @@ namespace Xamarin.Yoga.Tests
                 1);
             YGNodeCalculateLayout(root, YGUndefined, YGUndefined, YGDirection.LTR);
 
-            Assert.AreEqual(0,    YGNodeLayoutGetLeft(root));
-            Assert.AreEqual(0,    YGNodeLayoutGetTop(root));
-            Assert.AreEqual(1080, YGNodeLayoutGetWidth(root));
-            Assert.AreEqual(240,  YGNodeLayoutGetHeight(root));
+            Assert.AreEqual(0,    root.Layout.Position.Left);
+            Assert.AreEqual(0,    root.Layout.Position.Top);
+            Assert.AreEqual(1080, root.Layout.Width);
+            Assert.AreEqual(240,  root.Layout.Height);
 
-            Assert.AreEqual(0,    YGNodeLayoutGetLeft(root_child0));
-            Assert.AreEqual(0,    YGNodeLayoutGetTop(root_child0));
-            Assert.AreEqual(1080, YGNodeLayoutGetWidth(root_child0));
-            Assert.AreEqual(240,  YGNodeLayoutGetHeight(root_child0));
+            Assert.AreEqual(0,    root_child0.Layout.Position.Left);
+            Assert.AreEqual(0,    root_child0.Layout.Position.Top);
+            Assert.AreEqual(1080, root_child0.Layout.Width);
+            Assert.AreEqual(240,  root_child0.Layout.Height);
 
-            Assert.AreEqual(0,    YGNodeLayoutGetLeft(root_child0_child0));
-            Assert.AreEqual(0,    YGNodeLayoutGetTop(root_child0_child0));
-            Assert.AreEqual(1080, YGNodeLayoutGetWidth(root_child0_child0));
-            Assert.AreEqual(240,  YGNodeLayoutGetHeight(root_child0_child0));
+            Assert.AreEqual(0,    root_child0_child0.Layout.Position.Left);
+            Assert.AreEqual(0,    root_child0_child0.Layout.Position.Top);
+            Assert.AreEqual(1080, root_child0_child0.Layout.Width);
+            Assert.AreEqual(240,  root_child0_child0.Layout.Height);
 
-            Assert.AreEqual(0,    YGNodeLayoutGetLeft(root_child0_child0_child0));
-            Assert.AreEqual(0,    YGNodeLayoutGetTop(root_child0_child0_child0));
-            Assert.AreEqual(1080, YGNodeLayoutGetWidth(root_child0_child0_child0));
-            Assert.AreEqual(144,  YGNodeLayoutGetHeight(root_child0_child0_child0));
+            Assert.AreEqual(0,    root_child0_child0_child0.Layout.Position.Left);
+            Assert.AreEqual(0,    root_child0_child0_child0.Layout.Position.Top);
+            Assert.AreEqual(1080, root_child0_child0_child0.Layout.Width);
+            Assert.AreEqual(144,  root_child0_child0_child0.Layout.Height);
 
-            Assert.AreEqual(36,   YGNodeLayoutGetLeft(root_child0_child0_child0_child0));
-            Assert.AreEqual(24,   YGNodeLayoutGetTop(root_child0_child0_child0_child0));
-            Assert.AreEqual(1044, YGNodeLayoutGetWidth(root_child0_child0_child0_child0));
-            Assert.AreEqual(120,  YGNodeLayoutGetHeight(root_child0_child0_child0_child0));
-
-            Assert.AreEqual(
-                0,
-                YGNodeLayoutGetLeft(root_child0_child0_child0_child0_child0));
-            Assert.AreEqual(
-                0,
-                YGNodeLayoutGetTop(root_child0_child0_child0_child0_child0));
-            Assert.AreEqual(
-                120,
-                YGNodeLayoutGetWidth(root_child0_child0_child0_child0_child0));
-            Assert.AreEqual(
-                120,
-                YGNodeLayoutGetHeight(root_child0_child0_child0_child0_child0));
+            Assert.AreEqual(36,   root_child0_child0_child0_child0.Layout.Position.Left);
+            Assert.AreEqual(24,   root_child0_child0_child0_child0.Layout.Position.Top);
+            Assert.AreEqual(1044, root_child0_child0_child0_child0.Layout.Width);
+            Assert.AreEqual(120,  root_child0_child0_child0_child0.Layout.Height);
 
             Assert.AreEqual(
                 0,
-                YGNodeLayoutGetLeft(root_child0_child0_child0_child0_child0_child0));
+                root_child0_child0_child0_child0_child0.Layout.Position.Left);
             Assert.AreEqual(
                 0,
-                YGNodeLayoutGetTop(root_child0_child0_child0_child0_child0_child0));
+                root_child0_child0_child0_child0_child0.Layout.Position.Top);
             Assert.AreEqual(
                 120,
-                YGNodeLayoutGetWidth(root_child0_child0_child0_child0_child0_child0));
+                root_child0_child0_child0_child0_child0.Layout.Width);
             Assert.AreEqual(
                 120,
-                YGNodeLayoutGetHeight(root_child0_child0_child0_child0_child0_child0));
+                root_child0_child0_child0_child0_child0.Layout.Height);
+
+            Assert.AreEqual(
+                0,
+                root_child0_child0_child0_child0_child0_child0.Layout.Position.Left);
+            Assert.AreEqual(
+                0,
+                root_child0_child0_child0_child0_child0_child0.Layout.Position.Top);
+            Assert.AreEqual(
+                120,
+                root_child0_child0_child0_child0_child0_child0.Layout.Width);
+            Assert.AreEqual(
+                120,
+                root_child0_child0_child0_child0_child0_child0.Layout.Height);
 
             Assert.AreEqual(
                 120,
-                YGNodeLayoutGetLeft(root_child0_child0_child0_child0_child1));
+                root_child0_child0_child0_child0_child1.Layout.Position.Left);
             Assert.AreEqual(
                 0,
-                YGNodeLayoutGetTop(root_child0_child0_child0_child0_child1));
+                root_child0_child0_child0_child0_child1.Layout.Position.Top);
             Assert.AreEqual(
                 72,
-                YGNodeLayoutGetWidth(root_child0_child0_child0_child0_child1));
+                root_child0_child0_child0_child0_child1.Layout.Width);
             Assert.AreEqual(
                 39,
-                YGNodeLayoutGetHeight(root_child0_child0_child0_child0_child1));
+                root_child0_child0_child0_child0_child1.Layout.Height);
 
             Assert.AreEqual(
                 36,
-                YGNodeLayoutGetLeft(root_child0_child0_child0_child0_child1_child0));
+                root_child0_child0_child0_child0_child1_child0.Layout.Position.Left);
             Assert.AreEqual(
                 21,
-                YGNodeLayoutGetTop(root_child0_child0_child0_child0_child1_child0));
+                root_child0_child0_child0_child0_child1_child0.Layout.Position.Top);
             Assert.AreEqual(
                 0,
-                YGNodeLayoutGetWidth(root_child0_child0_child0_child0_child1_child0));
+                root_child0_child0_child0_child0_child1_child0.Layout.Width);
             Assert.AreEqual(
                 0,
-                YGNodeLayoutGetHeight(root_child0_child0_child0_child0_child1_child0));
+                root_child0_child0_child0_child0_child1_child0.Layout.Height);
 
             Assert.AreEqual(
                 36,
-                YGNodeLayoutGetLeft(root_child0_child0_child0_child0_child1_child1));
+                root_child0_child0_child0_child0_child1_child1.Layout.Position.Left);
             Assert.AreEqual(
                 21,
-                YGNodeLayoutGetTop(root_child0_child0_child0_child0_child1_child1));
+                root_child0_child0_child0_child0_child1_child1.Layout.Position.Top);
             Assert.AreEqual(
                 0,
-                YGNodeLayoutGetWidth(root_child0_child0_child0_child0_child1_child1));
+                root_child0_child0_child0_child0_child1_child1.Layout.Width);
             Assert.AreEqual(
                 0,
-                YGNodeLayoutGetHeight(root_child0_child0_child0_child0_child1_child1));
+                root_child0_child0_child0_child0_child1_child1.Layout.Height);
 
-            Assert.AreEqual(0,    YGNodeLayoutGetLeft(root_child0_child0_child1));
-            Assert.AreEqual(144,  YGNodeLayoutGetTop(root_child0_child0_child1));
-            Assert.AreEqual(1080, YGNodeLayoutGetWidth(root_child0_child0_child1));
-            Assert.AreEqual(96,   YGNodeLayoutGetHeight(root_child0_child0_child1));
+            Assert.AreEqual(0,    root_child0_child0_child1.Layout.Position.Left);
+            Assert.AreEqual(144,  root_child0_child0_child1.Layout.Position.Top);
+            Assert.AreEqual(1080, root_child0_child0_child1.Layout.Width);
+            Assert.AreEqual(96,   root_child0_child0_child1.Layout.Height);
 
-            Assert.AreEqual(174, YGNodeLayoutGetLeft(root_child0_child0_child1_child0));
-            Assert.AreEqual(24,  YGNodeLayoutGetTop(root_child0_child0_child1_child0));
-            Assert.AreEqual(906, YGNodeLayoutGetWidth(root_child0_child0_child1_child0));
-            Assert.AreEqual(72,  YGNodeLayoutGetHeight(root_child0_child0_child1_child0));
-
-            Assert.AreEqual(
-                0,
-                YGNodeLayoutGetLeft(root_child0_child0_child1_child0_child0));
-            Assert.AreEqual(
-                0,
-                YGNodeLayoutGetTop(root_child0_child0_child1_child0_child0));
-            Assert.AreEqual(
-                72,
-                YGNodeLayoutGetWidth(root_child0_child0_child1_child0_child0));
-            Assert.AreEqual(
-                72,
-                YGNodeLayoutGetHeight(root_child0_child0_child1_child0_child0));
+            Assert.AreEqual(174, root_child0_child0_child1_child0.Layout.Position.Left);
+            Assert.AreEqual(24,  root_child0_child0_child1_child0.Layout.Position.Top);
+            Assert.AreEqual(906, root_child0_child0_child1_child0.Layout.Width);
+            Assert.AreEqual(72,  root_child0_child0_child1_child0.Layout.Height);
 
             Assert.AreEqual(
                 0,
-                YGNodeLayoutGetLeft(root_child0_child0_child1_child0_child0_child0));
+                root_child0_child0_child1_child0_child0.Layout.Position.Left);
             Assert.AreEqual(
                 0,
-                YGNodeLayoutGetTop(root_child0_child0_child1_child0_child0_child0));
+                root_child0_child0_child1_child0_child0.Layout.Position.Top);
             Assert.AreEqual(
                 72,
-                YGNodeLayoutGetWidth(root_child0_child0_child1_child0_child0_child0));
+                root_child0_child0_child1_child0_child0.Layout.Width);
             Assert.AreEqual(
                 72,
-                YGNodeLayoutGetHeight(root_child0_child0_child1_child0_child0_child0));
+                root_child0_child0_child1_child0_child0.Layout.Height);
+
+            Assert.AreEqual(
+                0,
+                root_child0_child0_child1_child0_child0_child0.Layout.Position.Left);
+            Assert.AreEqual(
+                0,
+                root_child0_child0_child1_child0_child0_child0.Layout.Position.Top);
+            Assert.AreEqual(
+                72,
+                root_child0_child0_child1_child0_child0_child0.Layout.Width);
+            Assert.AreEqual(
+                72,
+                root_child0_child0_child1_child0_child0_child0.Layout.Height);
 
             Assert.AreEqual(
                 72,
-                YGNodeLayoutGetLeft(root_child0_child0_child1_child0_child1));
+                root_child0_child0_child1_child0_child1.Layout.Position.Left);
             Assert.AreEqual(
                 0,
-                YGNodeLayoutGetTop(root_child0_child0_child1_child0_child1));
+                root_child0_child0_child1_child0_child1.Layout.Position.Top);
             Assert.AreEqual(
                 72,
-                YGNodeLayoutGetWidth(root_child0_child0_child1_child0_child1));
+                root_child0_child0_child1_child0_child1.Layout.Width);
             Assert.AreEqual(
                 39,
-                YGNodeLayoutGetHeight(root_child0_child0_child1_child0_child1));
+                root_child0_child0_child1_child0_child1.Layout.Height);
 
             Assert.AreEqual(
                 36,
-                YGNodeLayoutGetLeft(root_child0_child0_child1_child0_child1_child0));
+                root_child0_child0_child1_child0_child1_child0.Layout.Position.Left);
             Assert.AreEqual(
                 21,
-                YGNodeLayoutGetTop(root_child0_child0_child1_child0_child1_child0));
+                root_child0_child0_child1_child0_child1_child0.Layout.Position.Top);
             Assert.AreEqual(
                 0,
-                YGNodeLayoutGetWidth(root_child0_child0_child1_child0_child1_child0));
+                root_child0_child0_child1_child0_child1_child0.Layout.Width);
             Assert.AreEqual(
                 0,
-                YGNodeLayoutGetHeight(root_child0_child0_child1_child0_child1_child0));
+                root_child0_child0_child1_child0_child1_child0.Layout.Height);
 
             Assert.AreEqual(
                 36,
-                YGNodeLayoutGetLeft(root_child0_child0_child1_child0_child1_child1));
+                root_child0_child0_child1_child0_child1_child1.Layout.Position.Left);
             Assert.AreEqual(
                 21,
-                YGNodeLayoutGetTop(root_child0_child0_child1_child0_child1_child1));
+                root_child0_child0_child1_child0_child1_child1.Layout.Position.Top);
             Assert.AreEqual(
                 0,
-                YGNodeLayoutGetWidth(root_child0_child0_child1_child0_child1_child1));
+                root_child0_child0_child1_child0_child1_child1.Layout.Width);
             Assert.AreEqual(
                 0,
-                YGNodeLayoutGetHeight(root_child0_child0_child1_child0_child1_child1));
+                root_child0_child0_child1_child0_child1_child1.Layout.Height);
 
             YGNodeCalculateLayout(root, YGUndefined, YGUndefined, YGDirection.RTL);
 
-            Assert.AreEqual(0,    YGNodeLayoutGetLeft(root));
-            Assert.AreEqual(0,    YGNodeLayoutGetTop(root));
-            Assert.AreEqual(1080, YGNodeLayoutGetWidth(root));
-            Assert.AreEqual(240,  YGNodeLayoutGetHeight(root));
+            Assert.AreEqual(0,    root.Layout.Position.Left);
+            Assert.AreEqual(0,    root.Layout.Position.Top);
+            Assert.AreEqual(1080, root.Layout.Width);
+            Assert.AreEqual(240,  root.Layout.Height);
 
-            Assert.AreEqual(0,    YGNodeLayoutGetLeft(root_child0));
-            Assert.AreEqual(0,    YGNodeLayoutGetTop(root_child0));
-            Assert.AreEqual(1080, YGNodeLayoutGetWidth(root_child0));
-            Assert.AreEqual(240,  YGNodeLayoutGetHeight(root_child0));
+            Assert.AreEqual(0,    root_child0.Layout.Position.Left);
+            Assert.AreEqual(0,    root_child0.Layout.Position.Top);
+            Assert.AreEqual(1080, root_child0.Layout.Width);
+            Assert.AreEqual(240,  root_child0.Layout.Height);
 
-            Assert.AreEqual(0,    YGNodeLayoutGetLeft(root_child0_child0));
-            Assert.AreEqual(0,    YGNodeLayoutGetTop(root_child0_child0));
-            Assert.AreEqual(1080, YGNodeLayoutGetWidth(root_child0_child0));
-            Assert.AreEqual(240,  YGNodeLayoutGetHeight(root_child0_child0));
+            Assert.AreEqual(0,    root_child0_child0.Layout.Position.Left);
+            Assert.AreEqual(0,    root_child0_child0.Layout.Position.Top);
+            Assert.AreEqual(1080, root_child0_child0.Layout.Width);
+            Assert.AreEqual(240,  root_child0_child0.Layout.Height);
 
-            Assert.AreEqual(0,    YGNodeLayoutGetLeft(root_child0_child0_child0));
-            Assert.AreEqual(0,    YGNodeLayoutGetTop(root_child0_child0_child0));
-            Assert.AreEqual(1080, YGNodeLayoutGetWidth(root_child0_child0_child0));
-            Assert.AreEqual(144,  YGNodeLayoutGetHeight(root_child0_child0_child0));
+            Assert.AreEqual(0,    root_child0_child0_child0.Layout.Position.Left);
+            Assert.AreEqual(0,    root_child0_child0_child0.Layout.Position.Top);
+            Assert.AreEqual(1080, root_child0_child0_child0.Layout.Width);
+            Assert.AreEqual(144,  root_child0_child0_child0.Layout.Height);
 
-            Assert.AreEqual(0,    YGNodeLayoutGetLeft(root_child0_child0_child0_child0));
-            Assert.AreEqual(24,   YGNodeLayoutGetTop(root_child0_child0_child0_child0));
-            Assert.AreEqual(1044, YGNodeLayoutGetWidth(root_child0_child0_child0_child0));
-            Assert.AreEqual(120,  YGNodeLayoutGetHeight(root_child0_child0_child0_child0));
+            Assert.AreEqual(0,    root_child0_child0_child0_child0.Layout.Position.Left);
+            Assert.AreEqual(24,   root_child0_child0_child0_child0.Layout.Position.Top);
+            Assert.AreEqual(1044, root_child0_child0_child0_child0.Layout.Width);
+            Assert.AreEqual(120,  root_child0_child0_child0_child0.Layout.Height);
 
             Assert.AreEqual(
                 924,
-                YGNodeLayoutGetLeft(root_child0_child0_child0_child0_child0));
+                root_child0_child0_child0_child0_child0.Layout.Position.Left);
             Assert.AreEqual(
                 0,
-                YGNodeLayoutGetTop(root_child0_child0_child0_child0_child0));
+                root_child0_child0_child0_child0_child0.Layout.Position.Top);
             Assert.AreEqual(
                 120,
-                YGNodeLayoutGetWidth(root_child0_child0_child0_child0_child0));
+                root_child0_child0_child0_child0_child0.Layout.Width);
             Assert.AreEqual(
                 120,
-                YGNodeLayoutGetHeight(root_child0_child0_child0_child0_child0));
+                root_child0_child0_child0_child0_child0.Layout.Height);
 
             Assert.AreEqual(
                 0,
-                YGNodeLayoutGetLeft(root_child0_child0_child0_child0_child0_child0));
+                root_child0_child0_child0_child0_child0_child0.Layout.Position.Left);
             Assert.AreEqual(
                 0,
-                YGNodeLayoutGetTop(root_child0_child0_child0_child0_child0_child0));
+                root_child0_child0_child0_child0_child0_child0.Layout.Position.Top);
             Assert.AreEqual(
                 120,
-                YGNodeLayoutGetWidth(root_child0_child0_child0_child0_child0_child0));
+                root_child0_child0_child0_child0_child0_child0.Layout.Width);
             Assert.AreEqual(
                 120,
-                YGNodeLayoutGetHeight(root_child0_child0_child0_child0_child0_child0));
+                root_child0_child0_child0_child0_child0_child0.Layout.Height);
 
             Assert.AreEqual(
                 816,
-                YGNodeLayoutGetLeft(root_child0_child0_child0_child0_child1));
+                root_child0_child0_child0_child0_child1.Layout.Position.Left);
             Assert.AreEqual(
                 0,
-                YGNodeLayoutGetTop(root_child0_child0_child0_child0_child1));
+                root_child0_child0_child0_child0_child1.Layout.Position.Top);
             Assert.AreEqual(
                 72,
-                YGNodeLayoutGetWidth(root_child0_child0_child0_child0_child1));
+                root_child0_child0_child0_child0_child1.Layout.Width);
             Assert.AreEqual(
                 39,
-                YGNodeLayoutGetHeight(root_child0_child0_child0_child0_child1));
+                root_child0_child0_child0_child0_child1.Layout.Height);
 
             Assert.AreEqual(
                 36,
-                YGNodeLayoutGetLeft(root_child0_child0_child0_child0_child1_child0));
+                root_child0_child0_child0_child0_child1_child0.Layout.Position.Left);
             Assert.AreEqual(
                 21,
-                YGNodeLayoutGetTop(root_child0_child0_child0_child0_child1_child0));
+                root_child0_child0_child0_child0_child1_child0.Layout.Position.Top);
             Assert.AreEqual(
                 0,
-                YGNodeLayoutGetWidth(root_child0_child0_child0_child0_child1_child0));
+                root_child0_child0_child0_child0_child1_child0.Layout.Width);
             Assert.AreEqual(
                 0,
-                YGNodeLayoutGetHeight(root_child0_child0_child0_child0_child1_child0));
+                root_child0_child0_child0_child0_child1_child0.Layout.Height);
 
             Assert.AreEqual(
                 36,
-                YGNodeLayoutGetLeft(root_child0_child0_child0_child0_child1_child1));
+                root_child0_child0_child0_child0_child1_child1.Layout.Position.Left);
             Assert.AreEqual(
                 21,
-                YGNodeLayoutGetTop(root_child0_child0_child0_child0_child1_child1));
+                root_child0_child0_child0_child0_child1_child1.Layout.Position.Top);
             Assert.AreEqual(
                 0,
-                YGNodeLayoutGetWidth(root_child0_child0_child0_child0_child1_child1));
+                root_child0_child0_child0_child0_child1_child1.Layout.Width);
             Assert.AreEqual(
                 0,
-                YGNodeLayoutGetHeight(root_child0_child0_child0_child0_child1_child1));
+                root_child0_child0_child0_child0_child1_child1.Layout.Height);
 
-            Assert.AreEqual(0,    YGNodeLayoutGetLeft(root_child0_child0_child1));
-            Assert.AreEqual(144,  YGNodeLayoutGetTop(root_child0_child0_child1));
-            Assert.AreEqual(1080, YGNodeLayoutGetWidth(root_child0_child0_child1));
-            Assert.AreEqual(96,   YGNodeLayoutGetHeight(root_child0_child0_child1));
+            Assert.AreEqual(0,    root_child0_child0_child1.Layout.Position.Left);
+            Assert.AreEqual(144,  root_child0_child0_child1.Layout.Position.Top);
+            Assert.AreEqual(1080, root_child0_child0_child1.Layout.Width);
+            Assert.AreEqual(96,   root_child0_child0_child1.Layout.Height);
 
-            Assert.AreEqual(0,   YGNodeLayoutGetLeft(root_child0_child0_child1_child0));
-            Assert.AreEqual(24,  YGNodeLayoutGetTop(root_child0_child0_child1_child0));
-            Assert.AreEqual(906, YGNodeLayoutGetWidth(root_child0_child0_child1_child0));
-            Assert.AreEqual(72,  YGNodeLayoutGetHeight(root_child0_child0_child1_child0));
+            Assert.AreEqual(0,   root_child0_child0_child1_child0.Layout.Position.Left);
+            Assert.AreEqual(24,  root_child0_child0_child1_child0.Layout.Position.Top);
+            Assert.AreEqual(906, root_child0_child0_child1_child0.Layout.Width);
+            Assert.AreEqual(72,  root_child0_child0_child1_child0.Layout.Height);
 
             Assert.AreEqual(
                 834,
-                YGNodeLayoutGetLeft(root_child0_child0_child1_child0_child0));
+                root_child0_child0_child1_child0_child0.Layout.Position.Left);
             Assert.AreEqual(
                 0,
-                YGNodeLayoutGetTop(root_child0_child0_child1_child0_child0));
+                root_child0_child0_child1_child0_child0.Layout.Position.Top);
             Assert.AreEqual(
                 72,
-                YGNodeLayoutGetWidth(root_child0_child0_child1_child0_child0));
+                root_child0_child0_child1_child0_child0.Layout.Width);
             Assert.AreEqual(
                 72,
-                YGNodeLayoutGetHeight(root_child0_child0_child1_child0_child0));
+                root_child0_child0_child1_child0_child0.Layout.Height);
 
             Assert.AreEqual(
                 0,
-                YGNodeLayoutGetLeft(root_child0_child0_child1_child0_child0_child0));
+                root_child0_child0_child1_child0_child0_child0.Layout.Position.Left);
             Assert.AreEqual(
                 0,
-                YGNodeLayoutGetTop(root_child0_child0_child1_child0_child0_child0));
+                root_child0_child0_child1_child0_child0_child0.Layout.Position.Top);
             Assert.AreEqual(
                 72,
-                YGNodeLayoutGetWidth(root_child0_child0_child1_child0_child0_child0));
+                root_child0_child0_child1_child0_child0_child0.Layout.Width);
             Assert.AreEqual(
                 72,
-                YGNodeLayoutGetHeight(root_child0_child0_child1_child0_child0_child0));
+                root_child0_child0_child1_child0_child0_child0.Layout.Height);
 
             Assert.AreEqual(
                 726,
-                YGNodeLayoutGetLeft(root_child0_child0_child1_child0_child1));
+                root_child0_child0_child1_child0_child1.Layout.Position.Left);
             Assert.AreEqual(
                 0,
-                YGNodeLayoutGetTop(root_child0_child0_child1_child0_child1));
+                root_child0_child0_child1_child0_child1.Layout.Position.Top);
             Assert.AreEqual(
                 72,
-                YGNodeLayoutGetWidth(root_child0_child0_child1_child0_child1));
+                root_child0_child0_child1_child0_child1.Layout.Width);
             Assert.AreEqual(
                 39,
-                YGNodeLayoutGetHeight(root_child0_child0_child1_child0_child1));
+                root_child0_child0_child1_child0_child1.Layout.Height);
 
             Assert.AreEqual(
                 36,
-                YGNodeLayoutGetLeft(root_child0_child0_child1_child0_child1_child0));
+                root_child0_child0_child1_child0_child1_child0.Layout.Position.Left);
             Assert.AreEqual(
                 21,
-                YGNodeLayoutGetTop(root_child0_child0_child1_child0_child1_child0));
+                root_child0_child0_child1_child0_child1_child0.Layout.Position.Top);
             Assert.AreEqual(
                 0,
-                YGNodeLayoutGetWidth(root_child0_child0_child1_child0_child1_child0));
+                root_child0_child0_child1_child0_child1_child0.Layout.Width);
             Assert.AreEqual(
                 0,
-                YGNodeLayoutGetHeight(root_child0_child0_child1_child0_child1_child0));
+                root_child0_child0_child1_child0_child1_child0.Layout.Height);
 
             Assert.AreEqual(
                 36,
-                YGNodeLayoutGetLeft(root_child0_child0_child1_child0_child1_child1));
+                root_child0_child0_child1_child0_child1_child1.Layout.Position.Left);
             Assert.AreEqual(
                 21,
-                YGNodeLayoutGetTop(root_child0_child0_child1_child0_child1_child1));
+                root_child0_child0_child1_child0_child1_child1.Layout.Position.Top);
             Assert.AreEqual(
                 0,
-                YGNodeLayoutGetWidth(root_child0_child0_child1_child0_child1_child1));
+                root_child0_child0_child1_child0_child1_child1.Layout.Width);
             Assert.AreEqual(
                 0,
-                YGNodeLayoutGetHeight(root_child0_child0_child1_child0_child1_child1));
+                root_child0_child0_child1_child0_child1_child1.Layout.Height);
 
             YGNodeFreeRecursive(root);
 

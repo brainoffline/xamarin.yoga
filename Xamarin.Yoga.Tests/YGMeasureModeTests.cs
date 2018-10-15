@@ -279,7 +279,7 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(100,                  constraintList[0].width);
             Assert.AreEqual(YGMeasureMode.AtMost, constraintList[0].widthMode);
 
-            Assert.IsTrue(YGFloatIsUndefined(constraintList[0].height));
+            Assert.IsTrue(constraintList[0].height.IsUndefined());
             Assert.AreEqual(YGMeasureMode.Undefined, constraintList[0].heightMode);
 
             //free(constraintList.constraints);
@@ -307,7 +307,7 @@ namespace Xamarin.Yoga.Tests
 
             Assert.AreEqual(1, constraintList.Count);
 
-            Assert.IsTrue(YGFloatIsUndefined(constraintList[0].width));
+            Assert.IsTrue(constraintList[0].width.IsUndefined());
             Assert.AreEqual(YGMeasureMode.Undefined, constraintList[0].widthMode);
 
             Assert.AreEqual(100,                  constraintList[0].height);

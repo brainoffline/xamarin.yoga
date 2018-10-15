@@ -29,7 +29,7 @@ namespace Xamarin.Yoga
         public readonly YGCachedMeasurement[] CachedMeasurements = new YGCachedMeasurement[MaxCachedResultCount];
         public          YGCachedMeasurement   CachedLayout                       { get; } = new YGCachedMeasurement();
         public          int                   ComputedFlexBasisGeneration        { get; set; }
-        public          YGFloatOptional       ComputedFlexBasis                  { get; set; }
+        public          float?       ComputedFlexBasis                  { get; set; }
 
         public YGPosition Position { get; } = new YGPosition();
         public float[] margin   = new float[6];
@@ -87,7 +87,7 @@ namespace Xamarin.Yoga
         {
             Direction                   = YGDirection.Inherit;
             ComputedFlexBasisGeneration = 0;
-            ComputedFlexBasis           = new YGFloatOptional();
+            ComputedFlexBasis           = null;
             HadOverflow                 = false;
             GenerationCount             = 0;
 
@@ -109,7 +109,7 @@ namespace Xamarin.Yoga
             padding                     = (float[]) other.padding.Clone();
             Direction                   = other.Direction;
             ComputedFlexBasisGeneration = other.ComputedFlexBasisGeneration;
-            ComputedFlexBasis           = other.ComputedFlexBasis.Clone();
+            ComputedFlexBasis           = other.ComputedFlexBasis;
             HadOverflow                 = other.HadOverflow;
 
             LastOwnerDirection                 = other.LastOwnerDirection;
@@ -144,9 +144,9 @@ namespace Xamarin.Yoga
             for (var i = 0; i < MaxCachedResultCount && isEqual; ++i)
                 isEqual = isEqual && CachedMeasurements[i] == other.CachedMeasurements[i];
 
-            if (!isUndefined(MeasuredWidth) || !isUndefined(other.MeasuredWidth))
+            if (MeasuredWidth.HasValue() || other.MeasuredWidth.HasValue())
                 isEqual = isEqual && YGFloatsEqual(MeasuredWidth, other.MeasuredWidth);
-            if (!isUndefined(MeasuredHeight) || !isUndefined(other.MeasuredHeight))
+            if (MeasuredHeight.HasValue() || other.MeasuredHeight.HasValue())
                 isEqual = isEqual && YGFloatsEqual(MeasuredHeight, other.MeasuredHeight);
             return isEqual;
         }

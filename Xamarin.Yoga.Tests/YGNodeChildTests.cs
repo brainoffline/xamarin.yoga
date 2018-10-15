@@ -35,8 +35,8 @@ namespace Xamarin.Yoga.Tests
 
             Assert.AreEqual(0, root_child0.Layout.Position.Left);
             Assert.AreEqual(0, root_child0.Layout.Position.Top);
-            Assert.IsTrue(YGFloatIsUndefined(root_child0.Layout.Width));
-            Assert.IsTrue(YGFloatIsUndefined(root_child0.Layout.Height));
+            Assert.IsTrue(root_child0.Layout.Width.IsUndefined());
+            Assert.IsTrue(root_child0.Layout.Height.IsUndefined());
 
             YGNodeFreeRecursive(root);
         }

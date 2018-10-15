@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Xamarin.Yoga.Extensions;
 
 namespace Xamarin.Yoga
 {
@@ -34,10 +33,10 @@ namespace Xamarin.Yoga
         internal static void appendFloatOptionalIfDefined(
             StringBuilder      sb,
             in string          key,
-            in YGFloatOptional num)
+            in float? num)
         {
-            if (!num.isUndefined())
-                appendFormatedString(sb, $"{key}: {num.getValue()}; ");
+            if (num.HasValue)
+                appendFormatedString(sb, $"{key}: {num.Value}; ");
         }
 
         internal static void appendNumberIfNotUndefined(

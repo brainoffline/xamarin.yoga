@@ -56,12 +56,12 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(YGNodeStyleGetPadding(root, YGEdge.Start).unit,  YGUnit.Undefined);
             Assert.AreEqual(YGNodeStyleGetPadding(root, YGEdge.End).unit,    YGUnit.Undefined);
 
-            Assert.IsTrue(YGFloatIsUndefined(YGNodeStyleGetBorder(root, YGEdge.Left)));
-            Assert.IsTrue(YGFloatIsUndefined(YGNodeStyleGetBorder(root, YGEdge.Top)));
-            Assert.IsTrue(YGFloatIsUndefined(YGNodeStyleGetBorder(root, YGEdge.Right)));
-            Assert.IsTrue(YGFloatIsUndefined(YGNodeStyleGetBorder(root, YGEdge.Bottom)));
-            Assert.IsTrue(YGFloatIsUndefined(YGNodeStyleGetBorder(root, YGEdge.Start)));
-            Assert.IsTrue(YGFloatIsUndefined(YGNodeStyleGetBorder(root, YGEdge.End)));
+            Assert.IsTrue(YGNodeStyleGetBorder(root, YGEdge.Left).IsUndefined());
+            Assert.IsTrue(YGNodeStyleGetBorder(root, YGEdge.Top).IsUndefined());
+            Assert.IsTrue(YGNodeStyleGetBorder(root, YGEdge.Right).IsUndefined());
+            Assert.IsTrue(YGNodeStyleGetBorder(root, YGEdge.Bottom).IsUndefined());
+            Assert.IsTrue(YGNodeStyleGetBorder(root, YGEdge.Start).IsUndefined());
+            Assert.IsTrue(YGNodeStyleGetBorder(root, YGEdge.End).IsUndefined());
 
             Assert.AreEqual(YGNodeStyleGetWidth(root).unit,     YGUnit.Auto);
             Assert.AreEqual(YGNodeStyleGetHeight(root).unit,    YGUnit.Auto);
@@ -90,8 +90,8 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(0, YGNodeLayoutGetBorder(root, YGEdge.Right));
             Assert.AreEqual(0, YGNodeLayoutGetBorder(root, YGEdge.Bottom));
 
-            Assert.IsTrue(YGFloatIsUndefined(root.Layout.Width));
-            Assert.IsTrue(YGFloatIsUndefined(root.Layout.Height));
+            Assert.IsTrue(root.Layout.Width.IsUndefined());
+            Assert.IsTrue(root.Layout.Height.IsUndefined());
             Assert.AreEqual(YGDirection.Inherit, root.Layout.Direction);
 
             YGNodeFreeRecursive(root);

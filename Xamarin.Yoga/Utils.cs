@@ -86,20 +86,20 @@ namespace Xamarin.Yoga
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static YGFloatOptional YGResolveValue(in YGValue value, in float ownerSize)
+        public static float? YGResolveValue(in YGValue value, in float ownerSize)
         {
             switch (value.unit)
             {
                 case YGUnit.Undefined:
                 case YGUnit.Auto:
-                    return new YGFloatOptional();
+                    return null;
                 case YGUnit.Point:
-                    return new YGFloatOptional(value.value);
+                    return value.value;
                 case YGUnit.Percent:
-                    return new YGFloatOptional(value.value * ownerSize * 0.01f);
+                    return value.value * ownerSize * 0.01f;
             }
 
-            return new YGFloatOptional();
+            return null;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -123,10 +123,10 @@ namespace Xamarin.Yoga
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static YGFloatOptional YGResolveValueMargin(YGValue value, float ownerSize)
+        internal static float? YGResolveValueMargin(YGValue value, float ownerSize)
         {
             return value.unit == YGUnit.Auto
-                ? new YGFloatOptional(0)
+                ? 0
                 : YGResolveValue(value, ownerSize);
         }
 
@@ -144,9 +144,10 @@ namespace Xamarin.Yoga
         // compiler flag.
         public static float YGFloatMax(in float a, in float b)
         {
-            if (!isUndefined(a) && !isUndefined(b)) return Math.Max(a, b);
+            if (a.HasValue() && b.HasValue())
+                return Math.Max(a, b);
 
-            return isUndefined(a) ? b : a;
+            return a.IsUndefined() ? b : a;
         }
 
         // We need custom min function, since we want that, if one argument is
@@ -156,17 +157,18 @@ namespace Xamarin.Yoga
         // compiler flag.
         public static float YGFloatMin(in float a, in float b)
         {
-            if (!isUndefined(a) && !isUndefined(b)) return Math.Min(a, b);
+            if (a.HasValue() && b.HasValue())
+                return Math.Min(a, b);
 
-            return isUndefined(a) ? b : a;
+            return a.IsUndefined() ? b : a;
         }
 
-        public static bool YGValueEqual(in YGValue a, in YGValue b)
+        public static bool YGValueEqual(YGValue a, YGValue b)
         {
-            if (a.unit != b.unit) return false;
+            if (a.unit != b.unit)
+                return false;
 
-            if (a.unit == YGUnit.Undefined ||
-                isUndefined(a.value) && isUndefined(b.value))
+            if (a.unit == YGUnit.Undefined || a.value.IsUndefined() && b.value.IsUndefined())
                 return true;
 
             return YGFloatsEqual(a.value, b.value);
@@ -176,32 +178,33 @@ namespace Xamarin.Yoga
         // difference between two floats is less than 0.0001f or both are undefined.
         public static bool YGFloatsEqual(in float a, in float b)
         {
-            if (isUndefined(a) && isUndefined(b))
+            if (a.IsUndefined() && b.IsUndefined())
                 return true;
             return Math.Abs(a - b) < 0.0001f;
         }
 
         // This function returns 0 if YGFloatIsUndefined(val) is true and val otherwise
-        public static float YGFloatSanitize(in float val)
+        public static float YGFloatSanitize(float val)
         {
-            return isUndefined(val) ? 0 : val;
+            return val.IsUndefined() ? 0 : val;
         }
 
         // This function unwraps optional and returns YGUndefined if not defined or
         // op.value otherwise
         // TODO: Get rid off this function
-        public static float YGUnwrapFloatOptional(in YGFloatOptional op)
+        public static float YGUnwrapFloatOptional(float? op)
         {
-            return op.isUndefined() ? YGUndefined : op.getValue();
+            return op ?? YGUndefined;
         }
 
-        public static YGFloatOptional YGFloatOptionalMax(
-            in YGFloatOptional op1,
-            in YGFloatOptional op2)
+        public static float? FloatOptionalMax(
+            in float? op1,
+            in float? op2)
         {
-            if (!op1.isUndefined() && !op2.isUndefined()) return op1.getValue() > op2.getValue() ? op1 : op2;
+            if (op1.HasValue && op2.HasValue)
+                return op1 > op2 ? op1 : op2;
 
-            return op1.isUndefined() ? op2 : op1;
+            return op1 ?? op2;
         }
     }
 }

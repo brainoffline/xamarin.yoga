@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Xamarin.Yoga.Extensions;
 // ReSharper disable InconsistentNaming
 
 namespace Xamarin.Yoga.Tests

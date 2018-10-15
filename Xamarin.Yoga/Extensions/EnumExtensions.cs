@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 
-namespace Xamarin.Yoga.Extensions
+namespace Xamarin.Yoga
 {
     public static class EnumExtensions
     {

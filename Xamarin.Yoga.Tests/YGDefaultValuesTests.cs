@@ -65,10 +65,10 @@ namespace Xamarin.Yoga.Tests
 
             Assert.AreEqual(YGNodeStyleGetWidth(root).unit,     YGUnit.Auto);
             Assert.AreEqual(YGNodeStyleGetHeight(root).unit,    YGUnit.Auto);
-            Assert.AreEqual(YGNodeStyleGetMinWidth(root).unit,  YGUnit.Undefined);
-            Assert.AreEqual(YGNodeStyleGetMinHeight(root).unit, YGUnit.Undefined);
-            Assert.AreEqual(YGNodeStyleGetMaxWidth(root).unit,  YGUnit.Undefined);
-            Assert.AreEqual(YGNodeStyleGetMaxHeight(root).unit, YGUnit.Undefined);
+            Assert.AreEqual(root.Style.MinDimensions.Width.unit,  YGUnit.Undefined);
+            Assert.AreEqual(root.Style.MinDimensions.Height.unit, YGUnit.Undefined);
+            Assert.AreEqual(root.Style.MaxDimensions.Width.unit,  YGUnit.Undefined);
+            Assert.AreEqual(root.Style.MaxDimensions.Height.unit, YGUnit.Undefined);
 
             Assert.AreEqual(0, root.Layout.Position.Left);
             Assert.AreEqual(0, root.Layout.Position.Top);

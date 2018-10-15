@@ -16,7 +16,7 @@ namespace Xamarin.Yoga.Tests
     {
         private static float _baseline(YGNodeRef node, float width, float height)
         {
-            float baseline = (float)node.getContext();
+            float baseline = (float)node.Context;
             return baseline;
         }
 
@@ -41,7 +41,7 @@ namespace Xamarin.Yoga.Tests
 
             float     baselineValue      = 10;
             YGNodeRef root_child1_child0 = YGNodeNew();
-            root_child1_child0.setContext(baselineValue);
+            root_child1_child0.Context = baselineValue;
             YGNodeStyleSetWidth(root_child1_child0, 50);
             root_child1_child0.setBaseLineFunc(_baseline);
             YGNodeStyleSetHeight(root_child1_child0, 20);

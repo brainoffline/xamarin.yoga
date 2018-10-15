@@ -7,60 +7,6 @@ namespace Xamarin.Yoga
 {
     using static YGGlobal;
     using static YGConst;
-    using System;
-
-    public class Dimensions : IEquatable<Dimensions>
-    {
-        private YGValue[] values;
-
-        public Dimensions(YGValue[] values)
-        {
-            this.values = values;
-        }
-
-        public Dimensions Clone()
-        {
-            return new Dimensions((YGValue[])values.Clone());
-        }
-
-        public static implicit operator Dimensions(YGValue[] values)
-        {
-            return new Dimensions(values);
-        }
-
-        public static bool operator ==(Dimensions dimensions1, Dimensions dimensions2)
-        {
-            return EqualityComparer<Dimensions>.Default.Equals(dimensions1, dimensions2);
-        }
-
-        public static bool operator !=(Dimensions dimensions1, Dimensions dimensions2)
-        {
-            return !(dimensions1 == dimensions2);
-        }
-
-        public YGValue this[int key]
-        {
-            get => values[key];
-            set => values[key] = value;
-        }
-
-        public YGValue this[YGDimension key]
-        {
-            get => values[(int) key];
-            set => values[(int) key] = value;
-        }
-
-        public override bool Equals(object obj)
-        {
-            return Equals(obj as Dimensions);
-        }
-
-        public bool Equals(Dimensions other)
-        {
-            return !ReferenceEquals(other, null) &&
-                values.SequenceEqual(other.values);
-        }
-    }
 
     public class YGStyle
     {
@@ -79,37 +25,20 @@ namespace Xamarin.Yoga
         public YGFloatOptional flexShrink;
         public YGValue         flexBasis;
 
-        public YGValue[]  margin   = new YGValue[YGEdgeCount];
-        public YGValue[]  position = new YGValue[YGEdgeCount];
-        public YGValue[]  padding  = new YGValue[YGEdgeCount];
-        public YGValue[]  border   = new YGValue[YGEdgeCount];
-        public Dimensions dimensions;
-        public Dimensions minDimensions;
+        public readonly Edges Margin   = new Edges();
+        public readonly Edges Position = new Edges();
+        public readonly Edges Padding  = new Edges();
+        public readonly Edges Border   = new Edges();
 
-        public Dimensions maxDimensions;
+        public readonly Dimensions Dimensions    = new Dimensions(kYGValueAuto,      kYGValueAuto);
+        public readonly Dimensions MinDimensions = new Dimensions(kYGValueUndefined, kYGValueUndefined);
+        public readonly Dimensions MaxDimensions = new Dimensions(kYGValueUndefined, kYGValueUndefined);
 
         // Yoga specific properties, not compatible with flexbox specification
-        public YGFloatOptional aspectRatio;
-
+        public YGFloatOptional AspectRatio { get; set; }
 
         private static readonly YGValue kYGValueUndefined = new YGValue(0, YGUnit.Undefined);
-        private static readonly YGValue kYGValueAuto = new YGValue(0, YGUnit.Auto);
-
-        public static readonly YGValue[] kYGDefaultDimensionValuesAutoUnit = { kYGValueAuto, kYGValueAuto };
-        public static readonly YGValue[] kYGDefaultDimensionValuesUnit     = { kYGValueUndefined, kYGValueUndefined };
-
-        private static readonly YGValue[] kYGDefaultEdgeValuesUnit =
-        {
-            kYGValueUndefined,
-            kYGValueUndefined,
-            kYGValueUndefined,
-            kYGValueUndefined,
-            kYGValueUndefined,
-            kYGValueUndefined,
-            kYGValueUndefined,
-            kYGValueUndefined,
-            kYGValueUndefined
-        };
+        private static readonly YGValue kYGValueAuto      = new YGValue(0, YGUnit.Auto);
 
         public YGStyle()
         {
@@ -127,14 +56,7 @@ namespace Xamarin.Yoga
             flexGrow       = new YGFloatOptional();
             flexShrink     = new YGFloatOptional();
             flexBasis      = kYGValueAuto;
-            margin         = (YGValue[]) kYGDefaultEdgeValuesUnit.Clone();
-            position       = (YGValue[]) kYGDefaultEdgeValuesUnit.Clone();
-            padding        = (YGValue[]) kYGDefaultEdgeValuesUnit.Clone();
-            border         = (YGValue[]) kYGDefaultEdgeValuesUnit.Clone();
-            dimensions     = (YGValue[]) kYGDefaultDimensionValuesAutoUnit.Clone();
-            minDimensions  = (YGValue[]) kYGDefaultDimensionValuesUnit.Clone();
-            maxDimensions  = (YGValue[]) kYGDefaultDimensionValuesUnit.Clone();
-            aspectRatio    = new YGFloatOptional();
+            AspectRatio    = new YGFloatOptional();
         }
 
         public YGStyle(YGStyle style)
@@ -149,20 +71,19 @@ namespace Xamarin.Yoga
             flexWrap       = style.flexWrap;
             overflow       = style.overflow;
             display        = style.display;
-            flex = style.flex.Clone();
-            flexGrow = style.flexGrow.Clone();
-            flexShrink = style.flexShrink.Clone();
+            flex           = style.flex.Clone();
+            flexGrow       = style.flexGrow.Clone();
+            flexShrink     = style.flexShrink.Clone();
             flexBasis      = style.flexBasis;
-            margin         = (YGValue[])style.margin.Clone();
-            position       = (YGValue[])style.position.Clone();
-            padding        = (YGValue[])style.padding.Clone();
-            border         = (YGValue[])style.border.Clone();
-            dimensions     = style.dimensions.Clone();
-            minDimensions = style.minDimensions.Clone();
-            maxDimensions = style.maxDimensions.Clone();
-            aspectRatio    = style.aspectRatio.Clone();
+            Margin         = Margin.Clone();
+            Position       = style.Position.Clone();
+            Padding        = style.Padding.Clone();
+            Border         = style.Border.Clone();
+            Dimensions     = style.Dimensions.Clone();
+            MinDimensions  = style.MinDimensions.Clone();
+            MaxDimensions  = style.MaxDimensions.Clone();
+            AspectRatio    = style.AspectRatio.Clone();
         }
-
 
         public static bool operator ==(YGStyle style1, YGStyle style2)
         {
@@ -200,14 +121,14 @@ namespace Xamarin.Yoga
                 EqualityComparer<YGFloatOptional>.Default.Equals(flexGrow,   style.flexGrow)   &&
                 EqualityComparer<YGFloatOptional>.Default.Equals(flexShrink, style.flexShrink) &&
                 EqualityComparer<YGValue>.Default.Equals(flexBasis, style.flexBasis)           &&
-                margin.SequenceEqual(style.margin)                                             &&
-                position.SequenceEqual(style.position)                                         &&
-                padding.SequenceEqual(style.padding)                                           &&
-                border.SequenceEqual(style.border)                                             &&
-                dimensions.Equals(style.dimensions)                                            &&
-                minDimensions.Equals(style.minDimensions)                                      &&
-                maxDimensions.Equals(style.maxDimensions)                                      &&
-                aspectRatio.Equals(style.aspectRatio);
+                Margin   == style.Margin                                                       &&
+                Position == style.Position                                                     &&
+                Padding  == style.Padding                                                      &&
+                Border   == style.Border                                                       &&
+                Dimensions.Equals(style.Dimensions)                                            &&
+                MinDimensions.Equals(style.MinDimensions)                                      &&
+                MaxDimensions.Equals(style.MaxDimensions)                                      &&
+                AspectRatio.Equals(style.AspectRatio);
         }
 
         public override int GetHashCode()
@@ -227,14 +148,14 @@ namespace Xamarin.Yoga
             hashCode = hashCode * -1521134295 + EqualityComparer<YGFloatOptional>.Default.GetHashCode(flexGrow);
             hashCode = hashCode * -1521134295 + EqualityComparer<YGFloatOptional>.Default.GetHashCode(flexShrink);
             hashCode = hashCode * -1521134295 + EqualityComparer<YGValue>.Default.GetHashCode(flexBasis);
-            hashCode = hashCode * -1521134295 + EqualityComparer<YGValue[]>.Default.GetHashCode(margin);
-            hashCode = hashCode * -1521134295 + EqualityComparer<YGValue[]>.Default.GetHashCode(position);
-            hashCode = hashCode * -1521134295 + EqualityComparer<YGValue[]>.Default.GetHashCode(padding);
-            hashCode = hashCode * -1521134295 + EqualityComparer<YGValue[]>.Default.GetHashCode(border);
-            hashCode = hashCode * -1521134295 + EqualityComparer<Dimensions>.Default.GetHashCode(dimensions);
-            hashCode = hashCode * -1521134295 + EqualityComparer<Dimensions>.Default.GetHashCode(minDimensions);
-            hashCode = hashCode * -1521134295 + EqualityComparer<Dimensions>.Default.GetHashCode(maxDimensions);
-            hashCode = hashCode * -1521134295 + EqualityComparer<YGFloatOptional>.Default.GetHashCode(aspectRatio);
+            hashCode = hashCode * -1521134295 + EqualityComparer<Edges>.Default.GetHashCode(Margin);
+            hashCode = hashCode * -1521134295 + EqualityComparer<Edges>.Default.GetHashCode(Position);
+            hashCode = hashCode * -1521134295 + EqualityComparer<Edges>.Default.GetHashCode(Padding);
+            hashCode = hashCode * -1521134295 + EqualityComparer<Edges>.Default.GetHashCode(Border);
+            hashCode = hashCode * -1521134295 + EqualityComparer<Dimensions>.Default.GetHashCode(Dimensions);
+            hashCode = hashCode * -1521134295 + EqualityComparer<Dimensions>.Default.GetHashCode(MinDimensions);
+            hashCode = hashCode * -1521134295 + EqualityComparer<Dimensions>.Default.GetHashCode(MaxDimensions);
+            hashCode = hashCode * -1521134295 + EqualityComparer<YGFloatOptional>.Default.GetHashCode(AspectRatio);
             return hashCode;
         }
     }

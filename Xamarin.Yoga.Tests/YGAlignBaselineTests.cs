@@ -56,13 +56,13 @@ namespace Xamarin.Yoga.Tests
             var root_child0 = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexGrow(root_child0, 0);
             YGNodeStyleSetFlexShrink(root_child0, 1);
-            YGNodeSetMeasureFunc(root_child0, _measure1);
+            root_child0.MeasureFunc = _measure1;
             YGNodeInsertChild(root, root_child0, 0);
 
             var root_child1 = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexGrow(root_child1, 0);
             YGNodeStyleSetFlexShrink(root_child1, 1);
-            YGNodeSetMeasureFunc(root_child1, _measure2);
+            root_child1.MeasureFunc = _measure2;
             YGNodeInsertChild(root, root_child1, 1);
 
             YGNodeCalculateLayout(root, YGUndefined, YGUndefined, YGDirection.LTR);

@@ -25,7 +25,7 @@ namespace Xamarin.Yoga.Tests
             YGNodeCalculateLayout(root, YGUndefined, YGUndefined, YGDirection.LTR);
 
             int dirtiedCount = 0;
-            root.setContext(dirtiedCount);
+            root.Context = dirtiedCount ;
             root.setDirtiedFunc(n => { dirtiedCount++; });
 
             Assert.AreEqual(0, dirtiedCount);
@@ -60,7 +60,7 @@ namespace Xamarin.Yoga.Tests
             YGNodeCalculateLayout(root, YGUndefined, YGUndefined, YGDirection.LTR);
 
             int dirtiedCount = 0;
-            root.setContext(dirtiedCount);
+            root.Context = dirtiedCount;
             root.setDirtiedFunc(n => { dirtiedCount++; });
 
             Assert.AreEqual(0, dirtiedCount);
@@ -95,7 +95,7 @@ namespace Xamarin.Yoga.Tests
             YGNodeCalculateLayout(root, YGUndefined, YGUndefined, YGDirection.LTR);
 
             int dirtiedCount = 0;
-            root_child0.setContext(dirtiedCount);
+            root_child0.Context = dirtiedCount;
             root_child0.setDirtiedFunc(n => { dirtiedCount++; });
 
             Assert.AreEqual(0, dirtiedCount);

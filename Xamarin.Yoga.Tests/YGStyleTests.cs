@@ -34,7 +34,7 @@ namespace Xamarin.Yoga.Tests
             YGNodeRef node0 = YGNodeNew();
             Assert.IsFalse(node0.IsDirty);
             Assert.AreEqual(YGFlexDirection.Column, YGNodeStyleGetFlexDirection(node0));
-            Assert.IsFalse(YGNodeStyleGetMaxHeight(node0).unit != YGUnit.Undefined);
+            Assert.IsFalse(node0.Style.MaxDimensions.Height.unit != YGUnit.Undefined);
 
             YGNodeRef node1 = YGNodeNew();
             YGNodeStyleSetFlexDirection(node1, YGFlexDirection.Row);
@@ -43,7 +43,7 @@ namespace Xamarin.Yoga.Tests
             YGNodeCopyStyle(node0, node1);
             Assert.IsTrue(node0.IsDirty);
             Assert.AreEqual(YGFlexDirection.Row, YGNodeStyleGetFlexDirection(node0));
-            Assert.AreEqual(10, YGNodeStyleGetMaxHeight(node0).value);
+            Assert.AreEqual(10, node0.Style.MaxDimensions.Height.value);
 
             YGNodeFree(node0);
             YGNodeFree(node1);

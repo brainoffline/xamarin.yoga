@@ -20,8 +20,8 @@ namespace Xamarin.Yoga.Tests
             float                           height,
             YGMeasureMode                   heightMode)
         {
-            int measureCount = (int) node.getContext();
-            node.setContext(++measureCount);
+            int measureCount = (int) node.Context;
+            node.Context = ++measureCount;
 
             return new YGSize(
                 width = widthMode   == YGMeasureMode.Undefined ? 10 : width,
@@ -35,8 +35,8 @@ namespace Xamarin.Yoga.Tests
             float                           height,
             YGMeasureMode                   heightMode)
         {
-            int measureCount = (int) node.getContext();
-            node.setContext(++measureCount);
+            int measureCount = (int) node.Context;
+            node.Context = ++measureCount;
             return new YGSize(
                 width = widthMode   == YGMeasureMode.Undefined || (widthMode  == YGMeasureMode.AtMost && width  > 10) ? 10 : width,
                 height = heightMode == YGMeasureMode.Undefined || (heightMode == YGMeasureMode.AtMost && height > 10) ? 10 : height
@@ -49,8 +49,8 @@ namespace Xamarin.Yoga.Tests
             float                              height,
             YGMeasureMode                      heightMode)
         {
-            int measureCount = (int) node.getContext();
-            node.setContext(++measureCount);
+            int measureCount = (int) node.Context;
+            node.Context = ++measureCount;
 
             return new YGSize(
                 width = 84f,
@@ -69,8 +69,8 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeRef root_child0  = YGNodeNew();
             int       measureCount = 0;
-            root_child0.setContext(measureCount);
-            root_child0.setMeasureFunc(_measureMax);
+            root_child0.Context = measureCount;
+            root_child0.MeasureFunc = _measureMax;
             YGNodeStyleSetFlexGrow(root_child0, 1);
             YGNodeInsertChild(root, root_child0, 0);
 
@@ -88,8 +88,8 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeRef root_child0  = YGNodeNew();
             int       measureCount = 0;
-            root_child0.setContext(measureCount);
-            root_child0.setMeasureFunc(_measureMin);
+            root_child0.Context = measureCount;
+            root_child0.MeasureFunc = _measureMin;
             YGNodeInsertChild(root, root_child0, 0);
 
             YGNodeCalculateLayout(root, 100, 100, YGDirection.LTR);
@@ -108,8 +108,8 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeRef root_child0  = YGNodeNew();
             int       measureCount = 0;
-            root_child0.setContext(measureCount);
-            root_child0.setMeasureFunc(_measureMin);
+            root_child0.Context = measureCount;
+            root_child0.MeasureFunc = _measureMin;
             YGNodeInsertChild(root, root_child0, 0);
 
             YGNodeCalculateLayout(root, 100, 100, YGDirection.LTR);
@@ -128,8 +128,8 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeRef root_child0  = YGNodeNew();
             int       measureCount = 0;
-            root_child0.setContext(measureCount);
-            root_child0.setMeasureFunc(_measureMin);
+            root_child0.Context = measureCount;
+            root_child0.MeasureFunc = _measureMin;
             YGNodeInsertChild(root, root_child0, 0);
 
             YGNodeCalculateLayout(root, 100, 100, YGDirection.LTR);
@@ -149,8 +149,8 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeRef root_child0  = YGNodeNew();
             int       measureCount = 0;
-            root_child0.setContext(measureCount);
-            root_child0.setMeasureFunc(_measureMin);
+            root_child0.Context = measureCount;
+            root_child0.MeasureFunc = _measureMin;
             YGNodeInsertChild(root, root_child0, 0);
 
             YGNodeCalculateLayout(root, 100, YGUndefined, YGDirection.LTR);
@@ -177,8 +177,8 @@ namespace Xamarin.Yoga.Tests
             YGNodeInsertChild(root, root_child0, 0);
 
             YGNodeRef root_child0_child0 = YGNodeNew();
-            root_child0_child0.setContext(measureCount);
-            root_child0_child0.setMeasureFunc(_measure_84_49);
+            root_child0_child0.Context = measureCount;
+            root_child0_child0.MeasureFunc = _measure_84_49;
             YGNodeInsertChild(root_child0, root_child0_child0, 0);
 
             YGNodeCalculateLayout(root, YGUndefined, YGUndefined, YGDirection.LTR);

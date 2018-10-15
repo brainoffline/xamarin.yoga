@@ -123,18 +123,14 @@ namespace Xamarin.Yoga
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static YGFloatOptional YGResolveValueMargin(
-            in YGValue value,
-            in float ownerSize)
+        internal static YGFloatOptional YGResolveValueMargin(YGValue value, float ownerSize)
         {
             return value.unit == YGUnit.Auto
                 ? new YGFloatOptional(0)
                 : YGResolveValue(value, ownerSize);
         }
 
-        public static YGFlexDirection YGFlexDirectionCross(
-            in YGFlexDirection flexDirection,
-            in YGDirection direction)
+        public static YGFlexDirection YGFlexDirectionCross( YGFlexDirection flexDirection, YGDirection direction)
         {
             return YGFlexDirectionIsColumn(flexDirection)
                 ? YGResolveFlexDirection(YGFlexDirection.Row, direction)

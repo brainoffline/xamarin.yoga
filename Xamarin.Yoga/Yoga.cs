@@ -172,49 +172,6 @@ namespace Xamarin.Yoga
             return isUndefined(value);
         }
 
-        public static YGValue YGComputedEdgeValue(
-            YGValue[] edges,
-            YGEdge    edge,
-            YGValue   defaultValue)
-        {
-            if (edges[(int) edge].unit != YGUnit.Undefined) return edges[(int) edge];
-
-            if ((edge == YGEdge.Top || edge == YGEdge.Bottom) &&
-                edges[(int) YGEdge.Vertical].unit != YGUnit.Undefined)
-                return edges[(int) YGEdge.Vertical];
-
-            if ((edge    == YGEdge.Left || edge == YGEdge.Right || edge == YGEdge.Start ||
-                    edge == YGEdge.End) &&
-                edges[(int) YGEdge.Horizontal].unit != YGUnit.Undefined)
-                return edges[(int) YGEdge.Horizontal];
-
-            if (edges[(int) YGEdge.All].unit != YGUnit.Undefined) return edges[(int) YGEdge.All];
-
-            if (edge == YGEdge.Start || edge == YGEdge.End) return YGConst.YGValueUndefined;
-
-            return defaultValue;
-        }
-
-        public static object YGNodeGetContext(YGNodeRef node)
-        {
-            return node.getContext();
-        }
-
-        public static void YGNodeSetContext(YGNodeRef node, object context)
-        {
-            node.setContext(context);
-        }
-
-        public static YGMeasureFunc YGNodeGetMeasureFunc(YGNodeRef node)
-        {
-            return node.getMeasure();
-        }
-
-        public static void YGNodeSetMeasureFunc(YGNodeRef node, YGMeasureFunc measureFunc)
-        {
-            node.setMeasureFunc(measureFunc);
-        }
-
         public static YGBaselineFunc YGNodeGetBaselineFunc(YGNodeRef node)
         {
             return node.getBaseline();
@@ -400,7 +357,7 @@ namespace Xamarin.Yoga
 
             YGAssertWithNode(
                 node,
-                node.getMeasure() == null,
+                node.MeasureFunc == null,
                 "Cannot add child: Nodes with measure functions cannot have children.");
 
             node.cloneChildrenIfNeeded();
@@ -417,7 +374,7 @@ namespace Xamarin.Yoga
         {
             YGAssertWithNode(
                 node,
-                node.getMeasure() == null,
+                node.MeasureFunc == null,
                 "Cannot add child: Nodes with measure functions cannot have children.");
 
             node.insertChild(child, index);
@@ -588,7 +545,7 @@ namespace Xamarin.Yoga
         {
             YGAssertWithNode(
                 node,
-                node.getMeasure() != null,
+                node.MeasureFunc != null,
                 "Only leaf nodes with custom measure functions should manually mark themselves as dirty");
 
             node.markDirtyAndPropogate();
@@ -1048,10 +1005,10 @@ type, name, paramName, instanceName)                                     \
                 YGFloatSanitize(position),
                 YGFloatIsUndefined(position) ? YGUnit.Undefined : YGUnit.Point);
 
-            if (node.Style.position[(int) edge].value != value.value && value.unit != YGUnit.Undefined ||
-                node.Style.position[(int) edge].unit != value.unit)
+            if (!YGFloatsEqual(node.Style.Position[edge].value, value.value) && value.unit != YGUnit.Undefined ||
+                node.Style.Position[edge].unit != value.unit)
             {
-                node.Style.position[(int) edge] = value;
+                node.Style.Position[edge] = value;
                 node.markDirtyAndPropogate();
             }
         }
@@ -1062,20 +1019,20 @@ type, name, paramName, instanceName)                                     \
             var value = new YGValue(
                 YGFloatSanitize(position),
                 YGFloatIsUndefined(position) ? YGUnit.Undefined : YGUnit.Percent);
-            if (node.Style.position[(int) edge].value != value.value && value.unit != YGUnit.Undefined ||
-                node.Style.position[(int) edge].unit != value.unit)
+            if (!YGFloatsEqual(node.Style.Position[edge].value, value.value) && value.unit != YGUnit.Undefined ||
+                node.Style.Position[edge].unit != value.unit)
             {
-                node.Style.position[(int) edge] = value;
+                node.Style.Position[edge] = value;
                 node.markDirtyAndPropogate();
             }
         }
 
         public static YGValue YGNodeStyleGetPosition(YGNodeRef node, YGEdge edge)
         {
-            var value = node.Style.position[(int) edge];
+            var value = node.Style.Position[edge];
             if (value.unit == YGUnit.Undefined || value.unit == YGUnit.Auto)
             {
-                return (node.Style.position[(int) edge] = new YGValue(YGUndefined, value.unit));
+                return (node.Style.Position[edge] = new YGValue(YGUndefined, value.unit));
             }
 
             return value;
@@ -1088,10 +1045,10 @@ type, name, paramName, instanceName)                                     \
                 YGFloatSanitize(margin),
                 YGFloatIsUndefined(margin) ? YGUnit.Undefined : YGUnit.Point);
 
-            if (node.Style.margin[(int) edge].value != value.value && value.unit != YGUnit.Undefined ||
-                node.Style.margin[(int) edge].unit != value.unit)
+            if (!YGFloatsEqual(node.Style.Margin[edge].value, value.value) && value.unit != YGUnit.Undefined ||
+                node.Style.Margin[edge].unit != value.unit)
             {
-                node.Style.margin[(int) edge] = value;
+                node.Style.Margin[edge] = value;
                 node.markDirtyAndPropogate();
             }
         }
@@ -1104,21 +1061,19 @@ type, name, paramName, instanceName)                                     \
             var value = new YGValue(
                 YGFloatSanitize(margin),
                 YGFloatIsUndefined(margin) ? YGUnit.Undefined : YGUnit.Percent);
-            if (node.Style.margin[(int) edge].value != value.value && value.unit != YGUnit.Undefined ||
-                node.Style.margin[(int) edge].unit != value.unit)
+            if (!YGFloatsEqual(node.Style.Margin[edge].value, value.value) && value.unit != YGUnit.Undefined ||
+                node.Style.Margin[edge].unit != value.unit)
             {
-                node.Style.margin[(int) edge] = value;
+                node.Style.Margin[edge] = value;
                 node.markDirtyAndPropogate();
             }
         }
 
         public static YGValue YGNodeStyleGetMargin(YGNodeRef node, YGEdge edge)
         {
-            var value = node.Style.margin[(int) edge];
+            var value = node.Style.Margin[edge];
             if (value.unit == YGUnit.Undefined || value.unit == YGUnit.Auto)
-            {
-                return (node.Style.margin[(int) edge] = new YGValue(YGUndefined, value.unit));
-            }
+                return (node.Style.Margin[edge] = new YGValue(YGUndefined, value.unit));
 
             return value;
         }
@@ -1126,9 +1081,9 @@ type, name, paramName, instanceName)                                     \
         // YG_NODE_STYLE_EDGE_PROPERTY_UNIT_AUTO_IMPL(YGValue, Margin,   margin);
         public static void YGNodeStyleSetMarginAuto(YGNodeRef node, YGEdge edge)
         {
-            if (node.Style.margin[(int) edge].unit != YGUnit.Auto)
+            if (node.Style.Margin[edge].unit != YGUnit.Auto)
             {
-                node.Style.margin[(int) edge] = YGConst.YGValueAuto;
+                node.Style.Margin[edge] = YGConst.YGValueAuto;
                 node.markDirtyAndPropogate();
             }
         }
@@ -1140,10 +1095,10 @@ type, name, paramName, instanceName)                                     \
                 YGFloatSanitize(padding),
                 YGFloatIsUndefined(padding) ? YGUnit.Undefined : YGUnit.Point);
 
-            if (node.Style.padding[(int) edge].value != value.value && value.unit != YGUnit.Undefined ||
-                node.Style.padding[(int) edge].unit != value.unit)
+            if (!YGFloatsEqual(node.Style.Padding[edge].value, value.value) && value.unit != YGUnit.Undefined ||
+                node.Style.Padding[edge].unit != value.unit)
             {
-                node.Style.padding[(int) edge] = value;
+                node.Style.Padding[edge] = value;
                 node.markDirtyAndPropogate();
             }
         }
@@ -1154,20 +1109,20 @@ type, name, paramName, instanceName)                                     \
             var value = new YGValue(
                 YGFloatSanitize(padding),
                 YGFloatIsUndefined(padding) ? YGUnit.Undefined : YGUnit.Percent);
-            if (node.Style.padding[(int) edge].value != value.value && value.unit != YGUnit.Undefined ||
-                node.Style.padding[(int) edge].unit != value.unit)
+            if (!YGFloatsEqual(node.Style.Padding[edge].value, value.value) && value.unit != YGUnit.Undefined ||
+                node.Style.Padding[edge].unit != value.unit)
             {
-                node.Style.padding[(int) edge] = value;
+                node.Style.Padding[edge] = value;
                 node.markDirtyAndPropogate();
             }
         }
 
         public static YGValue YGNodeStyleGetPadding(YGNodeRef node, YGEdge edge)
         {
-            var value = node.Style.padding[(int) edge];
+            var value = node.Style.Padding[edge];
             if (value.unit == YGUnit.Undefined || value.unit == YGUnit.Auto)
             {
-                return (node.Style.padding[(int) edge] = new YGValue(YGUndefined, value.unit));
+                return (node.Style.Padding[edge] = new YGValue(YGUndefined, value.unit));
             }
 
             return value;
@@ -1183,18 +1138,18 @@ type, name, paramName, instanceName)                                     \
             var value = new YGValue(
                 YGFloatSanitize(border),
                 YGFloatIsUndefined(border) ? YGUnit.Undefined : YGUnit.Point);
-            if (node.Style.border[(int) edge].value != value.value &&
+            if (!YGFloatsEqual(node.Style.Border[edge].value, value.value) &&
                 value.unit                          != YGUnit.Undefined ||
-                node.Style.border[(int) edge].unit != value.unit)
+                node.Style.Border[edge].unit != value.unit)
             {
-                node.Style.border[(int) edge] = value;
+                node.Style.Border[edge] = value;
                 node.markDirtyAndPropogate();
             }
         }
 
         public static float YGNodeStyleGetBorder(YGNodeRef node, YGEdge edge)
         {
-            var value = node.Style.border[(int) edge];
+            var value = node.Style.Border[edge];
             if (value.unit == YGUnit.Undefined || value.unit == YGUnit.Auto)
                 return YGUndefined;
             return value.value;
@@ -1202,33 +1157,16 @@ type, name, paramName, instanceName)                                     \
 
         // Yoga specific properties, not compatible with flexbox specification
 
-        // TODO(T26792433): Change the API to accept YGFloatOptional.
-        public static float YGNodeStyleGetAspectRatio(YGNodeRef node)
-        {
-            var op = node.Style.aspectRatio;
-            return op.isUndefined() ? YGUndefined : op.getValue();
-        }
-
-        // TODO(T26792433): Change the API to accept YGFloatOptional.
-        public static void YGNodeStyleSetAspectRatio(YGNodeRef node, float aspectRatio)
-        {
-            if (node.Style.aspectRatio != aspectRatio)
-            {
-                node.Style.aspectRatio = new YGFloatOptional(aspectRatio);
-                node.markDirtyAndPropogate();
-            }
-        }
-
         // YG_NODE_STYLE_PROPERTY_UNIT_AUTO_IMPL(YGValue,Width,width,dimensions[YGDimension.Width]);
         public static void YGNodeStyleSetWidth(YGNodeRef node, YGValue width)
         {
             var value = new YGValue(
                 YGFloatSanitize(width.value),
                 YGFloatIsUndefined(width.value) ? YGUnit.Undefined : YGUnit.Point);
-            if (node.Style.dimensions[YGDimension.Width].value != value.value && value.unit != YGUnit.Undefined ||
-                node.Style.dimensions[YGDimension.Width].unit != value.unit)
+            if (node.Style.Dimensions[YGDimension.Width].value != value.value && value.unit != YGUnit.Undefined ||
+                node.Style.Dimensions[YGDimension.Width].unit != value.unit)
             {
-                node.Style.dimensions[YGDimension.Width] = value;
+                node.Style.Dimensions[YGDimension.Width] = value;
                 node.markDirtyAndPropogate();
             }
         }
@@ -1236,10 +1174,10 @@ type, name, paramName, instanceName)                                     \
         public static void YGNodeStyleSetWidthPercent(
             YGNodeRef node, YGValue width)
         {
-            if (node.Style.dimensions[YGDimension.Width].value != YGFloatSanitize(width.value) ||
-                node.Style.dimensions[YGDimension.Width].unit  != YGUnit.Percent)
+            if (node.Style.Dimensions[YGDimension.Width].value != YGFloatSanitize(width.value) ||
+                node.Style.Dimensions[YGDimension.Width].unit  != YGUnit.Percent)
             {
-                node.Style.dimensions[YGDimension.Width] = YGFloatIsUndefined(width.value)
+                node.Style.Dimensions[YGDimension.Width] = YGFloatIsUndefined(width.value)
                     ? new YGValue(0,           YGUnit.Auto)
                     : new YGValue(width.value, YGUnit.Percent);
                 node.markDirtyAndPropogate();
@@ -1248,19 +1186,19 @@ type, name, paramName, instanceName)                                     \
 
         public static void YGNodeStyleSetWidthAuto(YGNodeRef node)
         {
-            if (node.Style.dimensions[YGDimension.Width].unit != YGUnit.Auto)
+            if (node.Style.Dimensions[YGDimension.Width].unit != YGUnit.Auto)
             {
-                node.Style.dimensions[YGDimension.Width] = new YGValue(0, YGUnit.Auto);
+                node.Style.Dimensions[YGDimension.Width] = new YGValue(0, YGUnit.Auto);
                 node.markDirtyAndPropogate();
             }
         }
 
         public static YGValue YGNodeStyleGetWidth(YGNodeRef node)
         {
-            var value = node.Style.dimensions[YGDimension.Width];
+            var value = node.Style.Dimensions[YGDimension.Width];
             if (value.unit == YGUnit.Undefined || value.unit == YGUnit.Undefined)
             {
-                node.Style.dimensions[YGDimension.Width] = value = new YGValue(YGUndefined, value.unit);
+                node.Style.Dimensions[YGDimension.Width] = value = new YGValue(YGUndefined, value.unit);
             }
 
             return value;
@@ -1273,21 +1211,20 @@ type, name, paramName, instanceName)                                     \
             var value = new YGValue(
                 YGFloatSanitize(height.value),
                 YGFloatIsUndefined(height.value) ? YGUnit.Undefined : YGUnit.Point);
-            if (node.Style.dimensions[YGDimension.Height].value != value.value && value.unit != YGUnit.Undefined ||
-                node.Style.dimensions[YGDimension.Height].unit != value.unit)
+            if (node.Style.Dimensions[YGDimension.Height].value != value.value && value.unit != YGUnit.Undefined ||
+                node.Style.Dimensions[YGDimension.Height].unit != value.unit)
             {
-                node.Style.dimensions[YGDimension.Height] = value;
+                node.Style.Dimensions[YGDimension.Height] = value;
                 node.markDirtyAndPropogate();
             }
         }
 
-        public static void YGNodeStyleSetHeightPercent(
-            YGNodeRef node, YGValue height)
+        public static void YGNodeStyleSetHeightPercent(YGNodeRef node, YGValue height)
         {
-            if (node.Style.dimensions[YGDimension.Height].value != YGFloatSanitize(height.value) ||
-                node.Style.dimensions[YGDimension.Height].unit  != YGUnit.Percent)
+            if (!YGFloatsEqual(node.Style.Dimensions.Height.value, YGFloatSanitize(height.value)) ||
+                node.Style.Dimensions.Height.unit  != YGUnit.Percent)
             {
-                node.Style.dimensions[YGDimension.Height] = YGFloatIsUndefined(height.value)
+                node.Style.Dimensions.Height = YGFloatIsUndefined(height.value)
                     ? new YGValue(0,            YGUnit.Auto)
                     : new YGValue(height.value, YGUnit.Percent);
                 node.markDirtyAndPropogate();
@@ -1296,21 +1233,18 @@ type, name, paramName, instanceName)                                     \
 
         public static void YGNodeStyleSetHeightAuto(YGNodeRef node)
         {
-            if (node.Style.dimensions[YGDimension.Height].unit != YGUnit.Auto)
+            if (node.Style.Dimensions[YGDimension.Height].unit != YGUnit.Auto)
             {
-                node.Style.dimensions[YGDimension.Height] = new YGValue(0, YGUnit.Auto);
+                node.Style.Dimensions[YGDimension.Height] = new YGValue(0, YGUnit.Auto);
                 node.markDirtyAndPropogate();
             }
         }
 
         public static YGValue YGNodeStyleGetHeight(YGNodeRef node)
         {
-            var value = node.Style.dimensions[YGDimension.Height];
+            var value = node.Style.Dimensions.Height;
             if (value.unit == YGUnit.Undefined || value.unit == YGUnit.Undefined)
-            {
-                node.Style.dimensions[YGDimension.Height] = value = new YGValue(YGUndefined, value.unit);
-            }
-
+                node.Style.Dimensions.Height = value = new YGValue(YGUndefined, value.unit);
             return value;
         }
 
@@ -1340,62 +1274,42 @@ type, name, paramName, instanceName)                                     \
 
         public static void YGNodeStyleSetMinWidth(YGNodeRef node, float minWidth)
         {
-            YGNodeStyleSetDimensions(node, node.Style.minDimensions, YGDimension.Width, minWidth, YGUnit.Point);
+            YGNodeStyleSetDimensions(node, node.Style.MinDimensions, YGDimension.Width, minWidth, YGUnit.Point);
         }
 
         public static void YGNodeStyleSetMinWidthPercent(YGNodeRef node, float minWidth)
         {
-            YGNodeStyleSetDimensions(node, node.Style.minDimensions, YGDimension.Width, minWidth, YGUnit.Percent);
-        }
-
-        public static YGValue YGNodeStyleGetMinWidth(YGNodeRef node)
-        {
-            return YGNodeStyleGetDimensions(node.Style.minDimensions, YGDimension.Width);
+            YGNodeStyleSetDimensions(node, node.Style.MinDimensions, YGDimension.Width, minWidth, YGUnit.Percent);
         }
 
         public static void YGNodeStyleSetMinHeight(YGNodeRef node, float minHeight)
         {
-            YGNodeStyleSetDimensions(node, node.Style.minDimensions, YGDimension.Height, minHeight, YGUnit.Point);
+            YGNodeStyleSetDimensions(node, node.Style.MinDimensions, YGDimension.Height, minHeight, YGUnit.Point);
         }
 
         public static void YGNodeStyleSetMinHeightPercent(YGNodeRef node, float minHeight)
         {
-            YGNodeStyleSetDimensions(node, node.Style.minDimensions, YGDimension.Height, minHeight, YGUnit.Percent);
-        }
-
-        public static YGValue YGNodeStyleGetMinHeight(YGNodeRef node)
-        {
-            return YGNodeStyleGetDimensions(node.Style.minDimensions, YGDimension.Height);
+            YGNodeStyleSetDimensions(node, node.Style.MinDimensions, YGDimension.Height, minHeight, YGUnit.Percent);
         }
 
         public static void YGNodeStyleSetMaxWidth(YGNodeRef node, float maxWidth)
         {
-            YGNodeStyleSetDimensions(node, node.Style.maxDimensions, YGDimension.Width, maxWidth, YGUnit.Point);
+            YGNodeStyleSetDimensions(node, node.Style.MaxDimensions, YGDimension.Width, maxWidth, YGUnit.Point);
         }
 
         public static void YGNodeStyleSetMaxWidthPercent(YGNodeRef node, float maxWidth)
         {
-            YGNodeStyleSetDimensions(node, node.Style.maxDimensions, YGDimension.Width, maxWidth, YGUnit.Percent);
-        }
-
-        public static YGValue YGNodeStyleGetMaxWidth(YGNodeRef node)
-        {
-            return YGNodeStyleGetDimensions(node.Style.maxDimensions, YGDimension.Width);
+            YGNodeStyleSetDimensions(node, node.Style.MaxDimensions, YGDimension.Width, maxWidth, YGUnit.Percent);
         }
 
         public static void YGNodeStyleSetMaxHeight(YGNodeRef node, float maxHeight)
         {
-            YGNodeStyleSetDimensions(node, node.Style.maxDimensions, YGDimension.Height, maxHeight, YGUnit.Point);
+            YGNodeStyleSetDimensions(node, node.Style.MaxDimensions, YGDimension.Height, maxHeight, YGUnit.Point);
         }
 
         public static void YGNodeStyleSetMaxHeightPercent(YGNodeRef node, float maxHeight)
         {
-            YGNodeStyleSetDimensions(node, node.Style.maxDimensions, YGDimension.Height, maxHeight, YGUnit.Percent);
-        }
-
-        public static YGValue YGNodeStyleGetMaxHeight(YGNodeRef node)
-        {
-            return YGNodeStyleGetDimensions(node.Style.maxDimensions, YGDimension.Height);
+            YGNodeStyleSetDimensions(node, node.Style.MaxDimensions, YGDimension.Height, maxHeight, YGUnit.Percent);
         }
 
         //YG_NODE_LAYOUT_PROPERTY_IMPL(float, Left, position[YGEdge.Left]);
@@ -1633,19 +1547,19 @@ type, name, paramName, instanceName)                                     \
             if (YGFlexDirectionIsColumn(axis))
             {
                 min = YGResolveValue(
-                    node.Style.minDimensions[YGDimension.Height],
+                    node.Style.MinDimensions[YGDimension.Height],
                     axisSize);
                 max = YGResolveValue(
-                    node.Style.maxDimensions[YGDimension.Height],
+                    node.Style.MaxDimensions[YGDimension.Height],
                     axisSize);
             }
             else if (YGFlexDirectionIsRow(axis))
             {
                 min = YGResolveValue(
-                    node.Style.minDimensions[YGDimension.Width],
+                    node.Style.MinDimensions[YGDimension.Width],
                     axisSize);
                 max = YGResolveValue(
-                    node.Style.maxDimensions[YGDimension.Width],
+                    node.Style.MaxDimensions[YGDimension.Width],
                     axisSize);
             }
 
@@ -1692,7 +1606,7 @@ type, name, paramName, instanceName)                                     \
             ref float         size)
         {
             var maxSize =
-                YGResolveValue(node.Style.maxDimensions[dim[(int) axis]], ownerAxisSize) +
+                YGResolveValue(node.Style.MaxDimensions[dim[(int) axis]], ownerAxisSize) +
                 node.getMarginForAxis(axis, ownerWidth);
             switch (mode)
             {
@@ -1829,12 +1743,12 @@ type, name, paramName, instanceName)                                     \
                         childHeightMeasureMode = YGMeasureMode.AtMost;
                     }
 
-                if (!child.Style.aspectRatio.isUndefined())
+                if (!child.Style.AspectRatio.isUndefined())
                 {
                     if (!isMainAxisRow && childWidthMeasureMode == YGMeasureMode.Exactly)
                     {
                         childHeight = marginColumn +
-                            (childWidth - marginRow) / child.Style.aspectRatio.getValue();
+                            (childWidth - marginRow) / child.Style.AspectRatio.getValue();
                         childHeightMeasureMode = YGMeasureMode.Exactly;
                     }
                     else if (
@@ -1842,7 +1756,7 @@ type, name, paramName, instanceName)                                     \
                     {
                         childWidth = marginRow +
                             (childHeight - marginColumn) *
-                            child.Style.aspectRatio.getValue();
+                            child.Style.AspectRatio.getValue();
                         childWidthMeasureMode = YGMeasureMode.Exactly;
                     }
                 }
@@ -1860,10 +1774,10 @@ type, name, paramName, instanceName)                                     \
                 {
                     childWidth            = width;
                     childWidthMeasureMode = YGMeasureMode.Exactly;
-                    if (!child.Style.aspectRatio.isUndefined())
+                    if (!child.Style.AspectRatio.isUndefined())
                     {
                         childHeight =
-                            (childWidth - marginRow) / child.Style.aspectRatio.getValue();
+                            (childWidth - marginRow) / child.Style.AspectRatio.getValue();
                         childHeightMeasureMode = YGMeasureMode.Exactly;
                     }
                 }
@@ -1878,10 +1792,10 @@ type, name, paramName, instanceName)                                     \
                     childHeight            = height;
                     childHeightMeasureMode = YGMeasureMode.Exactly;
 
-                    if (!child.Style.aspectRatio.isUndefined())
+                    if (!child.Style.AspectRatio.isUndefined())
                     {
                         childWidth = (childHeight - marginColumn) *
-                            child.Style.aspectRatio.getValue();
+                            child.Style.AspectRatio.getValue();
                         childWidthMeasureMode = YGMeasureMode.Exactly;
                     }
                 }
@@ -2011,15 +1925,15 @@ type, name, paramName, instanceName)                                     \
             // ratio calculation. One dimension being the anchor and the other being
             // flexible.
             if (YGFloatIsUndefined(childWidth) ^ YGFloatIsUndefined(childHeight))
-                if (!child.Style.aspectRatio.isUndefined())
+                if (!child.Style.AspectRatio.isUndefined())
                 {
                     if (YGFloatIsUndefined(childWidth))
                         childWidth = marginRow +
                             (childHeight - marginColumn) *
-                            child.Style.aspectRatio.getValue();
+                            child.Style.AspectRatio.getValue();
                     else if (YGFloatIsUndefined(childHeight))
                         childHeight = marginColumn +
-                            (childWidth - marginRow) / child.Style.aspectRatio.getValue();
+                            (childWidth - marginRow) / child.Style.AspectRatio.getValue();
                 }
 
             // If we're still missing one or the other dimension, measure the content.
@@ -2141,7 +2055,7 @@ type, name, paramName, instanceName)                                     \
         {
             YGAssertWithNode(
                 node,
-                node.getMeasure() != null,
+                node.MeasureFunc != null,
                 "Expected node to have custom measure function");
 
             var paddingAndBorderAxisRow    = YGNodePaddingAndBorderForAxis(node, YGFlexDirection.Row,    availableWidth);
@@ -2183,7 +2097,7 @@ type, name, paramName, instanceName)                                     \
             else
             {
                 // Measure the text under the current constraints.
-                var measuredSize = node.getMeasure()(node, innerWidth, widthMeasureMode, innerHeight, heightMeasureMode);
+                var measuredSize = node.MeasureFunc(node, innerWidth, widthMeasureMode, innerHeight, heightMeasureMode);
 
                 node.Layout.SetMeasuredDimension(
                     YGDimension.Width,
@@ -2346,13 +2260,13 @@ type, name, paramName, instanceName)                                     \
                 // We want to make sure our available height does not violate min and max
                 // constraints
                 var minDimensionOptional =
-                    YGResolveValue(node.Style.minDimensions[dimension], ownerDim);
+                    YGResolveValue(node.Style.MinDimensions[dimension], ownerDim);
                 var minInnerDim = minDimensionOptional.isUndefined()
                     ? 0.0f
                     : minDimensionOptional.getValue() - paddingAndBorder;
 
                 var maxDimensionOptional =
-                    YGResolveValue(node.Style.maxDimensions[dimension], ownerDim);
+                    YGResolveValue(node.Style.MaxDimensions[dimension], ownerDim);
 
                 var maxInnerDim = maxDimensionOptional.isUndefined()
                     ? float.MaxValue
@@ -2636,13 +2550,13 @@ type, name, paramName, instanceName)                                     \
                 YGMeasureMode childCrossMeasureMode;
                 var           childMainMeasureMode = YGMeasureMode.Exactly;
 
-                if (!currentRelativeChild.Style.aspectRatio.isUndefined())
+                if (!currentRelativeChild.Style.AspectRatio.isUndefined())
                 {
                     childCrossSize = isMainAxisRow
                         ? (childMainSize - marginMain) /
-                        currentRelativeChild.Style.aspectRatio.getValue()
+                        currentRelativeChild.Style.AspectRatio.getValue()
                         : (childMainSize - marginMain) *
-                        currentRelativeChild.Style.aspectRatio.getValue();
+                        currentRelativeChild.Style.AspectRatio.getValue();
                     childCrossMeasureMode = YGMeasureMode.Exactly;
 
                     childCrossSize += marginCross;
@@ -2935,8 +2849,8 @@ type, name, paramName, instanceName)                                     \
             if (measureModeMainDim                          == YGMeasureMode.AtMost &&
                 collectedFlexItemsValues.remainingFreeSpace > 0)
             {
-                if (style.minDimensions[dim[(int) mainAxis]].unit != YGUnit.Undefined &&
-                    !YGResolveValue(style.minDimensions[dim[(int) mainAxis]], mainAxisownerSize)
+                if (style.MinDimensions[dim[(int) mainAxis]].unit != YGUnit.Undefined &&
+                    !YGResolveValue(style.MinDimensions[dim[(int) mainAxis]], mainAxisownerSize)
                         .isUndefined())
                 {
                     // This condition makes sure that if the size of main dimension(after
@@ -2948,7 +2862,7 @@ type, name, paramName, instanceName)                                     \
                     // can be laid out, it will exclude space consumed by padding and border.
                     var minAvailableMainDim = YGUnwrapFloatOptional(
                             YGResolveValue(
-                                style.minDimensions[dim[(int) mainAxis]],
+                                style.MinDimensions[dim[(int) mainAxis]],
                                 mainAxisownerSize)) -
                         leadingPaddingAndBorderMain - trailingPaddingAndBorderMain;
                     var occupiedSpaceByChildNodes = availableInnerMainDim - collectedFlexItemsValues.remainingFreeSpace;
@@ -3295,7 +3209,7 @@ type, name, paramName, instanceName)                                     \
                     node.getTrailingPadding(flexColumnDirection, ownerWidth)),
                 YGEdge.Bottom);
 
-            if (node.getMeasure() != null)
+            if (node.MeasureFunc != null)
             {
                 YGNodeWithMeasureFuncSetMeasuredDimensions(
                     node,
@@ -3365,25 +3279,25 @@ type, name, paramName, instanceName)                                     \
 
             var minInnerWidth = YGUnwrapFloatOptional(
                     YGResolveValue(
-                        node.Style.minDimensions[YGDimension.Width],
+                        node.Style.MinDimensions[YGDimension.Width],
                         ownerWidth)) -
                 paddingAndBorderAxisRow;
             var maxInnerWidth =
                 YGUnwrapFloatOptional(
                     YGResolveValue(
-                        node.Style.maxDimensions[YGDimension.Width],
+                        node.Style.MaxDimensions[YGDimension.Width],
                         ownerWidth)) -
                 paddingAndBorderAxisRow;
             var minInnerHeight =
                 YGUnwrapFloatOptional(
                     YGResolveValue(
-                        node.Style.minDimensions[YGDimension.Height],
+                        node.Style.MinDimensions[YGDimension.Height],
                         ownerHeight)) -
                 paddingAndBorderAxisColumn;
             var maxInnerHeight =
                 YGUnwrapFloatOptional(
                     YGResolveValue(
-                        node.Style.maxDimensions[YGDimension.Height],
+                        node.Style.MaxDimensions[YGDimension.Height],
                         ownerHeight)) -
                 paddingAndBorderAxisColumn;
 
@@ -3633,16 +3547,12 @@ type, name, paramName, instanceName)                                     \
                                 {
                                     var childMainSize = child.Layout.GetMeasuredDimension(dim[(int) mainAxis]);
                                     var childCrossSize =
-                                        !child.Style.aspectRatio.isUndefined()
+                                        !child.Style.AspectRatio.isUndefined()
                                             ? YGUnwrapFloatOptional(
-                                                child.getMarginForAxis(
-                                                    crossAxis,
-                                                    availableInnerWidth)) +
+                                                child.getMarginForAxis( crossAxis, availableInnerWidth)) +
                                             (isMainAxisRow
-                                                ? childMainSize /
-                                                child.Style.aspectRatio.getValue()
-                                                : childMainSize *
-                                                child.Style.aspectRatio.getValue())
+                                                ? childMainSize / child.Style.AspectRatio.getValue()
+                                                : childMainSize * child.Style.AspectRatio.getValue())
                                             : collectedFlexItemsValues.crossDim;
 
                                     childMainSize += YGUnwrapFloatOptional(
@@ -4297,7 +4207,7 @@ type, name, paramName, instanceName)                                     \
             // most
             // expensive to measure, so it's worth avoiding redundant measurements if at
             // all possible.
-            if (node.getMeasure() != null)
+            if (node.MeasureFunc != null)
             {
                 var marginAxisRow = YGUnwrapFloatOptional(
                     node.getMarginForAxis(YGFlexDirection.Row, ownerWidth));
@@ -4596,13 +4506,13 @@ type, name, paramName, instanceName)                                     \
                 widthMeasureMode = YGMeasureMode.Exactly;
             }
             else if (!YGResolveValue(
-                    node.Style.maxDimensions[YGDimension.Width],
+                    node.Style.MaxDimensions[YGDimension.Width],
                     ownerWidth)
                 .isUndefined())
             {
                 width = YGUnwrapFloatOptional(
                     YGResolveValue(
-                        node.Style.maxDimensions[YGDimension.Width],
+                        node.Style.MaxDimensions[YGDimension.Width],
                         ownerWidth));
                 widthMeasureMode = YGMeasureMode.AtMost;
             }
@@ -4626,13 +4536,13 @@ type, name, paramName, instanceName)                                     \
                 heightMeasureMode = YGMeasureMode.Exactly;
             }
             else if (!YGResolveValue(
-                    node.Style.maxDimensions[YGDimension.Height],
+                    node.Style.MaxDimensions[YGDimension.Height],
                     ownerHeight)
                 .isUndefined())
             {
                 height = YGUnwrapFloatOptional(
                     YGResolveValue(
-                        node.Style.maxDimensions[YGDimension.Height],
+                        node.Style.MaxDimensions[YGDimension.Height],
                         ownerHeight));
                 heightMeasureMode = YGMeasureMode.AtMost;
             }

@@ -28,7 +28,7 @@ namespace Xamarin.Yoga.Tests
             float                                height,
             YGMeasureMode                        heightMode)
         {
-            var constraintList = (List<_MeasureConstraint>) node.getContext();
+            var constraintList = (List<_MeasureConstraint>) node.Context;
             var constraint = new _MeasureConstraint
             {
                 width      = width,
@@ -55,9 +55,9 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeRef root_child0 = YGNodeNew();
             //  root_child0.setContext(&constraintList);
-            root_child0.setContext(constraintList);
-            root_child0.setMeasureFunc(_measure);
-            //  root_child0.setMeasureFunc(_measure);
+            root_child0.Context = constraintList;
+            root_child0.MeasureFunc = _measure;
+            //  root_child0.MeasureFunc = _measure;
             YGNodeInsertChild(root, root_child0, 0);
 
             YGNodeCalculateLayout(root, YGUndefined, YGUndefined, YGDirection.LTR);
@@ -83,8 +83,8 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeRef root_child0 = YGNodeNew();
             //  root_child0.setContext(&constraintList);
-            root_child0.setContext(constraintList);
-            root_child0.setMeasureFunc(_measure);
+            root_child0.Context = constraintList;
+            root_child0.MeasureFunc = _measure;
             YGNodeInsertChild(root, root_child0, 0);
 
             YGNodeCalculateLayout(root, YGUndefined, YGUndefined, YGDirection.LTR);
@@ -108,8 +108,8 @@ namespace Xamarin.Yoga.Tests
             YGNodeStyleSetHeight(root, 100);
 
             YGNodeRef root_child0 = YGNodeNew();
-            root_child0.setContext(constraintList);
-            root_child0.setMeasureFunc(_measure);
+            root_child0.Context = constraintList;
+            root_child0.MeasureFunc = _measure;
             YGNodeInsertChild(root, root_child0, 0);
 
             YGNodeCalculateLayout(root, YGUndefined, YGUndefined, YGDirection.LTR);
@@ -134,8 +134,8 @@ namespace Xamarin.Yoga.Tests
             YGNodeStyleSetHeight(root, 100);
 
             YGNodeRef root_child0 = YGNodeNew();
-            root_child0.setContext(constraintList);
-            root_child0.setMeasureFunc(_measure);
+            root_child0.Context = constraintList;
+            root_child0.MeasureFunc = _measure;
             YGNodeInsertChild(root, root_child0, 0);
 
             YGNodeCalculateLayout(root, YGUndefined, YGUndefined, YGDirection.LTR);
@@ -160,8 +160,8 @@ namespace Xamarin.Yoga.Tests
             YGNodeStyleSetHeight(root, 100);
 
             YGNodeRef root_child0 = YGNodeNew();
-            root_child0.setContext(constraintList);
-            root_child0.setMeasureFunc(_measure);
+            root_child0.Context = constraintList;
+            root_child0.MeasureFunc = _measure;
             YGNodeInsertChild(root, root_child0, 0);
 
             YGNodeCalculateLayout(root, YGUndefined, YGUndefined, YGDirection.LTR);
@@ -187,8 +187,8 @@ namespace Xamarin.Yoga.Tests
             YGNodeStyleSetHeight(root, 100);
 
             YGNodeRef root_child0 = YGNodeNew();
-            root_child0.setContext(constraintList);
-            root_child0.setMeasureFunc(_measure);
+            root_child0.Context = constraintList;
+            root_child0.MeasureFunc = _measure;
             YGNodeInsertChild(root, root_child0, 0);
 
             YGNodeCalculateLayout(root, YGUndefined, YGUndefined, YGDirection.LTR);
@@ -212,8 +212,8 @@ namespace Xamarin.Yoga.Tests
 
             YGNodeRef root_child0 = YGNodeNew();
             YGNodeStyleSetFlexGrow(root_child0, 1);
-            root_child0.setContext(constraintList);
-            root_child0.setMeasureFunc(_measure);
+            root_child0.Context = constraintList;
+            root_child0.MeasureFunc = _measure;
             YGNodeInsertChild(root, root_child0, 0);
 
             YGNodeCalculateLayout(root, YGUndefined, YGUndefined, YGDirection.LTR);
@@ -241,8 +241,8 @@ namespace Xamarin.Yoga.Tests
             YGNodeRef root_child0 = YGNodeNew();
             YGNodeStyleSetFlexGrow(root_child0, 1);
             YGNodeStyleSetFlexBasis(root_child0, 0);
-            root_child0.setContext(constraintList);
-            root_child0.setMeasureFunc(_measure);
+            root_child0.Context = constraintList;
+            root_child0.MeasureFunc = _measure;
             YGNodeInsertChild(root, root_child0, 0);
 
             YGNodeCalculateLayout(root, YGUndefined, YGUndefined, YGDirection.LTR);
@@ -268,8 +268,8 @@ namespace Xamarin.Yoga.Tests
             YGNodeStyleSetWidth(root, 100);
 
             YGNodeRef root_child0 = YGNodeNew();
-            root_child0.setContext(constraintList);
-            root_child0.setMeasureFunc(_measure);
+            root_child0.Context = constraintList;
+            root_child0.MeasureFunc = _measure;
             YGNodeInsertChild(root, root_child0, 0);
 
             YGNodeCalculateLayout(root, YGUndefined, YGUndefined, YGDirection.LTR);
@@ -299,8 +299,8 @@ namespace Xamarin.Yoga.Tests
             YGNodeStyleSetWidth(root, 100);
 
             YGNodeRef root_child0 = YGNodeNew();
-            root_child0.setContext(constraintList);
-            root_child0.setMeasureFunc(_measure);
+            root_child0.Context = constraintList;
+            root_child0.MeasureFunc = _measure;
             YGNodeInsertChild(root, root_child0, 0);
 
             YGNodeCalculateLayout(root, YGUndefined, YGUndefined, YGDirection.LTR);

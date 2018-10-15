@@ -18,12 +18,12 @@ namespace Xamarin.Yoga
                 sb.Append("  ");
         }
 
-        internal static bool areFourValuesEqual(in YGValue[] four)
+        internal static bool areFourValuesEqual(Edges edges)
         {
             return
-                YGValueEqual(four[0], four[1]) &&
-                YGValueEqual(four[0], four[2]) &&
-                YGValueEqual(four[0], four[3]);
+                YGValueEqual(edges.Left, edges.Top)   &&
+                YGValueEqual(edges.Left, edges.Right) &&
+                YGValueEqual(edges.Left, edges.Bottom);
         }
 
         internal static void appendFormatedString(StringBuilder sb, in string message)
@@ -73,29 +73,29 @@ namespace Xamarin.Yoga
 
         internal static void appendEdges(
             StringBuilder sb,
-            in string     key,
-            in YGValue[]  edges)
+            string        key,
+            Edges         edges)
         {
             if (areFourValuesEqual(edges))
                 appendNumberIfNotZero(sb, key, edges[(int) YGEdge.Left]);
             else
-                for (var edge = (int) YGEdge.Left; edge != (int) YGEdge.All; ++edge)
+                for (var edge = YGEdge.Left; edge != YGEdge.All; ++edge)
                 {
-                    var str = $"{key}-{((YGEdge)edge).ToDescription()}";
+                    var str = $"{key}-{edge.ToDescription()}";
                     appendNumberIfNotZero(sb, str, edges[edge]);
                 }
         }
 
         internal static void appendEdgeIfNotUndefined(
             StringBuilder sb,
-            in string     str,
-            in YGValue[]  edges,
-            in YGEdge     edge)
+            string        str,
+            Edges         edges,
+            YGEdge        edge)
         {
             appendNumberIfNotUndefined(
                 sb,
                 str,
-                YGComputedEdgeValue(edges, edge, YGConst.YGValueUndefined));
+                edges.ComputedEdgeValue(edge, YGConst.YGValueUndefined));
         }
 
         public static StringBuilder YGNodeToString(
@@ -147,26 +147,27 @@ namespace Xamarin.Yoga
 
                 if (node.Style.display != defaultStyle.display) appendFormatedString(sb, $"display: {node.Style.display.ToDescription()}; ");
 
-                appendEdges(sb, "margin",  node.Style.margin);
-                appendEdges(sb, "padding", node.Style.padding);
-                appendEdges(sb, "border",  node.Style.border);
+                appendEdges(sb, "margin",  node.Style.Margin);
+                appendEdges(sb, "padding", node.Style.Padding);
+                appendEdges(sb, "border",  node.Style.Border);
 
-                appendNumberIfNotAuto(sb, "width",      node.Style.dimensions[YGDimension.Width]);
-                appendNumberIfNotAuto(sb, "height",     node.Style.dimensions[YGDimension.Height]);
-                appendNumberIfNotAuto(sb, "max-width",  node.Style.maxDimensions[YGDimension.Width]);
-                appendNumberIfNotAuto(sb, "max-height", node.Style.maxDimensions[YGDimension.Height]);
-                appendNumberIfNotAuto(sb, "min-width",  node.Style.minDimensions[YGDimension.Width]);
-                appendNumberIfNotAuto(sb, "min-height", node.Style.minDimensions[YGDimension.Height]);
+                appendNumberIfNotAuto(sb, "width",      node.Style.Dimensions[YGDimension.Width]);
+                appendNumberIfNotAuto(sb, "height",     node.Style.Dimensions[YGDimension.Height]);
+                appendNumberIfNotAuto(sb, "max-width",  node.Style.MaxDimensions[YGDimension.Width]);
+                appendNumberIfNotAuto(sb, "max-height", node.Style.MaxDimensions[YGDimension.Height]);
+                appendNumberIfNotAuto(sb, "min-width",  node.Style.MinDimensions[YGDimension.Width]);
+                appendNumberIfNotAuto(sb, "min-height", node.Style.MinDimensions[YGDimension.Height]);
 
                 if (node.Style.positionType != defaultStyle.positionType) appendFormatedString(sb, $"position: {node.Style.positionType.ToDescription()}; ");
 
-                appendEdgeIfNotUndefined(sb, "left",   node.Style.position, YGEdge.Left);
-                appendEdgeIfNotUndefined(sb, "right",  node.Style.position, YGEdge.Right);
-                appendEdgeIfNotUndefined(sb, "top",    node.Style.position, YGEdge.Top);
-                appendEdgeIfNotUndefined(sb, "bottom", node.Style.position, YGEdge.Bottom);
+                appendEdgeIfNotUndefined(sb, "left",   node.Style.Position, YGEdge.Left);
+                appendEdgeIfNotUndefined(sb, "right",  node.Style.Position, YGEdge.Right);
+                appendEdgeIfNotUndefined(sb, "top",    node.Style.Position, YGEdge.Top);
+                appendEdgeIfNotUndefined(sb, "bottom", node.Style.Position, YGEdge.Bottom);
                 appendFormatedString(sb, "\" ");
 
-                if (node.getMeasure() != null) appendFormatedString(sb, "has-custom-measure=\"true\"");
+                if (node.MeasureFunc != null)
+                    appendFormatedString(sb, "has-custom-measure=\"true\"");
             }
 
             appendFormatedString(sb, ">");

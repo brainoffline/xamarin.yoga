@@ -16,10 +16,9 @@ namespace Xamarin.Yoga
                 return value.ToString();
 
             var attrs = memberInfo[0].GetCustomAttributes(typeof(DescriptionAttribute), false);
-            return attrs.Length > 0 
-                ? ((DescriptionAttribute)attrs[0]).Description 
+            return attrs.Length > 0
+                ? ((DescriptionAttribute) attrs[0]).Description
                 : value.ToString();
         }
-
     }
 }

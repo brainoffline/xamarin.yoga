@@ -26,7 +26,7 @@ namespace Xamarin.Yoga
                 case YGEdge.Start:  return Start;
                 case YGEdge.End:    return End;
                 default:
-                    return YGConst.YGUndefined;
+                    return float.NaN;
                 }
             }
             set
@@ -79,12 +79,12 @@ namespace Xamarin.Yoga
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            return YGFloatsEqual(Left, other.Left) && 
-                YGFloatsEqual(Top, other.Top) && 
-                YGFloatsEqual(Right, other.Right) && 
-                YGFloatsEqual(Bottom, other.Bottom) && 
-                YGFloatsEqual(Start, other.Start) &&
-                YGFloatsEqual(End, other.End);
+            return FloatEqual(Left, other.Left)   &&
+                FloatEqual(Top,     other.Top)    &&
+                FloatEqual(Right,   other.Right)  &&
+                FloatEqual(Bottom,  other.Bottom) &&
+                FloatEqual(Start,   other.Start)  &&
+                FloatEqual(End,     other.End);
         }
 
         /// <inheritdoc />

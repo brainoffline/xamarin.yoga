@@ -7,9 +7,9 @@ namespace Xamarin.Yoga.Tests
 {
     using static YGGlobal;
     using static YGConst;
-    using YGConfigRef = YGConfig;
-    using YGNodeRef = YGNode;
-    using YGVector = List<YGNode>;
+    
+    
+    
 
     [TestClass]
     public class YGNodeChildTests
@@ -17,14 +17,14 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void reset_layout_when_child_removed()
         {
-             YGNodeRef root = YGNodeNew();
+             YGNode root = YGNodeNew();
 
-             YGNodeRef root_child0 = YGNodeNew();
+             YGNode root_child0 = YGNodeNew();
             YGNodeStyleSetWidth(root_child0, 100);
             YGNodeStyleSetHeight(root_child0, 100);
             YGNodeInsertChild(root, root_child0, 0);
 
-            YGNodeCalculateLayout(root, YGUndefined, YGUndefined, YGDirection.LTR);
+            YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
 
             Assert.AreEqual(0,   root_child0.Layout.Position.Left);
             Assert.AreEqual(0,   root_child0.Layout.Position.Top);
@@ -35,8 +35,8 @@ namespace Xamarin.Yoga.Tests
 
             Assert.AreEqual(0, root_child0.Layout.Position.Left);
             Assert.AreEqual(0, root_child0.Layout.Position.Top);
-            Assert.IsTrue(root_child0.Layout.Width.IsUndefined());
-            Assert.IsTrue(root_child0.Layout.Height.IsUndefined());
+            Assert.IsTrue(root_child0.Layout.Width.IsNaN());
+            Assert.IsTrue(root_child0.Layout.Height.IsNaN());
 
             YGNodeFreeRecursive(root);
         }

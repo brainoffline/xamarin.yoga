@@ -7,14 +7,14 @@ namespace Xamarin.Yoga.Tests
 {
     using static YGGlobal;
     using static YGConst;
-    using YGConfigRef = YGConfig;
-    using YGNodeRef = YGNode;
-    using YGVector = List<YGNode>;
+    
+    
+    
 
     [TestClass]
     public class YGBaselineFuncTests
     {
-        private static float _baseline(YGNodeRef node, float width, float height)
+        private static float _baseline(YGNode node, float width, float height)
         {
             float baseline = (float)node.Context;
             return baseline;
@@ -23,30 +23,30 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void align_baseline_customer_func()
         {
-            YGNodeRef root = YGNodeNew();
+            YGNode root = YGNodeNew();
             YGNodeStyleSetFlexDirection(root, YGFlexDirection.Row);
             YGNodeStyleSetAlignItems(root, YGAlign.Baseline);
             YGNodeStyleSetWidth(root, 100);
             YGNodeStyleSetHeight(root, 100);
 
-            YGNodeRef root_child0 = YGNodeNew();
+            YGNode root_child0 = YGNodeNew();
             YGNodeStyleSetWidth(root_child0, 50);
             YGNodeStyleSetHeight(root_child0, 50);
             YGNodeInsertChild(root, root_child0, 0);
 
-            YGNodeRef root_child1 = YGNodeNew();
+            YGNode root_child1 = YGNodeNew();
             YGNodeStyleSetWidth(root_child1, 50);
             YGNodeStyleSetHeight(root_child1, 20);
             YGNodeInsertChild(root, root_child1, 1);
 
             float     baselineValue      = 10;
-            YGNodeRef root_child1_child0 = YGNodeNew();
+            YGNode root_child1_child0 = YGNodeNew();
             root_child1_child0.Context = baselineValue;
             YGNodeStyleSetWidth(root_child1_child0, 50);
             root_child1_child0.setBaseLineFunc(_baseline);
             YGNodeStyleSetHeight(root_child1_child0, 20);
             YGNodeInsertChild(root_child1, root_child1_child0, 0);
-            YGNodeCalculateLayout(root, YGUndefined, YGUndefined, YGDirection.LTR);
+            YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
 
             Assert.AreEqual(0,   root.Layout.Position.Left);
             Assert.AreEqual(0,   root.Layout.Position.Top);

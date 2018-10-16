@@ -13,12 +13,12 @@ namespace Xamarin.Yoga
         public static readonly YGConfig DefaultConfig = new YGConfig(YGDefaultLog);
 
         public YGExperimentalFeatures ExperimentalFeatures { get; set; }
-        public bool                   UseWebDefaults { get; set; }
+        public bool                   UseWebDefaults       { get; set; }
 
-        public float                  pointScaleFactor                              = 1.0f;
-        public YGLogger               logger                                        = null;
-        public object                 context                                       = null;
-        public bool                   printTree                                     = false;
+        public float    pointScaleFactor = 1.0f;
+        public YGLogger logger           = null;
+        public object   context          = null;
+        public bool     printTree        = false;
 
         public YGConfig(YGLogger logger = null)
         {
@@ -27,12 +27,12 @@ namespace Xamarin.Yoga
 
         public YGConfig(YGConfig config)
         {
-            ExperimentalFeatures                          = config.ExperimentalFeatures;
-            UseWebDefaults                                = config.UseWebDefaults;
-            pointScaleFactor                              = config.pointScaleFactor;
-            logger                                        = config.logger;
-            context                                       = config.context;
-            printTree                                     = config.printTree;
+            ExperimentalFeatures = config.ExperimentalFeatures;
+            UseWebDefaults       = config.UseWebDefaults;
+            pointScaleFactor     = config.pointScaleFactor;
+            logger               = config.logger;
+            context              = config.context;
+            printTree            = config.printTree;
         }
 
         public bool Equals(YGConfig other)
@@ -41,10 +41,10 @@ namespace Xamarin.Yoga
             if (ReferenceEquals(null, other)) return false;
 
             var result =
-                ExperimentalFeatures                          == other.ExperimentalFeatures                          &&
-                UseWebDefaults                                == other.UseWebDefaults                                &&
-                YGFloatsEqual(pointScaleFactor, other.pointScaleFactor)                                              &&
-                EqualityComparer<object>.Default.Equals(context, other.context)                                      &&
+                ExperimentalFeatures == other.ExperimentalFeatures              &&
+                UseWebDefaults       == other.UseWebDefaults                    &&
+                FloatEqual(pointScaleFactor, other.pointScaleFactor)            &&
+                EqualityComparer<object>.Default.Equals(context, other.context) &&
                 printTree == other.printTree;
             return result;
         }

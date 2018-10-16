@@ -6,15 +6,13 @@ namespace Xamarin.Yoga
 {
     using static YGConst;
     using static YGGlobal;
-    using YGConfigRef = YGConfig;
-    using YGNodeRef = YGNode;
-    using YGVector = List<YGNode>;
+
 
     public class YGNode : IEquatable<YGNode>
     {
-        public YGConfigRef Config  { get; set; }
-        public string      Name    { get; set; }
-        public object      Context { get; set; }
+        public YGConfig Config  { get; set; }
+        public string   Name    { get; set; }
+        public object   Context { get; set; }
 
         private YGPrintFunc    print_             = null;
         private bool           hasNewLayout_      = true;
@@ -23,14 +21,14 @@ namespace Xamarin.Yoga
         private YGDirtiedFunc  dirtied_           = null;
         private YGLayout       layout_            = new YGLayout();
         private int            lineIndex_         = 0;
-        private YGNodeRef      owner_             = null;
-        private YGVector       children_          = new YGVector();
+        private YGNode         owner_             = null;
+        private List<YGNode>   children_          = new List<YGNode>();
         private bool           isDirty_           = false;
         private Dimensions     ResolvedDimensions = new Dimensions(YGValueUndefined, YGValueUndefined);
 
         public YGNode() { }
 
-        public YGNode(YGConfigRef newConfig)
+        public YGNode(YGConfig newConfig)
         {
             Config = newConfig;
         }
@@ -53,11 +51,11 @@ namespace Xamarin.Yoga
             layout_            = new YGLayout(node.layout_);
             lineIndex_         = node.getLineIndex();
             owner_             = null;
-            Config             = new YGConfigRef(node.Config);
+            Config             = new YGConfig(node.Config);
             isDirty_           = node.IsDirty;
             ResolvedDimensions = node.getResolvedDimensions().Clone();
 
-            foreach (YGNodeRef child in node.getChildren())
+            foreach (YGNode child in node.getChildren())
                 children_.Add(new YGNode(child));
         }
 
@@ -134,28 +132,28 @@ namespace Xamarin.Yoga
             return lineIndex_;
         }
 
-        // returns the YGNodeRef that owns this YGNode. An owner is used to identify
+        // returns the YGNode that owns this YGNode. An owner is used to identify
         // the YogaTree that a YGNode belongs to.
         // This method will return the parent of the YGNode when a YGNode only belongs
         // to one YogaTree or null when the YGNode is shared between two or more
         // YogaTrees.
-        public YGNodeRef getOwner()
+        public YGNode getOwner()
         {
             return owner_;
         }
 
         [Obsolete("use getOwner() instead")]
-        public YGNodeRef getParent()
+        public YGNode getParent()
         {
             return getOwner();
         }
 
-        public YGVector getChildren()
+        public List<YGNode> getChildren()
         {
             return children_;
         }
 
-        public YGNodeRef getChild(int index)
+        public YGNode getChild(int index)
         {
             return children_[index];
         }
@@ -226,12 +224,12 @@ namespace Xamarin.Yoga
             lineIndex_ = lineIndex;
         }
 
-        public void setOwner(YGNodeRef owner)
+        public void setOwner(YGNode owner)
         {
             owner_ = owner;
         }
 
-        public void setChildren(in YGVector children)
+        public void setChildren(in List<YGNode> children)
         {
             children_ = children;
         }
@@ -276,10 +274,10 @@ namespace Xamarin.Yoga
 
         public void StyleSetDimensions(float width, float height)
         {
-            if (Style.Dimensions.Width != width ||
+            if (Style.Dimensions.Width  != width ||
                 Style.Dimensions.Height != height)
             {
-                Style.Dimensions.Width = width;
+                Style.Dimensions.Width  = width;
                 Style.Dimensions.Height = height;
                 markDirtyAndPropogate();
             }
@@ -287,7 +285,7 @@ namespace Xamarin.Yoga
 
         public void StyleSetAspectRatio(float? aspectRatio)
         {
-            if (!YGFloatOptionalEqual(Style.AspectRatio, aspectRatio))
+            if (!FloatOptionalEqual(Style.AspectRatio, aspectRatio))
             {
                 Style.AspectRatio = aspectRatio;
                 markDirtyAndPropogate();
@@ -383,24 +381,24 @@ namespace Xamarin.Yoga
 
         // Setters
 
-        public void replaceChild(YGNodeRef child, int index)
+        public void replaceChild(YGNode child, int index)
         {
             children_[index] = child;
         }
 
-        public void replaceChild(YGNodeRef oldChild, YGNodeRef newChild)
+        public void replaceChild(YGNode oldChild, YGNode newChild)
         {
             int index = children_.IndexOf(oldChild);
             if (index >= 0)
                 children_[index] = newChild;
         }
 
-        public void insertChild(YGNodeRef child, int index)
+        public void insertChild(YGNode child, int index)
         {
             children_.Insert(index, child);
         }
 
-        public bool removeChild(YGNodeRef child)
+        public bool removeChild(YGNode child)
         {
             if (children_.Contains(child))
             {
@@ -524,13 +522,13 @@ namespace Xamarin.Yoga
             int childCount = children_.Count;
             if (childCount == 0) return;
 
-            YGNodeRef firstChild = children_.First();
+            YGNode firstChild = children_.First();
             if (firstChild.getOwner() == this) return;
 
             for (int i = 0; i < childCount; ++i)
             {
-                YGNodeRef oldChild = children_[i];
-                YGNodeRef newChild = YGNodeClone(oldChild);
+                YGNode oldChild = children_[i];
+                YGNode newChild = YGNodeClone(oldChild);
                 replaceChild(newChild, i);
                 newChild.setOwner(this);
             }
@@ -549,7 +547,7 @@ namespace Xamarin.Yoga
         public void markDirtyAndPropogateDownwards()
         {
             isDirty_ = true;
-            foreach (YGNodeRef childNode in children_) childNode.markDirtyAndPropogateDownwards();
+            foreach (YGNode childNode in children_) childNode.markDirtyAndPropogateDownwards();
             ;
         }
 
@@ -663,8 +661,8 @@ namespace Xamarin.Yoga
             if (children_.Count == 0)
                 return true;
 
-            bool      isLayoutTreeEqual = true;
-            YGNodeRef otherNodeChildren = null;
+            bool   isLayoutTreeEqual = true;
+            YGNode otherNodeChildren = null;
             for (int i = 0; i < children_.Count; ++i)
             {
                 otherNodeChildren = node.children_[i];

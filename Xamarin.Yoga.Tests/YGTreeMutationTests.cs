@@ -7,17 +7,17 @@ using Xamarin.Yoga.Tests.Utils;
 namespace Xamarin.Yoga.Tests
 {
     using static YGGlobal;
-    using YGConfigRef = YGConfig;
-    using YGNodeRef = YGNode;
-    using YGVector = List<YGNode>;
+    
+    
+    
 
     [TestClass]
     public class YGTreeMutationTests
     {
-        static List<YGNodeRef> getChildren(YGNodeRef node)
+        static List<YGNode> getChildren(YGNode node)
         {
             var             count    = YGNodeGetChildCount(node);
-            List<YGNodeRef> children = new YGVector(count);
+            List<YGNode> children = new List<YGNode>(count);
             for (int i = 0; i < count; i++)
             {
                 children.Add(YGNodeGetChild(node, i));
@@ -29,22 +29,22 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void set_children_adds_children_to_parent()
         {
-            YGNodeRef root        = YGNodeNew();
-            YGNodeRef root_child0 = YGNodeNew();
-            YGNodeRef root_child1 = YGNodeNew();
+            YGNode root        = YGNodeNew();
+            YGNode root_child0 = YGNodeNew();
+            YGNode root_child1 = YGNodeNew();
 
-            YGNodeSetChildren(root,  new YGVector{root_child0, root_child1});
+            YGNodeSetChildren(root,  new List<YGNode>{root_child0, root_child1});
 
-            List<YGNodeRef> children         = getChildren(root);
-            List<YGNodeRef> expectedChildren = new YGVector{root_child0, root_child1};
+            List<YGNode> children         = getChildren(root);
+            List<YGNode> expectedChildren = new List<YGNode>{root_child0, root_child1};
             Assert.IsTrue(
                 TestHelper.AreEqual(children, expectedChildren));
 
-            List<YGNodeRef> owners = new YGVector{
+            List<YGNode> owners = new List<YGNode>{
                     YGNodeGetOwner(root_child0),
                     YGNodeGetOwner(root_child1)};
 
-            List<YGNodeRef> expectedOwners = new YGVector{
+            List<YGNode> expectedOwners = new List<YGNode>{
                 root, root
             };
             Assert.IsTrue(
@@ -56,25 +56,25 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void set_children_to_empty_removes_old_children()
         {
-            YGNodeRef root         = YGNodeNew();
-            YGNodeRef root_child0  = YGNodeNew();
-            YGNodeRef root_child1  = YGNodeNew();
+            YGNode root         = YGNodeNew();
+            YGNode root_child0  = YGNodeNew();
+            YGNode root_child1  = YGNodeNew();
 
-            YGNodeSetChildren(root, new YGVector {
+            YGNodeSetChildren(root, new List<YGNode> {
                 root_child0, root_child1
             });
-            YGNodeSetChildren(root, new YGVector(){ });
+            YGNodeSetChildren(root, new List<YGNode>(){ });
 
-            List<YGNodeRef> children         = getChildren(root);
-            List<YGNodeRef> expectedChildren = new YGVector();
+            List<YGNode> children         = getChildren(root);
+            List<YGNode> expectedChildren = new List<YGNode>();
             ;
             Assert.IsTrue(
                 TestHelper.AreEqual(children, expectedChildren));
 
-            List<YGNodeRef> owners = new YGVector{
+            List<YGNode> owners = new List<YGNode>{
                 YGNodeGetOwner(root_child0), YGNodeGetOwner(root_child1)
             };
-            List<YGNodeRef> expectedOwners = new YGVector{
+            List<YGNode> expectedOwners = new List<YGNode>{
                 null, null
             };
             Assert.IsTrue(
@@ -86,32 +86,32 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void set_children_replaces_non_common_children()
         {
-            YGNodeRef root         = YGNodeNew();
-            YGNodeRef root_child0  = YGNodeNew();
-            YGNodeRef root_child1  = YGNodeNew();
+            YGNode root         = YGNodeNew();
+            YGNode root_child0  = YGNodeNew();
+            YGNode root_child1  = YGNodeNew();
 
-            YGNodeSetChildren(root, new YGVector {
+            YGNodeSetChildren(root, new List<YGNode> {
                 root_child0, root_child1
             });
 
-            YGNodeRef root_child2  = YGNodeNew();
-            YGNodeRef root_child3  = YGNodeNew();
+            YGNode root_child2  = YGNodeNew();
+            YGNode root_child3  = YGNodeNew();
 
-            YGNodeSetChildren(root, new YGVector {
+            YGNodeSetChildren(root, new List<YGNode> {
                 root_child2, root_child3
             });
 
-            List<YGNodeRef> children         = getChildren(root);
-            List<YGNodeRef> expectedChildren = new YGVector{
+            List<YGNode> children         = getChildren(root);
+            List<YGNode> expectedChildren = new List<YGNode>{
                 root_child2, root_child3
             };
             Assert.IsTrue(
                 TestHelper.AreEqual(children, expectedChildren));
 
-            List<YGNodeRef> owners = new YGVector{
+            List<YGNode> owners = new List<YGNode>{
                 YGNodeGetOwner(root_child0), YGNodeGetOwner(root_child1)
             };
-            List<YGNodeRef> expectedOwners = new YGVector{
+            List<YGNode> expectedOwners = new List<YGNode>{
                 null, null};
             Assert.IsTrue(
                 TestHelper.AreEqual(owners, expectedOwners));
@@ -124,40 +124,40 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void set_children_keeps_and_reorders_common_children()
         {
-            YGNodeRef root         = YGNodeNew();
-            YGNodeRef root_child0  = YGNodeNew();
-            YGNodeRef root_child1  = YGNodeNew();
-            YGNodeRef root_child2  = YGNodeNew();
-            YGNodeRef root_child3  = YGNodeNew();
+            YGNode root         = YGNodeNew();
+            YGNode root_child0  = YGNodeNew();
+            YGNode root_child1  = YGNodeNew();
+            YGNode root_child2  = YGNodeNew();
+            YGNode root_child3  = YGNodeNew();
 
             root_child0.Name = "Child0";
             root_child1.Name = "Child1";
             root_child2.Name = "Child2";
             root_child3.Name = "Child3";
 
-            YGNodeSetChildren(root, new YGVector {
+            YGNodeSetChildren(root, new List<YGNode> {
                 root_child0, root_child1, root_child2
             });
 
-            YGNodeSetChildren(root, new YGVector {
+            YGNodeSetChildren(root, new List<YGNode> {
                 root_child2, root_child1, root_child3
             });
 
-            List<YGNodeRef> children         = getChildren(root);
-            List<YGNodeRef> expectedChildren = new YGVector{
+            List<YGNode> children         = getChildren(root);
+            List<YGNode> expectedChildren = new List<YGNode>{
                 root_child2, root_child1, root_child3
             };
             Assert.IsTrue(
                 TestHelper.AreEqual(children, expectedChildren));
 
-            List<YGNodeRef> owners = new YGVector{
+            List<YGNode> owners = new List<YGNode>{
                 YGNodeGetOwner(root_child0),
                 YGNodeGetOwner(root_child1),
                 YGNodeGetOwner(root_child2),
                 YGNodeGetOwner(root_child3)
             };
 
-            List<YGNodeRef> expectedOwners = new YGVector {null, root, root, root};
+            List<YGNode> expectedOwners = new List<YGNode> {null, root, root, root};
             Assert.IsTrue(
                 TestHelper.AreEqual(owners, expectedOwners));
 

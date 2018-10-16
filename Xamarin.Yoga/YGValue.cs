@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace Xamarin.Yoga {
+namespace Xamarin.Yoga
+{
     [DebuggerDisplay("{value} {unit}")]
     public class YGValue : IEquatable<YGValue>
     {
@@ -11,7 +12,7 @@ namespace Xamarin.Yoga {
 
         public YGValue()
         {
-            value = YGConst.YGUndefined;
+            value = float.NaN;
             unit  = YGUnit.Undefined;
         }
 
@@ -27,13 +28,13 @@ namespace Xamarin.Yoga {
             this.unit  = unit;
         }
 
-        public bool IsUndefined() => value.IsUndefined();
+        public bool IsNaN() => value.IsNaN();
 
         public static YGValue Sanitized(float value, YGUnit unit)
         {
             return new YGValue(
-                value.IsUndefined() ? 0 : value,
-                value.IsUndefined() ? YGUnit.Undefined : unit);
+                value.IsNaN() ? 0 : value,
+                value.IsNaN() ? YGUnit.Undefined : unit);
         }
 
         /// <inheritdoc />
@@ -43,7 +44,7 @@ namespace Xamarin.Yoga {
             if (ReferenceEquals(null, obj)) return false;
             if (obj is float f)
             {
-                if (YGGlobal.YGFloatsEqual(value, f) && unit == YGUnit.Point)
+                if (YGGlobal.FloatEqual(value, f) && unit == YGUnit.Point)
                     return true;
             }
 

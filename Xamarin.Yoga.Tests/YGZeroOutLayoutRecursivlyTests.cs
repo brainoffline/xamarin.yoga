@@ -6,9 +6,9 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Xamarin.Yoga.Tests
 {
     using static YGGlobal;
-    using YGConfigRef = YGConfig;
-    using YGNodeRef = YGNode;
-    using YGVector = List<YGNode>;
+    
+    
+    
 
     [TestClass]
     public class YGZeroOutLayoutRecursivlyTests
@@ -16,12 +16,12 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void zero_out_layout()
         {
-            YGNodeRef root = YGNodeNew();
+            YGNode root = YGNodeNew();
             YGNodeStyleSetFlexDirection(root, YGFlexDirection.Row);
             YGNodeStyleSetWidth(root, 200);
             YGNodeStyleSetHeight(root, 200);
 
-            YGNodeRef child = YGNodeNew();
+            YGNode child = YGNodeNew();
             YGNodeInsertChild(root, child, 0);
             YGNodeStyleSetWidth(child, 100);
             YGNodeStyleSetHeight(child, 100);

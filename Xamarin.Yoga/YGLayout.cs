@@ -14,10 +14,10 @@ namespace Xamarin.Yoga
         // layouts should not require more than 16 entries to fit within the cache.
         private const int MaxCachedResultCount = 16;
 
-        public float       Width              { get; private set; } = YGUndefined;
-        public float       Height             { get; private set; } = YGUndefined;
-        public float       MeasuredWidth      { get; private set; } = YGUndefined;
-        public float       MeasuredHeight     { get; private set; } = YGUndefined;
+        public float       Width              { get; private set; } = float.NaN;
+        public float       Height             { get; private set; } = float.NaN;
+        public float       MeasuredWidth      { get; private set; } = float.NaN;
+        public float       MeasuredHeight     { get; private set; } = float.NaN;
         public YGDirection Direction          { get; set; }
         public YGDirection LastOwnerDirection { get; set; }
         public bool        HadOverflow        { get; set; }
@@ -61,10 +61,10 @@ namespace Xamarin.Yoga
         public void InvalidateCache()
         {
             NextCachedMeasurementsIndex    = 0;
-            CachedLayout.widthMeasureMode  = YGMeasureMode.NotSet;
-            CachedLayout.heightMeasureMode = YGMeasureMode.NotSet;
-            CachedLayout.computedWidth     = -1;
-            CachedLayout.computedHeight    = -1;
+            CachedLayout.WidthMeasureMode  = YGMeasureMode.NotSet;
+            CachedLayout.HeightMeasureMode = YGMeasureMode.NotSet;
+            CachedLayout.ComputedWidth     = -1;
+            CachedLayout.ComputedHeight    = -1;
         }
 
         public YGCachedMeasurement GetNextCachedMeasurement()
@@ -131,22 +131,22 @@ namespace Xamarin.Yoga
                 Margin   == other.Margin                                         &&
                 Border   == other.Border                                         &&
                 Padding  == other.Padding                                        &&
-                YGFloatsEqual(Width,  other.Width)                               &&
-                YGFloatsEqual(Height, other.Height)                              &&
+                FloatEqual(Width,  other.Width)                                  &&
+                FloatEqual(Height, other.Height)                                 &&
                 Direction                   == other.Direction                   &&
                 HadOverflow                 == other.HadOverflow                 &&
                 LastOwnerDirection          == other.LastOwnerDirection          &&
                 NextCachedMeasurementsIndex == other.NextCachedMeasurementsIndex &&
                 CachedLayout                == other.CachedLayout                &&
-                YGFloatOptionalEqual(ComputedFlexBasis, other.ComputedFlexBasis);
+                FloatOptionalEqual(ComputedFlexBasis, other.ComputedFlexBasis);
 
             for (var i = 0; i < MaxCachedResultCount && isEqual; ++i)
                 isEqual = isEqual && CachedMeasurements[i] == other.CachedMeasurements[i];
 
             if (MeasuredWidth.HasValue() || other.MeasuredWidth.HasValue())
-                isEqual = isEqual && YGFloatsEqual(MeasuredWidth, other.MeasuredWidth);
+                isEqual = isEqual && FloatEqual(MeasuredWidth, other.MeasuredWidth);
             if (MeasuredHeight.HasValue() || other.MeasuredHeight.HasValue())
-                isEqual = isEqual && YGFloatsEqual(MeasuredHeight, other.MeasuredHeight);
+                isEqual = isEqual && FloatEqual(MeasuredHeight, other.MeasuredHeight);
             return isEqual;
         }
 

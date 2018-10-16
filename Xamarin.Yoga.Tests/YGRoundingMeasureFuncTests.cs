@@ -7,14 +7,14 @@ namespace Xamarin.Yoga.Tests
 {
     using static YGGlobal;
     using static YGConst;
-    using YGConfigRef = YGConfig;
-    using YGNodeRef = YGNode;
-    using YGVector = List<YGNode>;
+    
+    
+    
 
     [TestClass]
     public class YGRoundingMeasureFuncTests
     {
-        static YGSize _measureFloor(YGNodeRef node,
+        static YGSize _measureFloor(YGNode node,
             float                             width,
             YGMeasureMode                     widthMode,
             float                             height,
@@ -23,7 +23,7 @@ namespace Xamarin.Yoga.Tests
             return new YGSize(width = 10.2f, height = 10.2f);
         }
 
-        static YGSize _measureCeil(YGNodeRef node,
+        static YGSize _measureCeil(YGNode node,
             float                            width,
             YGMeasureMode                    widthMode,
             float                            height,
@@ -32,7 +32,7 @@ namespace Xamarin.Yoga.Tests
             return new YGSize(width = 10.5f, height = 10.5f);
         }
 
-        static YGSize _measureFractial(YGNodeRef node,
+        static YGSize _measureFractial(YGNode node,
             float                                width,
             YGMeasureMode                        widthMode,
             float                                height,
@@ -44,44 +44,44 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void rounding_feature_with_custom_measure_func_floor()
         {
-            YGConfigRef config = new YGConfig();
-            YGNodeRef   root   = YGNodeNewWithConfig(config);
+            YGConfig config = new YGConfig();
+            YGNode   root   = YGNodeNewWithConfig(config);
 
-            YGNodeRef root_child0 = YGNodeNewWithConfig(config);
+            YGNode root_child0 = YGNodeNewWithConfig(config);
             root_child0.MeasureFunc = _measureFloor;
             YGNodeInsertChild(root, root_child0, 0);
 
             YGConfigSetPointScaleFactor(config, 0.0f);
 
-            YGNodeCalculateLayout(root, YGUndefined, YGUndefined, YGDirection.RTL);
+            YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.RTL);
 
             Assert.AreEqual(10.2f, root_child0.Layout.Width);
             Assert.AreEqual(10.2f, root_child0.Layout.Height);
 
             YGConfigSetPointScaleFactor(config, 1.0f);
 
-            YGNodeCalculateLayout(root, YGUndefined, YGUndefined, YGDirection.LTR);
+            YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
 
             Assert.AreEqual(11f, root_child0.Layout.Width);
             Assert.AreEqual(11f, root_child0.Layout.Height);
 
             YGConfigSetPointScaleFactor(config, 2.0f);
 
-            YGNodeCalculateLayout(root, YGUndefined, YGUndefined, YGDirection.RTL);
+            YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.RTL);
 
             Assert.AreEqual(10.5f, root_child0.Layout.Width);
             Assert.AreEqual(10.5f, root_child0.Layout.Height);
 
             YGConfigSetPointScaleFactor(config, 4.0f);
 
-            YGNodeCalculateLayout(root, YGUndefined, YGUndefined, YGDirection.LTR);
+            YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
 
             Assert.AreEqual(10.25f, root_child0.Layout.Width);
             Assert.AreEqual(10.25f, root_child0.Layout.Height);
 
             YGConfigSetPointScaleFactor(config, 1.0f / 3.0f);
 
-            YGNodeCalculateLayout(root, YGUndefined, YGUndefined, YGDirection.RTL);
+            YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.RTL);
 
             Assert.AreEqual(12.0f, root_child0.Layout.Width);
             Assert.AreEqual(12.0f, root_child0.Layout.Height);
@@ -92,15 +92,15 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void rounding_feature_with_custom_measure_func_ceil()
         {
-            YGConfigRef config      = new YGConfig();
-            YGNodeRef   root        = YGNodeNewWithConfig(config);
-            YGNodeRef   root_child0 = YGNodeNewWithConfig(config);
+            YGConfig config      = new YGConfig();
+            YGNode   root        = YGNodeNewWithConfig(config);
+            YGNode   root_child0 = YGNodeNewWithConfig(config);
 
             root_child0.MeasureFunc = _measureCeil;
             YGNodeInsertChild(root, root_child0, 0);
             YGConfigSetPointScaleFactor(config, 1.0f);
 
-            YGNodeCalculateLayout(root, YGUndefined, YGUndefined, YGDirection.LTR);
+            YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
 
             Assert.AreEqual(11, root_child0.Layout.Width);
             Assert.AreEqual(11, root_child0.Layout.Height);
@@ -111,17 +111,17 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void rounding_feature_with_custom_measure_and_fractial_matching_scale()
         {
-            YGConfigRef config = new YGConfig();
-            YGNodeRef   root   = YGNodeNewWithConfig(config);
+            YGConfig config = new YGConfig();
+            YGNode   root   = YGNodeNewWithConfig(config);
 
-            YGNodeRef root_child0 = YGNodeNewWithConfig(config);
+            YGNode root_child0 = YGNodeNewWithConfig(config);
             YGNodeStyleSetPosition(root_child0, YGEdge.Left, 73.625f);
             root_child0.MeasureFunc = _measureFractial;
             YGNodeInsertChild(root, root_child0, 0);
 
             YGConfigSetPointScaleFactor(config, 2.0f);
 
-            YGNodeCalculateLayout(root, YGUndefined, YGUndefined, YGDirection.LTR);
+            YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
 
             Assert.AreEqual(0.5f,  root_child0.Layout.Width);
             Assert.AreEqual(0.5f,  root_child0.Layout.Height);

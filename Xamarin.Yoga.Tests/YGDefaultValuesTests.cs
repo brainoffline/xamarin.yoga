@@ -7,9 +7,9 @@ namespace Xamarin.Yoga.Tests
 {
     using static YGGlobal;
     using static YGConst;
-    using YGConfigRef = YGConfig;
-    using YGNodeRef = YGNode;
-    using YGVector = List<YGNode>;
+    
+    
+    
 
     [TestClass]
     public class YGDefaultValuesTests
@@ -17,7 +17,7 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void assert_default_values()
         {
-            YGNodeRef root = YGNodeNew();
+            YGNode root = YGNodeNew();
 
             Assert.AreEqual(0,    YGNodeGetChildCount(root));
             Assert.AreEqual(null, YGNodeGetChild(root, 1));
@@ -56,12 +56,12 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(YGNodeStyleGetPadding(root, YGEdge.Start).unit,  YGUnit.Undefined);
             Assert.AreEqual(YGNodeStyleGetPadding(root, YGEdge.End).unit,    YGUnit.Undefined);
 
-            Assert.IsTrue(YGNodeStyleGetBorder(root, YGEdge.Left).IsUndefined());
-            Assert.IsTrue(YGNodeStyleGetBorder(root, YGEdge.Top).IsUndefined());
-            Assert.IsTrue(YGNodeStyleGetBorder(root, YGEdge.Right).IsUndefined());
-            Assert.IsTrue(YGNodeStyleGetBorder(root, YGEdge.Bottom).IsUndefined());
-            Assert.IsTrue(YGNodeStyleGetBorder(root, YGEdge.Start).IsUndefined());
-            Assert.IsTrue(YGNodeStyleGetBorder(root, YGEdge.End).IsUndefined());
+            Assert.IsTrue(YGNodeStyleGetBorder(root, YGEdge.Left).IsNaN());
+            Assert.IsTrue(YGNodeStyleGetBorder(root, YGEdge.Top).IsNaN());
+            Assert.IsTrue(YGNodeStyleGetBorder(root, YGEdge.Right).IsNaN());
+            Assert.IsTrue(YGNodeStyleGetBorder(root, YGEdge.Bottom).IsNaN());
+            Assert.IsTrue(YGNodeStyleGetBorder(root, YGEdge.Start).IsNaN());
+            Assert.IsTrue(YGNodeStyleGetBorder(root, YGEdge.End).IsNaN());
 
             Assert.AreEqual(YGNodeStyleGetWidth(root).unit,     YGUnit.Auto);
             Assert.AreEqual(YGNodeStyleGetHeight(root).unit,    YGUnit.Auto);
@@ -90,8 +90,8 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(0, YGNodeLayoutGetBorder(root, YGEdge.Right));
             Assert.AreEqual(0, YGNodeLayoutGetBorder(root, YGEdge.Bottom));
 
-            Assert.IsTrue(root.Layout.Width.IsUndefined());
-            Assert.IsTrue(root.Layout.Height.IsUndefined());
+            Assert.IsTrue(root.Layout.Width.IsNaN());
+            Assert.IsTrue(root.Layout.Height.IsNaN());
             Assert.AreEqual(YGDirection.Inherit, root.Layout.Direction);
 
             YGNodeFreeRecursive(root);
@@ -101,7 +101,7 @@ namespace Xamarin.Yoga.Tests
         public void assert_webdefault_values()
         {
             var config = new YGConfig {UseWebDefaults = true};
-            YGNodeRef root = YGNodeNewWithConfig(config);
+            YGNode root = YGNodeNewWithConfig(config);
 
             Assert.AreEqual(YGFlexDirection.Row, YGNodeStyleGetFlexDirection(root));
             Assert.AreEqual(YGAlign.Stretch,     YGNodeStyleGetAlignContent(root));
@@ -116,7 +116,7 @@ namespace Xamarin.Yoga.Tests
         {
             var config = new YGConfig { UseWebDefaults = true };
 
-            YGNodeRef root = YGNodeNewWithConfig(config);
+            YGNode root = YGNodeNewWithConfig(config);
             YGNodeReset(root);
 
             Assert.AreEqual(YGFlexDirection.Row, YGNodeStyleGetFlexDirection(root));

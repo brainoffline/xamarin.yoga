@@ -7,9 +7,9 @@ namespace Xamarin.Yoga.Tests
 {
     using static YGGlobal;
     using static YGConst;
-    using YGConfigRef = YGConfig;
-    using YGNodeRef = YGNode;
-    using YGVector = List<YGNode>;
+    
+    
+    
 
     [TestClass]
     public class YGInfiniteHeightTests
@@ -20,25 +20,25 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void percent_absolute_position_infinite_height()
         {
-             YGConfigRef config = new YGConfig();
+             YGConfig config = new YGConfig();
 
-             YGNodeRef root = YGNodeNewWithConfig(config);
+             YGNode root = YGNodeNewWithConfig(config);
             YGNodeStyleSetFlexDirection(root, YGFlexDirection.Row);
             YGNodeStyleSetWidth(root, 300);
 
-             YGNodeRef root_child0 = YGNodeNewWithConfig(config);
+             YGNode root_child0 = YGNodeNewWithConfig(config);
             YGNodeStyleSetWidth(root_child0, 300);
             YGNodeStyleSetHeight(root_child0, 300);
             YGNodeInsertChild(root, root_child0, 0);
 
-             YGNodeRef root_child1 = YGNodeNewWithConfig(config);
+             YGNode root_child1 = YGNodeNewWithConfig(config);
             YGNodeStyleSetPositionType(root_child1, YGPositionType.Absolute);
             YGNodeStyleSetPositionPercent(root_child1, YGEdge.Left, 20);
             YGNodeStyleSetPositionPercent(root_child1, YGEdge.Top,  20);
             YGNodeStyleSetWidthPercent(root_child1, 20);
             YGNodeStyleSetHeightPercent(root_child1, 20);
             YGNodeInsertChild(root, root_child1, 1);
-            YGNodeCalculateLayout(root, YGUndefined, YGUndefined, YGDirection.LTR);
+            YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
 
             Assert.AreEqual(0,   root.Layout.Position.Left);
             Assert.AreEqual(0,   root.Layout.Position.Top);

@@ -8,9 +8,9 @@ using Xamarin.Yoga.Tests.Utils;
 namespace Xamarin.Yoga.Tests
 {
     using static YGGlobal;
-    using YGConfigRef = YGConfig;
-    using YGNodeRef = YGNode;
-    using YGVector = List<YGNode>;
+    
+    
+    
 
     [TestClass]
     public class YGTraversalTests
@@ -18,18 +18,18 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void pre_order_traversal()
         {
-            YGNodeRef root                = YGNodeNew();
-            YGNodeRef root_child0         = YGNodeNew();
-            YGNodeRef root_child1         = YGNodeNew();
-            YGNodeRef root_child0_child0  = YGNodeNew();
+            YGNode root                = YGNodeNew();
+            YGNode root_child0         = YGNodeNew();
+            YGNode root_child1         = YGNodeNew();
+            YGNode root_child0_child0  = YGNodeNew();
 
             YGNodeSetChildren(root, new [] { root_child0, root_child1}.ToList());
             YGNodeInsertChild(root_child0, root_child0_child0, 0);
 
-            List<YGNodeRef> visited = new YGVector();
+            List<YGNode> visited = new List<YGNode>();
             YGTraversePreOrder(root, node => visited.Add(node));
 
-            List<YGNodeRef> expected = new[]{
+            List<YGNode> expected = new[]{
                 root,
                 root_child0,
                 root_child0_child0,

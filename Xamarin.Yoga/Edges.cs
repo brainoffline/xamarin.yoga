@@ -22,9 +22,9 @@ namespace Xamarin.Yoga
 
         public Edges(float left, float top, float right, float bottom)
         {
-            Left = left;
-            Top = top;
-            Right = right;
+            Left   = left;
+            Top    = top;
+            Right  = right;
             Bottom = bottom;
         }
 

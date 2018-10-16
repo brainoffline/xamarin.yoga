@@ -1,20 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
 namespace Xamarin.Yoga
 {
-    using YGNodeRef = YGNode;
     using static YGGlobal;
 
     public class NodePrint
     {
-        private readonly YGNodeRef _node;
+        private readonly YGNode         _node;
         private readonly YGPrintOptions _options;
 
-        public NodePrint(YGNodeRef node, YGPrintOptions options)
+        public NodePrint(YGNode node, YGPrintOptions options)
         {
-            _node = node ?? throw new ArgumentNullException(nameof(node));
+            _node    = node ?? throw new ArgumentNullException(nameof(node));
             _options = options;
         }
 
@@ -40,19 +40,20 @@ namespace Xamarin.Yoga
                 YGValueEqual(edges.Left, edges.Bottom);
         }
 
+        [SuppressMessage("ReSharper", "PossibleInvalidOperationException")]
         private void AppendFloatOptionalIfDefined(
-            StringBuilder      sb,
-            string          key,
-            float? num)
+            StringBuilder sb,
+            string        key,
+            float?        num)
         {
-            if (!num.IsUndefined() && num.HasValue)
-                sb.Append( $"{key}: {num.Value}; ");
+            if (!num.IsNaN())
+                sb.Append($"{key}: {num.Value}; ");
         }
 
         private void AppendNumberIfNotUndefined(
             StringBuilder sb,
-            string     key,
-            YGValue    number)
+            string        key,
+            YGValue       number)
         {
             if (number.unit != YGUnit.Undefined)
             {
@@ -63,7 +64,7 @@ namespace Xamarin.Yoga
                 else
                 {
                     var unit = number.unit == YGUnit.Point ? "px" : "%";
-                    sb.Append( $"{key}: {number.value}{unit}; ");
+                    sb.Append($"{key}: {number.value}{unit}; ");
                 }
             }
         }
@@ -78,7 +79,7 @@ namespace Xamarin.Yoga
         {
             if (number.unit == YGUnit.Auto)
                 sb.Append($"{str}: auto; ");
-            else if (!YGFloatsEqual(number.value, 0))
+            else if (!FloatEqual(number.value, 0))
                 AppendNumberIfNotUndefined(sb, str, number);
         }
 
@@ -111,7 +112,7 @@ namespace Xamarin.Yoga
 
         private StringBuilder NodeToString(
             StringBuilder  sb,
-            YGNodeRef      node,
+            YGNode         node,
             YGPrintOptions options,
             int            level = 0)
         {
@@ -124,11 +125,11 @@ namespace Xamarin.Yoga
 
             if (options.HasFlag(YGPrintOptions.Layout))
             {
-                sb.Append( "layout=\"");
-                sb.Append( $"width: {node.Layout.Width}; ");
-                sb.Append( $"height: {node.Layout.Height}; ");
-                sb.Append( $"top: {node.Layout.Position.Top}; ");
-                sb.Append( $"left: {node.Layout.Position.Left};");
+                sb.Append("layout=\"");
+                sb.Append($"width: {node.Layout.Width}; ");
+                sb.Append($"height: {node.Layout.Height}; ");
+                sb.Append($"top: {node.Layout.Position.Top}; ");
+                sb.Append($"left: {node.Layout.Position.Left};");
                 sb.Append("\" ");
             }
 

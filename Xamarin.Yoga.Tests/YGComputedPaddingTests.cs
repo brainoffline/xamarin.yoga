@@ -7,16 +7,16 @@ namespace Xamarin.Yoga.Tests
 {
     using static YGGlobal;
     using static YGConst;
-    using YGConfigRef = YGConfig;
-    using YGNodeRef = YGNode;
-    using YGVector = List<YGNode>;
+    
+    
+    
 
     [TestClass]
     public class YGComputedPaddingTests
     {
         [TestMethod] public void computed_layout_padding()
         {
-             YGNodeRef root = YGNodeNew();
+             YGNode root = YGNodeNew();
             YGNodeStyleSetWidth(root, 100);
             YGNodeStyleSetHeight(root, 100);
             YGNodeStyleSetPaddingPercent(root, YGEdge.Start, 10);

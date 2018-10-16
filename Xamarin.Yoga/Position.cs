@@ -24,7 +24,7 @@ namespace Xamarin.Yoga
                 case YGEdge.Top:    return Top;
                 case YGEdge.Right:  return Right;
                 case YGEdge.Bottom: return Bottom;
-                default:            return YGUndefined;
+                default:            return float.NaN;
                 }
             }
             set
@@ -63,10 +63,10 @@ namespace Xamarin.Yoga
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            return 
-                Left.Equals(other.Left) && 
-                Top.Equals(other.Top) && 
-                Right.Equals(other.Right) && 
+            return
+                Left.Equals(other.Left)   &&
+                Top.Equals(other.Top)     &&
+                Right.Equals(other.Right) &&
                 Bottom.Equals(other.Bottom);
         }
 

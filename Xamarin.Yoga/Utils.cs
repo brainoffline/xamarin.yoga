@@ -1,17 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Runtime.CompilerServices;
+
 // ReSharper disable InconsistentNaming
 
 namespace Xamarin.Yoga
 {
-    using YGConfigRef = YGConfig;
-    using YGNodeRef = YGNode;
-    using YGVector = List<YGNode>;
-    using static YGGlobal;
-    using static YGConst;
-
     // This struct is an helper model to hold the data for step 4 of flexbox
     // algo, which is collecting the flex items in a line.
     //
@@ -38,51 +32,22 @@ namespace Xamarin.Yoga
     // - relativeChildren: Maintain a vector of the child nodes that can shrink
     // and/or grow.
 
-    [DebuggerDisplay("items:{itemsOnLine} sizeConsumed:{sizeConsumedOnCurrentLine} TFG:{totalFlexGrowFactors} TFS:{totalFlexShrinkScaledFactors} EOL:{endOfLineIndex} RFS:{remainingFreeSpace} Main:{mainDim} Cross:{crossDim}")]
-    public class YGCollectFlexItemsRowValues
-    {
-        public uint itemsOnLine;
-        public float sizeConsumedOnCurrentLine;
-        public float totalFlexGrowFactors;
-        public float totalFlexShrinkScaledFactors;
-        public int endOfLineIndex;
-        public List<YGNodeRef> relativeChildren;
-        public float remainingFreeSpace;
-
-        // The size of the mainDim for the row after considering size, padding, margin
-        // and border of flex items. This is used to calculate maxLineDim after going
-        // through all the rows to decide on the main axis size of owner.
-        public float mainDim;
-
-        // The size of the crossDim for the row after considering size, padding,
-        // margin and border of flex items. Used for calculating containers crossSize.
-        public float crossDim;
-    };
-
     public static partial class YGGlobal
     {
-        // This custom float comparision function compares the array of float with
-        // YGFloatsEqual, as the default float comparision operator will not work(Look
-        // at the comments of YGFloatsEqual function).
-        public static bool YGFloatArrayEqual(
-            in float[] val1,
-            in float[] val2)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static bool YGFlexDirectionIsRow(YGFlexDirection flexDirection)
         {
-            if (val1 == null || val2 == null || val1.Length != val2.Length)
-                return false;
-
-            var areEqual = true;
-            for (var i = 0; i < val1.Length && areEqual; ++i)
-                areEqual = YGFloatsEqual(val1[i], val2[i]);
-
-            return areEqual;
+            return
+                flexDirection == YGFlexDirection.Row ||
+                flexDirection == YGFlexDirection.RowReverse;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool YGFlexDirectionIsRow(in YGFlexDirection flexDirection)
+        internal static bool YGFlexDirectionIsColumn(in YGFlexDirection flexDirection)
         {
-            return flexDirection == YGFlexDirection.Row ||
-                flexDirection == YGFlexDirection.RowReverse;
+            return
+                flexDirection == YGFlexDirection.Column ||
+                flexDirection == YGFlexDirection.ColumnReverse;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -90,35 +55,29 @@ namespace Xamarin.Yoga
         {
             switch (value.unit)
             {
-                case YGUnit.Undefined:
-                case YGUnit.Auto:
-                    return null;
-                case YGUnit.Point:
-                    return value.value;
-                case YGUnit.Percent:
-                    return value.value * ownerSize * 0.01f;
+            case YGUnit.Undefined:
+            case YGUnit.Auto:
+                return null;
+            case YGUnit.Point:
+                return value.value;
+            case YGUnit.Percent:
+                return value.value * ownerSize * 0.01f;
             }
 
             return null;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool YGFlexDirectionIsColumn(in YGFlexDirection flexDirection)
-        {
-            return flexDirection == YGFlexDirection.Column ||
-                flexDirection == YGFlexDirection.ColumnReverse;
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static YGFlexDirection YGResolveFlexDirection(
             in YGFlexDirection flexDirection,
-            in YGDirection direction)
+            in YGDirection     direction)
         {
             if (direction == YGDirection.RTL)
             {
                 if (flexDirection == YGFlexDirection.Row) return YGFlexDirection.RowReverse;
                 if (flexDirection == YGFlexDirection.RowReverse) return YGFlexDirection.Row;
             }
+
             return flexDirection;
         }
 
@@ -130,7 +89,7 @@ namespace Xamarin.Yoga
                 : YGResolveValue(value, ownerSize);
         }
 
-        public static YGFlexDirection YGFlexDirectionCross( YGFlexDirection flexDirection, YGDirection direction)
+        public static YGFlexDirection YGFlexDirectionCross(YGFlexDirection flexDirection, YGDirection direction)
         {
             return YGFlexDirectionIsColumn(flexDirection)
                 ? YGResolveFlexDirection(YGFlexDirection.Row, direction)
@@ -138,21 +97,21 @@ namespace Xamarin.Yoga
         }
 
         // We need custom max function, since we want that, if one argument is
-        // YGUndefined then the max funtion should return the other argument as the max
-        // value. We wouldn't have needed a custom max function if YGUndefined was NAN
+        // float.NaN then the max funtion should return the other argument as the max
+        // value. We wouldn't have needed a custom max function if float.NaN was NAN
         // as fmax has the same behaviour, but with NAN we cannot use `-ffast-math`
         // compiler flag.
-        public static float YGFloatMax(in float a, in float b)
+        public static float YGFloatMax(float a, float b)
         {
             if (a.HasValue() && b.HasValue())
                 return Math.Max(a, b);
 
-            return a.IsUndefined() ? b : a;
+            return a.HasValue() ? a : b;
         }
 
         // We need custom min function, since we want that, if one argument is
-        // YGUndefined then the min funtion should return the other argument as the min
-        // value. We wouldn't have needed a custom min function if YGUndefined was NAN
+        // float.NaN then the min funtion should return the other argument as the min
+        // value. We wouldn't have needed a custom min function if float.NaN was NAN
         // as fmin has the same behaviour, but with NAN we cannot use `-ffast-math`
         // compiler flag.
         public static float YGFloatMin(in float a, in float b)
@@ -160,7 +119,7 @@ namespace Xamarin.Yoga
             if (a.HasValue() && b.HasValue())
                 return Math.Min(a, b);
 
-            return a.IsUndefined() ? b : a;
+            return a.HasValue() ? a : b;
         }
 
         public static bool YGValueEqual(YGValue a, YGValue b)
@@ -168,27 +127,27 @@ namespace Xamarin.Yoga
             if (a.unit != b.unit)
                 return false;
 
-            if (a.unit == YGUnit.Undefined || a.value.IsUndefined() && b.value.IsUndefined())
+            if (a.unit == YGUnit.Undefined || a.value.IsNaN() && b.value.IsNaN())
                 return true;
 
-            return YGFloatsEqual(a.value, b.value);
+            return FloatEqual(a.value, b.value);
         }
 
         // This custom float equality function returns true if either absolute
         // difference between two floats is less than 0.0001f or both are undefined.
-        public static bool YGFloatsEqual(float a, float b)
+        public static bool FloatEqual(float a, float b)
         {
-            if (a.IsUndefined() && b.IsUndefined()) return true;
-            if (a.IsUndefined() || b.IsUndefined()) return false;
+            if (a.IsNaN() && b.IsNaN()) return true;
+            if (a.IsNaN() || b.IsNaN()) return false;
             return Math.Abs(a - b) < 0.0001f;
         }
 
         // This custom float equality function returns true if either absolute
         // difference between two floats is less than 0.0001f or both are undefined.
-        public static bool YGFloatOptionalEqual(float? a, float? b)
+        public static bool FloatOptionalEqual(float? a, float? b)
         {
-            if (a.IsUndefined() && b.IsUndefined()) return true;
-            if (a.IsUndefined() || b.IsUndefined()) return false;
+            if (a.IsNaN() && b.IsNaN()) return true;
+            if (a.IsNaN() || b.IsNaN()) return false;
 
             // ReSharper disable PossibleInvalidOperationException
             return Math.Abs(a.Value - b.Value) < 0.0001f;
@@ -199,15 +158,15 @@ namespace Xamarin.Yoga
         // This function returns 0 if YGFloatIsUndefined(val) is true and val otherwise
         public static float YGFloatSanitize(float val)
         {
-            return val.IsUndefined() ? 0 : val;
+            return val.IsNaN() ? 0 : val;
         }
 
-        // This function unwraps optional and returns YGUndefined if not defined or
+        // This function unwraps optional and returns float.NaN if not defined or
         // op.value otherwise
         // TODO: Get rid off this function
         public static float YGUnwrapFloatOptional(float? op)
         {
-            return op ?? YGUndefined;
+            return op ?? float.NaN;
         }
 
         public static float? FloatOptionalMax(
@@ -221,4 +180,3 @@ namespace Xamarin.Yoga
         }
     }
 }
-

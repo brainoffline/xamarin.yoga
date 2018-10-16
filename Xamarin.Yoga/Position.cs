@@ -7,12 +7,12 @@ namespace Xamarin.Yoga
     using static YGGlobal;
     using static YGConst;
 
-    public class YGPosition : IEquatable<YGPosition>
+    public class Position : IEquatable<Position>
     {
-        public float Left   { get; private set; }
-        public float Top    { get; private set; }
-        public float Right  { get; private set; }
-        public float Bottom { get; private set; }
+        public float Left   { get; set; }
+        public float Top    { get; set; }
+        public float Right  { get; set; }
+        public float Bottom { get; set; }
 
         public float this[YGEdge edge]
         {
@@ -47,9 +47,9 @@ namespace Xamarin.Yoga
             }
         }
 
-        public YGPosition Clone()
+        public Position Clone()
         {
-            return new YGPosition
+            return new Position
             {
                 Left   = Left,
                 Top    = Top,
@@ -59,7 +59,7 @@ namespace Xamarin.Yoga
         }
 
         /// <inheritdoc />
-        public bool Equals(YGPosition other)
+        public bool Equals(Position other)
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
@@ -76,7 +76,7 @@ namespace Xamarin.Yoga
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
             if (obj.GetType() != this.GetType()) return false;
-            return Equals((YGPosition) obj);
+            return Equals((Position) obj);
         }
 
         /// <inheritdoc />
@@ -92,12 +92,12 @@ namespace Xamarin.Yoga
             }
         }
 
-        public static bool operator ==(YGPosition left, YGPosition right)
+        public static bool operator ==(Position left, Position right)
         {
             return Equals(left, right);
         }
 
-        public static bool operator !=(YGPosition left, YGPosition right)
+        public static bool operator !=(Position left, Position right)
         {
             return !Equals(left, right);
         }

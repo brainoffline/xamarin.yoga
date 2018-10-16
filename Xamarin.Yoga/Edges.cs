@@ -18,6 +18,16 @@ namespace Xamarin.Yoga
         public YGValue Vertical   { get; set; } = YGValueUndefined;
         public YGValue All        { get; set; } = YGValueUndefined;
 
+        public Edges() { }
+
+        public Edges(float left, float top, float right, float bottom)
+        {
+            Left = left;
+            Top = top;
+            Right = right;
+            Bottom = bottom;
+        }
+
         public YGValue this[YGEdge key]
         {
             get

@@ -723,6 +723,7 @@ namespace Xamarin.Yoga
         }
 
         // YG_NODE_STYLE_EDGE_PROPERTY_UNIT_IMPL(YGValue,      Margin,   margin,   margin);
+
         public static void YGNodeStyleSetMargin(YGNodeRef node, YGEdge edge, float margin)
         {
             var value = YGValue.Sanitized(margin, YGUnit.Point);
@@ -996,16 +997,16 @@ namespace Xamarin.Yoga
             switch (edge)
             {
             case YGEdge.Left when node.Layout.Direction == YGDirection.RTL:
-                return node.Layout.margin[(int) YGEdge.End];
+                return node.Layout.Margin.End;
             case YGEdge.Left:
-                return node.Layout.margin[(int) YGEdge.Start];
+                return node.Layout.Margin.Start;
             case YGEdge.Right when node.Layout.Direction == YGDirection.RTL:
-                return node.Layout.margin[(int) YGEdge.Start];
+                return node.Layout.Margin.Start;
             case YGEdge.Right:
-                return node.Layout.margin[(int) YGEdge.End];
+                return node.Layout.Margin.End;
             }
 
-            return node.Layout.margin[(int) edge];
+            return node.Layout.Margin[edge];
         }
 
 
@@ -1020,16 +1021,16 @@ namespace Xamarin.Yoga
             switch (edge)
             {
             case YGEdge.Left when node.Layout.Direction == YGDirection.RTL:
-                return node.Layout.border[(int) YGEdge.End];
+                return node.Layout.Border.End;
             case YGEdge.Left:
-                return node.Layout.border[(int) YGEdge.Start];
+                return node.Layout.Border.Start;
             case YGEdge.Right when node.Layout.Direction == YGDirection.RTL:
-                return node.Layout.border[(int) YGEdge.Start];
+                return node.Layout.Border.Start;
             case YGEdge.Right:
-                return node.Layout.border[(int) YGEdge.End];
+                return node.Layout.Border.End;
             }
 
-            return node.Layout.border[(int) edge];
+            return node.Layout.Border[edge];
         }
 
         // YG_NODE_LAYOUT_RESOLVED_PROPERTY_IMPL(float, Padding, padding);
@@ -1043,33 +1044,19 @@ namespace Xamarin.Yoga
             switch (edge)
             {
             case YGEdge.Left when node.Layout.Direction == YGDirection.RTL:
-                return node.Layout.padding[(int) YGEdge.End];
+                return node.Layout.Padding.End;
             case YGEdge.Left:
-                return node.Layout.padding[(int) YGEdge.Start];
+                return node.Layout.Padding.Start;
             case YGEdge.Right when node.Layout.Direction == YGDirection.RTL:
-                return node.Layout.padding[(int) YGEdge.Start];
+                return node.Layout.Padding.Start;
             case YGEdge.Right:
-                return node.Layout.padding[(int) YGEdge.End];
+                return node.Layout.Padding.End;
             }
 
-            return node.Layout.padding[(int) edge];
+            return node.Layout.Padding[edge];
         }
 
         public static int gCurrentGenerationCount = 0;
-
-        internal static void YGNodePrintInternal(
-            YGNodeRef      node,
-            YGPrintOptions options)
-        {
-            var sb = YGNodeToString(null, node, options, 0);
-
-            YGLog(node, YGLogLevel.Debug, sb.ToString());
-        }
-
-        public static void YGNodePrint(YGNodeRef node, YGPrintOptions options)
-        {
-            YGNodePrintInternal(node, options);
-        }
 
         public static YGEdge[] leading  = {YGEdge.Top, YGEdge.Bottom, YGEdge.Left, YGEdge.Right};
         public static YGEdge[] trailing = {YGEdge.Bottom, YGEdge.Top, YGEdge.Right, YGEdge.Left};
@@ -2813,46 +2800,20 @@ namespace Xamarin.Yoga
             var flexRowDirection    = YGResolveFlexDirection(YGFlexDirection.Row,    direction);
             var flexColumnDirection = YGResolveFlexDirection(YGFlexDirection.Column, direction);
 
-            node.setLayoutMargin(
-                YGUnwrapFloatOptional(
-                    node.getLeadingMargin(flexRowDirection, ownerWidth)),
-                YGEdge.Start);
-            node.setLayoutMargin(
-                YGUnwrapFloatOptional(
-                    node.getTrailingMargin(flexRowDirection, ownerWidth)),
-                YGEdge.End);
-            node.setLayoutMargin(
-                YGUnwrapFloatOptional(
-                    node.getLeadingMargin(flexColumnDirection, ownerWidth)),
-                YGEdge.Top);
-            node.setLayoutMargin(
-                YGUnwrapFloatOptional(
-                    node.getTrailingMargin(flexColumnDirection, ownerWidth)),
-                YGEdge.Bottom);
+            node.Layout.Margin.Start = YGUnwrapFloatOptional(node.getLeadingMargin(flexRowDirection, ownerWidth));
+            node.Layout.Margin.End = YGUnwrapFloatOptional(node.getTrailingMargin(flexRowDirection, ownerWidth));
+            node.Layout.Margin.Top = YGUnwrapFloatOptional(node.getLeadingMargin(flexColumnDirection, ownerWidth));
+            node.Layout.Margin.Bottom = YGUnwrapFloatOptional(node.getTrailingMargin(flexColumnDirection, ownerWidth));
 
-            node.setLayoutBorder(node.getLeadingBorder(flexRowDirection),    YGEdge.Start);
-            node.setLayoutBorder(node.getTrailingBorder(flexRowDirection),   YGEdge.End);
-            node.setLayoutBorder(node.getLeadingBorder(flexColumnDirection), YGEdge.Top);
-            node.setLayoutBorder(
-                node.getTrailingBorder(flexColumnDirection),
-                YGEdge.Bottom);
+            node.Layout.Border.Start = node.getLeadingBorder(flexRowDirection);
+            node.Layout.Border.End = node.getTrailingBorder(flexRowDirection);
+            node.Layout.Border.Top = node.getLeadingBorder(flexColumnDirection);
+            node.Layout.Border.Bottom = node.getTrailingBorder(flexColumnDirection);
 
-            node.setLayoutPadding(
-                YGUnwrapFloatOptional(
-                    node.getLeadingPadding(flexRowDirection, ownerWidth)),
-                YGEdge.Start);
-            node.setLayoutPadding(
-                YGUnwrapFloatOptional(
-                    node.getTrailingPadding(flexRowDirection, ownerWidth)),
-                YGEdge.End);
-            node.setLayoutPadding(
-                YGUnwrapFloatOptional(
-                    node.getLeadingPadding(flexColumnDirection, ownerWidth)),
-                YGEdge.Top);
-            node.setLayoutPadding(
-                YGUnwrapFloatOptional(
-                    node.getTrailingPadding(flexColumnDirection, ownerWidth)),
-                YGEdge.Bottom);
+            node.Layout.Padding.Start = YGUnwrapFloatOptional(node.getLeadingPadding(flexRowDirection, ownerWidth));
+            node.Layout.Padding.End = YGUnwrapFloatOptional(node.getTrailingPadding(flexRowDirection, ownerWidth));
+            node.Layout.Padding.Top = YGUnwrapFloatOptional(node.getLeadingPadding(flexColumnDirection, ownerWidth));
+            node.Layout.Padding.Bottom = YGUnwrapFloatOptional(node.getTrailingPadding(flexColumnDirection, ownerWidth));
 
             if (node.MeasureFunc != null)
             {
@@ -4068,11 +4029,8 @@ namespace Xamarin.Yoga
             // size as this could lead to unwanted text truncation.
             var textRounding = node.getNodeType() == YGNodeType.Text;
 
-            node.Layout.Position[YGEdge.Left] = 
-                YGRoundValueToPixelGrid(nodeLeft, pointScaleFactor, false, textRounding);
-
-            node.Layout.Position[YGEdge.Top] = 
-                YGRoundValueToPixelGrid(nodeTop, pointScaleFactor, false, textRounding);
+            node.Layout.Position.Left = YGRoundValueToPixelGrid(nodeLeft, pointScaleFactor, false, textRounding);
+            node.Layout.Position.Top = YGRoundValueToPixelGrid(nodeTop, pointScaleFactor, false, textRounding);
 
             // We multiply dimension by scale factor and if the result is close to the
             // whole number, we don't have any fraction To verify if the result is close
@@ -4213,9 +4171,7 @@ namespace Xamarin.Yoga
                 YGRoundToPixelGrid(node, node.Config.pointScaleFactor, 0.0f, 0.0f);
 
                 if (node.Config.printTree)
-                    YGNodePrint(
-                        node,
-                        YGPrintOptions.Layout | YGPrintOptions.Children | YGPrintOptions.Style);
+                   node.Print(YGPrintOptions.All);
             }
         }
 

@@ -61,6 +61,11 @@ namespace Xamarin.Yoga
                 children_.Add(new YGNode(child));
         }
 
+        public void Print(YGPrintOptions options)
+        {
+            YGLog(this, YGLogLevel.Debug, new NodePrint(this, options).ToString());
+        }
+
         private YGMeasureFunc _measureFunc = null;
 
         public YGMeasureFunc MeasureFunc
@@ -233,9 +238,56 @@ namespace Xamarin.Yoga
 
         // TODO: rvalue override for setChildren
 
-        public void YGNodeStyleSetAspectRatio(float? aspectRatio)
+        public void StyleSetPosition(Edges position)
         {
-            if (Style.AspectRatio != aspectRatio)
+            if (Style.Position != position)
+            {
+                Style.Position = position;
+                markDirtyAndPropogate();
+            }
+        }
+
+        public void StyleSetMargin(Edges margin)
+        {
+            if (Style.Margin != margin)
+            {
+                Style.Margin = margin;
+                markDirtyAndPropogate();
+            }
+        }
+
+        public void StyleSetPadding(Edges padding)
+        {
+            if (Style.Padding != padding)
+            {
+                Style.Padding = padding;
+                markDirtyAndPropogate();
+            }
+        }
+
+        public void StyleSetBorder(Edges border)
+        {
+            if (Style.Border != border)
+            {
+                Style.Border = border;
+                markDirtyAndPropogate();
+            }
+        }
+
+        public void StyleSetDimensions(float width, float height)
+        {
+            if (Style.Dimensions.Width != width ||
+                Style.Dimensions.Height != height)
+            {
+                Style.Dimensions.Width = width;
+                Style.Dimensions.Height = height;
+                markDirtyAndPropogate();
+            }
+        }
+
+        public void StyleSetAspectRatio(float? aspectRatio)
+        {
+            if (!YGFloatOptionalEqual(Style.AspectRatio, aspectRatio))
             {
                 Style.AspectRatio = aspectRatio;
                 markDirtyAndPropogate();
@@ -367,21 +419,6 @@ namespace Xamarin.Yoga
         public void setLayoutDirection(YGDirection direction)
         {
             layout_.Direction = direction;
-        }
-
-        public void setLayoutMargin(float margin, YGEdge edge)
-        {
-            layout_.margin[(int) edge] = margin;
-        }
-
-        public void setLayoutBorder(float border, YGEdge edge)
-        {
-            layout_.border[(int) edge] = border;
-        }
-
-        public void setLayoutPadding(float padding, YGEdge edge)
-        {
-            layout_.padding[(int) edge] = padding;
         }
 
         // If both left and right are defined, then use left. Otherwise return

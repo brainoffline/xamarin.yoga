@@ -27,14 +27,14 @@ namespace Xamarin.Yoga
         public          int                   GenerationCount             { get; set; }
         public          int                   NextCachedMeasurementsIndex { get; private set; }
         public readonly YGCachedMeasurement[] CachedMeasurements = new YGCachedMeasurement[MaxCachedResultCount];
-        public          YGCachedMeasurement   CachedLayout                       { get; } = new YGCachedMeasurement();
-        public          int                   ComputedFlexBasisGeneration        { get; set; }
-        public          float?       ComputedFlexBasis                  { get; set; }
+        public          YGCachedMeasurement   CachedLayout                { get; } = new YGCachedMeasurement();
+        public          int                   ComputedFlexBasisGeneration { get; set; }
+        public          float?                ComputedFlexBasis           { get; set; }
 
-        public YGPosition Position { get; } = new YGPosition();
-        public float[] margin   = new float[6];
-        public float[] border   = new float[6];
-        public float[] padding  = new float[6];
+        public Position    Position { get; } = new Position();
+        public LayoutEdges Margin   { get; } = new LayoutEdges();
+        public LayoutEdges Border   { get; } = new LayoutEdges();
+        public LayoutEdges Padding  { get; } = new LayoutEdges();
 
 
         public void SetDimension(YGDimension dim, float value)
@@ -91,8 +91,8 @@ namespace Xamarin.Yoga
             HadOverflow                 = false;
             GenerationCount             = 0;
 
-            LastOwnerDirection                 = YGDirection.NotSet;
-            NextCachedMeasurementsIndex        = 0;
+            LastOwnerDirection          = YGDirection.NotSet;
+            NextCachedMeasurementsIndex = 0;
 
             for (var i = 0; i < MaxCachedResultCount; i++) CachedMeasurements[i] = new YGCachedMeasurement();
         }
@@ -104,17 +104,17 @@ namespace Xamarin.Yoga
             MeasuredWidth               = other.MeasuredWidth;
             MeasuredHeight              = other.MeasuredHeight;
             Position                    = other.Position.Clone();
-            margin                      = (float[]) other.margin.Clone();
-            border                      = (float[]) other.border.Clone();
-            padding                     = (float[]) other.padding.Clone();
+            Margin                      = other.Margin.Clone();
+            Border                      = other.Border.Clone();
+            Padding                     = other.Padding.Clone();
             Direction                   = other.Direction;
             ComputedFlexBasisGeneration = other.ComputedFlexBasisGeneration;
             ComputedFlexBasis           = other.ComputedFlexBasis;
             HadOverflow                 = other.HadOverflow;
 
-            LastOwnerDirection                 = other.LastOwnerDirection;
-            NextCachedMeasurementsIndex        = other.NextCachedMeasurementsIndex;
-            CachedLayout                       = other.CachedLayout.Clone();
+            LastOwnerDirection          = other.LastOwnerDirection;
+            NextCachedMeasurementsIndex = other.NextCachedMeasurementsIndex;
+            CachedLayout                = other.CachedLayout.Clone();
 
             for (var i = 0; i < MaxCachedResultCount; i++)
                 CachedMeasurements[i] = other.CachedMeasurements[i].Clone();
@@ -126,12 +126,11 @@ namespace Xamarin.Yoga
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
 
-
             var isEqual =
-                Position == other.Position                      &&
-                YGFloatArrayEqual(margin,   other.margin)                        &&
-                YGFloatArrayEqual(border,   other.border)                        &&
-                YGFloatArrayEqual(padding,  other.padding)                       &&
+                Position == other.Position                                       &&
+                Margin   == other.Margin                                         &&
+                Border   == other.Border                                         &&
+                Padding  == other.Padding                                        &&
                 YGFloatsEqual(Width,  other.Width)                               &&
                 YGFloatsEqual(Height, other.Height)                              &&
                 Direction                   == other.Direction                   &&
@@ -139,7 +138,7 @@ namespace Xamarin.Yoga
                 LastOwnerDirection          == other.LastOwnerDirection          &&
                 NextCachedMeasurementsIndex == other.NextCachedMeasurementsIndex &&
                 CachedLayout                == other.CachedLayout                &&
-                ComputedFlexBasis           == other.ComputedFlexBasis;
+                YGFloatOptionalEqual(ComputedFlexBasis, other.ComputedFlexBasis);
 
             for (var i = 0; i < MaxCachedResultCount && isEqual; ++i)
                 isEqual = isEqual && CachedMeasurements[i] == other.CachedMeasurements[i];
@@ -171,9 +170,9 @@ namespace Xamarin.Yoga
                 hashCode = (hashCode * 397) ^ (int) Height;
                 hashCode = (hashCode * 397) ^ (int) MeasuredWidth;
                 hashCode = (hashCode * 397) ^ (int) MeasuredHeight;
-                hashCode = (hashCode * 397) ^ (margin  != null ? margin.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (border  != null ? border.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (padding != null ? padding.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Margin  != null ? Margin.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Border  != null ? Border.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Padding != null ? Padding.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (int) Direction;
                 hashCode = (hashCode * 397) ^ ComputedFlexBasisGeneration;
                 hashCode = (hashCode * 397) ^ ComputedFlexBasis.GetHashCode();

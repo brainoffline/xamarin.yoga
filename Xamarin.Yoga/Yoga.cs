@@ -58,104 +58,18 @@ namespace Xamarin.Yoga
             }
         }
 
-        public static YGBaselineFunc YGNodeGetBaselineFunc(YGNode node)
-        {
-            return node.getBaseline();
-        }
-
-        public static void YGNodeSetBaselineFunc(YGNode node, YGBaselineFunc baselineFunc)
-        {
-            node.setBaseLineFunc(baselineFunc);
-        }
-
-        public static YGDirtiedFunc YGNodeGetDirtiedFunc(YGNode node)
-        {
-            return node.getDirtied();
-        }
-
-        public static void YGNodeSetPrintFunc(YGNode node, YGPrintFunc printFunc)
-        {
-            node.setPrintFunc(printFunc);
-        }
-
-        public static bool YGNodeGetHasNewLayout(YGNode node)
-        {
-            return node.getHasNewLayout();
-        }
-
-        public static void YGConfigSetPrintTreeFlag(YGConfig config, bool enabled)
-        {
-            config.printTree = enabled;
-        }
-
-        public static void YGNodeSetHasNewLayout(YGNode node, bool hasNewLayout)
-        {
-            node.setHasNewLayout(hasNewLayout);
-        }
-
-        public static YGNodeType YGNodeGetNodeType(YGNode node)
-        {
-            return node.getNodeType();
-        }
-
-        public static void YGNodeSetNodeType(YGNode node, YGNodeType nodeType)
-        {
-            node.setNodeType(nodeType);
-        }
-
-        public static bool YGNodeIsDirty(YGNode node)
-        {
-            return node.IsDirty;
-        }
-
-        public static void YGNodeMarkDirtyAndPropogateToDescendants(YGNode node)
-        {
-            node.markDirtyAndPropogateDownwards();
-        }
-
-        public static int gNodeInstanceCount = 0;
-
-        // WIN_EXPORT 
-        public static YGNode YGNodeNewWithConfig(YGConfig config)
-        {
-            var node = new YGNode(config);
-            gNodeInstanceCount++;
-
-            if (config.UseWebDefaults)
-            {
-                node.setStyleFlexDirection(YGFlexDirection.Row);
-                node.setStyleAlignContent(YGAlign.Stretch);
-            }
-
-            return node;
-        }
-
-        public static YGNode YGNodeNew()
-        {
-            return YGNodeNewWithConfig(YGConfig.DefaultConfig);
-        }
-
-        public static YGNode YGNodeClone(YGNode oldNode)
-        {
-            var node = new YGNode(oldNode);
-            gNodeInstanceCount++;
-            node.setOwner(null);
-            return node;
-        }
-
         private static YGNode YGNodeDeepClone(YGNode oldNode)
         {
-            var    node      = YGNodeClone(oldNode);
-            var    vec       = new List<YGNode>(oldNode.getChildren().Count);
-            YGNode childNode = null;
-            foreach (var item in oldNode.getChildren())
+            var node = new YGNode(oldNode);
+            var vec  = new List<YGNode>(oldNode.Children.Count);
+            foreach (var item in oldNode.Children)
             {
-                childNode = YGNodeDeepClone(item);
+                var childNode = YGNodeDeepClone(item);
                 childNode.setOwner(node);
                 vec.Add(childNode);
             }
 
-            node.setChildren(vec);
+            node.SetChildren(vec);
 
             if (oldNode.Config != null)
                 node.Config = new YGConfig(oldNode.Config);
@@ -168,34 +82,18 @@ namespace Xamarin.Yoga
             var owner = node.getOwner();
             if (owner != null)
             {
-                owner.removeChild(node);
+                owner.RemoveChild(node);
                 node.setOwner(null);
             }
 
-            var childCount = YGNodeGetChildCount(node);
-            for (var i = 0; i < childCount; i++)
-            {
-                var child = YGNodeGetChild(node, i);
-                child.setOwner(null);
-            }
-
             node.ClearChildren();
-            //delete node;
-            gNodeInstanceCount--;
-        }
-
-        internal static void YGConfigFreeRecursive(YGNode root)
-        {
-            // Delete configs recursively for childrens
-            foreach (var child in root.getChildren())
-                YGConfigFreeRecursive(child);
         }
 
         public static void YGNodeFreeRecursive(YGNode root)
         {
-            while (YGNodeGetChildCount(root) > 0)
+            while (root.Children.Count > 0)
             {
-                var child = YGNodeGetChild(root, 0);
+                var child = root.Children.FirstOrDefault();
                 if (child.getOwner() != root) break;
 
                 YGNodeRemoveChild(root, child);
@@ -205,217 +103,19 @@ namespace Xamarin.Yoga
             YGNodeFree(root);
         }
 
-        public static void YGNodeReset(YGNode node)
-        {
-            YGAssertWithNode(
-                node,
-                YGNodeGetChildCount(node) == 0,
-                "Cannot reset a node which still has children attached");
-            YGAssertWithNode(
-                node,
-                node.getOwner() == null,
-                "Cannot reset a node still attached to a owner");
-
-            node.ClearChildren();
-
-            var config = node.Config;
-            node = new YGNode(config);
-            if (config.UseWebDefaults)
-            {
-                node.setStyleFlexDirection(YGFlexDirection.Row);
-                node.setStyleAlignContent(YGAlign.Stretch);
-            }
-        }
-
-        public static int YGNodeGetInstanceCount()
-        {
-            return gNodeInstanceCount;
-        }
-
-        public static void YGNodeInsertChild(
-            YGNode node,
-            YGNode child,
-            int    index)
-        {
-            YGAssertWithNode(
-                node,
-                child.getOwner() == null,
-                "Child already has a owner, it must be removed first.");
-
-            YGAssertWithNode(
-                node,
-                node.MeasureFunc == null,
-                "Cannot add child: Nodes with measure functions cannot have children.");
-
-            node.cloneChildrenIfNeeded();
-            node.insertChild(child, index);
-            var owner = child.getOwner() != null ? null : node;
-            child.setOwner(owner);
-            node.markDirtyAndPropogate();
-        }
-
-        public static void YGNodeInsertSharedChild(
-            YGNode node,
-            YGNode child,
-            int    index)
-        {
-            YGAssertWithNode(
-                node,
-                node.MeasureFunc == null,
-                "Cannot add child: Nodes with measure functions cannot have children.");
-
-            node.insertChild(child, index);
-            child.setOwner(null);
-            node.markDirtyAndPropogate();
-        }
-
         public static void YGNodeRemoveChild(YGNode owner, YGNode excludedChild)
         {
-            // This algorithm is a forked variant from cloneChildrenIfNeeded in YGNode
-            // that excludes a child.
-            var childCount = YGNodeGetChildCount(owner);
-
-            if (childCount == 0) return;
-
-            var firstChild = YGNodeGetChild(owner, 0);
-            if (firstChild.getOwner() == owner)
-            {
-                // If the first child has this node as its owner, we assume that it is
-                // already unique. We can now try to delete a child in this list.
-                if (owner.removeChild(excludedChild))
-                {
-                    excludedChild.Layout = (new YGNode().Layout); // layout is no longer valid
-                    excludedChild.setOwner(null);
-                    owner.markDirtyAndPropogate();
-                }
-
-                return;
-            }
-
-            // Otherwise we have to clone the node list except for the child we're trying
-            // to delete. We don't want to simply clone all children, because then the
-            // host will need to free the clone of the child that was just deleted.
-            var nextInsertIndex = 0;
-            for (var i = 0; i < childCount; i++)
-            {
-                var oldChild = owner.getChild(i);
-                if (excludedChild == oldChild)
-                {
-                    // Ignore the deleted child. Don't reset its layout or owner since it is
-                    // still valid in the other owner. However, since this owner has now
-                    // changed, we need to mark it as dirty.
-                    owner.markDirtyAndPropogate();
-                    continue;
-                }
-
-                YGNode newChild = YGNodeClone(oldChild);
-
-                owner.replaceChild(newChild, nextInsertIndex);
-                newChild.setOwner(owner);
-
-                nextInsertIndex++;
-            }
-
-            while (nextInsertIndex < childCount)
-            {
-                owner.removeChild(nextInsertIndex);
-                nextInsertIndex++;
-            }
+            if (owner.RemoveChild(excludedChild))
+                owner.markDirtyAndPropogate();
         }
 
         public static void YGNodeRemoveAllChildren(YGNode owner)
         {
-            var childCount = YGNodeGetChildCount(owner);
-            if (childCount == 0) return;
-
-            var firstChild = YGNodeGetChild(owner, 0);
-            if (firstChild.getOwner() == owner)
-            {
-                // If the first child has this node as its owner, we assume that this child
-                // set is unique.
-                for (var i = 0; i < childCount; i++)
-                {
-                    var oldChild = YGNodeGetChild(owner, i);
-                    oldChild.Layout = new YGNode().Layout; // layout is no longer valid
-                    oldChild.setOwner(null);
-                }
-
-                owner.ClearChildren();
-                owner.markDirtyAndPropogate();
+            if (owner.Children.Count == 0)
                 return;
-            }
 
-            // Otherwise, we are not the owner of the child set. We don't have to do
-            // anything to clear it.
-            owner.setChildren(new List<YGNode>());
+            owner.ClearChildren();
             owner.markDirtyAndPropogate();
-        }
-
-        internal static void YGNodeSetChildrenInternal(
-            YGNode       owner,
-            List<YGNode> children)
-        {
-            if (owner == null) return;
-
-            if (children.Count == 0)
-            {
-                if (YGNodeGetChildCount(owner) > 0)
-                {
-                    foreach (var child in owner.getChildren())
-                    {
-                        child.Layout = new YGLayout();
-                        child.setOwner(null);
-                    }
-
-                    owner.setChildren(new List<YGNode>());
-                    owner.markDirtyAndPropogate();
-                }
-            }
-            else
-            {
-                if (YGNodeGetChildCount(owner) > 0)
-                    foreach (var oldChild in owner.getChildren())
-                        // Our new children may have nodes in common with the old children. We
-                        // don't reset these common nodes.
-                        if (!children.Contains(oldChild))
-                        {
-                            oldChild.Layout = new YGLayout();
-                            oldChild.setOwner(null);
-                        }
-
-                owner.setChildren(children);
-                foreach (var child in children) child.setOwner(owner);
-
-                owner.markDirtyAndPropogate();
-            }
-        }
-
-        public static void YGNodeSetChildren(
-            YGNode   owner,
-            YGNode[] c,
-            int      count)
-        {
-            var children = c.ToList().Take(count).ToList();
-            YGNodeSetChildrenInternal(owner, children);
-        }
-
-        public static void YGNodeSetChildren(
-            YGNode       owner,
-            List<YGNode> children)
-        {
-            YGNodeSetChildrenInternal(owner, children);
-        }
-
-        public static YGNode YGNodeGetChild(YGNode node, int index)
-        {
-            if (index < node.getChildren().Count) return node.getChild(index);
-
-            return null;
-        }
-
-        public static int YGNodeGetChildCount(YGNode node)
-        {
-            return node.getChildren().Count;
         }
 
         public static YGNode YGNodeGetOwner(YGNode node)
@@ -1102,10 +802,8 @@ namespace Xamarin.Yoga
             }
 
             YGNode baselineChild = null;
-            var    childCount    = YGNodeGetChildCount(node);
-            for (var i = 0; i < childCount; i++)
+            foreach (var child in node.Children)
             {
-                var child = YGNodeGetChild(node, i);
                 if (child.getLineIndex() > 0) break;
 
                 if (child.Style.positionType == YGPositionType.Absolute) continue;
@@ -1127,14 +825,14 @@ namespace Xamarin.Yoga
 
         internal static bool YGIsBaselineLayout(YGNode node)
         {
-            if (YGFlexDirectionIsColumn(node.Style.flexDirection)) return false;
+            if (YGFlexDirectionIsColumn(node.Style.flexDirection))
+                return false;
 
-            if (node.Style.alignItems == YGAlign.Baseline) return true;
+            if (node.Style.alignItems == YGAlign.Baseline)
+                return true;
 
-            var childCount = YGNodeGetChildCount(node);
-            for (var i = 0; i < childCount; i++)
+            foreach (var child in node.Children)
             {
-                var child = YGNodeGetChild(node, i);
                 if (child.Style.positionType == YGPositionType.Relative &&
                     child.Style.alignSelf    == YGAlign.Baseline)
                     return true;
@@ -1863,18 +1561,14 @@ namespace Xamarin.Yoga
             return false;
         }
 
-        private static void YGZeroOutLayoutRecursivly(YGNode node)
+        private static void YGZeroOutLayoutRecursively(YGNode node)
         {
             node.Layout = new YGLayout();
             node.setHasNewLayout(true);
 
             node.cloneChildrenIfNeeded();
-            var childCount = YGNodeGetChildCount(node);
-            for (var i = 0; i < childCount; i++)
-            {
-                var child = node.getChild(i);
-                YGZeroOutLayoutRecursivly(child);
-            }
+            foreach (var child in node.Children)
+                YGZeroOutLayoutRecursively(child);
         }
 
         internal static float YGNodeCalculateAvailableInnerDim(
@@ -1930,14 +1624,16 @@ namespace Xamarin.Yoga
             float           totalOuterFlexBasis)
         {
             YGNode singleFlexChild = null;
-            var    children        = node.getChildren();
+            var    children        = node.Children;
             var measureModeMainDim =
                 YGFlexDirectionIsRow(mainAxis) ? widthMeasureMode : heightMeasureMode;
             // If there is only one child with flexGrow + flexShrink it means we can set
             // the computedFlexBasis to 0 instead of measuring and shrinking / flexing the
             // child to exactly match the remaining space
             if (measureModeMainDim == YGMeasureMode.Exactly)
+            {
                 foreach (var child in children)
+                {
                     if (child.isNodeFlexible())
                     {
                         if (singleFlexChild != null                     ||
@@ -1949,18 +1645,17 @@ namespace Xamarin.Yoga
                             singleFlexChild = null;
                             break;
                         }
-                        else
-                        {
-                            singleFlexChild = child;
-                        }
+                        singleFlexChild = child;
                     }
+                }
+            }
 
             foreach (var child in children)
             {
                 child.resolveDimension();
                 if (child.Style.display == YGDisplay.None)
                 {
-                    YGZeroOutLayoutRecursivly(child);
+                    YGZeroOutLayoutRecursively(child);
                     child.setHasNewLayout(true);
                     child.IsDirty = false;
                     continue;
@@ -2026,7 +1721,7 @@ namespace Xamarin.Yoga
         {
             var flexAlgoRowMeasurement = new CollectFlexItemsRowValues
             {
-                RelativeChildren = new List<YGNode>(node.getChildren().Count)
+                RelativeChildren = new List<YGNode>(node.Children.Count)
             };
 
             float sizeConsumedOnCurrentLineIncludingMinConstraint = 0;
@@ -2035,9 +1730,9 @@ namespace Xamarin.Yoga
 
             // Add items to the current line until it's full or we run out of items.
             var endOfLineIndex = startOfLineIndex;
-            for (; endOfLineIndex < node.getChildren().Count; endOfLineIndex++)
+            for (; endOfLineIndex < node.Children.Count; endOfLineIndex++)
             {
-                var child = node.getChild(endOfLineIndex);
+                var child = node.Children[endOfLineIndex];
                 if (child.Style.display      == YGDisplay.None ||
                     child.Style.positionType == YGPositionType.Absolute)
                     continue;
@@ -2510,7 +2205,7 @@ namespace Xamarin.Yoga
                 i < collectedFlexItemsValues.EndOfLineIndex;
                 i++)
             {
-                var child = node.getChild(i);
+                var child = node.Children[i];
                 if (child.Style.positionType == YGPositionType.Relative)
                 {
                     if (child.marginLeadingValue(mainAxis).unit == YGUnit.Auto) numberOfAutoMarginsOnCurrentLine++;
@@ -2571,7 +2266,7 @@ namespace Xamarin.Yoga
                 i < collectedFlexItemsValues.EndOfLineIndex;
                 i++)
             {
-                var child       = node.getChild(i);
+                var child       = node.Children[i];
                 var childStyle  = child.Style;
                 var childLayout = child.Layout;
                 if (childStyle.display == YGDisplay.None) continue;
@@ -2826,7 +2521,7 @@ namespace Xamarin.Yoga
                 return;
             }
 
-            var childCount = YGNodeGetChildCount(node);
+            var childCount = node.Children.Count;
             if (childCount == 0)
             {
                 YGNodeEmptyContainerSetMeasuredDimensions(
@@ -3092,7 +2787,7 @@ namespace Xamarin.Yoga
                 if (performLayout)
                     for (var i = startOfLineIndex; i < endOfLineIndex; i++)
                     {
-                        var child = node.getChild(i);
+                        var child = node.Children[i];
                         if (child.Style.display == YGDisplay.None) continue;
 
                         if (child.Style.positionType == YGPositionType.Absolute)
@@ -3298,7 +2993,7 @@ namespace Xamarin.Yoga
                     float maxDescentForCurrentLine = 0;
                     for (ii = startIndex; ii < childCount; ii++)
                     {
-                        var child = node.getChild(ii);
+                        var child = node.Children[ii];
                         if (child.Style.display == YGDisplay.None) continue;
 
                         if (child.Style.positionType == YGPositionType.Relative)
@@ -3345,7 +3040,7 @@ namespace Xamarin.Yoga
                     if (performLayout)
                         for (ii = startIndex; ii < endIndex; ii++)
                         {
-                            var child = node.getChild(ii);
+                            var child = node.Children[ii];
                             if (child.Style.display == YGDisplay.None) continue;
 
                             if (child.Style.positionType == YGPositionType.Relative)
@@ -3538,7 +3233,7 @@ namespace Xamarin.Yoga
             if (performLayout && node.Style.flexWrap == YGWrap.WrapReverse)
                 for (var i = 0; i < childCount; i++)
                 {
-                    var child = YGNodeGetChild(node, i);
+                    var child = node.Children[i];
                     if (child.Style.positionType == YGPositionType.Relative)
                         child.Layout.Position[pos[(int) crossAxis]] =
                             node.Layout.GetMeasuredDimension(dim[(int) crossAxis]) -
@@ -3549,7 +3244,7 @@ namespace Xamarin.Yoga
             if (performLayout)
             {
                 // STEP 10: SIZING AND POSITIONING ABSOLUTE CHILDREN
-                foreach (var child in node.getChildren())
+                foreach (var child in node.Children)
                 {
                     if (child.Style.positionType != YGPositionType.Absolute) continue;
 
@@ -3573,7 +3268,7 @@ namespace Xamarin.Yoga
                 if (needsMainTrailingPos || needsCrossTrailingPos)
                     for (var i = 0; i < childCount; i++)
                     {
-                        var child = node.getChild(i);
+                        var child = node.Children[i];
                         if (child.Style.display == YGDisplay.None) continue;
 
                         if (needsMainTrailingPos) YGNodeSetChildTrailingPosition(node, child, mainAxis);
@@ -4068,13 +3763,14 @@ namespace Xamarin.Yoga
                     textRounding)
             );
 
-            var childCount = YGNodeGetChildCount(node);
-            for (var i = 0; i < childCount; i++)
+            foreach (var child in node.Children)
+            {
                 YGRoundToPixelGrid(
-                    YGNodeGetChild(node, i),
+                    child,
                     pointScaleFactor,
                     absoluteNodeLeft,
                     absoluteNodeTop);
+            }
         }
 
         public static void YGNodeCalculateLayout(
@@ -4233,7 +3929,7 @@ namespace Xamarin.Yoga
             foreach (var node in children)
             {
                 f(node);
-                YGTraverseChildrenPreOrder(node.getChildren(), f);
+                YGTraverseChildrenPreOrder(node.Children, f);
             }
         }
 
@@ -4241,10 +3937,11 @@ namespace Xamarin.Yoga
             YGNode         node,
             Action<YGNode> f)
         {
-            if (node == null) return;
+            if (node == null)
+                return;
 
             f(node);
-            YGTraverseChildrenPreOrder(node.getChildren(), f);
+            YGTraverseChildrenPreOrder(node.Children, f);
         }
     }
 }

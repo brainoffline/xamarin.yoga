@@ -16,13 +16,13 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void zero_out_layout()
         {
-            YGNode root = YGNodeNew();
+            YGNode root = new YGNode();
             YGNodeStyleSetFlexDirection(root, YGFlexDirection.Row);
             YGNodeStyleSetWidth(root, 200);
             YGNodeStyleSetHeight(root, 200);
 
-            YGNode child = YGNodeNew();
-            YGNodeInsertChild(root, child, 0);
+            YGNode child = new YGNode();
+            root.InsertChild(child, 0);
             YGNodeStyleSetWidth(child, 100);
             YGNodeStyleSetHeight(child, 100);
             YGNodeStyleSetMargin(child, YGEdge.Top, 10);

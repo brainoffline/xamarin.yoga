@@ -17,8 +17,8 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void copy_style_same()
         {
-            YGNode node0 = YGNodeNew();
-            YGNode node1 = YGNodeNew();
+            YGNode node0 = new YGNode();
+            YGNode node1 = new YGNode();
             Assert.IsFalse(node0.IsDirty);
 
             YGNodeCopyStyle(node0, node1);
@@ -31,12 +31,12 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void copy_style_modified()
         {
-            YGNode node0 = YGNodeNew();
+            YGNode node0 = new YGNode();
             Assert.IsFalse(node0.IsDirty);
             Assert.AreEqual(YGFlexDirection.Column, YGNodeStyleGetFlexDirection(node0));
             Assert.IsFalse(node0.Style.MaxDimensions.Height.unit != YGUnit.Undefined);
 
-            YGNode node1 = YGNodeNew();
+            YGNode node1 = new YGNode();
             YGNodeStyleSetFlexDirection(node1, YGFlexDirection.Row);
             YGNodeStyleSetMaxHeight(node1, 10);
 
@@ -52,13 +52,13 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void copy_style_modified_same()
         {
-            YGNode node0 = YGNodeNew();
+            YGNode node0 = new YGNode();
             YGNodeStyleSetFlexDirection(node0, YGFlexDirection.Row);
             YGNodeStyleSetMaxHeight(node0, 10);
             YGNodeCalculateLayout(node0, float.NaN, float.NaN, YGDirection.LTR);
             Assert.IsFalse(node0.IsDirty);
 
-            YGNode node1 = YGNodeNew();
+            YGNode node1 = new YGNode();
             YGNodeStyleSetFlexDirection(node1, YGFlexDirection.Row);
             YGNodeStyleSetMaxHeight(node1, 10);
 
@@ -72,7 +72,7 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void initialise_flexShrink_flexGrow()
         {
-            YGNode node0 = YGNodeNew();
+            YGNode node0 = new YGNode();
             YGNodeStyleSetFlexShrink(node0, 1);
             Assert.AreEqual(1, YGNodeStyleGetFlexShrink(node0));
 

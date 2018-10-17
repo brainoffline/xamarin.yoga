@@ -19,14 +19,14 @@ namespace Xamarin.Yoga.Tests
         {
              YGConfig config = new YGConfig();
 
-             YGNode root = YGNodeNewWithConfig(config);
+             YGNode root = new YGNode(config);
             YGNodeStyleSetWidth(root, 100);
             YGNodeStyleSetHeight(root, 100);
 
-             YGNode root_child0 = YGNodeNewWithConfig(config);
+             YGNode root_child0 = new YGNode(config);
             YGNodeStyleSetMaxWidth(root_child0, 50);
             YGNodeStyleSetHeight(root_child0, 10);
-            YGNodeInsertChild(root, root_child0, 0);
+            root.InsertChild(root_child0, 0);
             YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
 
             Assert.AreEqual(0, root.Layout.Position.Left);
@@ -61,15 +61,15 @@ namespace Xamarin.Yoga.Tests
         {
              YGConfig config = new YGConfig();
 
-             YGNode root = YGNodeNewWithConfig(config);
+             YGNode root = new YGNode(config);
             YGNodeStyleSetFlexDirection(root, YGFlexDirection.Row);
             YGNodeStyleSetWidth(root, 100);
             YGNodeStyleSetHeight(root, 100);
 
-             YGNode root_child0 = YGNodeNewWithConfig(config);
+             YGNode root_child0 = new YGNode(config);
             YGNodeStyleSetWidth(root_child0, 10);
             YGNodeStyleSetMaxHeight(root_child0, 50);
-            YGNodeInsertChild(root, root_child0, 0);
+            root.InsertChild(root_child0, 0);
             YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
 
             Assert.AreEqual(0, root.Layout.Position.Left);
@@ -104,18 +104,18 @@ namespace Xamarin.Yoga.Tests
         {
              YGConfig config = new YGConfig();
 
-             YGNode root = YGNodeNewWithConfig(config);
+             YGNode root = new YGNode(config);
             YGNodeStyleSetWidth(root, 100);
             YGNodeStyleSetHeight(root, 100);
 
-             YGNode root_child0 = YGNodeNewWithConfig(config);
+             YGNode root_child0 = new YGNode(config);
             YGNodeStyleSetFlexGrow(root_child0, 1);
             YGNodeStyleSetMinHeight(root_child0, 60);
-            YGNodeInsertChild(root, root_child0, 0);
+            root.InsertChild(root_child0, 0);
 
-             YGNode root_child1 = YGNodeNewWithConfig(config);
+             YGNode root_child1 = new YGNode(config);
             YGNodeStyleSetFlexGrow(root_child1, 1);
-            YGNodeInsertChild(root, root_child1, 1);
+            root.InsertChild(root_child1, 1);
             YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
 
             Assert.AreEqual(0, root.Layout.Position.Left);
@@ -160,19 +160,19 @@ namespace Xamarin.Yoga.Tests
         {
              YGConfig config = new YGConfig();
 
-             YGNode root = YGNodeNewWithConfig(config);
+             YGNode root = new YGNode(config);
             YGNodeStyleSetFlexDirection(root, YGFlexDirection.Row);
             YGNodeStyleSetWidth(root, 100);
             YGNodeStyleSetHeight(root, 100);
 
-             YGNode root_child0 = YGNodeNewWithConfig(config);
+             YGNode root_child0 = new YGNode(config);
             YGNodeStyleSetFlexGrow(root_child0, 1);
             YGNodeStyleSetMinWidth(root_child0, 60);
-            YGNodeInsertChild(root, root_child0, 0);
+            root.InsertChild(root_child0, 0);
 
-             YGNode root_child1 = YGNodeNewWithConfig(config);
+             YGNode root_child1 = new YGNode(config);
             YGNodeStyleSetFlexGrow(root_child1, 1);
-            YGNodeInsertChild(root, root_child1, 1);
+            root.InsertChild(root_child1, 1);
             YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
 
             Assert.AreEqual(0, root.Layout.Position.Left);
@@ -217,16 +217,16 @@ namespace Xamarin.Yoga.Tests
         {
              YGConfig config = new YGConfig();
 
-             YGNode root = YGNodeNewWithConfig(config);
+             YGNode root = new YGNode(config);
             YGNodeStyleSetJustifyContent(root, YGJustify.Center);
             YGNodeStyleSetWidth(root, 100);
             YGNodeStyleSetMinHeight(root, 100);
             YGNodeStyleSetMaxHeight(root, 200);
 
-             YGNode root_child0 = YGNodeNewWithConfig(config);
+             YGNode root_child0 = new YGNode(config);
             YGNodeStyleSetWidth(root_child0, 60);
             YGNodeStyleSetHeight(root_child0, 60);
-            YGNodeInsertChild(root, root_child0, 0);
+            root.InsertChild(root_child0, 0);
             YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
 
             Assert.AreEqual(0, root.Layout.Position.Left);
@@ -261,16 +261,16 @@ namespace Xamarin.Yoga.Tests
         {
              YGConfig config = new YGConfig();
 
-             YGNode root = YGNodeNewWithConfig(config);
+             YGNode root = new YGNode(config);
             YGNodeStyleSetAlignItems(root, YGAlign.Center);
             YGNodeStyleSetMinWidth(root, 100);
             YGNodeStyleSetMaxWidth(root, 200);
             YGNodeStyleSetHeight(root, 100);
 
-             YGNode root_child0 = YGNodeNewWithConfig(config);
+             YGNode root_child0 = new YGNode(config);
             YGNodeStyleSetWidth(root_child0, 60);
             YGNodeStyleSetHeight(root_child0, 60);
-            YGNodeInsertChild(root, root_child0, 0);
+            root.InsertChild(root_child0, 0);
             YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
 
             Assert.AreEqual(0, root.Layout.Position.Left);
@@ -305,25 +305,25 @@ namespace Xamarin.Yoga.Tests
         {
              YGConfig config = new YGConfig();
 
-             YGNode root = YGNodeNewWithConfig(config);
+             YGNode root = new YGNode(config);
             YGNodeStyleSetJustifyContent(root, YGJustify.Center);
             YGNodeStyleSetMinHeight(root, 100);
             YGNodeStyleSetMaxHeight(root, 110);
 
-             YGNode root_child0 = YGNodeNewWithConfig(config);
+             YGNode root_child0 = new YGNode(config);
             YGNodeStyleSetWidth(root_child0, 50);
             YGNodeStyleSetHeight(root_child0, 50);
-            YGNodeInsertChild(root, root_child0, 0);
+            root.InsertChild(root_child0, 0);
 
-             YGNode root_child1 = YGNodeNewWithConfig(config);
+             YGNode root_child1 = new YGNode(config);
             YGNodeStyleSetWidth(root_child1, 50);
             YGNodeStyleSetHeight(root_child1, 50);
-            YGNodeInsertChild(root, root_child1, 1);
+            root.InsertChild(root_child1, 1);
 
-             YGNode root_child2 = YGNodeNewWithConfig(config);
+             YGNode root_child2 = new YGNode(config);
             YGNodeStyleSetWidth(root_child2, 50);
             YGNodeStyleSetHeight(root_child2, 50);
-            YGNodeInsertChild(root, root_child2, 2);
+            root.InsertChild(root_child2, 2);
             YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
 
             Assert.AreEqual(0, root.Layout.Position.Left);
@@ -378,19 +378,19 @@ namespace Xamarin.Yoga.Tests
         {
              YGConfig config = new YGConfig();
 
-             YGNode root = YGNodeNewWithConfig(config);
+             YGNode root = new YGNode(config);
             YGNodeStyleSetWidth(root, 100);
             YGNodeStyleSetMinHeight(root, 100);
             YGNodeStyleSetMaxHeight(root, 500);
 
-             YGNode root_child0 = YGNodeNewWithConfig(config);
+             YGNode root_child0 = new YGNode(config);
             YGNodeStyleSetFlexGrow(root_child0, 1);
             YGNodeStyleSetFlexShrink(root_child0, 1);
-            YGNodeInsertChild(root, root_child0, 0);
+            root.InsertChild(root_child0, 0);
 
-             YGNode root_child1 = YGNodeNewWithConfig(config);
+             YGNode root_child1 = new YGNode(config);
             YGNodeStyleSetHeight(root_child1, 50);
-            YGNodeInsertChild(root, root_child1, 1);
+            root.InsertChild(root_child1, 1);
             YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
 
             Assert.AreEqual(0, root.Layout.Position.Left);
@@ -435,20 +435,20 @@ namespace Xamarin.Yoga.Tests
         {
              YGConfig config = new YGConfig();
 
-             YGNode root = YGNodeNewWithConfig(config);
+             YGNode root = new YGNode(config);
             YGNodeStyleSetFlexDirection(root, YGFlexDirection.Row);
             YGNodeStyleSetAlignItems(root, YGAlign.FlexStart);
             YGNodeStyleSetWidth(root, 100);
             YGNodeStyleSetHeight(root, 100);
 
-             YGNode root_child0 = YGNodeNewWithConfig(config);
+             YGNode root_child0 = new YGNode(config);
             YGNodeStyleSetFlexDirection(root_child0, YGFlexDirection.Row);
-            YGNodeInsertChild(root, root_child0, 0);
+            root.InsertChild(root_child0, 0);
 
-             YGNode root_child0_child0 = YGNodeNewWithConfig(config);
+             YGNode root_child0_child0 = new YGNode(config);
             YGNodeStyleSetFlexGrow(root_child0_child0, 1);
             YGNodeStyleSetFlexBasis(root_child0_child0, 0);
-            YGNodeInsertChild(root_child0, root_child0_child0, 0);
+            root_child0.InsertChild(root_child0_child0, 0);
             YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
 
             Assert.AreEqual(0, root.Layout.Position.Left);
@@ -493,14 +493,14 @@ namespace Xamarin.Yoga.Tests
         {
              YGConfig config = new YGConfig();
 
-             YGNode root = YGNodeNewWithConfig(config);
+             YGNode root = new YGNode(config);
             YGNodeStyleSetFlexDirection(root, YGFlexDirection.Row);
 
-             YGNode root_child0 = YGNodeNewWithConfig(config);
+             YGNode root_child0 = new YGNode(config);
             YGNodeStyleSetFlexGrow(root_child0, 1);
             YGNodeStyleSetFlexBasis(root_child0, 0);
             YGNodeStyleSetHeight(root_child0, 100);
-            YGNodeInsertChild(root, root_child0, 0);
+            root.InsertChild(root_child0, 0);
             YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
 
             Assert.AreEqual(0, root.Layout.Position.Left);
@@ -535,17 +535,17 @@ namespace Xamarin.Yoga.Tests
         {
              YGConfig config = new YGConfig();
 
-             YGNode root = YGNodeNewWithConfig(config);
+             YGNode root = new YGNode(config);
             YGNodeStyleSetMinHeight(root, 100);
             YGNodeStyleSetMaxHeight(root, 200);
 
-             YGNode root_child0 = YGNodeNewWithConfig(config);
+             YGNode root_child0 = new YGNode(config);
             YGNodeStyleSetFlexGrow(root_child0, 1);
-            YGNodeInsertChild(root, root_child0, 0);
+            root.InsertChild(root_child0, 0);
 
-             YGNode root_child1 = YGNodeNewWithConfig(config);
+             YGNode root_child1 = new YGNode(config);
             YGNodeStyleSetHeight(root_child1, 50);
-            YGNodeInsertChild(root, root_child1, 1);
+            root.InsertChild(root_child1, 1);
             YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
 
             Assert.AreEqual(0, root.Layout.Position.Left);
@@ -590,19 +590,19 @@ namespace Xamarin.Yoga.Tests
         {
              YGConfig config = new YGConfig();
 
-             YGNode root = YGNodeNewWithConfig(config);
+             YGNode root = new YGNode(config);
             YGNodeStyleSetWidth(root, 200);
             YGNodeStyleSetHeight(root, 100);
 
-             YGNode root_child0 = YGNodeNewWithConfig(config);
+             YGNode root_child0 = new YGNode(config);
             YGNodeStyleSetFlexDirection(root_child0, YGFlexDirection.Row);
             YGNodeStyleSetMaxWidth(root_child0, 100);
-            YGNodeInsertChild(root, root_child0, 0);
+            root.InsertChild(root_child0, 0);
 
-             YGNode root_child0_child0 = YGNodeNewWithConfig(config);
+             YGNode root_child0_child0 = new YGNode(config);
             YGNodeStyleSetFlexGrow(root_child0_child0, 1);
             YGNodeStyleSetHeight(root_child0_child0, 20);
-            YGNodeInsertChild(root_child0, root_child0_child0, 0);
+            root_child0.InsertChild(root_child0_child0, 0);
             YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
 
             Assert.AreEqual(0, root.Layout.Position.Left);
@@ -647,19 +647,19 @@ namespace Xamarin.Yoga.Tests
         {
              YGConfig config = new YGConfig();
 
-             YGNode root = YGNodeNewWithConfig(config);
+             YGNode root = new YGNode(config);
             YGNodeStyleSetWidth(root, 200);
             YGNodeStyleSetHeight(root, 100);
 
-             YGNode root_child0 = YGNodeNewWithConfig(config);
+             YGNode root_child0 = new YGNode(config);
             YGNodeStyleSetFlexDirection(root_child0, YGFlexDirection.Row);
             YGNodeStyleSetMaxWidth(root_child0, 300);
-            YGNodeInsertChild(root, root_child0, 0);
+            root.InsertChild(root_child0, 0);
 
-             YGNode root_child0_child0 = YGNodeNewWithConfig(config);
+             YGNode root_child0_child0 = new YGNode(config);
             YGNodeStyleSetFlexGrow(root_child0_child0, 1);
             YGNodeStyleSetHeight(root_child0_child0, 20);
-            YGNodeInsertChild(root_child0, root_child0_child0, 0);
+            root_child0.InsertChild(root_child0_child0, 0);
             YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
 
             Assert.AreEqual(0, root.Layout.Position.Left);
@@ -704,20 +704,20 @@ namespace Xamarin.Yoga.Tests
         {
              YGConfig config = new YGConfig();
 
-             YGNode root = YGNodeNewWithConfig(config);
+             YGNode root = new YGNode(config);
             YGNodeStyleSetFlexGrow(root, 1);
             YGNodeStyleSetWidth(root, 100);
             YGNodeStyleSetMinHeight(root, 100);
             YGNodeStyleSetMaxHeight(root, 500);
 
-             YGNode root_child0 = YGNodeNewWithConfig(config);
+             YGNode root_child0 = new YGNode(config);
             YGNodeStyleSetFlexGrow(root_child0, 1);
             YGNodeStyleSetFlexBasis(root_child0, 200);
-            YGNodeInsertChild(root, root_child0, 0);
+            root.InsertChild(root_child0, 0);
 
-             YGNode root_child1 = YGNodeNewWithConfig(config);
+             YGNode root_child1 = new YGNode(config);
             YGNodeStyleSetHeight(root_child1, 100);
-            YGNodeInsertChild(root, root_child1, 1);
+            root.InsertChild(root_child1, 1);
             YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
 
             Assert.AreEqual(0, root.Layout.Position.Left);
@@ -762,25 +762,25 @@ namespace Xamarin.Yoga.Tests
         {
              YGConfig config = new YGConfig();
 
-             YGNode root = YGNodeNewWithConfig(config);
+             YGNode root = new YGNode(config);
             YGNodeStyleSetWidth(root, 100);
             YGNodeStyleSetMinHeight(root, 100);
             YGNodeStyleSetMaxHeight(root, 500);
 
-             YGNode root_child0 = YGNodeNewWithConfig(config);
+             YGNode root_child0 = new YGNode(config);
             YGNodeStyleSetFlexGrow(root_child0, 1);
             YGNodeStyleSetMinHeight(root_child0, 100);
             YGNodeStyleSetMaxHeight(root_child0, 500);
-            YGNodeInsertChild(root, root_child0, 0);
+            root.InsertChild(root_child0, 0);
 
-             YGNode root_child0_child0 = YGNodeNewWithConfig(config);
+             YGNode root_child0_child0 = new YGNode(config);
             YGNodeStyleSetFlexGrow(root_child0_child0, 1);
             YGNodeStyleSetFlexBasis(root_child0_child0, 200);
-            YGNodeInsertChild(root_child0, root_child0_child0, 0);
+            root_child0.InsertChild(root_child0_child0, 0);
 
-             YGNode root_child0_child1 = YGNodeNewWithConfig(config);
+             YGNode root_child0_child1 = new YGNode(config);
             YGNodeStyleSetHeight(root_child0_child1, 100);
-            YGNodeInsertChild(root_child0, root_child0_child1, 1);
+            root_child0.InsertChild(root_child0_child1, 1);
             YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
 
             Assert.AreEqual(0, root.Layout.Position.Left);
@@ -835,24 +835,24 @@ namespace Xamarin.Yoga.Tests
         {
              YGConfig config = new YGConfig();
 
-             YGNode root = YGNodeNewWithConfig(config);
+             YGNode root = new YGNode(config);
             YGNodeStyleSetWidth(root, 100);
             YGNodeStyleSetHeight(root, 500);
 
-             YGNode root_child0 = YGNodeNewWithConfig(config);
+             YGNode root_child0 = new YGNode(config);
             YGNodeStyleSetFlexGrow(root_child0, 1);
             YGNodeStyleSetMinHeight(root_child0, 100);
             YGNodeStyleSetMaxHeight(root_child0, 500);
-            YGNodeInsertChild(root, root_child0, 0);
+            root.InsertChild(root_child0, 0);
 
-             YGNode root_child0_child0 = YGNodeNewWithConfig(config);
+             YGNode root_child0_child0 = new YGNode(config);
             YGNodeStyleSetFlexGrow(root_child0_child0, 1);
             YGNodeStyleSetFlexBasis(root_child0_child0, 200);
-            YGNodeInsertChild(root_child0, root_child0_child0, 0);
+            root_child0.InsertChild(root_child0_child0, 0);
 
-             YGNode root_child0_child1 = YGNodeNewWithConfig(config);
+             YGNode root_child0_child1 = new YGNode(config);
             YGNodeStyleSetHeight(root_child0_child1, 100);
-            YGNodeInsertChild(root_child0, root_child0_child1, 1);
+            root_child0.InsertChild(root_child0_child1, 1);
             YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
 
             Assert.AreEqual(0, root.Layout.Position.Left);
@@ -907,18 +907,18 @@ namespace Xamarin.Yoga.Tests
         {
              YGConfig config = new YGConfig();
 
-             YGNode root = YGNodeNewWithConfig(config);
+             YGNode root = new YGNode(config);
             YGNodeStyleSetFlexDirection(root, YGFlexDirection.Row);
             YGNodeStyleSetMinWidth(root, 100);
             YGNodeStyleSetHeight(root, 100);
 
-             YGNode root_child0 = YGNodeNewWithConfig(config);
+             YGNode root_child0 = new YGNode(config);
             YGNodeStyleSetFlexGrow(root_child0, 1);
-            YGNodeInsertChild(root, root_child0, 0);
+            root.InsertChild(root_child0, 0);
 
-             YGNode root_child1 = YGNodeNewWithConfig(config);
+             YGNode root_child1 = new YGNode(config);
             YGNodeStyleSetWidth(root_child1, 50);
-            YGNodeInsertChild(root, root_child1, 1);
+            root.InsertChild(root_child1, 1);
             YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
 
             Assert.AreEqual(0, root.Layout.Position.Left);
@@ -963,16 +963,16 @@ namespace Xamarin.Yoga.Tests
         {
              YGConfig config = new YGConfig();
 
-             YGNode root = YGNodeNewWithConfig(config);
+             YGNode root = new YGNode(config);
             YGNodeStyleSetMinHeight(root, 100);
 
-             YGNode root_child0 = YGNodeNewWithConfig(config);
+             YGNode root_child0 = new YGNode(config);
             YGNodeStyleSetFlexGrow(root_child0, 1);
-            YGNodeInsertChild(root, root_child0, 0);
+            root.InsertChild(root_child0, 0);
 
-             YGNode root_child1 = YGNodeNewWithConfig(config);
+             YGNode root_child1 = new YGNode(config);
             YGNodeStyleSetHeight(root_child1, 50);
-            YGNodeInsertChild(root, root_child1, 1);
+            root.InsertChild(root_child1, 1);
             YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
 
             Assert.AreEqual(0, root.Layout.Position.Left);
@@ -1017,23 +1017,23 @@ namespace Xamarin.Yoga.Tests
         {
              YGConfig config = new YGConfig();
 
-             YGNode root = YGNodeNewWithConfig(config);
+             YGNode root = new YGNode(config);
             YGNodeStyleSetWidth(root, 200);
 
-             YGNode root_child0 = YGNodeNewWithConfig(config);
+             YGNode root_child0 = new YGNode(config);
             YGNodeStyleSetFlexDirection(root_child0, YGFlexDirection.Row);
             YGNodeStyleSetMaxWidth(root_child0, 100);
             YGNodeStyleSetHeight(root_child0, 100);
-            YGNodeInsertChild(root, root_child0, 0);
+            root.InsertChild(root_child0, 0);
 
-             YGNode root_child0_child0 = YGNodeNewWithConfig(config);
+             YGNode root_child0_child0 = new YGNode(config);
             YGNodeStyleSetFlexShrink(root_child0_child0, 1);
             YGNodeStyleSetFlexBasis(root_child0_child0, 100);
-            YGNodeInsertChild(root_child0, root_child0_child0, 0);
+            root_child0.InsertChild(root_child0_child0, 0);
 
-             YGNode root_child0_child1 = YGNodeNewWithConfig(config);
+             YGNode root_child0_child1 = new YGNode(config);
             YGNodeStyleSetWidth(root_child0_child1, 50);
-            YGNodeInsertChild(root_child0, root_child0_child1, 1);
+            root_child0.InsertChild(root_child0_child1, 1);
             YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
 
             Assert.AreEqual(0, root.Layout.Position.Left);
@@ -1088,18 +1088,18 @@ namespace Xamarin.Yoga.Tests
         {
              YGConfig config = new YGConfig();
 
-             YGNode root = YGNodeNewWithConfig(config);
+             YGNode root = new YGNode(config);
             YGNodeStyleSetWidth(root, 100);
             YGNodeStyleSetMaxHeight(root, 100);
 
-             YGNode root_child0 = YGNodeNewWithConfig(config);
+             YGNode root_child0 = new YGNode(config);
             YGNodeStyleSetFlexShrink(root_child0, 1);
             YGNodeStyleSetFlexBasis(root_child0, 100);
-            YGNodeInsertChild(root, root_child0, 0);
+            root.InsertChild(root_child0, 0);
 
-             YGNode root_child1 = YGNodeNewWithConfig(config);
+             YGNode root_child1 = new YGNode(config);
             YGNodeStyleSetHeight(root_child1, 50);
-            YGNodeInsertChild(root, root_child1, 1);
+            root.InsertChild(root_child1, 1);
             YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
 
             Assert.AreEqual(0, root.Layout.Position.Left);
@@ -1144,22 +1144,22 @@ namespace Xamarin.Yoga.Tests
         {
              YGConfig config = new YGConfig();
 
-             YGNode root = YGNodeNewWithConfig(config);
+             YGNode root = new YGNode(config);
             YGNodeStyleSetFlexDirection(root, YGFlexDirection.Row);
             YGNodeStyleSetWidth(root, 120);
             YGNodeStyleSetHeight(root, 50);
 
-             YGNode root_child0 = YGNodeNewWithConfig(config);
+             YGNode root_child0 = new YGNode(config);
             YGNodeStyleSetFlexGrow(root_child0, 1);
             YGNodeStyleSetFlexBasis(root_child0, 0);
             YGNodeStyleSetMinWidth(root_child0, 60);
-            YGNodeInsertChild(root, root_child0, 0);
+            root.InsertChild(root_child0, 0);
 
-             YGNode root_child1 = YGNodeNewWithConfig(config);
+             YGNode root_child1 = new YGNode(config);
             YGNodeStyleSetFlexGrow(root_child1, 1);
             YGNodeStyleSetFlexBasisPercent(root_child1, 50);
             YGNodeStyleSetMaxWidth(root_child1, 20);
-            YGNodeInsertChild(root, root_child1, 1);
+            root.InsertChild(root_child1, 1);
             YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
 
             Assert.AreEqual(0, root.Layout.Position.Left);
@@ -1204,7 +1204,7 @@ namespace Xamarin.Yoga.Tests
         {
              YGConfig config = new YGConfig();
 
-             YGNode root = YGNodeNewWithConfig(config);
+             YGNode root = new YGNode(config);
             YGNodeStyleSetWidth(root, 50);
             YGNodeStyleSetMinWidth(root, 100);
             YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
@@ -1231,7 +1231,7 @@ namespace Xamarin.Yoga.Tests
         {
              YGConfig config = new YGConfig();
 
-             YGNode root = YGNodeNewWithConfig(config);
+             YGNode root = new YGNode(config);
             YGNodeStyleSetWidth(root, 200);
             YGNodeStyleSetMaxWidth(root, 100);
             YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
@@ -1258,7 +1258,7 @@ namespace Xamarin.Yoga.Tests
         {
              YGConfig config = new YGConfig();
 
-             YGNode root = YGNodeNewWithConfig(config);
+             YGNode root = new YGNode(config);
             YGNodeStyleSetHeight(root, 50);
             YGNodeStyleSetMinHeight(root, 100);
             YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
@@ -1285,7 +1285,7 @@ namespace Xamarin.Yoga.Tests
         {
              YGConfig config = new YGConfig();
 
-             YGNode root = YGNodeNewWithConfig(config);
+             YGNode root = new YGNode(config);
             YGNodeStyleSetHeight(root, 200);
             YGNodeStyleSetMaxHeight(root, 100);
             YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
@@ -1312,17 +1312,17 @@ namespace Xamarin.Yoga.Tests
         {
              YGConfig config = new YGConfig();
 
-             YGNode root = YGNodeNewWithConfig(config);
+             YGNode root = new YGNode(config);
             YGNodeStyleSetAlignItems(root, YGAlign.FlexStart);
             YGNodeStyleSetWidth(root, 100);
             YGNodeStyleSetHeight(root, 100);
 
-             YGNode root_child0 = YGNodeNewWithConfig(config);
+             YGNode root_child0 = new YGNode(config);
             YGNodeStyleSetMinWidthPercent(root_child0, 10);
             YGNodeStyleSetMaxWidthPercent(root_child0, 10);
             YGNodeStyleSetMinHeightPercent(root_child0, 10);
             YGNodeStyleSetMaxHeightPercent(root_child0, 10);
-            YGNodeInsertChild(root, root_child0, 0);
+            root.InsertChild(root_child0, 0);
             YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
 
             Assert.AreEqual(0, root.Layout.Position.Left);

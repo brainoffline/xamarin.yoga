@@ -45,11 +45,11 @@ namespace Xamarin.Yoga.Tests
         public void rounding_feature_with_custom_measure_func_floor()
         {
             YGConfig config = new YGConfig();
-            YGNode   root   = YGNodeNewWithConfig(config);
+            YGNode   root   = new YGNode(config);
 
-            YGNode root_child0 = YGNodeNewWithConfig(config);
+            YGNode root_child0 = new YGNode(config);
             root_child0.MeasureFunc = _measureFloor;
-            YGNodeInsertChild(root, root_child0, 0);
+            root.InsertChild(root_child0, 0);
 
             YGConfigSetPointScaleFactor(config, 0.0f);
 
@@ -93,11 +93,11 @@ namespace Xamarin.Yoga.Tests
         public void rounding_feature_with_custom_measure_func_ceil()
         {
             YGConfig config      = new YGConfig();
-            YGNode   root        = YGNodeNewWithConfig(config);
-            YGNode   root_child0 = YGNodeNewWithConfig(config);
+            YGNode   root        = new YGNode(config);
+            YGNode   root_child0 = new YGNode(config);
 
             root_child0.MeasureFunc = _measureCeil;
-            YGNodeInsertChild(root, root_child0, 0);
+            root.InsertChild(root_child0, 0);
             YGConfigSetPointScaleFactor(config, 1.0f);
 
             YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
@@ -112,12 +112,12 @@ namespace Xamarin.Yoga.Tests
         public void rounding_feature_with_custom_measure_and_fractial_matching_scale()
         {
             YGConfig config = new YGConfig();
-            YGNode   root   = YGNodeNewWithConfig(config);
+            YGNode   root   = new YGNode(config);
 
-            YGNode root_child0 = YGNodeNewWithConfig(config);
+            YGNode root_child0 = new YGNode(config);
             YGNodeStyleSetPosition(root_child0, YGEdge.Left, 73.625f);
             root_child0.MeasureFunc = _measureFractial;
-            YGNodeInsertChild(root, root_child0, 0);
+            root.InsertChild(root_child0, 0);
 
             YGConfigSetPointScaleFactor(config, 2.0f);
 

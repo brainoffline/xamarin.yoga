@@ -193,13 +193,13 @@ namespace Xamarin.Yoga
 
             sb.Append(">");
 
-            var childCount = node.getChildren().Count;
+            var childCount = node.Children.Count;
             if (options.HasFlag(YGPrintOptions.Children) && childCount > 0)
             {
                 for (var i = 0; i < childCount; i++)
                 {
                     sb.Append("\n");
-                    NodeToString(sb, YGNodeGetChild(node, i), options, level + 1);
+                    NodeToString(sb, node.Children[i], options, level + 1);
                 }
 
                 sb.Append("\n");

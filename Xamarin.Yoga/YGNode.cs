@@ -13,6 +13,7 @@ namespace Xamarin.Yoga
         public YGConfig Config  { get; set; }
         public string   Name    { get; set; }
         public object   Context { get; set; }
+        public List<YGNode> Children { get; private set; }= new List<YGNode>();
 
         private YGPrintFunc    print_             = null;
         private bool           hasNewLayout_      = true;
@@ -22,15 +23,21 @@ namespace Xamarin.Yoga
         private YGLayout       layout_            = new YGLayout();
         private int            lineIndex_         = 0;
         private YGNode         owner_             = null;
-        private List<YGNode>   children_          = new List<YGNode>();
+        
         private bool           isDirty_           = false;
         private Dimensions     ResolvedDimensions = new Dimensions(YGValueUndefined, YGValueUndefined);
 
-        public YGNode() { }
+        public YGNode() : this(YGConfig.DefaultConfig) { }
 
         public YGNode(YGConfig newConfig)
         {
             Config = newConfig;
+
+            if (Config.UseWebDefaults)
+            {
+                setStyleFlexDirection(YGFlexDirection.Row);
+                setStyleAlignContent(YGAlign.Stretch);
+            }
         }
 
         public YGNode(YGNode node)
@@ -38,7 +45,7 @@ namespace Xamarin.Yoga
             if (ReferenceEquals(node, this))
                 return;
 
-            children_.Clear();
+            Children.Clear();
 
             Context            = node.Context;
             print_             = node.getPrintFunc();
@@ -55,8 +62,8 @@ namespace Xamarin.Yoga
             isDirty_           = node.IsDirty;
             ResolvedDimensions = node.getResolvedDimensions().Clone();
 
-            foreach (YGNode child in node.getChildren())
-                children_.Add(new YGNode(child));
+            foreach (var child in node.Children)
+                Children.Add(new YGNode(child));
         }
 
         public void Print(YGPrintOptions options)
@@ -79,7 +86,7 @@ namespace Xamarin.Yoga
                 {
                     YGAssertWithNode(
                         this,
-                        children_.Count == 0,
+                        Children.Count == 0,
                         "Cannot set measure function: Nodes with measure functions cannot have children.");
 
                     // TODO: t18095186 Move nodeType to opt-in function and mark appropriate
@@ -146,16 +153,6 @@ namespace Xamarin.Yoga
         public YGNode getParent()
         {
             return getOwner();
-        }
-
-        public List<YGNode> getChildren()
-        {
-            return children_;
-        }
-
-        public YGNode getChild(int index)
-        {
-            return children_[index];
         }
 
         public bool IsDirty
@@ -229,9 +226,16 @@ namespace Xamarin.Yoga
             owner_ = owner;
         }
 
-        public void setChildren(in List<YGNode> children)
+        public void SetChildren(List<YGNode> children)
         {
-            children_ = children;
+            // Clear out the old children
+            foreach (var child in Children)
+                child.setOwner(null);
+
+            Children = children;
+            foreach (var child in children)
+                child.setOwner(this);
+            markDirtyAndPropogate();
         }
 
         // TODO: rvalue override for setChildren
@@ -383,26 +387,43 @@ namespace Xamarin.Yoga
 
         public void replaceChild(YGNode child, int index)
         {
-            children_[index] = child;
+            Children[index] = child;
         }
 
         public void replaceChild(YGNode oldChild, YGNode newChild)
         {
-            int index = children_.IndexOf(oldChild);
+            int index = Children.IndexOf(oldChild);
             if (index >= 0)
-                children_[index] = newChild;
+                Children[index] = newChild;
         }
 
-        public void insertChild(YGNode child, int index)
+        public void InsertChild(YGNode child, int index)
         {
-            children_.Insert(index, child);
+            YGAssertWithNode(
+                this,
+                child.getOwner() == null,
+                "Child already has a owner, it must be removed first.");
+
+            YGAssertWithNode(
+                this,
+                MeasureFunc == null,
+                "Cannot add child: Nodes with measure functions cannot have children.");
+
+            cloneChildrenIfNeeded();
+
+            Children.Insert(index, child);
+
+            child.setOwner(this);
+            markDirtyAndPropogate();
         }
 
-        public bool removeChild(YGNode child)
+        public bool RemoveChild(YGNode child)
         {
-            if (children_.Contains(child))
+            if (Children.Contains(child))
             {
-                children_.Remove(child);
+                child.Layout = new YGLayout();
+                child.setOwner(null);
+                Children.Remove(child);
                 return true;
             }
 
@@ -411,7 +432,7 @@ namespace Xamarin.Yoga
 
         public void removeChild(int index)
         {
-            children_.RemoveAt(index);
+            Children.RemoveAt(index);
         }
 
         public void setLayoutDirection(YGDirection direction)
@@ -509,7 +530,13 @@ namespace Xamarin.Yoga
 
         public void ClearChildren()
         {
-            children_.Clear();
+            foreach (var child in Children)
+            {
+                child.Layout = new YGLayout();
+                child.setOwner(null);
+            }
+
+            Children.Clear();
         }
 
         // Other Methods
@@ -519,16 +546,16 @@ namespace Xamarin.Yoga
             // YGNodeRemoveChild in yoga.cpp has a forked variant of this algorithm
             // optimized for deletions.
 
-            int childCount = children_.Count;
+            int childCount = Children.Count;
             if (childCount == 0) return;
 
-            YGNode firstChild = children_.First();
+            YGNode firstChild = Children.First();
             if (firstChild.getOwner() == this) return;
 
             for (int i = 0; i < childCount; ++i)
             {
-                YGNode oldChild = children_[i];
-                YGNode newChild = YGNodeClone(oldChild);
+                YGNode oldChild = Children[i];
+                YGNode newChild = new YGNode(oldChild);
                 replaceChild(newChild, i);
                 newChild.setOwner(this);
             }
@@ -547,7 +574,7 @@ namespace Xamarin.Yoga
         public void markDirtyAndPropogateDownwards()
         {
             isDirty_ = true;
-            foreach (YGNode childNode in children_) childNode.markDirtyAndPropogateDownwards();
+            foreach (YGNode childNode in Children) childNode.markDirtyAndPropogateDownwards();
             ;
         }
 
@@ -652,21 +679,21 @@ namespace Xamarin.Yoga
 
         public bool isLayoutTreeEqualToNode(YGNode node)
         {
-            if (children_.Count != node.children_.Count)
+            if (Children.Count != node.Children.Count)
                 return false;
 
             if (layout_ != node.layout_)
                 return false;
 
-            if (children_.Count == 0)
+            if (Children.Count == 0)
                 return true;
 
             bool   isLayoutTreeEqual = true;
             YGNode otherNodeChildren = null;
-            for (int i = 0; i < children_.Count; ++i)
+            for (int i = 0; i < Children.Count; ++i)
             {
-                otherNodeChildren = node.children_[i];
-                isLayoutTreeEqual = children_[i].isLayoutTreeEqualToNode(otherNodeChildren);
+                otherNodeChildren = node.Children[i];
+                isLayoutTreeEqual = Children[i].isLayoutTreeEqualToNode(otherNodeChildren);
                 if (!isLayoutTreeEqual)
                     return false;
             }
@@ -695,7 +722,7 @@ namespace Xamarin.Yoga
             result = result &&
                 lineIndex_ == other.lineIndex_;
             result = result &&
-                children_.SequenceEqual(other.children_);
+                Children.SequenceEqual(other.Children);
             result = result                          &&
                 Config             == other.Config   &&
                 isDirty_           == other.isDirty_ &&

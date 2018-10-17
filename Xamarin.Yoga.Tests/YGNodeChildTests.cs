@@ -17,12 +17,12 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void reset_layout_when_child_removed()
         {
-             YGNode root = YGNodeNew();
+             YGNode root = new YGNode();
 
-             YGNode root_child0 = YGNodeNew();
+             YGNode root_child0 = new YGNode();
             YGNodeStyleSetWidth(root_child0, 100);
             YGNodeStyleSetHeight(root_child0, 100);
-            YGNodeInsertChild(root, root_child0, 0);
+            root.InsertChild(root_child0, 0);
 
             YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
 

@@ -19,23 +19,23 @@ namespace Xamarin.Yoga.Tests
         {
             YGConfig config = new YGConfig();
 
-            YGNode root = YGNodeNewWithConfig(config);
+            YGNode root = new YGNode(config);
             YGNodeStyleSetAlignContent(root, YGAlign.Stretch);
             YGNodeStyleSetWidth(root, 1080);
 
-            YGNode root_child0 = YGNodeNewWithConfig(config);
-            YGNodeInsertChild(root, root_child0, 0);
+            YGNode root_child0 = new YGNode(config);
+            root.InsertChild(root_child0, 0);
 
-            YGNode root_child0_child0 = YGNodeNewWithConfig(config);
+            YGNode root_child0_child0 = new YGNode(config);
             YGNodeStyleSetAlignContent(root_child0_child0, YGAlign.Stretch);
-            YGNodeInsertChild(root_child0, root_child0_child0, 0);
+            root_child0.InsertChild(root_child0_child0, 0);
 
-            YGNode root_child0_child0_child0 = YGNodeNewWithConfig(config);
+            YGNode root_child0_child0_child0 = new YGNode(config);
             YGNodeStyleSetAlignContent(root_child0_child0_child0, YGAlign.Stretch);
-            YGNodeInsertChild(root_child0_child0, root_child0_child0_child0, 0);
+            root_child0_child0.InsertChild(root_child0_child0_child0, 0);
 
             YGNode root_child0_child0_child0_child0 =
-                YGNodeNewWithConfig(config);
+                new YGNode(config);
             YGNodeStyleSetFlexDirection(
                 root_child0_child0_child0_child0,
                 YGFlexDirection.Row);
@@ -43,38 +43,29 @@ namespace Xamarin.Yoga.Tests
             YGNodeStyleSetAlignItems(root_child0_child0_child0_child0, YGAlign.FlexStart);
             YGNodeStyleSetMargin(root_child0_child0_child0_child0, YGEdge.Start, 36);
             YGNodeStyleSetMargin(root_child0_child0_child0_child0, YGEdge.Top,   24);
-            YGNodeInsertChild(
-                root_child0_child0_child0,
-                root_child0_child0_child0_child0,
-                0);
+            root_child0_child0_child0.InsertChild(root_child0_child0_child0_child0, 0);
 
             YGNode root_child0_child0_child0_child0_child0 =
-                YGNodeNewWithConfig(config);
+                new YGNode(config);
             YGNodeStyleSetFlexDirection(
                 root_child0_child0_child0_child0_child0,
                 YGFlexDirection.Row);
             YGNodeStyleSetAlignContent(
                 root_child0_child0_child0_child0_child0,
                 YGAlign.Stretch);
-            YGNodeInsertChild(
-                root_child0_child0_child0_child0,
-                root_child0_child0_child0_child0_child0,
-                0);
+            root_child0_child0_child0_child0.InsertChild(root_child0_child0_child0_child0_child0,0);
 
             YGNode root_child0_child0_child0_child0_child0_child0 =
-                YGNodeNewWithConfig(config);
+                new YGNode(config);
             YGNodeStyleSetAlignContent(
                 root_child0_child0_child0_child0_child0_child0,
                 YGAlign.Stretch);
             YGNodeStyleSetWidth(root_child0_child0_child0_child0_child0_child0, 120);
             YGNodeStyleSetHeight(root_child0_child0_child0_child0_child0_child0, 120);
-            YGNodeInsertChild(
-                root_child0_child0_child0_child0_child0,
-                root_child0_child0_child0_child0_child0_child0,
-                0);
+            root_child0_child0_child0_child0_child0.InsertChild(root_child0_child0_child0_child0_child0_child0,0);
 
             YGNode root_child0_child0_child0_child0_child1 =
-                YGNodeNewWithConfig(config);
+                new YGNode(config);
             YGNodeStyleSetAlignContent(
                 root_child0_child0_child0_child0_child1,
                 YGAlign.Stretch);
@@ -96,13 +87,10 @@ namespace Xamarin.Yoga.Tests
                 root_child0_child0_child0_child0_child1,
                 YGEdge.Bottom,
                 18);
-            YGNodeInsertChild(
-                root_child0_child0_child0_child0,
-                root_child0_child0_child0_child0_child1,
-                1);
+            root_child0_child0_child0_child0.InsertChild(root_child0_child0_child0_child0_child1,1);
 
             YGNode root_child0_child0_child0_child0_child1_child0 =
-                YGNodeNewWithConfig(config);
+                new YGNode(config);
             YGNodeStyleSetFlexDirection(
                 root_child0_child0_child0_child0_child1_child0,
                 YGFlexDirection.Row);
@@ -110,28 +98,24 @@ namespace Xamarin.Yoga.Tests
                 root_child0_child0_child0_child0_child1_child0,
                 YGAlign.Stretch);
             YGNodeStyleSetFlexShrink(root_child0_child0_child0_child0_child1_child0, 1);
-            YGNodeInsertChild(
-                root_child0_child0_child0_child0_child1,
-                root_child0_child0_child0_child0_child1_child0,
-                0);
+            root_child0_child0_child0_child0_child1.InsertChild(
+                root_child0_child0_child0_child0_child1_child0, 0);
 
             YGNode root_child0_child0_child0_child0_child1_child1 =
-                YGNodeNewWithConfig(config);
+                new YGNode(config);
             YGNodeStyleSetAlignContent(
                 root_child0_child0_child0_child0_child1_child1,
                 YGAlign.Stretch);
             YGNodeStyleSetFlexShrink(root_child0_child0_child0_child0_child1_child1, 1);
-            YGNodeInsertChild(
-                root_child0_child0_child0_child0_child1,
-                root_child0_child0_child0_child0_child1_child1,
-                1);
+            root_child0_child0_child0_child0_child1.InsertChild(
+                root_child0_child0_child0_child0_child1_child1, 1);
 
-            YGNode root_child0_child0_child1 = YGNodeNewWithConfig(config);
+            YGNode root_child0_child0_child1 = new YGNode(config);
             YGNodeStyleSetAlignContent(root_child0_child0_child1, YGAlign.Stretch);
-            YGNodeInsertChild(root_child0_child0, root_child0_child0_child1, 1);
+            root_child0_child0.InsertChild(root_child0_child0_child1, 1);
 
             YGNode root_child0_child0_child1_child0 =
-                YGNodeNewWithConfig(config);
+                new YGNode(config);
             YGNodeStyleSetFlexDirection(
                 root_child0_child0_child1_child0,
                 YGFlexDirection.Row);
@@ -139,38 +123,30 @@ namespace Xamarin.Yoga.Tests
             YGNodeStyleSetAlignItems(root_child0_child0_child1_child0, YGAlign.FlexStart);
             YGNodeStyleSetMargin(root_child0_child0_child1_child0, YGEdge.Start, 174);
             YGNodeStyleSetMargin(root_child0_child0_child1_child0, YGEdge.Top,   24);
-            YGNodeInsertChild(
-                root_child0_child0_child1,
-                root_child0_child0_child1_child0,
-                0);
+            root_child0_child0_child1.InsertChild(root_child0_child0_child1_child0, 0);
 
             YGNode root_child0_child0_child1_child0_child0 =
-                YGNodeNewWithConfig(config);
+                new YGNode(config);
             YGNodeStyleSetFlexDirection(
                 root_child0_child0_child1_child0_child0,
                 YGFlexDirection.Row);
             YGNodeStyleSetAlignContent(
                 root_child0_child0_child1_child0_child0,
                 YGAlign.Stretch);
-            YGNodeInsertChild(
-                root_child0_child0_child1_child0,
-                root_child0_child0_child1_child0_child0,
-                0);
+            root_child0_child0_child1_child0.InsertChild(root_child0_child0_child1_child0_child0,0);
 
             YGNode root_child0_child0_child1_child0_child0_child0 =
-                YGNodeNewWithConfig(config);
+                new YGNode(config);
             YGNodeStyleSetAlignContent(
                 root_child0_child0_child1_child0_child0_child0,
                 YGAlign.Stretch);
             YGNodeStyleSetWidth(root_child0_child0_child1_child0_child0_child0, 72);
             YGNodeStyleSetHeight(root_child0_child0_child1_child0_child0_child0, 72);
-            YGNodeInsertChild(
-                root_child0_child0_child1_child0_child0,
-                root_child0_child0_child1_child0_child0_child0,
-                0);
+            root_child0_child0_child1_child0_child0.InsertChild(
+                root_child0_child0_child1_child0_child0_child0, 0);
 
             YGNode root_child0_child0_child1_child0_child1 =
-                YGNodeNewWithConfig(config);
+                new YGNode(config);
             YGNodeStyleSetAlignContent(
                 root_child0_child0_child1_child0_child1,
                 YGAlign.Stretch);
@@ -192,13 +168,10 @@ namespace Xamarin.Yoga.Tests
                 root_child0_child0_child1_child0_child1,
                 YGEdge.Bottom,
                 18);
-            YGNodeInsertChild(
-                root_child0_child0_child1_child0,
-                root_child0_child0_child1_child0_child1,
-                1);
+            root_child0_child0_child1_child0.InsertChild(root_child0_child0_child1_child0_child1, 1);
 
             YGNode root_child0_child0_child1_child0_child1_child0 =
-                YGNodeNewWithConfig(config);
+                new YGNode(config);
             YGNodeStyleSetFlexDirection(
                 root_child0_child0_child1_child0_child1_child0,
                 YGFlexDirection.Row);
@@ -206,21 +179,17 @@ namespace Xamarin.Yoga.Tests
                 root_child0_child0_child1_child0_child1_child0,
                 YGAlign.Stretch);
             YGNodeStyleSetFlexShrink(root_child0_child0_child1_child0_child1_child0, 1);
-            YGNodeInsertChild(
-                root_child0_child0_child1_child0_child1,
-                root_child0_child0_child1_child0_child1_child0,
-                0);
+            root_child0_child0_child1_child0_child1.InsertChild(
+                root_child0_child0_child1_child0_child1_child0, 0);
 
             YGNode root_child0_child0_child1_child0_child1_child1 =
-                YGNodeNewWithConfig(config);
+                new YGNode(config);
             YGNodeStyleSetAlignContent(
                 root_child0_child0_child1_child0_child1_child1,
                 YGAlign.Stretch);
             YGNodeStyleSetFlexShrink(root_child0_child0_child1_child0_child1_child1, 1);
-            YGNodeInsertChild(
-                root_child0_child0_child1_child0_child1,
-                root_child0_child0_child1_child0_child1_child1,
-                1);
+            root_child0_child0_child1_child0_child1.InsertChild(
+                root_child0_child0_child1_child0_child1_child1, 1);
             YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
 
             Assert.AreEqual(0,    root.Layout.Position.Left);

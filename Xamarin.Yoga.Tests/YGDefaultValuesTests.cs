@@ -17,10 +17,10 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void assert_default_values()
         {
-            YGNode root = YGNodeNew();
+            YGNode root = new YGNode();
 
-            Assert.AreEqual(0,    YGNodeGetChildCount(root));
-            Assert.AreEqual(null, YGNodeGetChild(root, 1));
+            Assert.AreEqual(0,    root.Children.Count);
+            //Assert.AreEqual(null, root.Children[1]);
 
             Assert.AreEqual(YGDirection.Inherit,     YGNodeStyleGetDirection(root));
             Assert.AreEqual(YGFlexDirection.Column,  YGNodeStyleGetFlexDirection(root));
@@ -101,7 +101,7 @@ namespace Xamarin.Yoga.Tests
         public void assert_webdefault_values()
         {
             var config = new YGConfig {UseWebDefaults = true};
-            YGNode root = YGNodeNewWithConfig(config);
+            YGNode root = new YGNode(config);
 
             Assert.AreEqual(YGFlexDirection.Row, YGNodeStyleGetFlexDirection(root));
             Assert.AreEqual(YGAlign.Stretch,     YGNodeStyleGetAlignContent(root));
@@ -116,8 +116,7 @@ namespace Xamarin.Yoga.Tests
         {
             var config = new YGConfig { UseWebDefaults = true };
 
-            YGNode root = YGNodeNewWithConfig(config);
-            YGNodeReset(root);
+            YGNode root = new YGNode(config);
 
             Assert.AreEqual(YGFlexDirection.Row, YGNodeStyleGetFlexDirection(root));
             Assert.AreEqual(YGAlign.Stretch,     YGNodeStyleGetAlignContent(root));

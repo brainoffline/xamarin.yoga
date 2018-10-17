@@ -33,14 +33,14 @@ namespace Xamarin.Yoga.Tests
             
             sb.Clear();
 
-            YGConfig config = new YGConfig();
-            YGConfigSetPrintTreeFlag(config, true);
+            YGConfig config = new YGConfig {printTree = true};
+
             YGConfigSetLogger(config, _unmanagedLogger);
-            YGNode root   = YGNodeNewWithConfig(config);
-            YGNode child0 = YGNodeNewWithConfig(config);
-            YGNode child1 = YGNodeNewWithConfig(config);
-            YGNodeInsertChild(root, child0, 0);
-            YGNodeInsertChild(root, child1, 1);
+            YGNode root   = new YGNode(config);
+            YGNode child0 = new YGNode(config);
+            YGNode child1 = new YGNode(config);
+            root.InsertChild(child0, 0);
+            root.InsertChild(child1, 1);
             YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
             YGConfigSetLogger(config, null);
             YGNodeFreeRecursive(root);
@@ -57,15 +57,15 @@ namespace Xamarin.Yoga.Tests
         public void config_print_tree_disabled()
         {
             sb.Clear();
-            
-            YGConfig config = new YGConfig();
-            YGConfigSetPrintTreeFlag(config, false);
+
+            YGConfig config = new YGConfig {printTree = false};
+
             YGConfigSetLogger(config, _unmanagedLogger);
-            YGNode root   = YGNodeNewWithConfig(config);
-            YGNode child0 = YGNodeNewWithConfig(config);
-            YGNode child1 = YGNodeNewWithConfig(config);
-            YGNodeInsertChild(root, child0, 0);
-            YGNodeInsertChild(root, child1, 1);
+            YGNode root   = new YGNode(config);
+            YGNode child0 = new YGNode(config);
+            YGNode child1 = new YGNode(config);
+            root.InsertChild(child0, 0);
+            root.InsertChild(child1, 1);
             YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
             YGConfigSetLogger(config, null);
             YGNodeFreeRecursive(root);
@@ -81,7 +81,7 @@ namespace Xamarin.Yoga.Tests
 
             YGConfig config = new YGConfig();
             YGConfigSetLogger(config, _unmanagedLogger);
-            YGNode root = YGNodeNewWithConfig(config);
+            YGNode root = new YGNode(config);
             YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
             root.Print(YGPrintOptions.All);
             YGConfigSetLogger(config, null);
@@ -98,7 +98,7 @@ namespace Xamarin.Yoga.Tests
 
             YGConfig config = new YGConfig();
             YGConfigSetLogger(config, _unmanagedLogger);
-            YGNode root = YGNodeNewWithConfig(config);
+            YGNode root = new YGNode(config);
             YGNodeStyleSetPositionType(root, YGPositionType.Absolute);
             YGNodeStyleSetWidthPercent(root, 50);
             YGNodeStyleSetHeightPercent(root, 75);
@@ -123,11 +123,11 @@ namespace Xamarin.Yoga.Tests
 
             YGConfig config = new YGConfig();
             YGConfigSetLogger(config, _unmanagedLogger);
-            YGNode root   = YGNodeNewWithConfig(config);
-            YGNode child0 = YGNodeNewWithConfig(config);
-            YGNode child1 = YGNodeNewWithConfig(config);
-            YGNodeInsertChild(root, child0, 0);
-            YGNodeInsertChild(root, child1, 1);
+            YGNode root   = new YGNode(config);
+            YGNode child0 = new YGNode(config);
+            YGNode child1 = new YGNode(config);
+            root.InsertChild(child0, 0);
+            root.InsertChild(child1, 1);
             YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
             root.Print(YGPrintOptions.All);
             YGConfigSetLogger(config, null);

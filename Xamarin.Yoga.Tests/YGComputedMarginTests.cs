@@ -17,7 +17,7 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void computed_layout_margin()
         {
-            var root = YGNodeNew();
+            var root = new YGNode();
             YGNodeStyleSetWidth(root, 100);
             YGNodeStyleSetHeight(root, 100);
             YGNodeStyleSetMarginPercent(root, YGEdge.Start, 10);

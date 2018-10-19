@@ -7,9 +7,7 @@ namespace Xamarin.Yoga.Tests
 {
     using static YGGlobal;
     using static YGConst;
-    
-    
-    
+
 
     [TestClass]
     public class YGAlignSelfTests
@@ -24,10 +22,10 @@ namespace Xamarin.Yoga.Tests
             YGNodeStyleSetHeight(root, 100);
 
             YGNode root_child0 = new YGNode(config);
-            YGNodeStyleSetAlignSelf(root_child0, YGAlign.Center);
+            root_child0.StyleSetAlignSelf(YGAlign.Center);
             YGNodeStyleSetWidth(root_child0, 10);
             YGNodeStyleSetHeight(root_child0, 10);
-            root.InsertChild(root_child0, 0);
+            root.InsertChild(root_child0);
             YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
 
             Assert.AreEqual(0,   root.Layout.Position.Left);
@@ -51,10 +49,6 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(0,  root_child0.Layout.Position.Top);
             Assert.AreEqual(10, root_child0.Layout.Width);
             Assert.AreEqual(10, root_child0.Layout.Height);
-
-            YGNodeFreeRecursive(root);
-
-            
         }
 
         [TestMethod]
@@ -67,10 +61,10 @@ namespace Xamarin.Yoga.Tests
             YGNodeStyleSetHeight(root, 100);
 
             YGNode root_child0 = new YGNode(config);
-            YGNodeStyleSetAlignSelf(root_child0, YGAlign.FlexEnd);
+            root_child0.StyleSetAlignSelf(YGAlign.FlexEnd);
             YGNodeStyleSetWidth(root_child0, 10);
             YGNodeStyleSetHeight(root_child0, 10);
-            root.InsertChild(root_child0, 0);
+            root.InsertChild(root_child0);
             YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
 
             Assert.AreEqual(0,   root.Layout.Position.Left);
@@ -94,10 +88,6 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(0,  root_child0.Layout.Position.Top);
             Assert.AreEqual(10, root_child0.Layout.Width);
             Assert.AreEqual(10, root_child0.Layout.Height);
-
-            YGNodeFreeRecursive(root);
-
-            
         }
 
         [TestMethod]
@@ -110,10 +100,10 @@ namespace Xamarin.Yoga.Tests
             YGNodeStyleSetHeight(root, 100);
 
             YGNode root_child0 = new YGNode(config);
-            YGNodeStyleSetAlignSelf(root_child0, YGAlign.FlexStart);
+            root_child0.StyleSetAlignSelf(YGAlign.FlexStart);
             YGNodeStyleSetWidth(root_child0, 10);
             YGNodeStyleSetHeight(root_child0, 10);
-            root.InsertChild(root_child0, 0);
+            root.InsertChild(root_child0);
             YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
 
             Assert.AreEqual(0,   root.Layout.Position.Left);
@@ -137,10 +127,6 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(0,  root_child0.Layout.Position.Top);
             Assert.AreEqual(10, root_child0.Layout.Width);
             Assert.AreEqual(10, root_child0.Layout.Height);
-
-            YGNodeFreeRecursive(root);
-
-            
         }
 
         [TestMethod]
@@ -149,15 +135,15 @@ namespace Xamarin.Yoga.Tests
             YGConfig config = new YGConfig();
 
             YGNode root = new YGNode(config);
-            YGNodeStyleSetAlignItems(root, YGAlign.FlexStart);
+            root.StyleSetAlignItems(YGAlign.FlexStart);
             YGNodeStyleSetWidth(root, 100);
             YGNodeStyleSetHeight(root, 100);
 
             YGNode root_child0 = new YGNode(config);
-            YGNodeStyleSetAlignSelf(root_child0, YGAlign.FlexEnd);
+            root_child0.StyleSetAlignSelf(YGAlign.FlexEnd);
             YGNodeStyleSetWidth(root_child0, 10);
             YGNodeStyleSetHeight(root_child0, 10);
-            root.InsertChild(root_child0, 0);
+            root.InsertChild(root_child0);
             YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
 
             Assert.AreEqual(0,   root.Layout.Position.Left);
@@ -181,10 +167,6 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(0,  root_child0.Layout.Position.Top);
             Assert.AreEqual(10, root_child0.Layout.Width);
             Assert.AreEqual(10, root_child0.Layout.Height);
-
-            YGNodeFreeRecursive(root);
-
-            
         }
 
         [TestMethod]
@@ -193,26 +175,26 @@ namespace Xamarin.Yoga.Tests
             YGConfig config = new YGConfig();
 
             YGNode root = new YGNode(config);
-            YGNodeStyleSetFlexDirection(root, YGFlexDirection.Row);
+            root.StyleSetFlexDirection(YGFlexDirection.Row);
             YGNodeStyleSetWidth(root, 100);
             YGNodeStyleSetHeight(root, 100);
 
             YGNode root_child0 = new YGNode(config);
-            YGNodeStyleSetAlignSelf(root_child0, YGAlign.Baseline);
+            root_child0.StyleSetAlignSelf(YGAlign.Baseline);
             YGNodeStyleSetWidth(root_child0, 50);
             YGNodeStyleSetHeight(root_child0, 50);
-            root.InsertChild(root_child0, 0);
+            root.InsertChild(root_child0);
 
             YGNode root_child1 = new YGNode(config);
-            YGNodeStyleSetAlignSelf(root_child1, YGAlign.Baseline);
+            root_child1.StyleSetAlignSelf(YGAlign.Baseline);
             YGNodeStyleSetWidth(root_child1, 50);
             YGNodeStyleSetHeight(root_child1, 20);
-            root.InsertChild(root_child1, 1);
+            root.InsertChild(1, root_child1);
 
             YGNode root_child1_child0 = new YGNode(config);
             YGNodeStyleSetWidth(root_child1_child0, 50);
             YGNodeStyleSetHeight(root_child1_child0, 10);
-            root_child1.InsertChild(root_child1_child0, 0);
+            root_child1.InsertChild(root_child1_child0);
             YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
 
             Assert.AreEqual(0,   root.Layout.Position.Left);
@@ -256,10 +238,6 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(0,  root_child1_child0.Layout.Position.Top);
             Assert.AreEqual(50, root_child1_child0.Layout.Width);
             Assert.AreEqual(10, root_child1_child0.Layout.Height);
-
-            YGNodeFreeRecursive(root);
-
-            
         }
     }
 }

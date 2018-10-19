@@ -14,15 +14,16 @@ namespace Xamarin.Yoga
 
         public YGExperimentalFeatures ExperimentalFeatures { get; set; }
         public bool                   UseWebDefaults       { get; set; }
+        public YGLogger               Logger               { get; set; }
 
-        public float    pointScaleFactor = 1.0f;
-        public YGLogger logger           = null;
-        public object   context          = null;
-        public bool     printTree        = false;
+
+        public float  pointScaleFactor = 1.0f;
+        public object context          = null;
+        public bool   printTree        = false;
 
         public YGConfig(YGLogger logger = null)
         {
-            this.logger = logger ?? YGDefaultLog;
+            this.Logger = logger ?? YGDefaultLog;
         }
 
         public YGConfig(YGConfig config)
@@ -30,7 +31,7 @@ namespace Xamarin.Yoga
             ExperimentalFeatures = config.ExperimentalFeatures;
             UseWebDefaults       = config.UseWebDefaults;
             pointScaleFactor     = config.pointScaleFactor;
-            logger               = config.logger;
+            Logger               = config.Logger;
             context              = config.context;
             printTree            = config.printTree;
         }
@@ -67,6 +68,30 @@ namespace Xamarin.Yoga
         public static bool operator !=(YGConfig config1, YGConfig config2)
         {
             return !(config1 == config2);
+        }
+
+        private static void YGDefaultLog(
+            YGConfig        config,
+            YGNode          node,
+            YGLogLevel      level,
+            string          format,
+            params object[] args)
+        {
+            switch (level)
+            {
+            case YGLogLevel.Error:
+            case YGLogLevel.Fatal:
+                Console.Error.WriteLine(format, args);
+                return;
+
+            case YGLogLevel.Warn:
+            case YGLogLevel.Info:
+            case YGLogLevel.Debug:
+            case YGLogLevel.Verbose:
+            default:
+                Console.WriteLine(format, args);
+                return;
+            }
         }
     }
 }

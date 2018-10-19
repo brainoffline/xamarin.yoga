@@ -31,7 +31,7 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(0,  YGNodeLayoutGetPadding(root, YGEdge.Left));
             Assert.AreEqual(10, YGNodeLayoutGetPadding(root, YGEdge.Right));
 
-            YGNodeFreeRecursive(root);
+            
         }
 
     }

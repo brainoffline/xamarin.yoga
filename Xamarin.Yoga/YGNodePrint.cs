@@ -138,34 +138,34 @@ namespace Xamarin.Yoga
                 var defaultStyle = new YGNode().Style;
 
                 sb.Append("style=\"");
-                if (node.Style.flexDirection != defaultStyle.flexDirection)
-                    sb.Append($"flex-direction: {node.Style.flexDirection.ToDescription()}; ");
+                if (node.Style.FlexDirection != defaultStyle.FlexDirection)
+                    sb.Append($"flex-direction: {node.Style.FlexDirection.ToDescription()}; ");
 
-                if (node.Style.justifyContent != defaultStyle.justifyContent)
-                    sb.Append($"justify-content: {node.Style.justifyContent.ToDescription()}; ");
+                if (node.Style.JustifyContent != defaultStyle.JustifyContent)
+                    sb.Append($"justify-content: {node.Style.JustifyContent.ToDescription()}; ");
 
-                if (node.Style.alignItems != defaultStyle.alignItems)
-                    sb.Append($"align-items: {node.Style.alignItems.ToDescription()}; ");
+                if (node.Style.AlignItems != defaultStyle.AlignItems)
+                    sb.Append($"align-items: {node.Style.AlignItems.ToDescription()}; ");
 
-                if (node.Style.alignContent != defaultStyle.alignContent)
-                    sb.Append($"align-content: {node.Style.alignContent.ToDescription()}; ");
+                if (node.Style.AlignContent != defaultStyle.AlignContent)
+                    sb.Append($"align-content: {node.Style.AlignContent.ToDescription()}; ");
 
-                if (node.Style.alignSelf != defaultStyle.alignSelf)
-                    sb.Append($"align-self: {node.Style.alignSelf.ToDescription()}; ");
+                if (node.Style.AlignSelf != defaultStyle.AlignSelf)
+                    sb.Append($"align-self: {node.Style.AlignSelf.ToDescription()}; ");
 
-                AppendFloatOptionalIfDefined(sb, "flex-grow",   node.Style.flexGrow);
-                AppendFloatOptionalIfDefined(sb, "flex-shrink", node.Style.flexShrink);
-                AppendNumberIfNotAuto(sb, "flex-basis", node.Style.flexBasis);
-                AppendFloatOptionalIfDefined(sb, "flex", node.Style.flex);
+                AppendFloatOptionalIfDefined(sb, "flex-grow",   node.Style.FlexGrow);
+                AppendFloatOptionalIfDefined(sb, "flex-shrink", node.Style.FlexShrink);
+                AppendNumberIfNotAuto(sb, "flex-basis", node.Style.FlexBasis);
+                AppendFloatOptionalIfDefined(sb, "flex", node.Style.Flex);
 
-                if (node.Style.flexWrap != defaultStyle.flexWrap)
-                    sb.Append($"flexWrap: {node.Style.flexWrap.ToDescription()}; ");
+                if (node.Style.FlexWrap != defaultStyle.FlexWrap)
+                    sb.Append($"flexWrap: {node.Style.FlexWrap.ToDescription()}; ");
 
-                if (node.Style.overflow != defaultStyle.overflow)
-                    sb.Append($"overflow: {node.Style.overflow.ToDescription()}; ");
+                if (node.Style.Overflow != defaultStyle.Overflow)
+                    sb.Append($"overflow: {node.Style.Overflow.ToDescription()}; ");
 
-                if (node.Style.display != defaultStyle.display)
-                    sb.Append($"display: {node.Style.display.ToDescription()}; ");
+                if (node.Style.Display != defaultStyle.Display)
+                    sb.Append($"display: {node.Style.Display.ToDescription()}; ");
 
                 AppendEdges(sb, "margin",  node.Style.Margin);
                 AppendEdges(sb, "padding", node.Style.Padding);
@@ -178,8 +178,8 @@ namespace Xamarin.Yoga
                 AppendNumberIfNotAuto(sb, "min-width",  node.Style.MinDimensions[YGDimension.Width]);
                 AppendNumberIfNotAuto(sb, "min-height", node.Style.MinDimensions[YGDimension.Height]);
 
-                if (node.Style.positionType != defaultStyle.positionType)
-                    sb.Append($"position: {node.Style.positionType.ToDescription()}; ");
+                if (node.Style.PositionType != defaultStyle.PositionType)
+                    sb.Append($"position: {node.Style.PositionType.ToDescription()}; ");
 
                 AppendEdgeIfNotUndefined(sb, "left",   node.Style.Position, YGEdge.Left);
                 AppendEdgeIfNotUndefined(sb, "right",  node.Style.Position, YGEdge.Right);

@@ -7,9 +7,7 @@ namespace Xamarin.Yoga.Tests
 {
     using static YGGlobal;
     using static YGConst;
-    
-    
-    
+
 
     [TestClass]
     public class YGInfiniteHeightTests
@@ -20,24 +18,24 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void percent_absolute_position_infinite_height()
         {
-             YGConfig config = new YGConfig();
+            YGConfig config = new YGConfig();
 
-             YGNode root = new YGNode(config);
-            YGNodeStyleSetFlexDirection(root, YGFlexDirection.Row);
+            YGNode root = new YGNode(config);
+            root.StyleSetFlexDirection(YGFlexDirection.Row);
             YGNodeStyleSetWidth(root, 300);
 
-             YGNode root_child0 = new YGNode(config);
+            YGNode root_child0 = new YGNode(config);
             YGNodeStyleSetWidth(root_child0, 300);
             YGNodeStyleSetHeight(root_child0, 300);
-            root.InsertChild(root_child0, 0);
+            root.InsertChild(root_child0);
 
-             YGNode root_child1 = new YGNode(config);
-            YGNodeStyleSetPositionType(root_child1, YGPositionType.Absolute);
-            YGNodeStyleSetPositionPercent(root_child1, YGEdge.Left, 20);
-            YGNodeStyleSetPositionPercent(root_child1, YGEdge.Top,  20);
+            YGNode root_child1 = new YGNode(config);
+            root_child1.StyleSetPositionType(YGPositionType.Absolute);
+            root_child1.StyleSetPositionPercent(YGEdge.Left, 20);
+            root_child1.StyleSetPositionPercent(YGEdge.Top,  20);
             YGNodeStyleSetWidthPercent(root_child1, 20);
             YGNodeStyleSetHeightPercent(root_child1, 20);
-            root.InsertChild(root_child1, 1);
+            root.InsertChild(1, root_child1);
             YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
 
             Assert.AreEqual(0,   root.Layout.Position.Left);
@@ -54,11 +52,6 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(0,  root_child1.Layout.Position.Top);
             Assert.AreEqual(60, root_child1.Layout.Width);
             Assert.AreEqual(0,  root_child1.Layout.Height);
-
-            YGNodeFreeRecursive(root);
-
-            
         }
-
     }
 }

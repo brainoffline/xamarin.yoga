@@ -7,9 +7,7 @@ namespace Xamarin.Yoga.Tests
 {
     using static YGGlobal;
     using static YGConst;
-    
-    
-    
+
 
     [TestClass]
     public class YGDefaultValuesTests
@@ -19,35 +17,35 @@ namespace Xamarin.Yoga.Tests
         {
             YGNode root = new YGNode();
 
-            Assert.AreEqual(0,    root.Children.Count);
+            Assert.AreEqual(0, root.Children.Count);
             //Assert.AreEqual(null, root.Children[1]);
 
-            Assert.AreEqual(YGDirection.Inherit,     YGNodeStyleGetDirection(root));
-            Assert.AreEqual(YGFlexDirection.Column,  YGNodeStyleGetFlexDirection(root));
-            Assert.AreEqual(YGJustify.FlexStart,     YGNodeStyleGetJustifyContent(root));
-            Assert.AreEqual(YGAlign.FlexStart,       YGNodeStyleGetAlignContent(root));
-            Assert.AreEqual(YGAlign.Stretch,         YGNodeStyleGetAlignItems(root));
-            Assert.AreEqual(YGAlign.Auto,            YGNodeStyleGetAlignSelf(root));
-            Assert.AreEqual(YGPositionType.Relative, YGNodeStyleGetPositionType(root));
-            Assert.AreEqual(YGWrap.NoWrap,           YGNodeStyleGetFlexWrap(root));
-            Assert.AreEqual(YGOverflow.Visible,      YGNodeStyleGetOverflow(root));
-            Assert.AreEqual(0, YGNodeStyleGetFlexGrow(root));
-            Assert.AreEqual(0, YGNodeStyleGetFlexShrink(root));
-            Assert.AreEqual(YGNodeStyleGetFlexBasis(root).unit, YGUnit.Auto);
+            Assert.AreEqual(YGDirection.Inherit,       root.Style.Direction);
+            Assert.AreEqual(YGFlexDirection.Column,    root.Style.FlexDirection);
+            Assert.AreEqual(YGJustify.FlexStart,       root.Style.JustifyContent);
+            Assert.AreEqual(YGAlign.FlexStart,         root.Style.AlignContent);
+            Assert.AreEqual(YGAlign.Stretch,           root.Style.AlignItems);
+            Assert.AreEqual(YGAlign.Auto,              root.Style.AlignSelf);
+            Assert.AreEqual(YGPositionType.Relative,   root.Style.PositionType);
+            Assert.AreEqual(YGWrap.NoWrap,             root.Style.FlexWrap);
+            Assert.AreEqual(YGOverflow.Visible,        root.Style.Overflow);
+            Assert.AreEqual(null,                      root.Style.FlexGrow);
+            Assert.AreEqual(0,                         root.Style.FlexShrink);
+            Assert.AreEqual(root.Style.FlexBasis.unit, YGUnit.Auto);
 
-            Assert.AreEqual(YGNodeStyleGetPosition(root, YGEdge.Left).unit,   YGUnit.Undefined);
-            Assert.AreEqual(YGNodeStyleGetPosition(root, YGEdge.Top).unit,    YGUnit.Undefined);
-            Assert.AreEqual(YGNodeStyleGetPosition(root, YGEdge.Right).unit,  YGUnit.Undefined);
-            Assert.AreEqual(YGNodeStyleGetPosition(root, YGEdge.Bottom).unit, YGUnit.Undefined);
-            Assert.AreEqual(YGNodeStyleGetPosition(root, YGEdge.Start).unit,  YGUnit.Undefined);
-            Assert.AreEqual(YGNodeStyleGetPosition(root, YGEdge.End).unit,    YGUnit.Undefined);
+            Assert.AreEqual(root.StyleGetPosition(YGEdge.Left).unit,   YGUnit.Undefined);
+            Assert.AreEqual(root.StyleGetPosition(YGEdge.Top).unit,    YGUnit.Undefined);
+            Assert.AreEqual(root.StyleGetPosition(YGEdge.Right).unit,  YGUnit.Undefined);
+            Assert.AreEqual(root.StyleGetPosition(YGEdge.Bottom).unit, YGUnit.Undefined);
+            Assert.AreEqual(root.StyleGetPosition(YGEdge.Start).unit,  YGUnit.Undefined);
+            Assert.AreEqual(root.StyleGetPosition(YGEdge.End).unit,    YGUnit.Undefined);
 
-            Assert.AreEqual(YGNodeStyleGetMargin(root, YGEdge.Left).unit,   YGUnit.Undefined);
-            Assert.AreEqual(YGNodeStyleGetMargin(root, YGEdge.Top).unit,    YGUnit.Undefined);
-            Assert.AreEqual(YGNodeStyleGetMargin(root, YGEdge.Right).unit,  YGUnit.Undefined);
-            Assert.AreEqual(YGNodeStyleGetMargin(root, YGEdge.Bottom).unit, YGUnit.Undefined);
-            Assert.AreEqual(YGNodeStyleGetMargin(root, YGEdge.Start).unit,  YGUnit.Undefined);
-            Assert.AreEqual(YGNodeStyleGetMargin(root, YGEdge.End).unit,    YGUnit.Undefined);
+            Assert.AreEqual(root.StyleGetMargin(YGEdge.Left).unit,   YGUnit.Undefined);
+            Assert.AreEqual(root.StyleGetMargin(YGEdge.Top).unit,    YGUnit.Undefined);
+            Assert.AreEqual(root.StyleGetMargin(YGEdge.Right).unit,  YGUnit.Undefined);
+            Assert.AreEqual(root.StyleGetMargin(YGEdge.Bottom).unit, YGUnit.Undefined);
+            Assert.AreEqual(root.StyleGetMargin(YGEdge.Start).unit,  YGUnit.Undefined);
+            Assert.AreEqual(root.StyleGetMargin(YGEdge.End).unit,    YGUnit.Undefined);
 
             Assert.AreEqual(YGNodeStyleGetPadding(root, YGEdge.Left).unit,   YGUnit.Undefined);
             Assert.AreEqual(YGNodeStyleGetPadding(root, YGEdge.Top).unit,    YGUnit.Undefined);
@@ -63,8 +61,8 @@ namespace Xamarin.Yoga.Tests
             Assert.IsTrue(YGNodeStyleGetBorder(root, YGEdge.Start).IsNaN());
             Assert.IsTrue(YGNodeStyleGetBorder(root, YGEdge.End).IsNaN());
 
-            Assert.AreEqual(YGNodeStyleGetWidth(root).unit,     YGUnit.Auto);
-            Assert.AreEqual(YGNodeStyleGetHeight(root).unit,    YGUnit.Auto);
+            Assert.AreEqual(YGNodeStyleGetWidth(root).unit,       YGUnit.Auto);
+            Assert.AreEqual(YGNodeStyleGetHeight(root).unit,      YGUnit.Auto);
             Assert.AreEqual(root.Style.MinDimensions.Width.unit,  YGUnit.Undefined);
             Assert.AreEqual(root.Style.MinDimensions.Height.unit, YGUnit.Undefined);
             Assert.AreEqual(root.Style.MaxDimensions.Width.unit,  YGUnit.Undefined);
@@ -93,36 +91,29 @@ namespace Xamarin.Yoga.Tests
             Assert.IsTrue(root.Layout.Width.IsNaN());
             Assert.IsTrue(root.Layout.Height.IsNaN());
             Assert.AreEqual(YGDirection.Inherit, root.Layout.Direction);
-
-            YGNodeFreeRecursive(root);
         }
 
         [TestMethod]
         public void assert_webdefault_values()
         {
-            var config = new YGConfig {UseWebDefaults = true};
-            YGNode root = new YGNode(config);
+            var    config = new YGConfig {UseWebDefaults = true};
+            YGNode root   = new YGNode(config);
 
-            Assert.AreEqual(YGFlexDirection.Row, YGNodeStyleGetFlexDirection(root));
-            Assert.AreEqual(YGAlign.Stretch,     YGNodeStyleGetAlignContent(root));
-            Assert.AreEqual(1.0f, YGNodeStyleGetFlexShrink(root));
-
-            YGNodeFreeRecursive(root);
-            
+            Assert.AreEqual(YGFlexDirection.Row, root.Style.FlexDirection);
+            Assert.AreEqual(YGAlign.Stretch,     root.Style.AlignContent);
+            Assert.AreEqual(1.0f,                YGNodeStyleGetFlexShrink(root));
         }
 
         [TestMethod]
         public void assert_webdefault_values_reset()
         {
-            var config = new YGConfig { UseWebDefaults = true };
+            var config = new YGConfig {UseWebDefaults = true};
 
             YGNode root = new YGNode(config);
 
-            Assert.AreEqual(YGFlexDirection.Row, YGNodeStyleGetFlexDirection(root));
-            Assert.AreEqual(YGAlign.Stretch,     YGNodeStyleGetAlignContent(root));
-            Assert.AreEqual(1.0f, YGNodeStyleGetFlexShrink(root));
-
-            YGNodeFreeRecursive(root);
+            Assert.AreEqual(YGFlexDirection.Row, root.Style.FlexDirection);
+            Assert.AreEqual(YGAlign.Stretch,     root.Style.AlignContent);
+            Assert.AreEqual(1.0f,                YGNodeStyleGetFlexShrink(root));
         }
     }
 }

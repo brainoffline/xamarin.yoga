@@ -49,7 +49,7 @@ namespace Xamarin.Yoga.Tests
 
             YGNode root_child0 = new YGNode(config);
             root_child0.MeasureFunc = _measureFloor;
-            root.InsertChild(root_child0, 0);
+            root.InsertChild(root_child0);
 
             YGConfigSetPointScaleFactor(config, 0.0f);
 
@@ -86,7 +86,7 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(12.0f, root_child0.Layout.Width);
             Assert.AreEqual(12.0f, root_child0.Layout.Height);
 
-            YGNodeFreeRecursive(root);
+            
         }
 
         [TestMethod]
@@ -97,7 +97,7 @@ namespace Xamarin.Yoga.Tests
             YGNode   root_child0 = new YGNode(config);
 
             root_child0.MeasureFunc = _measureCeil;
-            root.InsertChild(root_child0, 0);
+            root.InsertChild(root_child0);
             YGConfigSetPointScaleFactor(config, 1.0f);
 
             YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
@@ -105,7 +105,7 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(11, root_child0.Layout.Width);
             Assert.AreEqual(11, root_child0.Layout.Height);
 
-            YGNodeFreeRecursive(root);
+            
         }
 
         [TestMethod]
@@ -115,9 +115,9 @@ namespace Xamarin.Yoga.Tests
             YGNode   root   = new YGNode(config);
 
             YGNode root_child0 = new YGNode(config);
-            YGNodeStyleSetPosition(root_child0, YGEdge.Left, 73.625f);
+            root_child0.StyleSetPosition(YGEdge.Left, 73.625f);
             root_child0.MeasureFunc = _measureFractial;
-            root.InsertChild(root_child0, 0);
+            root.InsertChild(root_child0);
 
             YGConfigSetPointScaleFactor(config, 2.0f);
 
@@ -127,7 +127,7 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(0.5f,  root_child0.Layout.Height);
             Assert.AreEqual(73.5f, root_child0.Layout.Position.Left);
 
-            YGNodeFreeRecursive(root);
+            
         }
     }
 }

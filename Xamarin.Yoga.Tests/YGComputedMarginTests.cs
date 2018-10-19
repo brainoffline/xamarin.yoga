@@ -18,9 +18,8 @@ namespace Xamarin.Yoga.Tests
         public void computed_layout_margin()
         {
             var root = new YGNode();
-            YGNodeStyleSetWidth(root, 100);
-            YGNodeStyleSetHeight(root, 100);
-            YGNodeStyleSetMarginPercent(root, YGEdge.Start, 10);
+            root.StyleSetDimensions(100, 100);
+            root.StyleSetMargin(YGEdge.Start, 10);
 
             YGNodeCalculateLayout(root, 100, 100, YGDirection.LTR);
 
@@ -32,7 +31,7 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(0,  YGNodeLayoutGetMargin(root, YGEdge.Left));
             Assert.AreEqual(10, YGNodeLayoutGetMargin(root, YGEdge.Right));
 
-            YGNodeFreeRecursive(root);
+            
         }
 
     }

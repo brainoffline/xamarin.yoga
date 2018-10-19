@@ -18,7 +18,7 @@ namespace Xamarin.Yoga.Tests
         public void dirtied()
         {
             YGNode root = new YGNode();
-            YGNodeStyleSetAlignItems(root, YGAlign.FlexStart);
+            root.StyleSetAlignItems(YGAlign.FlexStart);
             YGNodeStyleSetWidth(root, 100);
             YGNodeStyleSetHeight(root, 100);
 
@@ -43,19 +43,19 @@ namespace Xamarin.Yoga.Tests
         public void dirtied_propagation()
         {
             YGNode root = new YGNode();
-            YGNodeStyleSetAlignItems(root, YGAlign.FlexStart);
+            root.StyleSetAlignItems(YGAlign.FlexStart);
             YGNodeStyleSetWidth(root, 100);
             YGNodeStyleSetHeight(root, 100);
 
             YGNode root_child0 = new YGNode();
             YGNodeStyleSetWidth(root_child0, 50);
             YGNodeStyleSetHeight(root_child0, 20);
-            root.InsertChild(root_child0, 0);
+            root.InsertChild(root_child0);
 
             YGNode root_child1 = new YGNode();
             YGNodeStyleSetWidth(root_child1, 50);
             YGNodeStyleSetHeight(root_child1, 20);
-            root.InsertChild(root_child1, 1);
+            root.InsertChild(1, root_child1);
 
             YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
 
@@ -66,11 +66,11 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(0, dirtiedCount);
 
             // `_dirtied` MUST be called for the first time.
-            root_child0.markDirtyAndPropogate();
+            root_child0.MarkDirty();
             Assert.AreEqual(1, dirtiedCount);
 
             // `_dirtied` must NOT be called for the second time.
-            root_child0.markDirtyAndPropogate();
+            root_child0.MarkDirty();
             Assert.AreEqual(1, dirtiedCount);
         }
 
@@ -78,19 +78,19 @@ namespace Xamarin.Yoga.Tests
         public void dirtied_hierarchy()
         {
             YGNode root = new YGNode();
-            YGNodeStyleSetAlignItems(root, YGAlign.FlexStart);
+            root.StyleSetAlignItems(YGAlign.FlexStart);
             YGNodeStyleSetWidth(root, 100);
             YGNodeStyleSetHeight(root, 100);
 
             YGNode root_child0 = new YGNode();
             YGNodeStyleSetWidth(root_child0, 50);
             YGNodeStyleSetHeight(root_child0, 20);
-            root.InsertChild(root_child0, 0);
+            root.InsertChild(root_child0);
 
             YGNode root_child1 = new YGNode();
             YGNodeStyleSetWidth(root_child1, 50);
             YGNodeStyleSetHeight(root_child1, 20);
-            root.InsertChild(root_child1, 1);
+            root.InsertChild(1, root_child1);
 
             YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
 
@@ -101,15 +101,15 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(0, dirtiedCount);
 
             // `_dirtied` must NOT be called for descendants.
-            root.markDirtyAndPropogate();
+            root.MarkDirty();
             Assert.AreEqual(0, dirtiedCount);
 
             // `_dirtied` must NOT be called for the sibling node.
-            root_child1.markDirtyAndPropogate();
+            root_child1.MarkDirty();
             Assert.AreEqual(0, dirtiedCount);
 
             // `_dirtied` MUST be called in case of explicit dirtying.
-            root_child0.markDirtyAndPropogate();
+            root_child0.MarkDirty();
             Assert.AreEqual(1, dirtiedCount);
         }
     }

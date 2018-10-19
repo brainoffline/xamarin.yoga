@@ -7,16 +7,14 @@ namespace Xamarin.Yoga.Tests
 {
     using static YGGlobal;
     using static YGConst;
-    
-    
-    
+
 
     [TestClass]
     public class YGBaselineFuncTests
     {
         private static float _baseline(YGNode node, float width, float height)
         {
-            float baseline = (float)node.Context;
+            float baseline = (float) node.Context;
             return baseline;
         }
 
@@ -24,28 +22,28 @@ namespace Xamarin.Yoga.Tests
         public void align_baseline_customer_func()
         {
             YGNode root = new YGNode();
-            YGNodeStyleSetFlexDirection(root, YGFlexDirection.Row);
-            YGNodeStyleSetAlignItems(root, YGAlign.Baseline);
+            root.StyleSetFlexDirection(YGFlexDirection.Row);
+            root.StyleSetAlignItems(YGAlign.Baseline);
             YGNodeStyleSetWidth(root, 100);
             YGNodeStyleSetHeight(root, 100);
 
             YGNode root_child0 = new YGNode();
             YGNodeStyleSetWidth(root_child0, 50);
             YGNodeStyleSetHeight(root_child0, 50);
-            root.InsertChild(root_child0, 0);
+            root.InsertChild(root_child0);
 
             YGNode root_child1 = new YGNode();
             YGNodeStyleSetWidth(root_child1, 50);
             YGNodeStyleSetHeight(root_child1, 20);
-            root.InsertChild(root_child1, 1);
+            root.InsertChild(1, root_child1);
 
-            float     baselineValue      = 10;
+            float  baselineValue      = 10;
             YGNode root_child1_child0 = new YGNode();
             root_child1_child0.Context = baselineValue;
             YGNodeStyleSetWidth(root_child1_child0, 50);
             root_child1_child0.setBaseLineFunc(_baseline);
             YGNodeStyleSetHeight(root_child1_child0, 20);
-            root_child1.InsertChild(root_child1_child0, 0);
+            root_child1.InsertChild(root_child1_child0);
             YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
 
             Assert.AreEqual(0,   root.Layout.Position.Left);

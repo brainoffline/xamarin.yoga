@@ -14,9 +14,7 @@ namespace Xamarin.Yoga.Tests
     [TestClass]
     public class YGLoggerTests
     {
-        //namespace {
         StringBuilder sb = new StringBuilder();
-
         private void _unmanagedLogger(YGConfig config,
             YGNode                    node,
             YGLogLevel                   level,
@@ -25,25 +23,26 @@ namespace Xamarin.Yoga.Tests
         {
             sb.AppendFormat(format, args);
         }
-        //}
 
         [TestMethod]
         public void config_print_tree_enabled()
         {
-            
             sb.Clear();
 
-            YGConfig config = new YGConfig {printTree = true};
+            var config = new YGConfig
+            {
+                printTree = true,
+                Logger = _unmanagedLogger
+            };
 
-            YGConfigSetLogger(config, _unmanagedLogger);
             YGNode root   = new YGNode(config);
             YGNode child0 = new YGNode(config);
             YGNode child1 = new YGNode(config);
-            root.InsertChild(child0, 0);
-            root.InsertChild(child1, 1);
+            root.InsertChild(child0);
+            root.InsertChild(1, child1);
             YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
-            YGConfigSetLogger(config, null);
-            YGNodeFreeRecursive(root);
+            config.Logger = null;
+            
 
             var expected =
                 "<div layout=\"width: 0; height: 0; top: 0; left: 0;\" style=\"\" >\n  "+
@@ -58,17 +57,20 @@ namespace Xamarin.Yoga.Tests
         {
             sb.Clear();
 
-            YGConfig config = new YGConfig {printTree = false};
+            YGConfig config = new YGConfig
+            {
+                printTree = false,
+                Logger = _unmanagedLogger
+            };
 
-            YGConfigSetLogger(config, _unmanagedLogger);
             YGNode root   = new YGNode(config);
             YGNode child0 = new YGNode(config);
             YGNode child1 = new YGNode(config);
-            root.InsertChild(child0, 0);
-            root.InsertChild(child1, 1);
+            root.InsertChild(child0);
+            root.InsertChild(1, child1);
             YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
-            YGConfigSetLogger(config, null);
-            YGNodeFreeRecursive(root);
+            config.Logger = null;
+            
 
             var expected = "";
             Assert.AreEqual(expected, sb.ToString());
@@ -79,13 +81,15 @@ namespace Xamarin.Yoga.Tests
         {
             sb.Clear();
 
-            YGConfig config = new YGConfig();
-            YGConfigSetLogger(config, _unmanagedLogger);
+            YGConfig config = new YGConfig
+            {
+                Logger = _unmanagedLogger
+            };
+
             YGNode root = new YGNode(config);
             YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
             root.Print(YGPrintOptions.All);
-            YGConfigSetLogger(config, null);
-            YGNodeFree(root);
+            config.Logger = null;
 
             var expected = "<div layout=\"width: 0; height: 0; top: 0; left: 0;\" style=\"\" ></div>";
             Assert.AreEqual(expected, sb.ToString());
@@ -96,23 +100,21 @@ namespace Xamarin.Yoga.Tests
         {
             sb.Clear();
 
-            YGConfig config = new YGConfig();
-            YGConfigSetLogger(config, _unmanagedLogger);
-            YGNode root = new YGNode(config);
-            YGNodeStyleSetPositionType(root, YGPositionType.Absolute);
+            YGNode root = new YGNode(new YGConfig {Logger = _unmanagedLogger});
+
+            root.StyleSetPositionType(YGPositionType.Absolute);
             YGNodeStyleSetWidthPercent(root, 50);
             YGNodeStyleSetHeightPercent(root, 75);
-            YGNodeStyleSetFlex(root, 1);
-            YGNodeStyleSetMargin(root, YGEdge.Right, 10);
-            YGNodeStyleSetMarginAuto(root, YGEdge.Left);
+            root.StyleSetFlex(1);
+            root.StyleSetMargin(YGEdge.Right, 10);
+            root.StyleSetMarginAuto(YGEdge.Left);
             YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
+
             root.Print(YGPrintOptions.All);
-            YGConfigSetLogger(config, null);
-            YGNodeFree(root);
 
             var expected = "<div layout=\"width: 0; height: 0; top: 0; left: 0;\" style=\"flex: 1; "+
-            "margin-left: auto; margin-right: 10px; width: 50%; height: 75%; "+
-            "position: absolute; \" ></div>";
+                "margin-left: auto; margin-right: 10px; width: 50%; height: 75%; "+
+                "position: absolute; \" ></div>";
             Assert.AreEqual(expected, sb.ToString());
         }
 
@@ -121,17 +123,17 @@ namespace Xamarin.Yoga.Tests
         {
             sb.Clear();
 
-            YGConfig config = new YGConfig();
-            YGConfigSetLogger(config, _unmanagedLogger);
+            YGConfig config = new YGConfig {Logger = _unmanagedLogger};
+
             YGNode root   = new YGNode(config);
             YGNode child0 = new YGNode(config);
             YGNode child1 = new YGNode(config);
-            root.InsertChild(child0, 0);
-            root.InsertChild(child1, 1);
+            root.InsertChild(child0);
+            root.InsertChild(1, child1);
             YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
             root.Print(YGPrintOptions.All);
-            YGConfigSetLogger(config, null);
-            YGNodeFreeRecursive(root);
+            config.Logger = null;
+            
 
             var expected = "<div layout=\"width: 0; height: 0; top: 0; left: 0;\" style=\"\" >\n  "+
             "<div layout=\"width: 0; height: 0; top: 0; left: 0;\" style=\"\" "+

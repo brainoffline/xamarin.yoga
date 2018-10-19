@@ -19,15 +19,15 @@ namespace Xamarin.Yoga.Tests
 
             root.SetChildren(new List<YGNode> {root_child0, root_child1});
 
-            List<YGNode> children         = root.Children;
-            List<YGNode> expectedChildren = new List<YGNode> {root_child0, root_child1};
+            var children         = root.Children;
+            var expectedChildren = new List<YGNode> {root_child0, root_child1};
             Assert.IsTrue(
                 TestHelper.AreEqual(children, expectedChildren));
 
             List<YGNode> owners = new List<YGNode>
             {
-                YGNodeGetOwner(root_child0),
-                YGNodeGetOwner(root_child1)
+                root_child0.Owner,
+                root_child1.Owner
             };
 
             List<YGNode> expectedOwners = new List<YGNode>
@@ -37,7 +37,7 @@ namespace Xamarin.Yoga.Tests
             Assert.IsTrue(
                 TestHelper.AreEqual(owners, expectedOwners));
 
-            YGNodeFreeRecursive(root);
+            
         }
 
         [TestMethod]
@@ -50,15 +50,15 @@ namespace Xamarin.Yoga.Tests
             root.SetChildren(new List<YGNode> {root_child0, root_child1});
             root.SetChildren(new List<YGNode>());
 
-            List<YGNode> children         = root.Children;
-            List<YGNode> expectedChildren = new List<YGNode>();
+            var children         = root.Children;
+            var expectedChildren = new List<YGNode>();
 
             Assert.IsTrue(
                 TestHelper.AreEqual(children, expectedChildren));
 
             List<YGNode> owners = new List<YGNode>
             {
-                YGNodeGetOwner(root_child0), YGNodeGetOwner(root_child1)
+                root_child0.Owner, root_child1.Owner
             };
             List<YGNode> expectedOwners = new List<YGNode>
             {
@@ -67,7 +67,7 @@ namespace Xamarin.Yoga.Tests
             Assert.IsTrue(
                 TestHelper.AreEqual(owners, expectedOwners));
 
-            YGNodeFreeRecursive(root);
+            
         }
 
         [TestMethod]
@@ -84,23 +84,19 @@ namespace Xamarin.Yoga.Tests
 
             root.SetChildren(new List<YGNode> {root_child2, root_child3});
 
-            List<YGNode> children         = root.Children;
-            List<YGNode> expectedChildren = new List<YGNode> {root_child2, root_child3};
+            var children         = root.Children;
+            var expectedChildren = new List<YGNode> {root_child2, root_child3};
             Assert.IsTrue(
                 TestHelper.AreEqual(children, expectedChildren));
 
             List<YGNode> owners = new List<YGNode>
             {
-                YGNodeGetOwner(root_child0),
-                YGNodeGetOwner(root_child1)
+                root_child0.Owner,
+                root_child1.Owner
             };
             List<YGNode> expectedOwners = new List<YGNode> {null, null};
             Assert.IsTrue(
                 TestHelper.AreEqual(owners, expectedOwners));
-
-            YGNodeFreeRecursive(root);
-            YGNodeFree(root_child0);
-            YGNodeFree(root_child1);
         }
 
         [TestMethod]
@@ -129,8 +125,8 @@ namespace Xamarin.Yoga.Tests
                     root_child2, root_child1, root_child3
                 });
 
-            List<YGNode> children = root.Children;
-            List<YGNode> expectedChildren = new List<YGNode>
+            var children = root.Children;
+            var expectedChildren = new List<YGNode>
             {
                 root_child2, root_child1, root_child3
             };
@@ -139,18 +135,15 @@ namespace Xamarin.Yoga.Tests
 
             List<YGNode> owners = new List<YGNode>
             {
-                YGNodeGetOwner(root_child0),
-                YGNodeGetOwner(root_child1),
-                YGNodeGetOwner(root_child2),
-                YGNodeGetOwner(root_child3)
+                root_child0.Owner,
+                root_child1.Owner,
+                root_child2.Owner,
+                root_child3.Owner
             };
 
             List<YGNode> expectedOwners = new List<YGNode> {null, root, root, root};
             Assert.IsTrue(
                 TestHelper.AreEqual(owners, expectedOwners));
-
-            YGNodeFreeRecursive(root);
-            YGNodeFree(root_child0);
         }
     }
 }

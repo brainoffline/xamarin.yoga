@@ -6,8 +6,8 @@ namespace Xamarin.Yoga
 {
     public class Dimensions : IEquatable<Dimensions>
     {
-        public YGValue Width  { get; set; }
-        public YGValue Height { get; set; }
+        public YGValue Width  { get; internal set; }
+        public YGValue Height { get; internal set; }
 
         public Dimensions(YGValue width, YGValue height)
         {

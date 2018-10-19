@@ -17,13 +17,13 @@ namespace Xamarin.Yoga.Tests
             YGNodeStyleSetHeight(root, 100);
 
             YGNode root_child0 = new YGNode(config);
-            YGNodeStyleSetFlexGrow(root_child0, 1);
-            YGNodeStyleSetFlexBasis(root_child0, 50);
-            root.InsertChild(root_child0, 0);
+            root_child0.StyleSetFlexGrow(1);
+            root_child0.StyleSetFlexBasis(50);
+            root.InsertChild(root_child0);
 
             YGNode root_child1 = new YGNode(config);
-            YGNodeStyleSetFlexGrow(root_child1, 1);
-            root.InsertChild(root_child1, 1);
+            root_child1.StyleSetFlexGrow(1);
+            root.InsertChild(1, root_child1);
             YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
 
             Assert.AreEqual(0,   root.Layout.Position.Left);
@@ -98,10 +98,6 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(125, root2_child1.Layout.Position.Top);
             Assert.AreEqual(150, root2_child1.Layout.Width);
             Assert.AreEqual(75,  root2_child1.Layout.Height);
-
-            YGNodeFreeRecursive(root2);
-
-            YGNodeFreeRecursive(root);
         }
 
         [Ignore("Clone works differently in .Net implementation")]
@@ -117,18 +113,18 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(0, root2.Children.Count);
 
             YGNode root2_child0 = new YGNode(config);
-            root2.InsertChild(root2_child0, 0);
+            root2.InsertChild(root2_child0);
 
             Assert.AreEqual(0, root.Children.Count);
             Assert.AreEqual(1, root2.Children.Count);
 
             YGNode root3 = new YGNode(root2);
-            Assert.AreEqual(1,                        root2.Children.Count);
-            Assert.AreEqual(1,                        root3.Children.Count);
+            Assert.AreEqual(1,                 root2.Children.Count);
+            Assert.AreEqual(1,                 root3.Children.Count);
             Assert.AreEqual(root2.Children[0], root3.Children[0]);
 
             YGNode root3_child1 = new YGNode(config);
-            root3.InsertChild(root3_child1, 1);
+            root3.InsertChild(1, root3_child1);
             Assert.AreEqual(1,            root2.Children.Count);
             Assert.AreEqual(2,            root3.Children.Count);
             Assert.AreEqual(root3_child1, root3.Children[1]);
@@ -137,15 +133,10 @@ namespace Xamarin.Yoga.Tests
             YGNode root4 = new YGNode(root3);
             Assert.AreEqual(root3_child1, root4.Children[1]);
 
-            YGNodeRemoveChild(root4, root3_child1);
+            root4.RemoveChild(root3_child1);
             Assert.AreEqual(2, root3.Children.Count);
             Assert.AreEqual(1, root4.Children.Count);
             Assert.AreNotEqual(root3.Children[0], root4.Children[0]);
-
-            YGNodeFreeRecursive(root4);
-            YGNodeFreeRecursive(root3);
-            YGNodeFreeRecursive(root2);
-            YGNodeFreeRecursive(root);
         }
 
         [TestMethod]
@@ -158,22 +149,22 @@ namespace Xamarin.Yoga.Tests
             YGNodeStyleSetHeight(root, 100);
 
             YGNode root_child0 = new YGNode(config);
-            YGNodeStyleSetFlexGrow(root_child0, 1);
-            YGNodeStyleSetFlexBasis(root_child0, 15);
-            root.InsertChild(root_child0, 0);
+            root_child0.StyleSetFlexGrow(1);
+            root_child0.StyleSetFlexBasis(15);
+            root.InsertChild(root_child0);
 
             YGNode root_child1 = new YGNode(config);
-            YGNodeStyleSetFlexGrow(root_child1, 1);
-            root.InsertChild(root_child1, 1);
+            root_child1.StyleSetFlexGrow(1);
+            root.InsertChild(1, root_child1);
 
             YGNode root_child1_0 = new YGNode(config);
-            YGNodeStyleSetFlexBasis(root_child1_0, 10);
-            YGNodeStyleSetFlexGrow(root_child1_0, 1);
-            root_child1.InsertChild(root_child1_0, 0);
+            root_child1_0.StyleSetFlexBasis(10);
+            root_child1_0.StyleSetFlexGrow(1);
+            root_child1.InsertChild(root_child1_0);
 
             YGNode root_child1_1 = new YGNode(config);
-            YGNodeStyleSetFlexBasis(root_child1_1, 25);
-            root_child1.InsertChild(root_child1_1, 1);
+            root_child1_1.StyleSetFlexBasis(25);
+            root_child1.InsertChild(1, root_child1_1);
 
             YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
 
@@ -186,12 +177,12 @@ namespace Xamarin.Yoga.Tests
             YGNode root2_child1 = new YGNode(root_child1);
             YGNode root2        = new YGNode(root);
 
-            YGNodeStyleSetFlexGrow(root2_child0, 0);
-            YGNodeStyleSetFlexBasis(root2_child0, 40);
+            root2_child0.StyleSetFlexGrow(0);
+            root2_child0.StyleSetFlexBasis(40);
 
-            YGNodeRemoveAllChildren(root2);
-            root2.InsertChild(root2_child0, 0);
-            root2.InsertChild(root2_child1, 1);
+            root2.ClearChildren();
+            root2.InsertChild(root2_child0);
+            root2.InsertChild(1, root2_child1);
             Assert.AreEqual(2, root2.Children.Count);
 
             YGNodeCalculateLayout(root2, float.NaN, float.NaN, YGDirection.LTR);
@@ -209,9 +200,6 @@ namespace Xamarin.Yoga.Tests
             // The deeper children are untouched.
             Assert.AreEqual(root2_child1.Children[0], root_child1_0);
             Assert.AreEqual(root2_child1.Children[1], root_child1_1);
-
-            YGNodeFreeRecursive(root2);
-            YGNodeFreeRecursive(root);
         }
 
         [TestMethod]
@@ -223,9 +211,9 @@ namespace Xamarin.Yoga.Tests
             YGNodeStyleSetWidth(root, 100);
             YGNodeStyleSetHeight(root, 100);
             YGNode root_child0 = new YGNode(config);
-            root.InsertChild(root_child0, 0);
+            root.InsertChild(root_child0);
             YGNode root_child1 = new YGNode(config);
-            root.InsertChild(root_child1, 1);
+            root.InsertChild(1, root_child1);
 
             YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
 
@@ -233,14 +221,8 @@ namespace Xamarin.Yoga.Tests
 
             // Freeing the original root should be safe as long as we don't free its
             // children.
-            YGNodeFree(root);
 
             YGNodeCalculateLayout(root2, float.NaN, float.NaN, YGDirection.LTR);
-
-            YGNodeFreeRecursive(root2);
-
-            YGNodeFree(root_child0);
-            YGNodeFree(root_child1);
         }
     }
 }

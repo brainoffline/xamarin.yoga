@@ -21,11 +21,8 @@ namespace Xamarin.Yoga.Tests
             YGNode node1 = new YGNode();
             Assert.IsFalse(node0.IsDirty);
 
-            YGNodeCopyStyle(node0, node1);
+            node0.Style = node1.Style;
             Assert.IsFalse(node0.IsDirty);
-
-            YGNodeFree(node0);
-            YGNodeFree(node1);
         }
 
         [TestMethod]
@@ -33,65 +30,52 @@ namespace Xamarin.Yoga.Tests
         {
             YGNode node0 = new YGNode();
             Assert.IsFalse(node0.IsDirty);
-            Assert.AreEqual(YGFlexDirection.Column, YGNodeStyleGetFlexDirection(node0));
+            Assert.AreEqual(YGFlexDirection.Column, node0.Style.FlexDirection);
             Assert.IsFalse(node0.Style.MaxDimensions.Height.unit != YGUnit.Undefined);
 
             YGNode node1 = new YGNode();
-            YGNodeStyleSetFlexDirection(node1, YGFlexDirection.Row);
+            node1.StyleSetFlexDirection(YGFlexDirection.Row);
             YGNodeStyleSetMaxHeight(node1, 10);
 
-            YGNodeCopyStyle(node0, node1);
+            node0.Style = node1.Style;
             Assert.IsTrue(node0.IsDirty);
-            Assert.AreEqual(YGFlexDirection.Row, YGNodeStyleGetFlexDirection(node0));
+            Assert.AreEqual(YGFlexDirection.Row, node0.Style.FlexDirection);
             Assert.AreEqual(10, node0.Style.MaxDimensions.Height.value);
-
-            YGNodeFree(node0);
-            YGNodeFree(node1);
         }
 
         [TestMethod]
         public void copy_style_modified_same()
         {
             YGNode node0 = new YGNode();
-            YGNodeStyleSetFlexDirection(node0, YGFlexDirection.Row);
+            node0.StyleSetFlexDirection(YGFlexDirection.Row);
             YGNodeStyleSetMaxHeight(node0, 10);
             YGNodeCalculateLayout(node0, float.NaN, float.NaN, YGDirection.LTR);
             Assert.IsFalse(node0.IsDirty);
 
             YGNode node1 = new YGNode();
-            YGNodeStyleSetFlexDirection(node1, YGFlexDirection.Row);
+            node1.StyleSetFlexDirection(YGFlexDirection.Row);
             YGNodeStyleSetMaxHeight(node1, 10);
 
-            YGNodeCopyStyle(node0, node1);
+            node0.Style = node1.Style;
             Assert.IsFalse(node0.IsDirty);
-
-            YGNodeFree(node0);
-            YGNodeFree(node1);
         }
 
         [TestMethod]
         public void initialise_flexShrink_flexGrow()
         {
             YGNode node0 = new YGNode();
-            YGNodeStyleSetFlexShrink(node0, 1);
+            node0.StyleSetFlexShrink(1);
             Assert.AreEqual(1, YGNodeStyleGetFlexShrink(node0));
 
-            YGNodeStyleSetFlexShrink(node0, float.NaN);
-            YGNodeStyleSetFlexGrow(node0, 3);
-            Assert.AreEqual(
-                0,
-                YGNodeStyleGetFlexShrink(
-                    node0)); // Default value is Zero, if flex shrink is not defined
-            Assert.AreEqual(3, YGNodeStyleGetFlexGrow(node0));
+            node0.StyleSetFlexShrink(float.NaN);
+            node0.StyleSetFlexGrow(3);
+            Assert.AreEqual(null,node0.Style.FlexShrink);
+            Assert.AreEqual(3, node0.Style.FlexGrow);
 
-            YGNodeStyleSetFlexGrow(node0, float.NaN);
-            YGNodeStyleSetFlexShrink(node0, 3);
-            Assert.AreEqual(
-                0,
-                YGNodeStyleGetFlexGrow(
-                    node0)); // Default value is Zero, if flex grow is not defined
+            node0.StyleSetFlexGrow(float.NaN);
+            node0.StyleSetFlexShrink(3);
+            Assert.AreEqual(null, node0.Style.FlexGrow); 
             Assert.AreEqual(3, YGNodeStyleGetFlexShrink(node0));
-            YGNodeFree(node0);
         }
 
     }

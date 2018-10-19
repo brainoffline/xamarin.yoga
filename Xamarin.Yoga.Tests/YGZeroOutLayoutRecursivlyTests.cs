@@ -17,15 +17,14 @@ namespace Xamarin.Yoga.Tests
         public void zero_out_layout()
         {
             YGNode root = new YGNode();
-            YGNodeStyleSetFlexDirection(root, YGFlexDirection.Row);
+            root.StyleSetFlexDirection( YGFlexDirection.Row);
             YGNodeStyleSetWidth(root, 200);
             YGNodeStyleSetHeight(root, 200);
 
             YGNode child = new YGNode();
-            root.InsertChild(child, 0);
-            YGNodeStyleSetWidth(child, 100);
-            YGNodeStyleSetHeight(child, 100);
-            YGNodeStyleSetMargin(child, YGEdge.Top, 10);
+            root.InsertChild(child);
+            child.StyleSetDimensions(100, 100);
+            child.StyleSetMargin(YGEdge.Top, 10);
             YGNodeStyleSetPadding(child, YGEdge.Top, 10);
 
             YGNodeCalculateLayout(root, 100, 100, YGDirection.LTR);
@@ -33,14 +32,14 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(10, YGNodeLayoutGetMargin(child, YGEdge.Top));
             Assert.AreEqual(10, YGNodeLayoutGetPadding(child, YGEdge.Top));
 
-            YGNodeStyleSetDisplay(child, YGDisplay.None);
+            child.StyleSetDisplay(YGDisplay.None);
 
             YGNodeCalculateLayout(root, 100, 100, YGDirection.LTR);
 
             Assert.AreEqual(0, YGNodeLayoutGetMargin(child, YGEdge.Top));
             Assert.AreEqual(0, YGNodeLayoutGetPadding(child, YGEdge.Top));
 
-            YGNodeFreeRecursive(root);
+            
         }
 
     }

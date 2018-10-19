@@ -19,7 +19,7 @@ namespace Xamarin.Yoga.Tests
              YGNode root = new YGNode();
             YGNodeStyleSetWidth(root, 100);
             YGNodeStyleSetHeight(root, 100);
-            YGNodeStyleSetPaddingPercent(root, YGEdge.Start, 10);
+            root.StyleSetPositionPercent(YGEdge.Start, 10);
 
             YGNodeCalculateLayout(root, 100, 100, YGDirection.LTR);
 

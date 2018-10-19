@@ -41,65 +41,6 @@ namespace Xamarin.Yoga
 
         // YG_NODE_STYLE_EDGE_PROPERTY_UNIT_AUTO_IMPL(YGValue, Margin,   margin);
         //YG_NODE_STYLE_EDGE_PROPERTY_UNIT_IMPL(YGValue,      Padding,  padding, padding);
-        public static void YGNodeStyleSetPadding(YGNode node, YGEdge edge, float padding)
-        {
-            var value = YGValue.Sanitized(padding, YGUnit.Point);
-
-            if (!FloatEqual(node.Style.Padding[edge].value, value.value) && value.unit != YGUnit.Undefined ||
-                node.Style.Padding[edge].unit != value.unit)
-            {
-                node.Style.Padding[edge] = value;
-                node.MarkDirtyAndPropagate();
-            }
-        }
-
-        public static void YGNodeStyleSetPaddingPercent(
-            YGNode node, YGEdge edge, float padding)
-        {
-            var value = YGValue.Sanitized(padding, YGUnit.Percent);
-            if (!FloatEqual(node.Style.Padding[edge].value, value.value) && value.unit != YGUnit.Undefined ||
-                node.Style.Padding[edge].unit != value.unit)
-            {
-                node.Style.Padding[edge] = value;
-                node.MarkDirtyAndPropagate();
-            }
-        }
-
-        public static YGValue YGNodeStyleGetPadding(YGNode node, YGEdge edge)
-        {
-            var value = node.Style.Padding[edge];
-            if (value.unit == YGUnit.Undefined || value.unit == YGUnit.Auto)
-            {
-                return (node.Style.Padding[edge] = new YGValue(float.NaN, value.unit));
-            }
-
-            return value;
-        }
-
-
-        // TODO(T26792433): Change the API to accept float?.
-        public static void YGNodeStyleSetBorder(
-            YGNode node,
-            YGEdge edge,
-            float  border)
-        {
-            var value = YGValue.Sanitized(border, YGUnit.Point);
-            if (!FloatEqual(node.Style.Border[edge].value, value.value) &&
-                value.unit != YGUnit.Undefined ||
-                node.Style.Border[edge].unit != value.unit)
-            {
-                node.Style.Border[edge] = value;
-                node.MarkDirtyAndPropagate();
-            }
-        }
-
-        public static float YGNodeStyleGetBorder(YGNode node, YGEdge edge)
-        {
-            var value = node.Style.Border[edge];
-            if (value.unit == YGUnit.Undefined || value.unit == YGUnit.Auto)
-                return float.NaN;
-            return value.value;
-        }
 
         // Yoga specific properties, not compatible with flexbox specification
 

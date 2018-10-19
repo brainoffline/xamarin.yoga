@@ -274,7 +274,7 @@ namespace Xamarin.Yoga.Tests
 
             YGNode root_child0 = new YGNode();
             root_child0.StyleSetFlexDirection(YGFlexDirection.Column);
-            YGNodeStyleSetPadding(root_child0, YGEdge.All, 100);
+            root_child0.StyleSetPadding(YGEdge.All, 100);
             root_child0.Context     = measureCount;
             root_child0.MeasureFunc = _measure;
 
@@ -293,10 +293,7 @@ namespace Xamarin.Yoga.Tests
 
             YGNode root = new YGNode(config);
             root.StyleSetFlexDirection( YGFlexDirection.Row);
-            YGNodeStyleSetPadding(root, YGEdge.Left,   25);
-            YGNodeStyleSetPadding(root, YGEdge.Top,    25);
-            YGNodeStyleSetPadding(root, YGEdge.Right,  25);
-            YGNodeStyleSetPadding(root, YGEdge.Bottom, 25);
+            root.StyleSetPadding(new Edges(25,25,25,25));
             YGNodeStyleSetWidth(root, 50);
             YGNodeStyleSetHeight(root, 50);
 
@@ -334,7 +331,7 @@ namespace Xamarin.Yoga.Tests
 
             YGNode root = new YGNode(config);
             root.StyleSetMargin(YGEdge.Top, 20);
-            YGNodeStyleSetPadding(root, YGEdge.All, 25);
+            root.StyleSetPadding(YGEdge.All, 25);
             root.StyleSetDimensions(50, 50);
 
             YGNode root_child0 = new YGNode(config);
@@ -441,7 +438,7 @@ namespace Xamarin.Yoga.Tests
 
             YGNode root = new YGNode(config);
             root.StyleSetMargin(YGEdge.Top, 20);
-            YGNodeStyleSetPadding(root, YGEdge.All, 25);
+            root.StyleSetPadding(YGEdge.All, 25);
             root.StyleSetDimensions(50, 50);
 
             YGNode root_child0 = new YGNode(config);
@@ -477,7 +474,7 @@ namespace Xamarin.Yoga.Tests
 
             YGNode root = new YGNode(config);
             root.StyleSetMargin(YGEdge.Top, 20);
-            YGNodeStyleSetPadding(root, YGEdge.All, 25);
+            root.StyleSetPadding(YGEdge.All, 25);
             root.StyleSetDimensions(50, 50);
 
             YGNode root_child0 = new YGNode(config);
@@ -634,7 +631,7 @@ TEST(YogaDeathTest, cannot_add_nonnull_measure_func_to_non_leaf_node) {
             YGNode root_child1 = new YGNode(config);
             root_child1.MeasureFunc = _measure_90_10;
             YGNodeStyleSetMaxWidthPercent(root_child1, 50);
-            YGNodeStyleSetPaddingPercent(root_child1, YGEdge.Top, 50);
+            root_child1.StyleSetPositionPercent(YGEdge.Top, 50);
             root.InsertChild(1, root_child1);
 
             YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);

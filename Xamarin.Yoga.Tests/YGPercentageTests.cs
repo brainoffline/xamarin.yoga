@@ -639,28 +639,22 @@ namespace Xamarin.Yoga.Tests
             root_child0.StyleSetFlexGrow(1);
             root_child0.StyleSetFlexBasisPercent(10f);
             root_child0.StyleSetMargin(new Edges(5,5,5,5));
-            YGNodeStyleSetPadding(root_child0, YGEdge.Left,   3f);
-            YGNodeStyleSetPadding(root_child0, YGEdge.Top,    3f);
-            YGNodeStyleSetPadding(root_child0, YGEdge.Right,  3f);
-            YGNodeStyleSetPadding(root_child0, YGEdge.Bottom, 3f);
+            root_child0.StyleSetPadding(new Edges(3,3,3,3));
             YGNodeStyleSetMinWidthPercent(root_child0, 60f);
             root.InsertChild(root_child0);
 
             YGNode root_child0_child0 = new YGNode(config);
             root_child0_child0.StyleSetMargin(new Edges(5,5,5,5));
-            YGNodeStyleSetPaddingPercent(root_child0_child0, YGEdge.Left,   3f);
-            YGNodeStyleSetPaddingPercent(root_child0_child0, YGEdge.Top,    3f);
-            YGNodeStyleSetPaddingPercent(root_child0_child0, YGEdge.Right,  3f);
-            YGNodeStyleSetPaddingPercent(root_child0_child0, YGEdge.Bottom, 3f);
+            root_child0_child0.StyleSetPaddingPercent(YGEdge.Left,   3f);
+            root_child0_child0.StyleSetPaddingPercent(YGEdge.Top,    3f);
+            root_child0_child0.StyleSetPaddingPercent(YGEdge.Right,  3f);
+            root_child0_child0.StyleSetPaddingPercent(YGEdge.Bottom, 3f);
             YGNodeStyleSetWidthPercent(root_child0_child0, 50f);
             root_child0.InsertChild(root_child0_child0);
 
             YGNode root_child0_child0_child0 = new YGNode(config);
             root_child0_child0_child0.StyleSetMargin(new Edges(5,5,5,5));
-            YGNodeStyleSetPadding(root_child0_child0_child0, YGEdge.Left,   3f);
-            YGNodeStyleSetPadding(root_child0_child0_child0, YGEdge.Top,    3f);
-            YGNodeStyleSetPadding(root_child0_child0_child0, YGEdge.Right,  3f);
-            YGNodeStyleSetPadding(root_child0_child0_child0, YGEdge.Bottom, 3f);
+            root_child0_child0_child0.StyleSetPadding(new Edges(3,3,3,3));
             YGNodeStyleSetWidthPercent(root_child0_child0_child0, 45f);
             root_child0_child0.InsertChild(root_child0_child0_child0);
 
@@ -787,10 +781,10 @@ namespace Xamarin.Yoga.Tests
 
             YGNode root_child0 = new YGNode(config);
             root_child0.StyleSetFlexGrow(1);
-            YGNodeStyleSetPaddingPercent(root_child0, YGEdge.Left,   10f);
-            YGNodeStyleSetPaddingPercent(root_child0, YGEdge.Top,    10f);
-            YGNodeStyleSetPaddingPercent(root_child0, YGEdge.Right,  10f);
-            YGNodeStyleSetPaddingPercent(root_child0, YGEdge.Bottom, 10f);
+            root_child0.StyleSetPaddingPercent(YGEdge.Left,   10f);
+            root_child0.StyleSetPaddingPercent(YGEdge.Top,    10f);
+            root_child0.StyleSetPaddingPercent(YGEdge.Right,  10f);
+            root_child0.StyleSetPaddingPercent(YGEdge.Bottom, 10f);
             root.InsertChild(root_child0);
 
             YGNode root_child0_child0 = new YGNode(config);

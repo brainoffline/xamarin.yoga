@@ -360,7 +360,7 @@ namespace Xamarin.Yoga
         public YGValue StyleGetMargin(YGEdge edge)
         {
             var value = Style.Margin[edge];
-            if (value.unit == YGUnit.Undefined || value.unit == YGUnit.Auto)
+            if ((value.unit == YGUnit.Undefined || value.unit == YGUnit.Auto) && !value.value.IsNaN())
                 return (Style.Margin[edge] = new YGValue(float.NaN, value.unit));
 
             return value;
@@ -376,6 +376,40 @@ namespace Xamarin.Yoga
             }
         }
 
+        public void StyleSetPadding(YGEdge edge, float padding)
+        {
+            var value = YGValue.Sanitized(padding, YGUnit.Point);
+
+            if (!FloatEqual(Style.Padding[edge].value, value.value) && value.unit != YGUnit.Undefined ||
+                Style.Padding[edge].unit != value.unit)
+            {
+                Style.Padding[edge] = value;
+                MarkDirtyAndPropagate();
+            }
+        }
+
+        public void StyleSetPaddingPercent(YGEdge edge, float padding)
+        {
+            var value = YGValue.Sanitized(padding, YGUnit.Percent);
+            if (!FloatEqual(Style.Padding[edge].value, value.value) && value.unit != YGUnit.Undefined ||
+                Style.Padding[edge].unit != value.unit)
+            {
+                Style.Padding[edge] = value;
+                MarkDirtyAndPropagate();
+            }
+        }
+
+        public YGValue StyleGetPadding(YGEdge edge)
+        {
+            var value = Style.Padding[edge];
+            if ((value.unit == YGUnit.Undefined || value.unit == YGUnit.Auto) && !value.value.IsNaN())
+            {
+                return (Style.Padding[edge] = new YGValue(float.NaN, value.unit));
+            }
+
+            return value;
+        }
+
         public void StyleSetBorder(Edges border)
         {
             if (Style.Border != border)
@@ -384,6 +418,26 @@ namespace Xamarin.Yoga
                 MarkDirtyAndPropagate();
             }
         }
+
+        public void StyleSetBorder(YGEdge edge,float  border)
+        {
+            var value = YGValue.Sanitized(border, YGUnit.Point);
+            if (!FloatEqual(Style.Border[edge].value, value.value) &&
+                value.unit != YGUnit.Undefined || Style.Border[edge].unit != value.unit)
+            {
+                Style.Border[edge] = value;
+                MarkDirtyAndPropagate();
+            }
+        }
+
+        public float StyleGetBorder(YGEdge edge)
+        {
+            var value = Style.Border[edge];
+            if (value.unit == YGUnit.Undefined || value.unit == YGUnit.Auto)
+                return float.NaN;
+            return value.value;
+        }
+
 
         public void StyleSetDimensions(float width, float height)
         {

@@ -47,19 +47,19 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(root.StyleGetMargin(YGEdge.Start).unit,  YGUnit.Undefined);
             Assert.AreEqual(root.StyleGetMargin(YGEdge.End).unit,    YGUnit.Undefined);
 
-            Assert.AreEqual(YGNodeStyleGetPadding(root, YGEdge.Left).unit,   YGUnit.Undefined);
-            Assert.AreEqual(YGNodeStyleGetPadding(root, YGEdge.Top).unit,    YGUnit.Undefined);
-            Assert.AreEqual(YGNodeStyleGetPadding(root, YGEdge.Right).unit,  YGUnit.Undefined);
-            Assert.AreEqual(YGNodeStyleGetPadding(root, YGEdge.Bottom).unit, YGUnit.Undefined);
-            Assert.AreEqual(YGNodeStyleGetPadding(root, YGEdge.Start).unit,  YGUnit.Undefined);
-            Assert.AreEqual(YGNodeStyleGetPadding(root, YGEdge.End).unit,    YGUnit.Undefined);
+            Assert.AreEqual(root.StyleGetPadding(YGEdge.Left).unit,   YGUnit.Undefined);
+            Assert.AreEqual(root.StyleGetPadding(YGEdge.Top).unit,    YGUnit.Undefined);
+            Assert.AreEqual(root.StyleGetPadding(YGEdge.Right).unit,  YGUnit.Undefined);
+            Assert.AreEqual(root.StyleGetPadding(YGEdge.Bottom).unit, YGUnit.Undefined);
+            Assert.AreEqual(root.StyleGetPadding(YGEdge.Start).unit,  YGUnit.Undefined);
+            Assert.AreEqual(root.StyleGetPadding(YGEdge.End).unit,    YGUnit.Undefined);
 
-            Assert.IsTrue(YGNodeStyleGetBorder(root, YGEdge.Left).IsNaN());
-            Assert.IsTrue(YGNodeStyleGetBorder(root, YGEdge.Top).IsNaN());
-            Assert.IsTrue(YGNodeStyleGetBorder(root, YGEdge.Right).IsNaN());
-            Assert.IsTrue(YGNodeStyleGetBorder(root, YGEdge.Bottom).IsNaN());
-            Assert.IsTrue(YGNodeStyleGetBorder(root, YGEdge.Start).IsNaN());
-            Assert.IsTrue(YGNodeStyleGetBorder(root, YGEdge.End).IsNaN());
+            Assert.IsTrue(root.StyleGetBorder(YGEdge.Left).IsNaN());
+            Assert.IsTrue(root.StyleGetBorder(YGEdge.Top).IsNaN());
+            Assert.IsTrue(root.StyleGetBorder(YGEdge.Right).IsNaN());
+            Assert.IsTrue(root.StyleGetBorder(YGEdge.Bottom).IsNaN());
+            Assert.IsTrue(root.StyleGetBorder(YGEdge.Start).IsNaN());
+            Assert.IsTrue(root.StyleGetBorder(YGEdge.End).IsNaN());
 
             Assert.AreEqual(YGNodeStyleGetWidth(root).unit,       YGUnit.Auto);
             Assert.AreEqual(YGNodeStyleGetHeight(root).unit,      YGUnit.Auto);

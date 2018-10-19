@@ -25,7 +25,7 @@ namespace Xamarin.Yoga.Tests
             root.InsertChild(child);
             child.StyleSetDimensions(100, 100);
             child.StyleSetMargin(YGEdge.Top, 10);
-            YGNodeStyleSetPadding(child, YGEdge.Top, 10);
+            child.StyleSetPadding(YGEdge.Top, 10);
 
             YGNodeCalculateLayout(root, 100, 100, YGDirection.LTR);
 

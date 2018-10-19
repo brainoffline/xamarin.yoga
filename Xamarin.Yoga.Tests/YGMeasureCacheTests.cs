@@ -160,7 +160,7 @@ namespace Xamarin.Yoga.Tests
             root.StyleSetFlexDirection(YGFlexDirection.Row);
 
             YGNode root_child0 = new YGNode();
-            YGNodeStyleSetPadding(root_child0, YGEdge.All, 2.88f);
+            root_child0.StyleSetPadding(YGEdge.All, 2.88f);
             root_child0.StyleSetFlexDirection(YGFlexDirection.Row);
             root.InsertChild(root_child0);
 

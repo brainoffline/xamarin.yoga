@@ -1233,10 +1233,7 @@ namespace Xamarin.Yoga.Tests
             root.InsertChild(root_child0);
 
             YGNode root_child1 = new YGNode(config);
-            YGNodeStyleSetPadding(root_child1, YGEdge.Left,   10);
-            YGNodeStyleSetPadding(root_child1, YGEdge.Top,    10);
-            YGNodeStyleSetPadding(root_child1, YGEdge.Right,  10);
-            YGNodeStyleSetPadding(root_child1, YGEdge.Bottom, 10);
+            root_child1.StyleSetPadding(new Edges(10, 10, 10, 10));
             YGNodeStyleSetWidth(root_child1, 50);
             root.InsertChild(1, root_child1);
 
@@ -1245,10 +1242,7 @@ namespace Xamarin.Yoga.Tests
             root.InsertChild(2, root_child2);
 
             YGNode root_child3 = new YGNode(config);
-            YGNodeStyleSetPadding(root_child3, YGEdge.Left,   10);
-            YGNodeStyleSetPadding(root_child3, YGEdge.Top,    10);
-            YGNodeStyleSetPadding(root_child3, YGEdge.Right,  10);
-            YGNodeStyleSetPadding(root_child3, YGEdge.Bottom, 10);
+            root_child3.StyleSetPadding(new Edges(10, 10, 10, 10));
             YGNodeStyleSetWidth(root_child3, 50);
             root.InsertChild(3, root_child3);
 

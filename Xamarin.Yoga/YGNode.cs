@@ -42,8 +42,8 @@ namespace Xamarin.Yoga
 
             if (Config.UseWebDefaults)
             {
-                StyleSetFlexDirection(YGFlexDirection.Row);
-                StyleSetAlignContent(YGAlign.Stretch);
+                Style.FlexDirection = YGFlexDirection.Row;
+                Style.AlignContent = YGAlign.Stretch;
             }
         }
 
@@ -247,473 +247,6 @@ namespace Xamarin.Yoga
             MarkDirtyAndPropagate();
         }
 
-        // TODO: rvalue override for setChildren
-
-        public void StyleSetAlignContent(YGAlign alignContent)
-        {
-            if (Style.AlignContent != alignContent)
-            {
-                Style.AlignContent = alignContent;
-                MarkDirtyAndPropagate();
-            }
-        }
-
-        public void StyleSetAlignItems(YGAlign alignItems)
-        {
-            if (Style.AlignItems != alignItems)
-            {
-                Style.AlignItems = alignItems;
-                MarkDirtyAndPropagate();
-            }
-        }
-
-        public void StyleSetAlignSelf(YGAlign alignSelf)
-        {
-            if (Style.AlignSelf != alignSelf)
-            {
-                Style.AlignSelf = alignSelf;
-                MarkDirtyAndPropagate();
-            }
-        }
-
-        public void StyleSetPosition(Edges position)
-        {
-            if (Style.Position != position)
-            {
-                Style.Position = position;
-                MarkDirtyAndPropagate();
-            }
-        }
-
-        public void StyleSetPosition(YGEdge edge, float position)
-        {
-            var value = YGValue.Sanitized(position, YGUnit.Point);
-
-            if (!FloatEqual(Style.Position[edge].value, value.value) && value.unit != YGUnit.Undefined ||
-                Style.Position[edge].unit != value.unit)
-            {
-                Style.Position[edge] = value;
-                MarkDirtyAndPropagate();
-            }
-        }
-
-        public void StyleSetPositionPercent(YGEdge edge, float position)
-        {
-            var value = YGValue.Sanitized(position, YGUnit.Percent);
-            if (!FloatEqual(Style.Position[edge].value, value.value) && value.unit != YGUnit.Undefined ||
-                Style.Position[edge].unit != value.unit)
-            {
-                Style.Position[edge] = value;
-                MarkDirtyAndPropagate();
-            }
-        }
-
-        public YGValue StyleGetPosition(YGEdge edge)
-        {
-            var value = Style.Position[edge];
-            if ((value.unit == YGUnit.Undefined || value.unit == YGUnit.Auto) && !value.value.IsNaN())
-            {
-                return (Style.Position[edge] = new YGValue(float.NaN, value.unit));
-            }
-
-            return value;
-        }
-
-        public void StyleSetPositionType(YGPositionType positionType)
-        {
-            if (Style.PositionType != positionType)
-            {
-                Style.PositionType = positionType;
-                MarkDirtyAndPropagate();
-            }
-        }
-
-        public void StyleSetMargin(Edges margin)
-        {
-            if (Style.Margin != margin)
-            {
-                Style.Margin = margin;
-                MarkDirtyAndPropagate();
-            }
-        }
-
-        public void StyleSetMargin(YGEdge edge, float margin)
-        {
-            var value = YGValue.Sanitized(margin, YGUnit.Point);
-
-            if (!FloatEqual(Style.Margin[edge].value, value.value) && value.unit != YGUnit.Undefined ||
-                Style.Margin[edge].unit != value.unit)
-            {
-                Style.Margin[edge] = value;
-                MarkDirtyAndPropagate();
-            }
-        }
-
-        public void StyleSetMarginPercent(YGEdge edge,float  margin)
-        {
-            var value = YGValue.Sanitized(margin, YGUnit.Percent);
-            if (!FloatEqual(Style.Margin[edge].value, value.value) && value.unit != YGUnit.Undefined ||
-                Style.Margin[edge].unit != value.unit)
-            {
-                Style.Margin[edge] = value;
-                MarkDirtyAndPropagate();
-            }
-        }
-
-        public void StyleSetMarginAuto(YGEdge edge)
-        {
-            if (Style.Margin[edge].unit != YGUnit.Auto)
-            {
-                Style.Margin[edge] = YGConst.YGValueAuto;
-                MarkDirtyAndPropagate();
-            }
-        }
-
-
-        public YGValue StyleGetMargin(YGEdge edge)
-        {
-            var value = Style.Margin[edge];
-            if ((value.unit == YGUnit.Undefined || value.unit == YGUnit.Auto) && !value.value.IsNaN())
-                return (Style.Margin[edge] = new YGValue(float.NaN, value.unit));
-
-            return value;
-        }
-
-
-        public void StyleSetPadding(Edges padding)
-        {
-            if (Style.Padding != padding)
-            {
-                Style.Padding = padding;
-                MarkDirtyAndPropagate();
-            }
-        }
-
-        public void StyleSetPadding(YGEdge edge, float padding)
-        {
-            var value = YGValue.Sanitized(padding, YGUnit.Point);
-
-            if (!FloatEqual(Style.Padding[edge].value, value.value) && value.unit != YGUnit.Undefined ||
-                Style.Padding[edge].unit != value.unit)
-            {
-                Style.Padding[edge] = value;
-                MarkDirtyAndPropagate();
-            }
-        }
-
-        public void StyleSetPaddingPercent(YGEdge edge, float padding)
-        {
-            var value = YGValue.Sanitized(padding, YGUnit.Percent);
-            if (!FloatEqual(Style.Padding[edge].value, value.value) && value.unit != YGUnit.Undefined ||
-                Style.Padding[edge].unit != value.unit)
-            {
-                Style.Padding[edge] = value;
-                MarkDirtyAndPropagate();
-            }
-        }
-
-        public YGValue StyleGetPadding(YGEdge edge)
-        {
-            var value = Style.Padding[edge];
-            if ((value.unit == YGUnit.Undefined || value.unit == YGUnit.Auto) && !value.value.IsNaN())
-            {
-                return (Style.Padding[edge] = new YGValue(float.NaN, value.unit));
-            }
-
-            return value;
-        }
-
-        public void StyleSetBorder(Edges border)
-        {
-            if (Style.Border != border)
-            {
-                Style.Border = border;
-                MarkDirtyAndPropagate();
-            }
-        }
-
-        public void StyleSetBorder(YGEdge edge,float  border)
-        {
-            var value = YGValue.Sanitized(border, YGUnit.Point);
-            if (!FloatEqual(Style.Border[edge].value, value.value) &&
-                value.unit != YGUnit.Undefined || Style.Border[edge].unit != value.unit)
-            {
-                Style.Border[edge] = value;
-                MarkDirtyAndPropagate();
-            }
-        }
-
-        public float StyleGetBorder(YGEdge edge)
-        {
-            var value = Style.Border[edge];
-            if (value.unit == YGUnit.Undefined || value.unit == YGUnit.Auto)
-                return float.NaN;
-            return value.value;
-        }
-
-
-        public void StyleSetDimensions(float width, float height)
-        {
-            if (Style.Dimensions.Width  != width ||
-                Style.Dimensions.Height != height)
-            {
-                Style.Dimensions.Width  = width;
-                Style.Dimensions.Height = height;
-                MarkDirtyAndPropagate();
-            }
-        }
-
-        public void StyleSetAspectRatio(float? aspectRatio)
-        {
-            if (!FloatOptionalEqual(Style.AspectRatio, aspectRatio))
-            {
-                Style.AspectRatio = aspectRatio;
-                MarkDirtyAndPropagate();
-            }
-        }
-
-        public void StyleSetFlex(float? flex)
-        {
-            if (!FloatOptionalEqual(Style.Flex, flex))
-            {
-                Style.Flex = flex;
-                MarkDirtyAndPropagate();
-            }
-        }
-
-        public void StyleSetFlexBasisPercent(float  flexBasisPercent)
-        {
-            if (!FloatEqual(Style.FlexBasis.value, flexBasisPercent) ||
-                Style.FlexBasis.unit != YGUnit.Percent)
-            {
-                Style.FlexBasis = flexBasisPercent.IsNaN()
-                    ? new YGValue(0,                YGUnit.Auto)
-                    : new YGValue(flexBasisPercent, YGUnit.Percent);
-                MarkDirtyAndPropagate();
-            }
-        }
-
-        public void StyleSetFlexBasisAuto(YGNode node)
-        {
-            if (node.Style.FlexBasis.unit != YGUnit.Auto)
-            {
-                node.Style.FlexBasis = new YGValue(0, YGUnit.Auto);
-                node.MarkDirtyAndPropagate();
-            }
-        }
-
-        public void StyleSetFlexGrow(float? value)
-        {
-            if (!FloatOptionalEqual(Style.FlexGrow, value))
-            {
-                Style.FlexGrow = value.IsNaN() ? null : value;
-                MarkDirtyAndPropagate();
-            }
-        }
-
-        public void StyleSetFlexShrink(float? value)
-        {
-            if (!FloatOptionalEqual(Style.FlexShrink, value))
-            {
-                Style.FlexShrink = value.IsNaN() ? null : value;
-                MarkDirtyAndPropagate();
-            }
-        }
-
-        public void StyleSetFlexBasis(float flexBasis)
-        {
-            var value = YGValue.Sanitized(flexBasis, YGUnit.Point);
-
-            if (!FloatEqual(Style.FlexBasis.value, value.value) && value.unit != YGUnit.Undefined ||
-                Style.FlexBasis.unit != value.unit)
-            {
-                Style.FlexBasis = value;
-                MarkDirtyAndPropagate();
-            }
-        }
-
-        public void StyleSetFlexWrap(YGWrap flexWrap)
-        {
-            if (Style.FlexWrap != flexWrap)
-            {
-                Style.FlexWrap = flexWrap;
-                MarkDirtyAndPropagate();
-            }
-        }
-
-        public void StyleSetDisplay(YGDisplay display)
-        {
-            if (Style.Display != display)
-            {
-                Style.Display = display;
-                MarkDirtyAndPropagate();
-            }
-        }
-
-        public void StyleSetJustifyContent(YGJustify justifyContent)
-        {
-            if (Style.JustifyContent != justifyContent)
-            {
-                Style.JustifyContent = justifyContent;
-                MarkDirtyAndPropagate();
-            }
-        }
-
-        public void StyleSetFlexDirection(YGFlexDirection direction)
-        {
-            if (Style.FlexDirection != direction)
-            {
-                Style.FlexDirection = direction;
-                MarkDirtyAndPropagate();
-            }
-        }
-
-        public void StyleSetOverflow(YGOverflow overflow)
-        {
-            if (Style.Overflow != overflow)
-            {
-                Style.Overflow = overflow;
-                MarkDirtyAndPropagate();
-            }
-        }
-
-        public void StyleSetWidth(YGValue width)
-        {
-            var value = YGValue.Sanitized(width.value, YGUnit.Point);
-            if (!FloatEqual(Style.Dimensions.Width.value, value.value) && value.unit != YGUnit.Undefined ||
-                Style.Dimensions.Width.unit != value.unit)
-            {
-                Style.Dimensions.Width = value;
-                MarkDirtyAndPropagate();
-            }
-        }
-
-        public void StyleSetWidthPercent(YGValue width)
-        {
-            if (!FloatEqual(Style.Dimensions.Width.value, YGFloatSanitize(width.value)) ||
-                Style.Dimensions.Width.unit != YGUnit.Percent)
-            {
-                Style.Dimensions.Width = width.IsNaN()
-                    ? new YGValue(0,           YGUnit.Auto)
-                    : new YGValue(width.value, YGUnit.Percent);
-                MarkDirtyAndPropagate();
-            }
-        }
-
-        public void StyleSetWidthAuto()
-        {
-            if (Style.Dimensions.Width.unit != YGUnit.Auto)
-            {
-                Style.Dimensions.Width = new YGValue(0, YGUnit.Auto);
-                MarkDirtyAndPropagate();
-            }
-        }
-
-        public YGValue StyleGetWidth()
-        {
-            var value = Style.Dimensions.Width;
-            if (value.unit == YGUnit.Undefined || value.unit == YGUnit.Undefined)
-            {
-                return (Style.Dimensions.Width = new YGValue(float.NaN, value.unit));
-            }
-
-            return value;
-        }
-
-        public void StyleSetHeight(YGValue height)
-        {
-            var value = YGValue.Sanitized(height.value, YGUnit.Point);
-            if (!FloatEqual(Style.Dimensions.Height.value, value.value) && value.unit != YGUnit.Undefined ||
-                Style.Dimensions.Height.unit != value.unit)
-            {
-                Style.Dimensions.Height = value;
-                MarkDirtyAndPropagate();
-            }
-        }
-
-        public void StyleSetHeightPercent(YGValue height)
-        {
-            if (!FloatEqual(Style.Dimensions.Height.value, YGFloatSanitize(height.value)) ||
-                Style.Dimensions.Height.unit != YGUnit.Percent)
-            {
-                Style.Dimensions.Height = height.IsNaN()
-                    ? new YGValue(0,            YGUnit.Auto)
-                    : new YGValue(height.value, YGUnit.Percent);
-                MarkDirtyAndPropagate();
-            }
-        }
-
-        public void StyleSetHeightAuto()
-        {
-            if (Style.Dimensions.Height.unit != YGUnit.Auto)
-            {
-                Style.Dimensions.Height = new YGValue(0, YGUnit.Auto);
-                MarkDirtyAndPropagate();
-            }
-        }
-
-        public YGValue StyleGetHeight()
-        {
-            var value = Style.Dimensions.Height;
-            if (value.unit == YGUnit.Undefined || value.unit == YGUnit.Undefined)
-                Style.Dimensions.Height = value = new YGValue(float.NaN, value.unit);
-            return value;
-        }
-
-        private void StyleSetDimensions(
-            Dimensions dimensions,
-            YGDimension dim,
-            float value,
-            YGUnit unit)
-        {
-            var newValue = YGValue.Sanitized(value, unit);
-            var current = dimensions[dim];
-            if (current != newValue)
-            {
-                dimensions[dim] = newValue;
-                MarkDirtyAndPropagate();
-            }
-        }
-
-        public void StyleSetMinWidth(float minWidth)
-        {
-            StyleSetDimensions(Style.MinDimensions, YGDimension.Width, minWidth, YGUnit.Point);
-        }
-
-        public void StyleSetMinWidthPercent(float minWidth)
-        {
-            StyleSetDimensions(Style.MinDimensions, YGDimension.Width, minWidth, YGUnit.Percent);
-        }
-
-        public void StyleSetMinHeight(float minHeight)
-        {
-            StyleSetDimensions(Style.MinDimensions, YGDimension.Height, minHeight, YGUnit.Point);
-        }
-
-        public void StyleSetMinHeightPercent(float minHeight)
-        {
-            StyleSetDimensions(Style.MinDimensions, YGDimension.Height, minHeight, YGUnit.Percent);
-        }
-
-        public void StyleSetMaxWidth(float maxWidth)
-        {
-            StyleSetDimensions(Style.MaxDimensions, YGDimension.Width, maxWidth, YGUnit.Point);
-        }
-
-        public void StyleSetMaxWidthPercent(float maxWidth)
-        {
-            StyleSetDimensions(Style.MaxDimensions, YGDimension.Width, maxWidth, YGUnit.Percent);
-        }
-
-        public void StyleSetMaxHeight(float maxHeight)
-        {
-            StyleSetDimensions(Style.MaxDimensions, YGDimension.Height, maxHeight, YGUnit.Point);
-        }
-
-        public void StyleSetMaxHeightPercent(float maxHeight)
-        {
-            StyleSetDimensions(Style.MaxDimensions, YGDimension.Height, maxHeight, YGUnit.Percent);
-        }
 
         public float? getLeadingPosition(
             in YGFlexDirection axis,
@@ -925,17 +458,17 @@ namespace Xamarin.Yoga
 
         public void resolveDimension()
         {
-            if (Style.MaxDimensions.Width.unit != YGUnit.Undefined &&
-                YGValueEqual(Style.MaxDimensions.Width, Style.MinDimensions.Width))
-                ResolvedDimensions.Width = Style.MaxDimensions.Width;
+            if (Style.MaxWidth.unit != YGUnit.Undefined &&
+                YGValueEqual(Style.MaxWidth, Style.MinWidth))
+                ResolvedDimensions.Width = Style.MaxWidth;
             else
-                ResolvedDimensions.Width = Style.Dimensions.Width;
+                ResolvedDimensions.Width = Style.Width;
 
-            if (Style.MaxDimensions.Height.unit != YGUnit.Undefined &&
-                YGValueEqual(Style.MaxDimensions.Height, Style.MinDimensions.Height))
-                ResolvedDimensions.Height = Style.MaxDimensions.Height;
+            if (Style.MaxHeight.unit != YGUnit.Undefined &&
+                YGValueEqual(Style.MaxHeight, Style.MinHeight))
+                ResolvedDimensions.Height = Style.MaxHeight;
             else
-                ResolvedDimensions.Height = Style.Dimensions.Height;
+                ResolvedDimensions.Height = Style.Height;
         }
 
         public YGDirection ResolveDirection(YGDirection ownerDirection)
@@ -1081,6 +614,33 @@ namespace Xamarin.Yoga
         {
             return getTrailingPadding(axis, widthSize) + new float?(getTrailingBorder(axis));
         }
+
+
+        public float LayoutGetMargin(YGEdge edge)
+        {
+            YGAssertWithNode(
+                this,
+                edge <= YGEdge.End,
+                "Cannot get layout properties of multi-edge shorthands");
+
+            switch (edge)
+            {
+            case YGEdge.Left when Layout.Direction == YGDirection.RTL:
+                return Layout.Margin.End;
+            case YGEdge.Left:
+                return Layout.Margin.Start;
+            case YGEdge.Right when Layout.Direction == YGDirection.RTL:
+                return Layout.Margin.Start;
+            case YGEdge.Right:
+                return Layout.Margin.End;
+            }
+
+            return Layout.Margin[edge];
+        }
+
+
+
+
 
         public bool isLayoutTreeEqualToNode(YGNode node)
         {

@@ -20,15 +20,15 @@ namespace Xamarin.Yoga.Tests
             YGConfig config = new YGConfig();
 
             YGNode root = new YGNode(config);
-            root.StyleSetWidth(100);
-            root.StyleSetHeight(100);
+            root.Style.Width = 100;
+            root.Style.Height = 100;
 
             YGNode root_child0 = new YGNode(config);
             root.InsertChild(root_child0);
 
             YGNode root_child0_child0 = new YGNode(config);
-            root_child0_child0.StyleSetWidth(200);
-            root_child0_child0.StyleSetHeight(200);
+            root_child0_child0.Style.Width = 200;
+            root_child0_child0.Style.Height = 200;
             root_child0.InsertChild(root_child0_child0);
             YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
 
@@ -75,17 +75,17 @@ namespace Xamarin.Yoga.Tests
             YGConfig config = new YGConfig();
 
             YGNode root = new YGNode(config);
-            root.StyleSetWidth(100);
-            root.StyleSetHeight(100);
+            root.Style.Width = 100;
+            root.Style.Height = 100;
 
             YGNode root_child0 = new YGNode(config);
-            root_child0.StyleSetWidth(100);
-            root_child0.StyleSetHeight(100);
+            root_child0.Style.Width = 100;
+            root_child0.Style.Height = 100;
             root.InsertChild(root_child0);
 
             YGNode root_child0_child0 = new YGNode(config);
-            root_child0_child0.StyleSetWidth(200);
-            root_child0_child0.StyleSetHeight(200);
+            root_child0_child0.Style.Width = 200;
+            root_child0_child0.Style.Height = 200;
             root_child0.InsertChild(root_child0_child0);
             YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
 
@@ -132,16 +132,16 @@ namespace Xamarin.Yoga.Tests
             YGConfig config = new YGConfig();
 
             YGNode root = new YGNode(config);
-            root.StyleSetWidth(100);
-            root.StyleSetHeight(100);
+            root.Style.Width = 100;
+            root.Style.Height = 100;
 
             YGNode root_child0 = new YGNode(config);
-            root_child0.StyleSetWidth(100);
+            root_child0.Style.Width = 100;
             root.InsertChild(root_child0);
 
             YGNode root_child0_child0 = new YGNode(config);
-            root_child0_child0.StyleSetWidth(100);
-            root_child0_child0.StyleSetHeight(200);
+            root_child0_child0.Style.Width = 100;
+            root_child0_child0.Style.Height = 200;
             root_child0.InsertChild(root_child0_child0);
             YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
 

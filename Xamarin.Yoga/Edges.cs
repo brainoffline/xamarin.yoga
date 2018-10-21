@@ -6,17 +6,90 @@ namespace Xamarin.Yoga
 {
     public class Edges : IEquatable<Edges>
     {
-        private static readonly YGValue YGValueUndefined = new YGValue(0, YGUnit.Undefined);
+        private static readonly YGValue YGValueUndefined = new YGValue(float.NaN, YGUnit.Undefined);
 
-        public YGValue Left       { get; set; } = YGValueUndefined;
-        public YGValue Top        { get; set; } = YGValueUndefined;
-        public YGValue Right      { get; set; } = YGValueUndefined;
-        public YGValue Bottom     { get; set; } = YGValueUndefined;
-        public YGValue Start      { get; set; } = YGValueUndefined;
-        public YGValue End        { get; set; } = YGValueUndefined;
-        public YGValue Horizontal { get; set; } = YGValueUndefined;
-        public YGValue Vertical   { get; set; } = YGValueUndefined;
-        public YGValue All        { get; set; } = YGValueUndefined;
+        internal YGNode Owner { get; set; }
+
+        private void Change(ref YGValue val, YGValue value)
+        {
+            if (val != value)
+            {
+                val = value;
+                Owner?.MarkDirtyAndPropagate();
+            }
+        }
+
+        private YGValue _left = YGValueUndefined;
+
+        public YGValue Left
+        {
+            get => _left;
+            set => Change(ref _left, value);
+        }
+
+        private YGValue _top = YGValueUndefined;
+
+        public YGValue Top
+        {
+            get => _top;
+            set => Change(ref _top, value);
+        }
+
+        private YGValue _right = YGValueUndefined;
+
+        public YGValue Right
+        {
+            get => _right;
+            set => Change(ref _right, value);
+        }
+
+        private YGValue _bottom = YGValueUndefined;
+
+        public YGValue Bottom
+        {
+            get => _bottom;
+            set => Change(ref _bottom, value);
+        }
+
+        private YGValue _start = YGValueUndefined;
+
+        public YGValue Start
+        {
+            get => _start;
+            set => Change(ref _start, value);
+        }
+
+        private YGValue _end = YGValueUndefined;
+
+        public YGValue End
+        {
+            get => _end;
+            set => Change(ref _end, value);
+        }
+
+        private YGValue _horizontal = YGValueUndefined;
+
+        public YGValue Horizontal
+        {
+            get => _horizontal;
+            set => Change(ref _horizontal, value);
+        }
+
+        private YGValue _vertical = YGValueUndefined;
+
+        public YGValue Vertical
+        {
+            get => _vertical;
+            set => Change(ref _vertical, value);
+        }
+
+        private YGValue _all = YGValueUndefined;
+
+        public YGValue All
+        {
+            get => _all;
+            set => Change(ref _all, value);
+        }
 
         public Edges() { }
 

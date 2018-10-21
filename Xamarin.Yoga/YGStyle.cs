@@ -10,50 +10,432 @@ namespace Xamarin.Yoga
 
     public class YGStyle
     {
-        private float? _flexShrink;
+        internal float? _flex;
+        internal float? _flexGrow;
+        internal float? _flexShrink;
+        private YGAlign _alignContent = YGAlign.FlexStart;
 
-        internal YGNode Owner { get; set; }
+        private YGNode _owner;
 
-        public Edges Margin   { get; internal set; } = new Edges();
-        public Edges Position { get; internal set; } = new Edges();
-        public Edges Padding  { get; internal set; } = new Edges();
-        public Edges Border   { get; internal set; } = new Edges();
+        internal YGNode Owner
+        {
+            get => _owner;
+            set
+            {
+                _owner = value;
+                Margin.Owner = value;
+                Position.Owner = value;
+                Padding.Owner = value;
+                Border.Owner = value;
+            }
+        }
 
-        public YGAlign         AlignContent   { get; internal set; } = YGAlign.FlexStart;
-        public YGAlign         AlignItems     { get; internal set; } = YGAlign.Stretch;
-        public YGAlign         AlignSelf      { get; internal set; } = YGAlign.Auto;
-        public YGDirection     Direction      { get; internal set; } = YGDirection.Inherit;
-        public YGDisplay       Display        { get; internal set; } = YGDisplay.Flex;
-        public float?          Flex           { get; internal set; }
-        public YGValue         FlexBasis      { get; internal set; } = kYGValueAuto;
-        public YGFlexDirection FlexDirection  { get; internal set; } = YGFlexDirection.Column;
-        public float?          FlexGrow       { get; internal set; }
+        private Edges _margin = new Edges();
+
+        public Edges Margin
+        {
+            get => _margin;
+            set
+            {
+                if (_margin != value)
+                {
+                    _margin = value;
+                    _margin.Owner = Owner;
+                    Owner?.MarkDirtyAndPropagate();
+                }
+            }
+        }
+
+        private Edges _position = new Edges();
+
+        public Edges Position
+        {
+            get => _position;
+            set
+            {
+                if (_position != value)
+                {
+                    _position       = value;
+                    _position.Owner = Owner;
+                    Owner?.MarkDirtyAndPropagate();
+                }
+            }
+        }
+
+        private Edges _padding = new Edges();
+
+        public Edges Padding
+        {
+            get => _padding;
+            set
+            {
+                if (_padding != value)
+                {
+                    _padding       = value;
+                    _padding.Owner = Owner;
+                    Owner?.MarkDirtyAndPropagate();
+                }
+            }
+        }
+
+        private Edges _border = new Edges();
+
+        public Edges Border
+        {
+            get => _border;
+            set
+            {
+                if (_border != value)
+                {
+                    _border       = value;
+                    _border.Owner = Owner;
+                    Owner?.MarkDirtyAndPropagate();
+                }
+            }
+        }
+
+
+        public YGAlign AlignContent
+        {
+            get => _alignContent;
+            set 
+            {
+                if (_alignContent != value)
+                {
+                    _alignContent = value;
+                    Owner?.MarkDirtyAndPropagate();
+                }
+            }
+        }
+
+        private YGAlign _alignItems = YGAlign.Stretch;
+
+        public YGAlign AlignItems
+        {
+            get => _alignItems;
+            set
+            {
+                if (_alignItems != value)
+                {
+                    _alignItems = value;
+                    Owner?.MarkDirtyAndPropagate();
+                }
+
+            }
+        }
+
+        private YGAlign _alignSelf = YGAlign.Auto;
+
+        public YGAlign AlignSelf
+        {
+            get => _alignSelf;
+            set
+            {
+                if (_alignSelf != value)
+                {
+                    _alignSelf = value;
+                    Owner?.MarkDirtyAndPropagate();
+                }
+
+            }
+        }
+
+        private YGDirection _direction = YGDirection.Inherit;
+
+        public YGDirection Direction
+        {
+            get => _direction;
+            set
+            {
+                if (_direction != value)
+                {
+                    _direction = value;
+                    Owner?.MarkDirtyAndPropagate();
+                }
+            }
+        }
+
+        private YGDisplay _display = YGDisplay.Flex;
+
+        public YGDisplay Display
+        {
+            get => _display;
+            set
+            {
+                if (_display != value)
+                {
+                    _display = value;
+                    Owner?.MarkDirtyAndPropagate();
+                }
+            }
+        }
+
+        private YGValue _flexBasis = kYGValueAuto;
+
+        public YGValue FlexBasis
+        {
+            get => _flexBasis;
+            set
+            {
+                if ((value.unit == YGUnit.Undefined || value.unit == YGUnit.Auto) && !value.value.IsNaN())
+                    value = new YGValue(float.NaN, value.unit);
+                if (value.unit == YGUnit.Percent && value.value.IsNaN())
+                    value = YGValue.Auto;
+
+                if (_flexBasis != value)
+                {
+                    _flexBasis = value;
+                    Owner?.MarkDirtyAndPropagate();
+                }
+            }
+        }
+
+        private YGFlexDirection _flexDirection = YGFlexDirection.Column;
+
+        public YGFlexDirection FlexDirection
+        {
+            get => _flexDirection;
+            set {
+                if (_flexDirection != value)
+                {
+                    _flexDirection = value;
+                    Owner?.MarkDirtyAndPropagate();
+                }
+
+            }
+        }
+
+        public float? Flex
+        {
+            get => _flex;
+            set
+            {
+                if (!FloatOptionalEqual(_flex, value))
+                {
+                    _flex = value;
+                    Owner?.MarkDirtyAndPropagate();
+                }
+            }
+        }
+
+        public float? FlexGrow
+        {
+            get => _flexGrow;
+            set
+            {
+                if (!FloatOptionalEqual(_flexGrow, value))
+                {
+                    _flexGrow = value.IsNaN() ? null : value;
+                    Owner?.MarkDirtyAndPropagate();
+                }
+            }
+        }
 
         public float? FlexShrink
         {
             get
             {
-                if (_flexShrink.HasValue && !_flexShrink.IsNaN())
-                    return _flexShrink;
+                if (!_flexShrink.HasValue)
+                {
+                    if (Owner?.Config?.UseWebDefaults ?? false)
+                        return kWebDefaultFlexShrink;
+                    return kDefaultFlexShrink;
+                }
 
-                if (Owner?.Config?.UseWebDefaults ?? false)
-                    return kWebDefaultFlexShrink;
-                return kDefaultFlexShrink;
+                return _flexShrink;
             }
-            internal set => _flexShrink = value;
+            set
+            {
+                if (!FloatOptionalEqual(_flexShrink, value))
+                {
+                    _flexShrink = value.IsNaN() ? null : value;
+                    Owner?.MarkDirtyAndPropagate();
+                }
+
+            }
         }
 
-        public YGWrap          FlexWrap       { get; internal set; } = YGWrap.NoWrap;
-        public YGJustify       JustifyContent { get; internal set; } = YGJustify.FlexStart;
-        public YGOverflow      Overflow       { get; internal set; } = YGOverflow.Visible;
-        public YGPositionType  PositionType   { get; internal set; } = YGPositionType.Relative;
+        private YGWrap _flexWrap = YGWrap.NoWrap;
 
-        public Dimensions Dimensions    { get; } = new Dimensions(kYGValueAuto,      kYGValueAuto);
-        public Dimensions MinDimensions { get; } = new Dimensions(kYGValueUndefined, kYGValueUndefined);
-        public Dimensions MaxDimensions { get; } = new Dimensions(kYGValueUndefined, kYGValueUndefined);
+        public YGWrap FlexWrap
+        {
+            get => _flexWrap;
+            set
+            {
+                if (_flexWrap != value)
+                {
+                    _flexWrap = value;
+                    Owner?.MarkDirtyAndPropagate();
+                }
+            }
+        }
+
+        private YGJustify _justifyContent = YGJustify.FlexStart;
+
+        public YGJustify JustifyContent
+        {
+            get => _justifyContent;
+            set
+            {
+                if (_justifyContent != value)
+                {
+                    _justifyContent = value;
+                    Owner?.MarkDirtyAndPropagate();
+                }
+            }
+        }
+
+        private YGOverflow _overflow = YGOverflow.Visible;
+
+        public YGOverflow Overflow
+        {
+            get => _overflow;
+            set
+            {
+                if (_overflow != value)
+                {
+                    _overflow = value;
+                    Owner?.MarkDirtyAndPropagate();
+                }
+            }
+        }
+
+        private YGPositionType _positionType = YGPositionType.Relative;
+
+        public YGPositionType PositionType
+        {
+            get => _positionType;
+            set
+            {
+                if (_positionType != value)
+                {
+                    _positionType = value;
+                    Owner?.MarkDirtyAndPropagate();
+                }
+            }
+        }
+
+        private Dimensions Dimensions    { get; } = new Dimensions(kYGValueAuto,      kYGValueAuto);
+        private Dimensions MinDimensions { get; } = new Dimensions(kYGValueUndefined, kYGValueUndefined);
+        private Dimensions MaxDimensions { get; } = new Dimensions(kYGValueUndefined, kYGValueUndefined);
+
+        public YGValue Width
+        {
+            get => Dimensions.Width;
+            set
+            {
+                if ((value.unit == YGUnit.Undefined || value.unit == YGUnit.Auto) && !value.value.IsNaN())
+                    value = new YGValue(float.NaN, value.unit);
+                if (value.unit == YGUnit.Percent && value.value.IsNaN())
+                    value = YGValue.Auto;
+
+                if (Dimensions.Width != value)
+                {
+                    Dimensions.Width = value;
+                    Owner?.MarkDirtyAndPropagate();
+                }
+            }
+        }
+
+        public YGValue Height
+        {
+            get => Dimensions.Height;
+            set
+            {
+                if ((value.unit == YGUnit.Undefined || value.unit == YGUnit.Auto) && !value.value.IsNaN())
+                    value = new YGValue(float.NaN, value.unit);
+                if (value.unit == YGUnit.Percent && value.value.IsNaN())
+                    value = YGValue.Auto;
+               
+                if (Dimensions.Height != value)
+                {
+                    Dimensions.Height = value;
+                    Owner?.MarkDirtyAndPropagate();
+                }
+            }
+        }
+
+        public YGValue MinWidth
+        {
+            get => MinDimensions.Width;
+            set
+            {
+                if ((value.unit == YGUnit.Undefined || value.unit == YGUnit.Auto) && !value.value.IsNaN())
+                    value = new YGValue(float.NaN, value.unit);
+                if (MinDimensions.Width != value)
+                {
+                    MinDimensions.Width = value;
+                    Owner?.MarkDirtyAndPropagate();
+                }
+            }
+        }
+
+        public YGValue MinHeight
+        {
+            get => MinDimensions.Height;
+            set
+            {
+                if ((value.unit == YGUnit.Undefined || value.unit == YGUnit.Auto) && !value.value.IsNaN())
+                    value = new YGValue(float.NaN, value.unit);
+                if (MinDimensions.Height != value)
+                {
+                    MinDimensions.Height = value;
+                    Owner?.MarkDirtyAndPropagate();
+                }
+            }
+        }
+
+        public YGValue MaxWidth
+        {
+            get => MaxDimensions.Width;
+            set
+            {
+                if ((value.unit == YGUnit.Undefined || value.unit == YGUnit.Auto) && !value.value.IsNaN())
+                    value = new YGValue(float.NaN, value.unit);
+                if (MaxDimensions.Width != value)
+                {
+                    MaxDimensions.Width = value;
+                    Owner?.MarkDirtyAndPropagate();
+                }
+            }
+        }
+
+        public YGValue MaxHeight
+        {
+            get => MaxDimensions.Height;
+            set
+            {
+                if ((value.unit == YGUnit.Undefined || value.unit == YGUnit.Auto) && !value.value.IsNaN())
+                    value = new YGValue(float.NaN, value.unit);
+                if (MaxDimensions.Height != value)
+                {
+                    MaxDimensions.Height = value;
+                    Owner?.MarkDirtyAndPropagate();
+                }
+
+            }
+        }
+
+        public YGValue Dimension(YGDimension dim) => Dimensions[dim];
+        public YGValue MinDimension(YGDimension dim) => MinDimensions[dim];
+        public YGValue MaxDimension(YGDimension dim) => MaxDimensions[dim];
+
+
+        private float? _aspectRatio;
 
         // Yoga specific properties, not compatible with flexbox specification
-        public float? AspectRatio { get; internal set; }
+        public float? AspectRatio
+        {
+            get => _aspectRatio;
+            set
+            {
+                if (!FloatOptionalEqual(_aspectRatio, value))
+                {
+                    _aspectRatio = value;
+                    Owner?.MarkDirtyAndPropagate();
+                }
+            }
+        }
 
         private static readonly YGValue kYGValueUndefined = new YGValue(0, YGUnit.Undefined);
         private static readonly YGValue kYGValueAuto      = new YGValue(0, YGUnit.Auto);
@@ -76,7 +458,7 @@ namespace Xamarin.Yoga
             FlexGrow       = style.FlexGrow;
             FlexShrink     = style.FlexShrink;
             FlexBasis      = style.FlexBasis;
-            Margin         = Margin.Clone();
+            _margin         = Margin.Clone();
             Position       = style.Position.Clone();
             Padding        = style.Padding.Clone();
             Border         = style.Border.Clone();

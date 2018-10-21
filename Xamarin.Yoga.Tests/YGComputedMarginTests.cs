@@ -18,18 +18,19 @@ namespace Xamarin.Yoga.Tests
         public void computed_layout_margin()
         {
             var root = new YGNode();
-            root.StyleSetDimensions(100, 100);
-            root.StyleSetMargin(YGEdge.Start, 10);
+            root.Style.Width = 100;
+            root.Style.Height = 100;
+            root.Style.Margin.Start = 10;
 
             YGNodeCalculateLayout(root, 100, 100, YGDirection.LTR);
 
-            Assert.AreEqual(10, YGNodeLayoutGetMargin(root, YGEdge.Left));
-            Assert.AreEqual(0,  YGNodeLayoutGetMargin(root, YGEdge.Right));
+            Assert.AreEqual(10, root.LayoutGetMargin(YGEdge.Left));
+            Assert.AreEqual(0,  root.LayoutGetMargin(YGEdge.Right));
 
             YGNodeCalculateLayout(root, 100, 100, YGDirection.RTL);
 
-            Assert.AreEqual(0,  YGNodeLayoutGetMargin(root, YGEdge.Left));
-            Assert.AreEqual(10, YGNodeLayoutGetMargin(root, YGEdge.Right));
+            Assert.AreEqual(0,  root.LayoutGetMargin(YGEdge.Left));
+            Assert.AreEqual(10, root.LayoutGetMargin(YGEdge.Right));
 
             
         }

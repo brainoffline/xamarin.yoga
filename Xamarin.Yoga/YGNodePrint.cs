@@ -46,7 +46,7 @@ namespace Xamarin.Yoga
             string        key,
             float?        num)
         {
-            if (!num.IsNaN())
+            if (num.HasValue && !num.Value.IsNaN())
                 sb.Append($"{key}: {num.Value}; ");
         }
 
@@ -153,10 +153,10 @@ namespace Xamarin.Yoga
                 if (node.Style.AlignSelf != defaultStyle.AlignSelf)
                     sb.Append($"align-self: {node.Style.AlignSelf.ToDescription()}; ");
 
-                AppendFloatOptionalIfDefined(sb, "flex-grow",   node.Style.FlexGrow);
-                AppendFloatOptionalIfDefined(sb, "flex-shrink", node.Style.FlexShrink);
+                AppendFloatOptionalIfDefined(sb, "flex-grow",   node.Style._flexGrow);
+                AppendFloatOptionalIfDefined(sb, "flex-shrink", node.Style._flexShrink);
                 AppendNumberIfNotAuto(sb, "flex-basis", node.Style.FlexBasis);
-                AppendFloatOptionalIfDefined(sb, "flex", node.Style.Flex);
+                AppendFloatOptionalIfDefined(sb, "flex", node.Style._flex);
 
                 if (node.Style.FlexWrap != defaultStyle.FlexWrap)
                     sb.Append($"flexWrap: {node.Style.FlexWrap.ToDescription()}; ");
@@ -171,12 +171,12 @@ namespace Xamarin.Yoga
                 AppendEdges(sb, "padding", node.Style.Padding);
                 AppendEdges(sb, "border",  node.Style.Border);
 
-                AppendNumberIfNotAuto(sb, "width",      node.Style.Dimensions[YGDimension.Width]);
-                AppendNumberIfNotAuto(sb, "height",     node.Style.Dimensions[YGDimension.Height]);
-                AppendNumberIfNotAuto(sb, "max-width",  node.Style.MaxDimensions[YGDimension.Width]);
-                AppendNumberIfNotAuto(sb, "max-height", node.Style.MaxDimensions[YGDimension.Height]);
-                AppendNumberIfNotAuto(sb, "min-width",  node.Style.MinDimensions[YGDimension.Width]);
-                AppendNumberIfNotAuto(sb, "min-height", node.Style.MinDimensions[YGDimension.Height]);
+                AppendNumberIfNotAuto(sb, "width",      node.Style.Width);
+                AppendNumberIfNotAuto(sb, "height",     node.Style.Height);
+                AppendNumberIfNotAuto(sb, "max-width",  node.Style.MaxWidth);
+                AppendNumberIfNotAuto(sb, "max-height", node.Style.MaxHeight);
+                AppendNumberIfNotAuto(sb, "min-width",  node.Style.MinWidth);
+                AppendNumberIfNotAuto(sb, "min-height", node.Style.MinHeight);
 
                 if (node.Style.PositionType != defaultStyle.PositionType)
                     sb.Append($"position: {node.Style.PositionType.ToDescription()}; ");

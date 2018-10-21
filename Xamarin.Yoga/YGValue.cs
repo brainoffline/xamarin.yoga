@@ -37,6 +37,13 @@ namespace Xamarin.Yoga
                 value.IsNaN() ? YGUnit.Undefined : unit);
         }
 
+        public static YGValue Percent(float value)
+        {
+            return new YGValue(value, YGUnit.Percent);
+        }
+
+        public static readonly YGValue Auto = new YGValue(float.NaN, YGUnit.Auto);
+
         /// <inheritdoc />
         public override bool Equals(object obj)
         {

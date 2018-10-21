@@ -18,98 +18,98 @@ namespace Xamarin.Yoga.Tests
             YGConfig config = new YGConfig();
 
             YGNode root = new YGNode(config);
-            root.StyleSetAlignContent(YGAlign.Stretch);
-            root.StyleSetWidth(1080);
+            root.Style.AlignContent = YGAlign.Stretch;
+            root.Style.Width = 1080;
 
             YGNode root_child0 = new YGNode(config);
             root.InsertChild(root_child0);
 
             YGNode root_child0_child0 = new YGNode(config);
-            root_child0_child0.StyleSetAlignContent(YGAlign.Stretch);
+            root_child0_child0.Style.AlignContent = YGAlign.Stretch;
             root_child0.InsertChild(root_child0_child0);
 
             YGNode root_child0_child0_child0 = new YGNode(config);
-            root_child0_child0_child0.StyleSetAlignContent(YGAlign.Stretch);
+            root_child0_child0_child0.Style.AlignContent = YGAlign.Stretch;
             root_child0_child0.InsertChild(root_child0_child0_child0);
 
             YGNode root_child0_child0_child0_child0 = new YGNode(config);
-            root_child0_child0_child0_child0.StyleSetFlexDirection(YGFlexDirection.Row);
-            root_child0_child0_child0_child0.StyleSetAlignContent(YGAlign.Stretch);
-            root_child0_child0_child0_child0.StyleSetAlignItems(YGAlign.FlexStart);
-            root_child0_child0_child0_child0.StyleSetMargin(YGEdge.Start, 36);
-            root_child0_child0_child0_child0.StyleSetMargin(YGEdge.Top,   24);
+            root_child0_child0_child0_child0.Style.FlexDirection = YGFlexDirection.Row;
+            root_child0_child0_child0_child0.Style.AlignContent = YGAlign.Stretch;
+            root_child0_child0_child0_child0.Style.AlignItems = YGAlign.FlexStart;
+            root_child0_child0_child0_child0.Style.Margin.Start = 36;
+            root_child0_child0_child0_child0.Style.Margin.Top =   24;
             root_child0_child0_child0.InsertChild(root_child0_child0_child0_child0);
 
             YGNode root_child0_child0_child0_child0_child0 = new YGNode(config);
-            root_child0_child0_child0_child0_child0.StyleSetFlexDirection(YGFlexDirection.Row);
-            root_child0_child0_child0_child0_child0.StyleSetAlignContent(YGAlign.Stretch);
+            root_child0_child0_child0_child0_child0.Style.FlexDirection = YGFlexDirection.Row;
+            root_child0_child0_child0_child0_child0.Style.AlignContent = YGAlign.Stretch;
             root_child0_child0_child0_child0.InsertChild(root_child0_child0_child0_child0_child0);
 
             YGNode root_child0_child0_child0_child0_child0_child0 = new YGNode(config);
-            root_child0_child0_child0_child0_child0_child0.StyleSetAlignContent(YGAlign.Stretch);
-            root_child0_child0_child0_child0_child0_child0.StyleSetWidth(120);
-            root_child0_child0_child0_child0_child0_child0.StyleSetHeight(120);
+            root_child0_child0_child0_child0_child0_child0.Style.AlignContent = YGAlign.Stretch;
+            root_child0_child0_child0_child0_child0_child0.Style.Width = 120;
+            root_child0_child0_child0_child0_child0_child0.Style.Height = 120;
             root_child0_child0_child0_child0_child0.InsertChild(root_child0_child0_child0_child0_child0_child0);
 
             YGNode root_child0_child0_child0_child0_child1 = new YGNode(config);
-            root_child0_child0_child0_child0_child1.StyleSetAlignContent(YGAlign.Stretch);
-            root_child0_child0_child0_child0_child1.StyleSetFlexShrink(1);
-            root_child0_child0_child0_child0_child1.StyleSetMargin(YGEdge.Right, 36);
-            root_child0_child0_child0_child0_child1.StyleSetPadding(new Edges(36, 21, 36, 18));
+            root_child0_child0_child0_child0_child1.Style.AlignContent = YGAlign.Stretch;
+            root_child0_child0_child0_child0_child1.Style.FlexShrink = 1;
+            root_child0_child0_child0_child0_child1.Style.Margin.Right = 36;
+            root_child0_child0_child0_child0_child1.Style.Padding = new Edges(36, 21, 36, 18);
             root_child0_child0_child0_child0.InsertChild(1, root_child0_child0_child0_child0_child1);
 
             YGNode root_child0_child0_child0_child0_child1_child0 = new YGNode(config);
-            root_child0_child0_child0_child0_child1_child0.StyleSetFlexDirection(YGFlexDirection.Row);
-            root_child0_child0_child0_child0_child1_child0.StyleSetAlignContent(YGAlign.Stretch);
-            root_child0_child0_child0_child0_child1_child0.StyleSetFlexShrink(1);
+            root_child0_child0_child0_child0_child1_child0.Style.FlexDirection = YGFlexDirection.Row;
+            root_child0_child0_child0_child0_child1_child0.Style.AlignContent = YGAlign.Stretch;
+            root_child0_child0_child0_child0_child1_child0.Style.FlexShrink = 1;
             root_child0_child0_child0_child0_child1.InsertChild(root_child0_child0_child0_child0_child1_child0);
 
             YGNode root_child0_child0_child0_child0_child1_child1 = new YGNode(config);
-            root_child0_child0_child0_child0_child1_child1.StyleSetAlignContent(YGAlign.Stretch);
-            root_child0_child0_child0_child0_child1_child1.StyleSetFlexShrink(1);
+            root_child0_child0_child0_child0_child1_child1.Style.AlignContent = YGAlign.Stretch;
+            root_child0_child0_child0_child0_child1_child1.Style.FlexShrink = 1;
             root_child0_child0_child0_child0_child1.InsertChild(1, root_child0_child0_child0_child0_child1_child1);
 
             YGNode root_child0_child0_child1 = new YGNode(config);
-            root_child0_child0_child1.StyleSetAlignContent(YGAlign.Stretch);
+            root_child0_child0_child1.Style.AlignContent = YGAlign.Stretch;
             root_child0_child0.InsertChild(1, root_child0_child0_child1);
 
             YGNode root_child0_child0_child1_child0 = new YGNode(config);
-            root_child0_child0_child1_child0.StyleSetFlexDirection(YGFlexDirection.Row);
-            root_child0_child0_child1_child0.StyleSetAlignContent(YGAlign.Stretch);
-            root_child0_child0_child1_child0.StyleSetAlignItems(YGAlign.FlexStart);
-            root_child0_child0_child1_child0.StyleSetMargin(YGEdge.Start, 174);
-            root_child0_child0_child1_child0.StyleSetMargin(YGEdge.Top,   24);
+            root_child0_child0_child1_child0.Style.FlexDirection = YGFlexDirection.Row;
+            root_child0_child0_child1_child0.Style.AlignContent = YGAlign.Stretch;
+            root_child0_child0_child1_child0.Style.AlignItems = YGAlign.FlexStart;
+            root_child0_child0_child1_child0.Style.Margin.Start = 174;
+            root_child0_child0_child1_child0.Style.Margin.Top =   24;
             root_child0_child0_child1.InsertChild(root_child0_child0_child1_child0);
 
             YGNode root_child0_child0_child1_child0_child0 = new YGNode(config);
-            root_child0_child0_child1_child0_child0.StyleSetFlexDirection(YGFlexDirection.Row);
-            root_child0_child0_child1_child0_child0.StyleSetAlignContent(YGAlign.Stretch);
+            root_child0_child0_child1_child0_child0.Style.FlexDirection = YGFlexDirection.Row;
+            root_child0_child0_child1_child0_child0.Style.AlignContent = YGAlign.Stretch;
             root_child0_child0_child1_child0.InsertChild(root_child0_child0_child1_child0_child0);
 
             YGNode root_child0_child0_child1_child0_child0_child0 = new YGNode(config);
-            root_child0_child0_child1_child0_child0_child0.StyleSetAlignContent(YGAlign.Stretch);
-            root_child0_child0_child1_child0_child0_child0.StyleSetWidth(72);
-            root_child0_child0_child1_child0_child0_child0.StyleSetHeight(72);
+            root_child0_child0_child1_child0_child0_child0.Style.AlignContent = YGAlign.Stretch;
+            root_child0_child0_child1_child0_child0_child0.Style.Width = 72;
+            root_child0_child0_child1_child0_child0_child0.Style.Height = 72;
             root_child0_child0_child1_child0_child0.InsertChild(
                 root_child0_child0_child1_child0_child0_child0);
 
             YGNode root_child0_child0_child1_child0_child1 = new YGNode(config);
-            root_child0_child0_child1_child0_child1.StyleSetAlignContent(YGAlign.Stretch);
-            root_child0_child0_child1_child0_child1.StyleSetFlexShrink(1);
-            root_child0_child0_child1_child0_child1.StyleSetMargin(YGEdge.Right, 36);
-            root_child0_child0_child1_child0_child1.StyleSetPadding(new Edges(36, 21, 36, 18));
+            root_child0_child0_child1_child0_child1.Style.AlignContent = YGAlign.Stretch;
+            root_child0_child0_child1_child0_child1.Style.FlexShrink = 1;
+            root_child0_child0_child1_child0_child1.Style.Margin.Right = 36;
+            root_child0_child0_child1_child0_child1.Style.Padding = new Edges(36, 21, 36, 18);
 
             root_child0_child0_child1_child0.InsertChild(1, root_child0_child0_child1_child0_child1);
 
             YGNode root_child0_child0_child1_child0_child1_child0 = new YGNode(config);
-            root_child0_child0_child1_child0_child1_child0.StyleSetFlexDirection(YGFlexDirection.Row);
-            root_child0_child0_child1_child0_child1_child0.StyleSetAlignContent(YGAlign.Stretch);
-            root_child0_child0_child1_child0_child1_child0.StyleSetFlexShrink(1);
+            root_child0_child0_child1_child0_child1_child0.Style.FlexDirection = YGFlexDirection.Row;
+            root_child0_child0_child1_child0_child1_child0.Style.AlignContent = YGAlign.Stretch;
+            root_child0_child0_child1_child0_child1_child0.Style.FlexShrink = 1;
             root_child0_child0_child1_child0_child1.InsertChild(root_child0_child0_child1_child0_child1_child0);
 
             YGNode root_child0_child0_child1_child0_child1_child1 = new YGNode(config);
-            root_child0_child0_child1_child0_child1_child1.StyleSetAlignContent(YGAlign.Stretch);
-            root_child0_child0_child1_child0_child1_child1.StyleSetFlexShrink(1);
+            root_child0_child0_child1_child0_child1_child1.Style.AlignContent = YGAlign.Stretch;
+            root_child0_child0_child1_child0_child1_child1.Style.FlexShrink = 1;
             root_child0_child0_child1_child0_child1.InsertChild(1, root_child0_child0_child1_child0_child1_child1);
             YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
 

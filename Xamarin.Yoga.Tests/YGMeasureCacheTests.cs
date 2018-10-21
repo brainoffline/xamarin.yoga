@@ -60,15 +60,15 @@ namespace Xamarin.Yoga.Tests
         public void measure_once_single_flexible_child()
         {
             YGNode root = new YGNode();
-            root.StyleSetFlexDirection(YGFlexDirection.Row);
-            root.StyleSetAlignItems(YGAlign.FlexStart);
-            root.StyleSetWidth(100);
-            root.StyleSetHeight(100);
+            root.Style.FlexDirection = YGFlexDirection.Row;
+            root.Style.AlignItems = YGAlign.FlexStart;
+            root.Style.Width = 100;
+            root.Style.Height = 100;
 
             YGNode root_child0  = new YGNode();
             root_child0.Context     = 0;
             root_child0.MeasureFunc = _measureMax;
-            root_child0.StyleSetFlexGrow(1);
+            root_child0.Style.FlexGrow = 1;
             root.InsertChild(root_child0);
 
             YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
@@ -98,7 +98,7 @@ namespace Xamarin.Yoga.Tests
         public void remeasure_with_same_atmost_width_larger_than_needed_height()
         {
             YGNode root = new YGNode();
-            root.StyleSetAlignItems(YGAlign.FlexStart);
+            root.Style.AlignItems = YGAlign.FlexStart;
 
             YGNode root_child0  = new YGNode();
             root_child0.Context     = 0;
@@ -116,7 +116,7 @@ namespace Xamarin.Yoga.Tests
         public void remeasure_with_computed_width_larger_than_needed_height()
         {
             YGNode root = new YGNode();
-            root.StyleSetAlignItems(YGAlign.FlexStart);
+            root.Style.AlignItems = YGAlign.FlexStart;
 
             YGNode root_child0  = new YGNode();
             root_child0.Context     = 0;
@@ -124,7 +124,7 @@ namespace Xamarin.Yoga.Tests
             root.InsertChild(root_child0);
 
             YGNodeCalculateLayout(root, 100, 100, YGDirection.LTR);
-            root.StyleSetAlignItems(YGAlign.Stretch);
+            root.Style.AlignItems = YGAlign.Stretch;
             YGNodeCalculateLayout(root, 10, 50, YGDirection.LTR);
 
             int measureCount = (int)root_child0.Context;
@@ -135,7 +135,7 @@ namespace Xamarin.Yoga.Tests
         public void remeasure_with_atmost_computed_width_undefined_height()
         {
             YGNode root = new YGNode();
-            root.StyleSetAlignItems(YGAlign.FlexStart);
+            root.Style.AlignItems = YGAlign.FlexStart;
 
             YGNode root_child0  = new YGNode();
             root_child0.Context     = 0;
@@ -153,13 +153,13 @@ namespace Xamarin.Yoga.Tests
         public void remeasure_with_already_measured_value_smaller_but_still_float_equal()
         {
             YGNode root = new YGNode();
-            root.StyleSetWidth(288f);
-            root.StyleSetHeight(288f);
-            root.StyleSetFlexDirection(YGFlexDirection.Row);
+            root.Style.Width = 288f;
+            root.Style.Height = 288f;
+            root.Style.FlexDirection = YGFlexDirection.Row;
 
             YGNode root_child0 = new YGNode();
-            root_child0.StyleSetPadding(YGEdge.All, 2.88f);
-            root_child0.StyleSetFlexDirection(YGFlexDirection.Row);
+            root_child0.Style.Padding.All = 2.88f;
+            root_child0.Style.FlexDirection = YGFlexDirection.Row;
             root.InsertChild(root_child0);
 
             YGNode root_child0_child0 = new YGNode();

@@ -115,7 +115,7 @@ namespace Xamarin.Yoga.Tests
             YGNode   root   = new YGNode(config);
 
             YGNode root_child0 = new YGNode(config);
-            root_child0.StyleSetPosition(YGEdge.Left, 73.625f);
+            root_child0.Style.Position.Left = 73.625f;
             root_child0.MeasureFunc = _measureFractial;
             root.InsertChild(root_child0);
 

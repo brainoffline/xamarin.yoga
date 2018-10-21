@@ -17,9 +17,9 @@ namespace Xamarin.Yoga.Tests
         [TestMethod] public void computed_layout_padding()
         {
              YGNode root = new YGNode();
-            root.StyleSetWidth(100);
-            root.StyleSetHeight(100);
-            root.StyleSetPaddingPercent(YGEdge.Start, 10);
+            root.Style.Width = 100;
+            root.Style.Height = 100;
+            root.Style.Padding.Start = 10.Percent();
 
             YGNodeCalculateLayout(root, 100, 100, YGDirection.LTR);
 

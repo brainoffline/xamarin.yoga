@@ -102,12 +102,12 @@ namespace Xamarin.Yoga.Tests
 
             YGNode root = new YGNode(new YGConfig {Logger = _unmanagedLogger});
 
-            root.StyleSetPositionType(YGPositionType.Absolute);
-            root.StyleSetWidthPercent(50);
-            root.StyleSetHeightPercent(75);
-            root.StyleSetFlex(1);
-            root.StyleSetMargin(YGEdge.Right, 10);
-            root.StyleSetMarginAuto(YGEdge.Left);
+            root.Style.PositionType = YGPositionType.Absolute;
+            root.Style.Width = 50.Percent();
+            root.Style.Height = 75.Percent();
+            root.Style.Flex = 1;
+            root.Style.Margin.Right = 10;
+            root.Style.Margin.Left = YGValue.Auto;
             YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
 
             root.Print(YGPrintOptions.All);

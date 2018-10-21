@@ -22,27 +22,27 @@ namespace Xamarin.Yoga.Tests
         public void align_baseline_customer_func()
         {
             YGNode root = new YGNode();
-            root.StyleSetFlexDirection(YGFlexDirection.Row);
-            root.StyleSetAlignItems(YGAlign.Baseline);
-            root.StyleSetWidth(100);
-            root.StyleSetHeight(100);
+            root.Style.FlexDirection = YGFlexDirection.Row;
+            root.Style.AlignItems = YGAlign.Baseline;
+            root.Style.Width = 100;
+            root.Style.Height = 100;
 
             YGNode root_child0 = new YGNode();
-            root_child0.StyleSetWidth(50);
-            root_child0.StyleSetHeight(50);
+            root_child0.Style.Width = 50;
+            root_child0.Style.Height = 50;
             root.InsertChild(root_child0);
 
             YGNode root_child1 = new YGNode();
-            root_child1.StyleSetWidth(50);
-            root_child1.StyleSetHeight(20);
+            root_child1.Style.Width = 50;
+            root_child1.Style.Height = 20;
             root.InsertChild(1, root_child1);
 
             float  baselineValue      = 10;
             YGNode root_child1_child0 = new YGNode();
             root_child1_child0.Context = baselineValue;
-            root_child1_child0.StyleSetWidth(50);
+            root_child1_child0.Style.Width = 50;
             root_child1_child0.setBaseLineFunc(_baseline);
-            root_child1_child0.StyleSetHeight(20);
+            root_child1_child0.Style.Height = 20;
             root_child1.InsertChild(root_child1_child0);
             YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
 

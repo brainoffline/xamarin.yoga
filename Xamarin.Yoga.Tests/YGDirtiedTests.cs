@@ -18,9 +18,9 @@ namespace Xamarin.Yoga.Tests
         public void dirtied()
         {
             YGNode root = new YGNode();
-            root.StyleSetAlignItems(YGAlign.FlexStart);
-            root.StyleSetWidth(100);
-            root.StyleSetHeight(100);
+            root.Style.AlignItems = YGAlign.FlexStart;
+            root.Style.Width = 100;
+            root.Style.Height = 100;
 
             YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
 
@@ -43,18 +43,18 @@ namespace Xamarin.Yoga.Tests
         public void dirtied_propagation()
         {
             YGNode root = new YGNode();
-            root.StyleSetAlignItems(YGAlign.FlexStart);
-            root.StyleSetWidth(100);
-            root.StyleSetHeight(100);
+            root.Style.AlignItems = YGAlign.FlexStart;
+            root.Style.Width = 100;
+            root.Style.Height = 100;
 
             YGNode root_child0 = new YGNode();
-            root_child0.StyleSetWidth(50);
-            root_child0.StyleSetHeight(20);
+            root_child0.Style.Width = 50;
+            root_child0.Style.Height = 20;
             root.InsertChild(root_child0);
 
             YGNode root_child1 = new YGNode();
-            root_child1.StyleSetWidth(50);
-            root_child1.StyleSetHeight(20);
+            root_child1.Style.Width = 50;
+            root_child1.Style.Height = 20;
             root.InsertChild(1, root_child1);
 
             YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
@@ -78,18 +78,18 @@ namespace Xamarin.Yoga.Tests
         public void dirtied_hierarchy()
         {
             YGNode root = new YGNode();
-            root.StyleSetAlignItems(YGAlign.FlexStart);
-            root.StyleSetWidth(100);
-            root.StyleSetHeight(100);
+            root.Style.AlignItems = YGAlign.FlexStart;
+            root.Style.Width = 100;
+            root.Style.Height = 100;
 
             YGNode root_child0 = new YGNode();
-            root_child0.StyleSetWidth(50);
-            root_child0.StyleSetHeight(20);
+            root_child0.Style.Width = 50;
+            root_child0.Style.Height = 20;
             root.InsertChild(root_child0);
 
             YGNode root_child1 = new YGNode();
-            root_child1.StyleSetWidth(50);
-            root_child1.StyleSetHeight(20);
+            root_child1.Style.Width = 50;
+            root_child1.Style.Height = 20;
             root.InsertChild(1, root_child1);
 
             YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);

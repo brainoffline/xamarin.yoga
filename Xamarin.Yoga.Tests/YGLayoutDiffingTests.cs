@@ -19,8 +19,8 @@ namespace Xamarin.Yoga.Tests
         {
             var       config = new YGConfig();
             YGNode root1  = new YGNode(config);
-            YGNodeStyleSetWidth(root1, 500);
-            YGNodeStyleSetHeight(root1, 500);
+            root1.StyleSetWidth(500);
+            root1.StyleSetHeight(500);
 
             YGNode root1_child0 = new YGNode(config);
             root1_child0.StyleSetAlignItems(YGAlign.FlexStart);
@@ -39,8 +39,8 @@ namespace Xamarin.Yoga.Tests
             YGNodeCalculateLayout(root1, float.NaN, float.NaN, YGDirection.LTR);
 
             YGNode root2 = new YGNode(config);
-            YGNodeStyleSetWidth(root2, 500);
-            YGNodeStyleSetHeight(root2, 500);
+            root2.StyleSetWidth(500);
+            root2.StyleSetHeight(500);
 
             YGNode root2_child0 = new YGNode(config);
             root2_child0.StyleSetAlignItems(YGAlign.FlexStart);

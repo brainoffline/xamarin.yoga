@@ -103,8 +103,8 @@ namespace Xamarin.Yoga.Tests
             YGNode root = new YGNode(new YGConfig {Logger = _unmanagedLogger});
 
             root.StyleSetPositionType(YGPositionType.Absolute);
-            YGNodeStyleSetWidthPercent(root, 50);
-            YGNodeStyleSetHeightPercent(root, 75);
+            root.StyleSetWidthPercent(50);
+            root.StyleSetHeightPercent(75);
             root.StyleSetFlex(1);
             root.StyleSetMargin(YGEdge.Right, 10);
             root.StyleSetMarginAuto(YGEdge.Left);

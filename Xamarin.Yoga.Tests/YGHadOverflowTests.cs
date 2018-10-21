@@ -20,8 +20,8 @@ namespace Xamarin.Yoga.Tests
         {
             config = new YGConfig();
             root   = new YGNode(config);
-            YGNodeStyleSetWidth(root, 200);
-            YGNodeStyleSetHeight(root, 100);
+            root.StyleSetWidth(200);
+            root.StyleSetHeight(100);
             root.StyleSetFlexDirection(YGFlexDirection.Column);
             root.StyleSetFlexWrap(YGWrap.NoWrap);
         }
@@ -34,14 +34,14 @@ namespace Xamarin.Yoga.Tests
         public void children_overflow_no_wrap_and_no_flex_children()
         {
             YGNode child0 = new YGNode(config);
-            YGNodeStyleSetWidth(child0, 80);
-            YGNodeStyleSetHeight(child0, 40);
+            child0.StyleSetWidth(80);
+            child0.StyleSetHeight(40);
             child0.StyleSetMargin(YGEdge.Top,    10);
             child0.StyleSetMargin(YGEdge.Bottom, 15);
             root.InsertChild(child0);
             YGNode child1 = new YGNode(config);
-            YGNodeStyleSetWidth(child1, 80);
-            YGNodeStyleSetHeight(child1, 40);
+            child1.StyleSetWidth(80);
+            child1.StyleSetHeight(40);
             child1.StyleSetMargin(YGEdge.Bottom, 5);
             root.InsertChild(1, child1);
 
@@ -54,14 +54,14 @@ namespace Xamarin.Yoga.Tests
         public void spacing_overflow_no_wrap_and_no_flex_children()
         {
             YGNode child0 = new YGNode(config);
-            YGNodeStyleSetWidth(child0, 80);
-            YGNodeStyleSetHeight(child0, 40);
+            child0.StyleSetWidth(80);
+            child0.StyleSetHeight(40);
             child0.StyleSetMargin(YGEdge.Top,    10);
             child0.StyleSetMargin(YGEdge.Bottom, 10);
             root.InsertChild(child0);
             YGNode child1 = new YGNode(config);
-            YGNodeStyleSetWidth(child1, 80);
-            YGNodeStyleSetHeight(child1, 40);
+            child1.StyleSetWidth(80);
+            child1.StyleSetHeight(40);
             child1.StyleSetMargin(YGEdge.Bottom, 5);
             root.InsertChild(1, child1);
 
@@ -74,14 +74,14 @@ namespace Xamarin.Yoga.Tests
         public void no_overflow_no_wrap_and_flex_children()
         {
             YGNode child0 = new YGNode(config);
-            YGNodeStyleSetWidth(child0, 80);
-            YGNodeStyleSetHeight(child0, 40);
+            child0.StyleSetWidth(80);
+            child0.StyleSetHeight(40);
             child0.StyleSetMargin(YGEdge.Top,    10);
             child0.StyleSetMargin(YGEdge.Bottom, 10);
             root.InsertChild(child0);
             YGNode child1 = new YGNode(config);
-            YGNodeStyleSetWidth(child1, 80);
-            YGNodeStyleSetHeight(child1, 40);
+            child1.StyleSetWidth(80);
+            child1.StyleSetHeight(40);
             child1.StyleSetMargin(YGEdge.Bottom, 5);
             child1.StyleSetFlexShrink(1);
             root.InsertChild(1, child1);

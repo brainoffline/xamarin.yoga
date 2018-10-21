@@ -729,7 +729,7 @@ namespace Xamarin.Yoga.Tests
             root_child2.StyleSetPositionType(YGPositionType.Absolute);
             root_child2.StyleSetPositionPercent(YGEdge.Top,    10);
             root_child2.StyleSetPositionPercent(YGEdge.Bottom, 10);
-            YGNodeStyleSetWidth(root_child2, 10);
+            root_child2.StyleSetWidth(10);
             root.InsertChild(2, root_child2);
             YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
 

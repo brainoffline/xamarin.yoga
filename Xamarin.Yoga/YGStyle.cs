@@ -10,6 +10,10 @@ namespace Xamarin.Yoga
 
     public class YGStyle
     {
+        private float? _flexShrink;
+
+        internal YGNode Owner { get; set; }
+
         public Edges Margin   { get; internal set; } = new Edges();
         public Edges Position { get; internal set; } = new Edges();
         public Edges Padding  { get; internal set; } = new Edges();
@@ -24,7 +28,21 @@ namespace Xamarin.Yoga
         public YGValue         FlexBasis      { get; internal set; } = kYGValueAuto;
         public YGFlexDirection FlexDirection  { get; internal set; } = YGFlexDirection.Column;
         public float?          FlexGrow       { get; internal set; }
-        public float?          FlexShrink     { get; internal set; }
+
+        public float? FlexShrink
+        {
+            get
+            {
+                if (_flexShrink.HasValue && !_flexShrink.IsNaN())
+                    return _flexShrink;
+
+                if (Owner?.Config?.UseWebDefaults ?? false)
+                    return kWebDefaultFlexShrink;
+                return kDefaultFlexShrink;
+            }
+            internal set => _flexShrink = value;
+        }
+
         public YGWrap          FlexWrap       { get; internal set; } = YGWrap.NoWrap;
         public YGJustify       JustifyContent { get; internal set; } = YGJustify.FlexStart;
         public YGOverflow      Overflow       { get; internal set; } = YGOverflow.Visible;

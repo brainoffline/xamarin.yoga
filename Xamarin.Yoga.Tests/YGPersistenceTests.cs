@@ -13,8 +13,8 @@ namespace Xamarin.Yoga.Tests
             YGConfig config = new YGConfig();
 
             YGNode root = new YGNode(config);
-            YGNodeStyleSetWidth(root, 100);
-            YGNodeStyleSetHeight(root, 100);
+            root.StyleSetWidth(100);
+            root.StyleSetHeight(100);
 
             YGNode root_child0 = new YGNode(config);
             root_child0.StyleSetFlexGrow(1);
@@ -42,7 +42,7 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(25,  root_child1.Layout.Height);
 
             YGNode root2 = new YGNode(root);
-            YGNodeStyleSetWidth(root2, 100);
+            root2.StyleSetWidth(100);
 
             Assert.AreEqual(2, root2.Children.Count);
             // The children should have referential equality at this point.
@@ -56,8 +56,8 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(root_child0, root2.Children[0]);
             Assert.AreEqual(root_child1, root2.Children[1]);
 
-            YGNodeStyleSetWidth(root2, 150);
-            YGNodeStyleSetHeight(root2, 200);
+            root2.StyleSetWidth(150);
+            root2.StyleSetHeight(200);
             YGNodeCalculateLayout(root2, float.NaN, float.NaN, YGDirection.LTR);
 
             Assert.AreEqual(2, root2.Children.Count);
@@ -145,8 +145,8 @@ namespace Xamarin.Yoga.Tests
             YGConfig config = new YGConfig();
 
             YGNode root = new YGNode(config);
-            YGNodeStyleSetWidth(root, 100);
-            YGNodeStyleSetHeight(root, 100);
+            root.StyleSetWidth(100);
+            root.StyleSetHeight(100);
 
             YGNode root_child0 = new YGNode(config);
             root_child0.StyleSetFlexGrow(1);
@@ -208,8 +208,8 @@ namespace Xamarin.Yoga.Tests
             YGConfig config = new YGConfig();
 
             YGNode root = new YGNode(config);
-            YGNodeStyleSetWidth(root, 100);
-            YGNodeStyleSetHeight(root, 100);
+            root.StyleSetWidth(100);
+            root.StyleSetHeight(100);
             YGNode root_child0 = new YGNode(config);
             root.InsertChild(root_child0);
             YGNode root_child1 = new YGNode(config);

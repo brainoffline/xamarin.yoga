@@ -22,19 +22,19 @@ namespace Xamarin.Yoga.Tests
 
             YGNode root = new YGNode(config);
             root.StyleSetFlexDirection(YGFlexDirection.Row);
-            YGNodeStyleSetWidth(root, 300);
+            root.StyleSetWidth(300);
 
             YGNode root_child0 = new YGNode(config);
-            YGNodeStyleSetWidth(root_child0, 300);
-            YGNodeStyleSetHeight(root_child0, 300);
+            root_child0.StyleSetWidth(300);
+            root_child0.StyleSetHeight(300);
             root.InsertChild(root_child0);
 
             YGNode root_child1 = new YGNode(config);
             root_child1.StyleSetPositionType(YGPositionType.Absolute);
             root_child1.StyleSetPositionPercent(YGEdge.Left, 20);
             root_child1.StyleSetPositionPercent(YGEdge.Top,  20);
-            YGNodeStyleSetWidthPercent(root_child1, 20);
-            YGNodeStyleSetHeightPercent(root_child1, 20);
+            root_child1.StyleSetWidthPercent(20);
+            root_child1.StyleSetHeightPercent(20);
             root.InsertChild(1, root_child1);
             YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
 

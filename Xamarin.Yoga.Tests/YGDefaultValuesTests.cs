@@ -61,8 +61,8 @@ namespace Xamarin.Yoga.Tests
             Assert.IsTrue(root.StyleGetBorder(YGEdge.Start).IsNaN());
             Assert.IsTrue(root.StyleGetBorder(YGEdge.End).IsNaN());
 
-            Assert.AreEqual(YGNodeStyleGetWidth(root).unit,       YGUnit.Auto);
-            Assert.AreEqual(YGNodeStyleGetHeight(root).unit,      YGUnit.Auto);
+            Assert.AreEqual(root.StyleGetWidth().unit,       YGUnit.Auto);
+            Assert.AreEqual(root.StyleGetHeight().unit,      YGUnit.Auto);
             Assert.AreEqual(root.Style.MinDimensions.Width.unit,  YGUnit.Undefined);
             Assert.AreEqual(root.Style.MinDimensions.Height.unit, YGUnit.Undefined);
             Assert.AreEqual(root.Style.MaxDimensions.Width.unit,  YGUnit.Undefined);

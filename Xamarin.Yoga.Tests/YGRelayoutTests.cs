@@ -21,8 +21,8 @@ namespace Xamarin.Yoga.Tests
             config.ExperimentalFeatures |= YGExperimentalFeatures.WebFlexBasis;
 
              YGNode root = new YGNode(config);
-            YGNodeStyleSetHeightPercent(root, 100);
-            YGNodeStyleSetWidthPercent(root, 100);
+            root.StyleSetWidthPercent(100);
+            root.StyleSetHeightPercent(100);
 
              YGNode root_child0 = new YGNode(config);
             root_child0.StyleSetFlexBasisPercent(100);
@@ -44,14 +44,14 @@ namespace Xamarin.Yoga.Tests
              YGNode root = new YGNode();
 
              YGNode root_child0 = new YGNode();
-            YGNodeStyleSetMinHeight(root_child0, 10);
-            YGNodeStyleSetMaxHeight(root_child0, 10);
+            root_child0.StyleSetMinHeight(10);
+            root_child0.StyleSetMaxHeight(10);
             root.InsertChild(root_child0);
 
             YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
             Assert.AreEqual(10, root_child0.Layout.Height);
 
-            YGNodeStyleSetMinHeight(root_child0, float.NaN);
+            root_child0.StyleSetMinHeight(float.NaN);
             YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
 
             Assert.AreEqual(0, root_child0.Layout.Height);

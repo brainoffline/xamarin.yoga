@@ -35,7 +35,7 @@ namespace Xamarin.Yoga.Tests
 
             YGNode node1 = new YGNode();
             node1.StyleSetFlexDirection(YGFlexDirection.Row);
-            YGNodeStyleSetMaxHeight(node1, 10);
+            node1.StyleSetMaxHeight(10);
 
             node0.Style = node1.Style;
             Assert.IsTrue(node0.IsDirty);
@@ -48,13 +48,13 @@ namespace Xamarin.Yoga.Tests
         {
             YGNode node0 = new YGNode();
             node0.StyleSetFlexDirection(YGFlexDirection.Row);
-            YGNodeStyleSetMaxHeight(node0, 10);
+            node0.StyleSetMaxHeight(10);
             YGNodeCalculateLayout(node0, float.NaN, float.NaN, YGDirection.LTR);
             Assert.IsFalse(node0.IsDirty);
 
             YGNode node1 = new YGNode();
             node1.StyleSetFlexDirection(YGFlexDirection.Row);
-            YGNodeStyleSetMaxHeight(node1, 10);
+            node1.StyleSetMaxHeight(10);
 
             node0.Style = node1.Style;
             Assert.IsFalse(node0.IsDirty);

@@ -62,18 +62,18 @@ namespace Xamarin.Yoga.Tests
             YGNode root = new YGNode();
             root.StyleSetFlexDirection(YGFlexDirection.Row);
             root.StyleSetAlignItems(YGAlign.FlexStart);
-            YGNodeStyleSetWidth(root, 100);
-            YGNodeStyleSetHeight(root, 100);
+            root.StyleSetWidth(100);
+            root.StyleSetHeight(100);
 
             YGNode root_child0  = new YGNode();
-            int    measureCount = 0;
-            root_child0.Context     = measureCount;
+            root_child0.Context     = 0;
             root_child0.MeasureFunc = _measureMax;
             root_child0.StyleSetFlexGrow(1);
             root.InsertChild(root_child0);
 
             YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
 
+            int measureCount = (int) root_child0.Context;
             Assert.AreEqual(1, measureCount);
         }
 
@@ -83,14 +83,14 @@ namespace Xamarin.Yoga.Tests
             YGNode root = new YGNode();
 
             YGNode root_child0  = new YGNode();
-            int    measureCount = 0;
-            root_child0.Context     = measureCount;
+            root_child0.Context     = 0;
             root_child0.MeasureFunc = _measureMin;
             root.InsertChild(root_child0);
 
             YGNodeCalculateLayout(root, 100, 100, YGDirection.LTR);
             YGNodeCalculateLayout(root, 100, 50,  YGDirection.LTR);
 
+            int measureCount = (int)root_child0.Context;
             Assert.AreEqual(1, measureCount);
         }
 
@@ -101,14 +101,14 @@ namespace Xamarin.Yoga.Tests
             root.StyleSetAlignItems(YGAlign.FlexStart);
 
             YGNode root_child0  = new YGNode();
-            int    measureCount = 0;
-            root_child0.Context     = measureCount;
+            root_child0.Context     = 0;
             root_child0.MeasureFunc = _measureMin;
             root.InsertChild(root_child0);
 
             YGNodeCalculateLayout(root, 100, 100, YGDirection.LTR);
             YGNodeCalculateLayout(root, 100, 50,  YGDirection.LTR);
 
+            int measureCount = (int)root_child0.Context;
             Assert.AreEqual(1, measureCount);
         }
 
@@ -119,8 +119,7 @@ namespace Xamarin.Yoga.Tests
             root.StyleSetAlignItems(YGAlign.FlexStart);
 
             YGNode root_child0  = new YGNode();
-            int    measureCount = 0;
-            root_child0.Context     = measureCount;
+            root_child0.Context     = 0;
             root_child0.MeasureFunc = _measureMin;
             root.InsertChild(root_child0);
 
@@ -128,6 +127,7 @@ namespace Xamarin.Yoga.Tests
             root.StyleSetAlignItems(YGAlign.Stretch);
             YGNodeCalculateLayout(root, 10, 50, YGDirection.LTR);
 
+            int measureCount = (int)root_child0.Context;
             Assert.AreEqual(1, measureCount);
         }
 
@@ -138,25 +138,23 @@ namespace Xamarin.Yoga.Tests
             root.StyleSetAlignItems(YGAlign.FlexStart);
 
             YGNode root_child0  = new YGNode();
-            int    measureCount = 0;
-            root_child0.Context     = measureCount;
+            root_child0.Context     = 0;
             root_child0.MeasureFunc = _measureMin;
             root.InsertChild(root_child0);
 
             YGNodeCalculateLayout(root, 100, float.NaN, YGDirection.LTR);
             YGNodeCalculateLayout(root, 10,  float.NaN, YGDirection.LTR);
 
+            int measureCount = (int)root_child0.Context;
             Assert.AreEqual(1, measureCount);
         }
 
         [TestMethod]
         public void remeasure_with_already_measured_value_smaller_but_still_float_equal()
         {
-            int measureCount = 0;
-
             YGNode root = new YGNode();
-            YGNodeStyleSetWidth(root, 288f);
-            YGNodeStyleSetHeight(root, 288f);
+            root.StyleSetWidth(288f);
+            root.StyleSetHeight(288f);
             root.StyleSetFlexDirection(YGFlexDirection.Row);
 
             YGNode root_child0 = new YGNode();
@@ -165,13 +163,13 @@ namespace Xamarin.Yoga.Tests
             root.InsertChild(root_child0);
 
             YGNode root_child0_child0 = new YGNode();
-            root_child0_child0.Context     = measureCount;
+            root_child0_child0.Context     = 0;
             root_child0_child0.MeasureFunc = _measure_84_49;
             root_child0.InsertChild(root_child0_child0);
 
             YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
 
-
+            int measureCount = (int)root_child0_child0.Context;
             Assert.AreEqual(1, measureCount);
         }
     }

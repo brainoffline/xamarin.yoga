@@ -18,8 +18,8 @@ namespace Xamarin.Yoga.Tests
         {
             YGNode root = new YGNode();
             root.StyleSetFlexDirection( YGFlexDirection.Row);
-            YGNodeStyleSetWidth(root, 200);
-            YGNodeStyleSetHeight(root, 200);
+            root.StyleSetWidth(200);
+            root.StyleSetHeight(200);
 
             YGNode child = new YGNode();
             root.InsertChild(child);

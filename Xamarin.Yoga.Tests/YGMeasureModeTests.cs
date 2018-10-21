@@ -48,8 +48,8 @@ namespace Xamarin.Yoga.Tests
             var constraintList = new List<_MeasureConstraint>(10);
 
             YGNode root = new YGNode();
-            YGNodeStyleSetWidth(root, 100);
-            YGNodeStyleSetHeight(root, 100);
+            root.StyleSetWidth(100);
+            root.StyleSetHeight(100);
 
             YGNode root_child0 = new YGNode();
             //  root_child0.setContext(&constraintList);
@@ -75,8 +75,8 @@ namespace Xamarin.Yoga.Tests
 
             YGNode root = new YGNode();
             root.StyleSetFlexDirection(YGFlexDirection.Row);
-            YGNodeStyleSetWidth(root, 100);
-            YGNodeStyleSetHeight(root, 100);
+            root.StyleSetWidth(100);
+            root.StyleSetHeight(100);
 
             YGNode root_child0 = new YGNode();
             //  root_child0.setContext(&constraintList);
@@ -100,8 +100,8 @@ namespace Xamarin.Yoga.Tests
             var constraintList = new List<_MeasureConstraint>(10);
 
             YGNode root = new YGNode();
-            YGNodeStyleSetWidth(root, 100);
-            YGNodeStyleSetHeight(root, 100);
+            root.StyleSetWidth(100);
+            root.StyleSetHeight(100);
 
             YGNode root_child0 = new YGNode();
             root_child0.Context     = constraintList;
@@ -125,8 +125,8 @@ namespace Xamarin.Yoga.Tests
 
             YGNode root = new YGNode();
             root.StyleSetAlignItems(YGAlign.FlexStart);
-            YGNodeStyleSetWidth(root, 100);
-            YGNodeStyleSetHeight(root, 100);
+            root.StyleSetWidth(100);
+            root.StyleSetHeight(100);
 
             YGNode root_child0 = new YGNode();
             root_child0.Context     = constraintList;
@@ -150,8 +150,8 @@ namespace Xamarin.Yoga.Tests
 
             YGNode root = new YGNode();
             root.StyleSetFlexDirection(YGFlexDirection.Row);
-            YGNodeStyleSetWidth(root, 100);
-            YGNodeStyleSetHeight(root, 100);
+            root.StyleSetWidth(100);
+            root.StyleSetHeight(100);
 
             YGNode root_child0 = new YGNode();
             root_child0.Context     = constraintList;
@@ -176,8 +176,8 @@ namespace Xamarin.Yoga.Tests
             YGNode root = new YGNode();
             root.StyleSetFlexDirection(YGFlexDirection.Row);
             root.StyleSetAlignItems(YGAlign.FlexStart);
-            YGNodeStyleSetWidth(root, 100);
-            YGNodeStyleSetHeight(root, 100);
+            root.StyleSetWidth(100);
+            root.StyleSetHeight(100);
 
             YGNode root_child0 = new YGNode();
             root_child0.Context     = constraintList;
@@ -200,7 +200,7 @@ namespace Xamarin.Yoga.Tests
             var constraintList = new List<_MeasureConstraint>(10);
 
             YGNode root = new YGNode();
-            YGNodeStyleSetHeight(root, 100);
+            root.StyleSetHeight(100);
 
             YGNode root_child0 = new YGNode();
             root_child0.StyleSetFlexGrow(1);
@@ -227,7 +227,7 @@ namespace Xamarin.Yoga.Tests
             var constraintList = new List<_MeasureConstraint>(10);
 
             YGNode root = new YGNode();
-            YGNodeStyleSetHeight(root, 100);
+            root.StyleSetHeight(100);
 
             YGNode root_child0 = new YGNode();
             root_child0.StyleSetFlexGrow(1);
@@ -254,8 +254,8 @@ namespace Xamarin.Yoga.Tests
             YGNode root = new YGNode();
             root.StyleSetAlignItems(YGAlign.FlexStart);
             root.StyleSetOverflow(YGOverflow.Scroll);
-            YGNodeStyleSetHeight(root, 100);
-            YGNodeStyleSetWidth(root, 100);
+            root.StyleSetHeight(100);
+            root.StyleSetWidth(100);
 
             YGNode root_child0 = new YGNode();
             root_child0.Context     = constraintList;
@@ -284,8 +284,8 @@ namespace Xamarin.Yoga.Tests
             root.StyleSetAlignItems(YGAlign.FlexStart);
             root.StyleSetFlexDirection(YGFlexDirection.Row);
             root.StyleSetOverflow(YGOverflow.Scroll);
-            YGNodeStyleSetHeight(root, 100);
-            YGNodeStyleSetWidth(root, 100);
+            root.StyleSetHeight(100);
+            root.StyleSetWidth(100);
 
             YGNode root_child0 = new YGNode();
             root_child0.Context     = constraintList;

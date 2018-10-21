@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 
 namespace Xamarin.Yoga
 {
@@ -10,6 +11,8 @@ namespace Xamarin.Yoga
 
     public class YGNode : IEquatable<YGNode>
     {
+        private YGStyle _style;
+
         public YGConfig     Config   { get; set; }
         public string       Name     { get; set; }
         public object       Context  { get; set; }
@@ -30,6 +33,11 @@ namespace Xamarin.Yoga
 
         public YGNode(YGConfig newConfig)
         {
+            _style = new YGStyle
+            {
+                Owner = this
+            };
+
             Config = newConfig;
 
             if (Config.UseWebDefaults)
@@ -46,14 +54,16 @@ namespace Xamarin.Yoga
 
             _children.Clear();
 
-            Context            = node.Context;
+            Style = new YGStyle(node.Style);
+            Style.Owner = this;
+
+            Context = node.Context;
             print_             = node.getPrintFunc();
             hasNewLayout_      = node.getHasNewLayout();
             nodeType_          = node.getNodeType();
             MeasureFunc        = node.MeasureFunc;
             baseline_          = node.getBaseline();
             dirtied_           = node.getDirtied();
-            Style              = new YGStyle(node.Style);
             layout_            = new YGLayout(node.layout_);
             lineIndex_         = node.getLineIndex();
             Owner              = null;
@@ -63,9 +73,8 @@ namespace Xamarin.Yoga
 
             foreach (var child in node.Children)
                 _children.Add(new YGNode(child));
-        }
 
-        private YGStyle _style = new YGStyle();
+        }
 
         public YGStyle Style
         {
@@ -74,7 +83,11 @@ namespace Xamarin.Yoga
             {
                 if (_style != value)
                 {
+                    if (_style != null)
+                        _style.Owner = null;
+
                     _style = value;
+                    _style.Owner = this;
                     MarkDirtyAndPropagate();
                 }
             }
@@ -493,7 +506,7 @@ namespace Xamarin.Yoga
         {
             if (!FloatOptionalEqual(Style.FlexGrow, value))
             {
-                Style.FlexGrow = value;
+                Style.FlexGrow = value.IsNaN() ? null : value;
                 MarkDirtyAndPropagate();
             }
         }
@@ -502,7 +515,7 @@ namespace Xamarin.Yoga
         {
             if (!FloatOptionalEqual(Style.FlexShrink, value))
             {
-                Style.FlexShrink = value;
+                Style.FlexShrink = value.IsNaN() ? null : value;
                 MarkDirtyAndPropagate();
             }
         }
@@ -564,6 +577,143 @@ namespace Xamarin.Yoga
             }
         }
 
+        public void StyleSetWidth(YGValue width)
+        {
+            var value = YGValue.Sanitized(width.value, YGUnit.Point);
+            if (!FloatEqual(Style.Dimensions.Width.value, value.value) && value.unit != YGUnit.Undefined ||
+                Style.Dimensions.Width.unit != value.unit)
+            {
+                Style.Dimensions.Width = value;
+                MarkDirtyAndPropagate();
+            }
+        }
+
+        public void StyleSetWidthPercent(YGValue width)
+        {
+            if (!FloatEqual(Style.Dimensions.Width.value, YGFloatSanitize(width.value)) ||
+                Style.Dimensions.Width.unit != YGUnit.Percent)
+            {
+                Style.Dimensions.Width = width.IsNaN()
+                    ? new YGValue(0,           YGUnit.Auto)
+                    : new YGValue(width.value, YGUnit.Percent);
+                MarkDirtyAndPropagate();
+            }
+        }
+
+        public void StyleSetWidthAuto()
+        {
+            if (Style.Dimensions.Width.unit != YGUnit.Auto)
+            {
+                Style.Dimensions.Width = new YGValue(0, YGUnit.Auto);
+                MarkDirtyAndPropagate();
+            }
+        }
+
+        public YGValue StyleGetWidth()
+        {
+            var value = Style.Dimensions.Width;
+            if (value.unit == YGUnit.Undefined || value.unit == YGUnit.Undefined)
+            {
+                return (Style.Dimensions.Width = new YGValue(float.NaN, value.unit));
+            }
+
+            return value;
+        }
+
+        public void StyleSetHeight(YGValue height)
+        {
+            var value = YGValue.Sanitized(height.value, YGUnit.Point);
+            if (!FloatEqual(Style.Dimensions.Height.value, value.value) && value.unit != YGUnit.Undefined ||
+                Style.Dimensions.Height.unit != value.unit)
+            {
+                Style.Dimensions.Height = value;
+                MarkDirtyAndPropagate();
+            }
+        }
+
+        public void StyleSetHeightPercent(YGValue height)
+        {
+            if (!FloatEqual(Style.Dimensions.Height.value, YGFloatSanitize(height.value)) ||
+                Style.Dimensions.Height.unit != YGUnit.Percent)
+            {
+                Style.Dimensions.Height = height.IsNaN()
+                    ? new YGValue(0,            YGUnit.Auto)
+                    : new YGValue(height.value, YGUnit.Percent);
+                MarkDirtyAndPropagate();
+            }
+        }
+
+        public void StyleSetHeightAuto()
+        {
+            if (Style.Dimensions.Height.unit != YGUnit.Auto)
+            {
+                Style.Dimensions.Height = new YGValue(0, YGUnit.Auto);
+                MarkDirtyAndPropagate();
+            }
+        }
+
+        public YGValue StyleGetHeight()
+        {
+            var value = Style.Dimensions.Height;
+            if (value.unit == YGUnit.Undefined || value.unit == YGUnit.Undefined)
+                Style.Dimensions.Height = value = new YGValue(float.NaN, value.unit);
+            return value;
+        }
+
+        private void StyleSetDimensions(
+            Dimensions dimensions,
+            YGDimension dim,
+            float value,
+            YGUnit unit)
+        {
+            var newValue = YGValue.Sanitized(value, unit);
+            var current = dimensions[dim];
+            if (current != newValue)
+            {
+                dimensions[dim] = newValue;
+                MarkDirtyAndPropagate();
+            }
+        }
+
+        public void StyleSetMinWidth(float minWidth)
+        {
+            StyleSetDimensions(Style.MinDimensions, YGDimension.Width, minWidth, YGUnit.Point);
+        }
+
+        public void StyleSetMinWidthPercent(float minWidth)
+        {
+            StyleSetDimensions(Style.MinDimensions, YGDimension.Width, minWidth, YGUnit.Percent);
+        }
+
+        public void StyleSetMinHeight(float minHeight)
+        {
+            StyleSetDimensions(Style.MinDimensions, YGDimension.Height, minHeight, YGUnit.Point);
+        }
+
+        public void StyleSetMinHeightPercent(float minHeight)
+        {
+            StyleSetDimensions(Style.MinDimensions, YGDimension.Height, minHeight, YGUnit.Percent);
+        }
+
+        public void StyleSetMaxWidth(float maxWidth)
+        {
+            StyleSetDimensions(Style.MaxDimensions, YGDimension.Width, maxWidth, YGUnit.Point);
+        }
+
+        public void StyleSetMaxWidthPercent(float maxWidth)
+        {
+            StyleSetDimensions(Style.MaxDimensions, YGDimension.Width, maxWidth, YGUnit.Percent);
+        }
+
+        public void StyleSetMaxHeight(float maxHeight)
+        {
+            StyleSetDimensions(Style.MaxDimensions, YGDimension.Height, maxHeight, YGUnit.Point);
+        }
+
+        public void StyleSetMaxHeightPercent(float maxHeight)
+        {
+            StyleSetDimensions(Style.MaxDimensions, YGDimension.Height, maxHeight, YGUnit.Percent);
+        }
 
         public float? getLeadingPosition(
             in YGFlexDirection axis,

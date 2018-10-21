@@ -274,10 +274,7 @@ namespace Xamarin.Yoga.Tests
             root_child2.Style.PositionType = YGPositionType.Absolute;
             root_child2.Style.Position.Left = 0;
             root_child2.Style.Position.Top =  0;
-            root_child2.Style.Margin.Left =   10;
-            root_child2.Style.Margin.Top = 10;
-            root_child2.Style.Margin.Right = 10;
-            root_child2.Style.Margin.Bottom = 10;
+            root_child2.Style.Margin = new Edges(10, 10, 10, 10);
             root_child2.Style.Width = 50;
             root_child2.Style.Height = 50;
             root.InsertChild(2, root_child2);
@@ -286,12 +283,9 @@ namespace Xamarin.Yoga.Tests
             root_child3.Style.PositionType = YGPositionType.Absolute;
             root_child3.Style.Position.Right =  0;
             root_child3.Style.Position.Bottom = 0;
-            root_child3.Style.Margin.Left = 10;
-            root_child3.Style.Margin.Top = 10;
-            root_child3.Style.Margin.Right = 10;
-            root_child3.Style.Margin.Bottom = 10;
+            root_child3.Style.Margin = new Edges(10, 10, 10, 10);
             root_child3.Style.Width = 50;
-            root_child3.Style.Width = 50;
+            root_child3.Style.Height = 50;
             root.InsertChild(3, root_child3);
             YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
 
@@ -571,7 +565,7 @@ namespace Xamarin.Yoga.Tests
             root_child0.Style.PositionType = YGPositionType.Absolute;
             root_child0.Style.Position.Top = 10;
             root_child0.Style.Width = 60;
-            root_child0.Style.Width = 40;
+            root_child0.Style.Height = 40;
             root.InsertChild(root_child0);
             YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
 
@@ -657,7 +651,7 @@ namespace Xamarin.Yoga.Tests
             root_child0.Style.PositionType = YGPositionType.Absolute;
             root_child0.Style.Position.Left = 5;
             root_child0.Style.Width = 60;
-            root_child0.Style.Width = 40;
+            root_child0.Style.Height = 40;
             root.InsertChild(root_child0);
             YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
 

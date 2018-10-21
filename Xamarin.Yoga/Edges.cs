@@ -160,15 +160,15 @@ namespace Xamarin.Yoga
         {
             return new Edges
             {
-                Left       = Left,
-                Top        = Top,
-                Right      = Right,
-                Bottom     = Bottom,
-                Start      = Start,
-                End        = End,
-                Horizontal = Horizontal,
-                Vertical   = Vertical,
-                All        = All
+                _left       = _left,
+                _top        = _top,
+                _right      = _right,
+                _bottom     = _bottom,
+                _start      = _start,
+                _end        = _end,
+                _horizontal = _horizontal,
+                _vertical   = _vertical,
+                _all        = _all
             };
         }
 

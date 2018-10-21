@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 // ReSharper disable InconsistentNaming
@@ -8,12 +9,12 @@ namespace Xamarin.Yoga
     using static YGGlobal;
     using static YGConst;
 
-    public class YGStyle
+    public class YGStyle : IEquatable<YGStyle>
     {
-        internal float? _flex;
-        internal float? _flexGrow;
-        internal float? _flexShrink;
-        private YGAlign _alignContent = YGAlign.FlexStart;
+        internal float?  _flex;
+        internal float?  _flexGrow;
+        internal float?  _flexShrink;
+        private  YGAlign _alignContent = YGAlign.FlexStart;
 
         private YGNode _owner;
 
@@ -22,11 +23,11 @@ namespace Xamarin.Yoga
             get => _owner;
             set
             {
-                _owner = value;
-                Margin.Owner = value;
+                _owner         = value;
+                Margin.Owner   = value;
                 Position.Owner = value;
-                Padding.Owner = value;
-                Border.Owner = value;
+                Padding.Owner  = value;
+                Border.Owner   = value;
             }
         }
 
@@ -39,7 +40,7 @@ namespace Xamarin.Yoga
             {
                 if (_margin != value)
                 {
-                    _margin = value;
+                    _margin       = value;
                     _margin.Owner = Owner;
                     Owner?.MarkDirtyAndPropagate();
                 }
@@ -98,7 +99,7 @@ namespace Xamarin.Yoga
         public YGAlign AlignContent
         {
             get => _alignContent;
-            set 
+            set
             {
                 if (_alignContent != value)
                 {
@@ -120,7 +121,6 @@ namespace Xamarin.Yoga
                     _alignItems = value;
                     Owner?.MarkDirtyAndPropagate();
                 }
-
             }
         }
 
@@ -136,7 +136,6 @@ namespace Xamarin.Yoga
                     _alignSelf = value;
                     Owner?.MarkDirtyAndPropagate();
                 }
-
             }
         }
 
@@ -195,13 +194,13 @@ namespace Xamarin.Yoga
         public YGFlexDirection FlexDirection
         {
             get => _flexDirection;
-            set {
+            set
+            {
                 if (_flexDirection != value)
                 {
                     _flexDirection = value;
                     Owner?.MarkDirtyAndPropagate();
                 }
-
             }
         }
 
@@ -251,7 +250,6 @@ namespace Xamarin.Yoga
                     _flexShrink = value.IsNaN() ? null : value;
                     Owner?.MarkDirtyAndPropagate();
                 }
-
             }
         }
 
@@ -346,7 +344,7 @@ namespace Xamarin.Yoga
                     value = new YGValue(float.NaN, value.unit);
                 if (value.unit == YGUnit.Percent && value.value.IsNaN())
                     value = YGValue.Auto;
-               
+
                 if (Dimensions.Height != value)
                 {
                     Dimensions.Height = value;
@@ -412,11 +410,10 @@ namespace Xamarin.Yoga
                     MaxDimensions.Height = value;
                     Owner?.MarkDirtyAndPropagate();
                 }
-
             }
         }
 
-        public YGValue Dimension(YGDimension dim) => Dimensions[dim];
+        public YGValue Dimension(YGDimension    dim) => Dimensions[dim];
         public YGValue MinDimension(YGDimension dim) => MinDimensions[dim];
         public YGValue MaxDimension(YGDimension dim) => MaxDimensions[dim];
 
@@ -454,11 +451,11 @@ namespace Xamarin.Yoga
             FlexWrap       = style.FlexWrap;
             Overflow       = style.Overflow;
             Display        = style.Display;
-            Flex           = style.Flex;
-            FlexGrow       = style.FlexGrow;
-            FlexShrink     = style.FlexShrink;
-            FlexBasis      = style.FlexBasis;
-            _margin         = Margin.Clone();
+            _flex           = style._flex;
+            _flexGrow       = style._flexGrow;
+            _flexShrink     = style._flexShrink;
+            _flexBasis      = style._flexBasis;
+            _margin        = Margin.Clone();
             Position       = style.Position.Clone();
             Padding        = style.Padding.Clone();
             Border         = style.Border.Clone();
@@ -485,6 +482,8 @@ namespace Xamarin.Yoga
 
         public override bool Equals(object obj)
         {
+            return Equals(obj as YGStyle);
+            /*
             var style = obj as YGStyle;
             if (ReferenceEquals(style, null))
                 return false;
@@ -512,34 +511,74 @@ namespace Xamarin.Yoga
                 MinDimensions.Equals(style.MinDimensions)                             &&
                 MaxDimensions.Equals(style.MaxDimensions)                             &&
                 AspectRatio.Equals(style.AspectRatio);
+            */
         }
+
+        /// <inheritdoc />
+        public bool Equals(YGStyle other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+
+            var result = _flex.Equals(other._flex)    &&
+                _flexGrow.Equals(other._flexGrow)     &&
+                _flexShrink.Equals(other._flexShrink) &&
+                _alignContent == other._alignContent;
+            result = result                        &&
+                Equals(_margin,   other._margin)   &&
+                Equals(_position, other._position) &&
+                Equals(_padding,  other._padding)  &&
+                Equals(_border,   other._border);
+            result = result                      &&
+                _alignItems == other._alignItems &&
+                _alignSelf  == other._alignSelf  &&
+                _direction  == other._direction  &&
+                _display    == other._display;
+            result = result                              &&
+                Equals(_flexBasis, other._flexBasis)     &&
+                _flexDirection  == other._flexDirection  &&
+                _flexWrap       == other._flexWrap       &&
+                _justifyContent == other._justifyContent &&
+                _overflow       == other._overflow       &&
+                _positionType   == other._positionType   &&
+                _aspectRatio.Equals(other._aspectRatio);
+            result = result                                &&
+                Equals(Dimensions,    other.Dimensions)    &&
+                Equals(MinDimensions, other.MinDimensions) &&
+                Equals(MaxDimensions, other.MaxDimensions);
+            return result;
+        }
+
 
         public override int GetHashCode()
         {
-            var hashCode = 1546191664;
-            hashCode = hashCode * -1521134295 + Direction.GetHashCode();
-            hashCode = hashCode * -1521134295 + FlexDirection.GetHashCode();
-            hashCode = hashCode * -1521134295 + JustifyContent.GetHashCode();
-            hashCode = hashCode * -1521134295 + AlignContent.GetHashCode();
-            hashCode = hashCode * -1521134295 + AlignItems.GetHashCode();
-            hashCode = hashCode * -1521134295 + AlignSelf.GetHashCode();
-            hashCode = hashCode * -1521134295 + PositionType.GetHashCode();
-            hashCode = hashCode * -1521134295 + FlexWrap.GetHashCode();
-            hashCode = hashCode * -1521134295 + Overflow.GetHashCode();
-            hashCode = hashCode * -1521134295 + Display.GetHashCode();
-            hashCode = hashCode * -1521134295 + EqualityComparer<float?>.Default.GetHashCode(Flex);
-            hashCode = hashCode * -1521134295 + EqualityComparer<float?>.Default.GetHashCode(FlexGrow);
-            hashCode = hashCode * -1521134295 + EqualityComparer<float?>.Default.GetHashCode(FlexShrink);
-            hashCode = hashCode * -1521134295 + EqualityComparer<YGValue>.Default.GetHashCode(FlexBasis);
-            hashCode = hashCode * -1521134295 + EqualityComparer<Edges>.Default.GetHashCode(Margin);
-            hashCode = hashCode * -1521134295 + EqualityComparer<Edges>.Default.GetHashCode(Position);
-            hashCode = hashCode * -1521134295 + EqualityComparer<Edges>.Default.GetHashCode(Padding);
-            hashCode = hashCode * -1521134295 + EqualityComparer<Edges>.Default.GetHashCode(Border);
-            hashCode = hashCode * -1521134295 + EqualityComparer<Dimensions>.Default.GetHashCode(Dimensions);
-            hashCode = hashCode * -1521134295 + EqualityComparer<Dimensions>.Default.GetHashCode(MinDimensions);
-            hashCode = hashCode * -1521134295 + EqualityComparer<Dimensions>.Default.GetHashCode(MaxDimensions);
-            hashCode = hashCode * -1521134295 + EqualityComparer<float?>.Default.GetHashCode(AspectRatio);
-            return hashCode;
+            unchecked
+            {
+                var hashCode = _flex.GetHashCode();
+                hashCode = (hashCode * 397) ^ _flexGrow.GetHashCode();
+                hashCode = (hashCode * 397) ^ _flexShrink.GetHashCode();
+                hashCode = (hashCode * 397) ^ (int) _alignContent;
+                hashCode = (hashCode * 397) ^ (_owner    != null ? _owner.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (_margin   != null ? _margin.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (_position != null ? _position.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (_padding  != null ? _padding.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (_border   != null ? _border.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (int) _alignItems;
+                hashCode = (hashCode * 397) ^ (int) _alignSelf;
+                hashCode = (hashCode * 397) ^ (int) _direction;
+                hashCode = (hashCode * 397) ^ (int) _display;
+                hashCode = (hashCode * 397) ^ (_flexBasis != null ? _flexBasis.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (int) _flexDirection;
+                hashCode = (hashCode * 397) ^ (int) _flexWrap;
+                hashCode = (hashCode * 397) ^ (int) _justifyContent;
+                hashCode = (hashCode * 397) ^ (int) _overflow;
+                hashCode = (hashCode * 397) ^ (int) _positionType;
+                hashCode = (hashCode * 397) ^ _aspectRatio.GetHashCode();
+                hashCode = (hashCode * 397) ^ (Dimensions    != null ? Dimensions.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (MinDimensions != null ? MinDimensions.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (MaxDimensions != null ? MaxDimensions.GetHashCode() : 0);
+                return hashCode;
+            }
         }
     }
 }

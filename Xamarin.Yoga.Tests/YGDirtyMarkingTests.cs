@@ -93,7 +93,9 @@ namespace Xamarin.Yoga.Tests
 
             child0.Style.Display = YGDisplay.Flex;
             child1.Style.Display = YGDisplay.None;
+
             YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
+
             Assert.AreEqual(0, child1_child0_child0.Layout.Width);
             Assert.AreEqual(0, child1_child0_child0.Layout.Height);
 

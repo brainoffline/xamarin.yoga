@@ -24,12 +24,12 @@ namespace Xamarin.Yoga.Tests
 
             YGNode root_child0 = new YGNode(config);
             root_child0.Style.FlexGrow = 1;
-            root.InsertChild(root_child0);
+            root.Children.Add(root_child0);
 
             YGNode root_child1 = new YGNode(config);
             root_child1.Style.FlexGrow = 1;
             root_child1.Style.Display = YGDisplay.None;
-            root.InsertChild(1, root_child1);
+            root.Children.Insert(1, root_child1);
             YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
 
             Assert.AreEqual(0,   root.Layout.Position.Left);
@@ -77,13 +77,13 @@ namespace Xamarin.Yoga.Tests
 
             YGNode root_child0 = new YGNode(config);
             root_child0.Style.FlexGrow = 1;
-            root.InsertChild(root_child0);
+            root.Children.Add(root_child0);
 
             YGNode root_child1 = new YGNode(config);
             root_child1.Style.Width = 20;
             root_child1.Style.Height = 20;
             root_child1.Style.Display = YGDisplay.None;
-            root.InsertChild(1, root_child1);
+            root.Children.Insert(1, root_child1);
             YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
 
             Assert.AreEqual(0,   root.Layout.Position.Left);
@@ -134,11 +134,11 @@ namespace Xamarin.Yoga.Tests
             root_child0.Style.Width = 20;
             root_child0.Style.Width = 20;
             root_child0.Style.Display = YGDisplay.None;
-            root.InsertChild(root_child0);
+            root.Children.Add(root_child0);
 
             YGNode root_child1 = new YGNode(config);
             root_child1.Style.FlexGrow = 1;
-            root.InsertChild(1, root_child1);
+            root.Children.Insert(1, root_child1);
             YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
 
             Assert.AreEqual(0,   root.Layout.Position.Left);
@@ -188,14 +188,14 @@ namespace Xamarin.Yoga.Tests
             root_child0.Style.FlexGrow = 1;
             root_child0.Style.FlexShrink = 1;
             root_child0.Style.FlexBasis = 0.Percent();
-            root.InsertChild(root_child0);
+            root.Children.Add(root_child0);
 
             YGNode root_child1 = new YGNode(config);
             root_child1.Style.FlexGrow = 1;
             root_child1.Style.FlexShrink = 1;
             root_child1.Style.FlexBasis = 0.Percent();
             root_child1.Style.Display = YGDisplay.None;
-            root.InsertChild(1, root_child1);
+            root.Children.Insert(1, root_child1);
 
             YGNode root_child1_child0 = new YGNode(config);
             root_child1_child0.Style.FlexGrow = 1;
@@ -204,13 +204,13 @@ namespace Xamarin.Yoga.Tests
             root_child1_child0.Style.Width = 20;
             root_child1_child0.Style.MinWidth = 0;
             root_child1_child0.Style.MinHeight = 0;
-            root_child1.InsertChild(root_child1_child0);
+            root_child1.Children.Add(root_child1_child0);
 
             YGNode root_child2 = new YGNode(config);
             root_child2.Style.FlexGrow = 1;
             root_child2.Style.FlexShrink = 1;
             root_child2.Style.FlexBasis = 0.Percent();
-            root.InsertChild(2, root_child2);
+            root.Children.Insert(2, root_child2);
             YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
 
             Assert.AreEqual(0,   root.Layout.Position.Left);
@@ -278,13 +278,13 @@ namespace Xamarin.Yoga.Tests
 
             YGNode root_child0 = new YGNode(config);
             root_child0.Style.FlexGrow = 1;
-            root.InsertChild(root_child0);
+            root.Children.Add(root_child0);
 
             YGNode root_child1 = new YGNode(config);
             root_child1.Style.FlexGrow = 1;
             root_child1.Style.Position.Top = 10;
             root_child1.Style.Display = YGDisplay.None;
-            root.InsertChild(1, root_child1);
+            root.Children.Insert(1, root_child1);
             YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
 
             Assert.AreEqual(0,   root.Layout.Position.Left);

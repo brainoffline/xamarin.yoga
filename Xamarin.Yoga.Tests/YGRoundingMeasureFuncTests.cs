@@ -49,7 +49,7 @@ namespace Xamarin.Yoga.Tests
 
             YGNode root_child0 = new YGNode(config);
             root_child0.MeasureFunc = _measureFloor;
-            root.InsertChild(root_child0);
+            root.Children.Add(root_child0);
 
             YGConfigSetPointScaleFactor(config, 0.0f);
 
@@ -97,7 +97,7 @@ namespace Xamarin.Yoga.Tests
             YGNode   root_child0 = new YGNode(config);
 
             root_child0.MeasureFunc = _measureCeil;
-            root.InsertChild(root_child0);
+            root.Children.Add(root_child0);
             YGConfigSetPointScaleFactor(config, 1.0f);
 
             YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
@@ -117,7 +117,7 @@ namespace Xamarin.Yoga.Tests
             YGNode root_child0 = new YGNode(config);
             root_child0.Style.Position.Left = 73.625f;
             root_child0.MeasureFunc = _measureFractial;
-            root.InsertChild(root_child0);
+            root.Children.Add(root_child0);
 
             YGConfigSetPointScaleFactor(config, 2.0f);
 

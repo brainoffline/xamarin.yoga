@@ -22,7 +22,7 @@ namespace Xamarin.Yoga.Tests
             root.Style.Height = 200;
 
             YGNode child = new YGNode();
-            root.InsertChild(child);
+            root.Children.Add(child);
             child.Style.Width = 100;
             child.Style.Height = 100;
             child.Style.Margin.Top = 10;

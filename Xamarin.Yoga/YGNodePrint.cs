@@ -121,7 +121,7 @@ namespace Xamarin.Yoga
 
             Indent(sb, level);
             sb.Append("<div ");
-            node.getPrintFunc()?.Invoke(node);
+            node.PrintFunc?.Invoke(node);
 
             if (options.HasFlag(YGPrintOptions.Layout))
             {
@@ -196,10 +196,10 @@ namespace Xamarin.Yoga
             var childCount = node.Children.Count;
             if (options.HasFlag(YGPrintOptions.Children) && childCount > 0)
             {
-                for (var i = 0; i < childCount; i++)
+                foreach (var child in node.Children)
                 {
                     sb.Append("\n");
-                    NodeToString(sb, node.Children[i], options, level + 1);
+                    NodeToString(sb, child, options, level + 1);
                 }
 
                 sb.Append("\n");

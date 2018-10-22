@@ -26,7 +26,7 @@ namespace Xamarin.Yoga.Tests
 
             int dirtiedCount = 0;
             root.Context = dirtiedCount ;
-            root.setDirtiedFunc(n => { dirtiedCount++; });
+            root.DirtiedFunc = n => dirtiedCount++;
 
             Assert.AreEqual(0, dirtiedCount);
 
@@ -50,18 +50,18 @@ namespace Xamarin.Yoga.Tests
             YGNode root_child0 = new YGNode();
             root_child0.Style.Width = 50;
             root_child0.Style.Height = 20;
-            root.InsertChild(root_child0);
+            root.Children.Add(root_child0);
 
             YGNode root_child1 = new YGNode();
             root_child1.Style.Width = 50;
             root_child1.Style.Height = 20;
-            root.InsertChild(1, root_child1);
+            root.Children.Insert(1, root_child1);
 
             YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
 
             int dirtiedCount = 0;
             root.Context = dirtiedCount;
-            root.setDirtiedFunc(n => { dirtiedCount++; });
+            root.DirtiedFunc = n => { dirtiedCount++; };
 
             Assert.AreEqual(0, dirtiedCount);
 
@@ -85,18 +85,18 @@ namespace Xamarin.Yoga.Tests
             YGNode root_child0 = new YGNode();
             root_child0.Style.Width = 50;
             root_child0.Style.Height = 20;
-            root.InsertChild(root_child0);
+            root.Children.Add(root_child0);
 
             YGNode root_child1 = new YGNode();
             root_child1.Style.Width = 50;
             root_child1.Style.Height = 20;
-            root.InsertChild(1, root_child1);
+            root.Children.Insert(1, root_child1);
 
             YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
 
             int dirtiedCount = 0;
             root_child0.Context = dirtiedCount;
-            root_child0.setDirtiedFunc(n => { dirtiedCount++; });
+            root_child0.DirtiedFunc = n => { dirtiedCount++; };
 
             Assert.AreEqual(0, dirtiedCount);
 

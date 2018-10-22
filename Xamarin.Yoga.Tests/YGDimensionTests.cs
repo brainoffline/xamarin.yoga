@@ -23,7 +23,7 @@ namespace Xamarin.Yoga.Tests
              YGNode root_child0 = new YGNode(config);
             root_child0.Style.Width = 100;
             root_child0.Style.Height = 100;
-            root.InsertChild(root_child0);
+            root.Children.Add(root_child0);
             YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
 
             Assert.AreEqual(0, root.Layout.Position.Left);
@@ -60,12 +60,12 @@ namespace Xamarin.Yoga.Tests
              YGNode root = new YGNode(config);
 
              YGNode root_child0 = new YGNode(config);
-            root.InsertChild(root_child0);
+            root.Children.Add(root_child0);
 
              YGNode root_child0_child0 = new YGNode(config);
             root_child0_child0.Style.Width = 100;
             root_child0_child0.Style.Height = 100;
-            root_child0.InsertChild(root_child0_child0);
+            root_child0.Children.Add(root_child0_child0);
             YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
 
             Assert.AreEqual(0, root.Layout.Position.Left);

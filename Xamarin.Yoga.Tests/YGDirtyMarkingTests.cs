@@ -19,12 +19,12 @@ namespace Xamarin.Yoga.Tests
             YGNode root_child0 = new YGNode();
             root_child0.Style.Width = 50;
             root_child0.Style.Height = 20;
-            root.InsertChild(root_child0);
+            root.Children.Add(root_child0);
 
             YGNode root_child1 = new YGNode();
             root_child1.Style.Width = 50;
             root_child1.Style.Height = 20;
-            root.InsertChild(1, root_child1);
+            root.Children.Insert(1, root_child1);
 
             YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
 
@@ -52,12 +52,12 @@ namespace Xamarin.Yoga.Tests
             YGNode root_child0 = new YGNode();
             root_child0.Style.Width = 50;
             root_child0.Style.Height = 20;
-            root.InsertChild(root_child0);
+            root.Children.Add(root_child0);
 
             YGNode root_child1 = new YGNode();
             root_child1.Style.Width = 50;
             root_child1.Style.Height = 20;
-            root.InsertChild(1, root_child1);
+            root.Children.Insert(1, root_child1);
 
             YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
 
@@ -71,25 +71,29 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void dirty_mark_all_children_as_dirty_when_display_changes()
         {
-            YGNode root = new YGNode();
-            root.Style.FlexDirection = YGFlexDirection.Row;
-            root.Style.Height = 100;
+            YGNode root = new YGNode
+            {
+                Style =
+                {
+                    FlexDirection = YGFlexDirection.Row,
+                    Height = 100
+                }
+            };
 
-            YGNode child0 = new YGNode();
-            child0.Style.FlexGrow = 1;
-            YGNode child1 = new YGNode();
-            child1.Style.FlexGrow = 1;
+            YGNode child0 = new YGNode {Style = {FlexGrow = 1}};
+            YGNode child1 = new YGNode {Style = {FlexGrow = 1}};
 
             YGNode child1_child0        = new YGNode();
-            YGNode child1_child0_child0 = new YGNode();
-            child1_child0_child0.Style.Width = 8;
-            child1_child0_child0.Style.Height = 16;
+            YGNode child1_child0_child0 = new YGNode
+            {
+                Style = {Width = 8, Height = 16}
+            };
 
-            child1_child0.InsertChild(child1_child0_child0);
+            child1_child0.Children.Add(child1_child0_child0);
 
-            child1.InsertChild(child1_child0);
-            root.InsertChild(child0);
-            root.InsertChild(child1);
+            child1.Children.Add(child1_child0);
+            root.Children.Add(child0);
+            root.Children.Add(child1);
 
             child0.Style.Display = YGDisplay.Flex;
             child1.Style.Display = YGDisplay.None;
@@ -129,15 +133,15 @@ namespace Xamarin.Yoga.Tests
             YGNode child0 = new YGNode();
             child0.Style.Width = 50;
             child0.Style.Height = 25;
-            root.InsertChild(child0);
+            root.Children.Add(child0);
 
             YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
 
             YGNode child1 = new YGNode();
-            root.RemoveChild(child1);
+            root.Children.Remove(child1);
             Assert.IsFalse(root.IsDirty);
 
-            root.RemoveChild(child0);
+            root.Children.Remove(child0);
             Assert.IsTrue(root.IsDirty);
         }
 

@@ -24,17 +24,17 @@ namespace Xamarin.Yoga.Tests
 
             YGNode root1_child0 = new YGNode(config);
             root1_child0.Style.AlignItems = YGAlign.FlexStart;
-            root1.InsertChild(root1_child0);
+            root1.Children.Add(root1_child0);
 
             YGNode root1_child0_child0 = new YGNode(config);
             root1_child0_child0.Style.FlexGrow =  1;
             root1_child0_child0.Style.FlexShrink =  1;
-            root1_child0.InsertChild(root1_child0_child0);
+            root1_child0.Children.Add(root1_child0_child0);
 
             YGNode root1_child0_child0_child0 = new YGNode(config);
             root1_child0_child0_child0.Style.FlexGrow = 1;
             root1_child0_child0_child0.Style.FlexShrink = 1;
-            root1_child0_child0.InsertChild(root1_child0_child0_child0);
+            root1_child0_child0.Children.Add(root1_child0_child0_child0);
 
             YGNodeCalculateLayout(root1, float.NaN, float.NaN, YGDirection.LTR);
 
@@ -44,28 +44,28 @@ namespace Xamarin.Yoga.Tests
 
             YGNode root2_child0 = new YGNode(config);
             root2_child0.Style.AlignItems = YGAlign.FlexStart;
-            root2.InsertChild(root2_child0);
+            root2.Children.Add(root2_child0);
 
             YGNode root2_child0_child0 = new YGNode(config);
             root2_child0_child0.Style.FlexGrow = 1;
             root2_child0_child0.Style.FlexShrink = 1;
-            root2_child0.InsertChild(root2_child0_child0);
+            root2_child0.Children.Add(root2_child0_child0);
 
             YGNode root2_child0_child0_child0 = new YGNode(config);
             root2_child0_child0_child0.Style.FlexGrow = 1;
             root2_child0_child0_child0.Style.FlexShrink = 1;
-            root2_child0_child0.InsertChild(root2_child0_child0_child0);
+            root2_child0_child0.Children.Add(root2_child0_child0_child0);
 
             YGNodeCalculateLayout(root2, float.NaN, float.NaN, YGDirection.LTR);
 
-            Assert.IsTrue(root1.isLayoutTreeEqualToNode(root2));
+            Assert.IsTrue(root1.IsLayoutTreeEqualToNode(root2));
             //Assert.IsTrue(root1.isLayoutTreeEqualToNode(*root2));
 
             root2.Style.AlignItems = YGAlign.FlexEnd;
 
             YGNodeCalculateLayout(root2, float.NaN, float.NaN, YGDirection.LTR);
 
-            Assert.IsFalse(root1.isLayoutTreeEqualToNode(root2));
+            Assert.IsFalse(root1.IsLayoutTreeEqualToNode(root2));
             //Assert.IsFalse(root1.isLayoutTreeEqualToNode(*root2));
         }
     }

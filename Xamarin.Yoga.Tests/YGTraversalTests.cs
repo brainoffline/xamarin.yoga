@@ -24,7 +24,7 @@ namespace Xamarin.Yoga.Tests
             YGNode root_child0_child0  = new YGNode();
 
             root.SetChildren(new [] { root_child0, root_child1}.ToList());
-            root_child0.InsertChild(root_child0_child0);
+            root_child0.Children.Add(root_child0_child0);
 
             List<YGNode> visited = new List<YGNode>();
             YGTraversePreOrder(root, node => visited.Add(node));

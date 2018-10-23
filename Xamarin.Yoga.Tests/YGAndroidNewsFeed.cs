@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Xamarin.Yoga.Tests
 {
     using static YGGlobal;
-    using static YGConst;
+    using static YogaConst;
 
 
     [TestClass]
@@ -15,7 +15,7 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void android_news_feed()
         {
-            YGConfig config = new YGConfig();
+            YogaConfig config = new YogaConfig();
 
             YGNode root = new YGNode(config);
             root.Style.AlignContent = YGAlign.Stretch;
@@ -33,7 +33,7 @@ namespace Xamarin.Yoga.Tests
             root_child0_child0.Children.Add(root_child0_child0_child0);
 
             YGNode root_child0_child0_child0_child0 = new YGNode(config);
-            root_child0_child0_child0_child0.Style.FlexDirection = YGFlexDirection.Row;
+            root_child0_child0_child0_child0.Style.FlexDirection = FlexDirectionType.Row;
             root_child0_child0_child0_child0.Style.AlignContent = YGAlign.Stretch;
             root_child0_child0_child0_child0.Style.AlignItems = YGAlign.FlexStart;
             root_child0_child0_child0_child0.Style.Margin.Start = 36;
@@ -41,7 +41,7 @@ namespace Xamarin.Yoga.Tests
             root_child0_child0_child0.Children.Add(root_child0_child0_child0_child0);
 
             YGNode root_child0_child0_child0_child0_child0 = new YGNode(config);
-            root_child0_child0_child0_child0_child0.Style.FlexDirection = YGFlexDirection.Row;
+            root_child0_child0_child0_child0_child0.Style.FlexDirection = FlexDirectionType.Row;
             root_child0_child0_child0_child0_child0.Style.AlignContent = YGAlign.Stretch;
             root_child0_child0_child0_child0.Children.Add(root_child0_child0_child0_child0_child0);
 
@@ -59,7 +59,7 @@ namespace Xamarin.Yoga.Tests
             root_child0_child0_child0_child0.Children.Insert(1, root_child0_child0_child0_child0_child1);
 
             YGNode root_child0_child0_child0_child0_child1_child0 = new YGNode(config);
-            root_child0_child0_child0_child0_child1_child0.Style.FlexDirection = YGFlexDirection.Row;
+            root_child0_child0_child0_child0_child1_child0.Style.FlexDirection = FlexDirectionType.Row;
             root_child0_child0_child0_child0_child1_child0.Style.AlignContent = YGAlign.Stretch;
             root_child0_child0_child0_child0_child1_child0.Style.FlexShrink = 1;
             root_child0_child0_child0_child0_child1.Children.Add(root_child0_child0_child0_child0_child1_child0);
@@ -74,7 +74,7 @@ namespace Xamarin.Yoga.Tests
             root_child0_child0.Children.Insert(1, root_child0_child0_child1);
 
             YGNode root_child0_child0_child1_child0 = new YGNode(config);
-            root_child0_child0_child1_child0.Style.FlexDirection = YGFlexDirection.Row;
+            root_child0_child0_child1_child0.Style.FlexDirection = FlexDirectionType.Row;
             root_child0_child0_child1_child0.Style.AlignContent = YGAlign.Stretch;
             root_child0_child0_child1_child0.Style.AlignItems = YGAlign.FlexStart;
             root_child0_child0_child1_child0.Style.Margin.Start = 174;
@@ -82,7 +82,7 @@ namespace Xamarin.Yoga.Tests
             root_child0_child0_child1.Children.Add(root_child0_child0_child1_child0);
 
             YGNode root_child0_child0_child1_child0_child0 = new YGNode(config);
-            root_child0_child0_child1_child0_child0.Style.FlexDirection = YGFlexDirection.Row;
+            root_child0_child0_child1_child0_child0.Style.FlexDirection = FlexDirectionType.Row;
             root_child0_child0_child1_child0_child0.Style.AlignContent = YGAlign.Stretch;
             root_child0_child0_child1_child0.Children.Add(root_child0_child0_child1_child0_child0);
 
@@ -102,7 +102,7 @@ namespace Xamarin.Yoga.Tests
             root_child0_child0_child1_child0.Children.Insert(1, root_child0_child0_child1_child0_child1);
 
             YGNode root_child0_child0_child1_child0_child1_child0 = new YGNode(config);
-            root_child0_child0_child1_child0_child1_child0.Style.FlexDirection = YGFlexDirection.Row;
+            root_child0_child0_child1_child0_child1_child0.Style.FlexDirection = FlexDirectionType.Row;
             root_child0_child0_child1_child0_child1_child0.Style.AlignContent = YGAlign.Stretch;
             root_child0_child0_child1_child0_child1_child0.Style.FlexShrink = 1;
             root_child0_child0_child1_child0_child1.Children.Add(root_child0_child0_child1_child0_child1_child0);
@@ -111,7 +111,7 @@ namespace Xamarin.Yoga.Tests
             root_child0_child0_child1_child0_child1_child1.Style.AlignContent = YGAlign.Stretch;
             root_child0_child0_child1_child0_child1_child1.Style.FlexShrink = 1;
             root_child0_child0_child1_child0_child1.Children.Insert(1, root_child0_child0_child1_child0_child1_child1);
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
+            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(0,    root.Layout.Position.Left);
             Assert.AreEqual(0,    root.Layout.Position.Top);
@@ -198,7 +198,7 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(0,root_child0_child0_child1_child0_child1_child1.Layout.Width);
             Assert.AreEqual(0,root_child0_child0_child1_child0_child1_child1.Layout.Height);
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.RTL);
+            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.RTL);
 
             Assert.AreEqual(0,    root.Layout.Position.Left);
             Assert.AreEqual(0,    root.Layout.Position.Top);

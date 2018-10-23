@@ -12,9 +12,9 @@ namespace Xamarin.Yoga.Tests
         StringBuilder sb = new StringBuilder();
 
         private void _unmanagedLogger(
-            YGConfig        config,
+            YogaConfig        config,
             YGNode          node,
-            YGLogLevel      level,
+            LogLevel      level,
             string          format,
             params object[] args)
         {
@@ -26,7 +26,7 @@ namespace Xamarin.Yoga.Tests
         {
             sb.Clear();
 
-            var config = new YGConfig
+            var config = new YogaConfig
             {
                 printTree = true,
                 Logger    = _unmanagedLogger
@@ -41,7 +41,7 @@ namespace Xamarin.Yoga.Tests
                 }
             };
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
+            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.LTR);
             config.Logger = null;
 
             var expected =
@@ -57,7 +57,7 @@ namespace Xamarin.Yoga.Tests
         {
             sb.Clear();
 
-            YGConfig config = new YGConfig
+            YogaConfig config = new YogaConfig
             {
                 printTree = false,
                 Logger    = _unmanagedLogger
@@ -72,7 +72,7 @@ namespace Xamarin.Yoga.Tests
                 }
             };
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
+            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.LTR);
 
             config.Logger = null;
 
@@ -84,11 +84,11 @@ namespace Xamarin.Yoga.Tests
         {
             sb.Clear();
 
-            YGConfig config = new YGConfig {Logger = _unmanagedLogger};
+            YogaConfig config = new YogaConfig {Logger = _unmanagedLogger};
 
             YGNode root = new YGNode(config);
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
-            root.Print(YGPrintOptions.All);
+            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.LTR);
+            root.Print(PrintOptionType.All);
             config.Logger = null;
 
             var expected = "<div layout=\"width: 0; height: 0; top: 0; left: 0;\" style=\"\" ></div>";
@@ -100,11 +100,11 @@ namespace Xamarin.Yoga.Tests
         {
             sb.Clear();
 
-            YGNode root = new YGNode(new YGConfig {Logger = _unmanagedLogger})
+            YGNode root = new YGNode(new YogaConfig {Logger = _unmanagedLogger})
             {
                 Style =
                 {
-                    PositionType = YGPositionType.Absolute,
+                    PositionType = PositionType.Absolute,
                     Width        = 50.Percent(),
                     Height       = 75.Percent(),
                     Flex         = 1,
@@ -112,9 +112,9 @@ namespace Xamarin.Yoga.Tests
                 }
             };
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
+            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.LTR);
 
-            root.Print(YGPrintOptions.All);
+            root.Print(PrintOptionType.All);
 
             var expected = "<div layout=\"width: 0; height: 0; top: 0; left: 0;\" style=\"flex: 1; " +
                 "margin-left: auto; margin-right: 10px; width: 50%; height: 75%; "                   +
@@ -127,7 +127,7 @@ namespace Xamarin.Yoga.Tests
         {
             sb.Clear();
 
-            YGConfig config = new YGConfig {Logger = _unmanagedLogger};
+            YogaConfig config = new YogaConfig {Logger = _unmanagedLogger};
             YGNode root = new YGNode(config)
             {
                 Children =
@@ -137,9 +137,9 @@ namespace Xamarin.Yoga.Tests
                 }
             };
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
+            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.LTR);
 
-            root.Print(YGPrintOptions.All);
+            root.Print(PrintOptionType.All);
             config.Logger = null;
 
             var expected = "<div layout=\"width: 0; height: 0; top: 0; left: 0;\" style=\"\" >\n  " +

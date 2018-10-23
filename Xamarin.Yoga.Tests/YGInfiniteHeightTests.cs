@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Xamarin.Yoga.Tests
 {
     using static YGGlobal;
-    using static YGConst;
+    using static YogaConst;
 
 
     [TestClass]
@@ -18,10 +18,10 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void percent_absolute_position_infinite_height()
         {
-            YGConfig config = new YGConfig();
+            YogaConfig config = new YogaConfig();
 
             YGNode root = new YGNode(config);
-            root.Style.FlexDirection = YGFlexDirection.Row;
+            root.Style.FlexDirection = FlexDirectionType.Row;
             root.Style.Width = 300;
 
             YGNode root_child0 = new YGNode(config);
@@ -30,13 +30,13 @@ namespace Xamarin.Yoga.Tests
             root.Children.Add(root_child0);
 
             YGNode root_child1 = new YGNode(config);
-            root_child1.Style.PositionType = YGPositionType.Absolute;
+            root_child1.Style.PositionType = PositionType.Absolute;
             root_child1.Style.Position.Left = 20.Percent();
             root_child1.Style.Position.Top = 20.Percent();
             root_child1.Style.Width = 20.Percent();
             root_child1.Style.Height = 20.Percent();
             root.Children.Insert(1, root_child1);
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
+            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(0,   root.Layout.Position.Left);
             Assert.AreEqual(0,   root.Layout.Position.Top);

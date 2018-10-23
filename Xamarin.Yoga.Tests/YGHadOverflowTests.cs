@@ -6,24 +6,24 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Xamarin.Yoga.Tests
 {
     using static YGGlobal;
-    using static YGConst;
+    using static YogaConst;
 
 
     [TestClass]
     public class YGHadOverflowTests
     {
         YGNode   root;
-        YGConfig config;
+        YogaConfig config;
 
         [TestInitialize]
         public void YogaTest_HadOverflowTests_Init()
         {
-            config = new YGConfig();
+            config = new YogaConfig();
             root   = new YGNode(config);
             root.Style.Width = 200;
             root.Style.Height = 100;
-            root.Style.FlexDirection = YGFlexDirection.Column;
-            root.Style.FlexWrap = YGWrap.NoWrap;
+            root.Style.FlexDirection = FlexDirectionType.Column;
+            root.Style.FlexWrap = WrapType.NoWrap;
         }
 
         [TestCleanup]
@@ -45,7 +45,7 @@ namespace Xamarin.Yoga.Tests
             child1.Style.Margin.Bottom = 5;
             root.Children.Insert(1, child1);
 
-            YGNodeCalculateLayout(root, 200, 100, YGDirection.LTR);
+            YGNodeCalculateLayout(root, 200, 100, DirectionType.LTR);
 
             Assert.IsTrue(root.Layout.HadOverflow);
         }
@@ -65,7 +65,7 @@ namespace Xamarin.Yoga.Tests
             child1.Style.Margin.Bottom = 5;
             root.Children.Insert(1, child1);
 
-            YGNodeCalculateLayout(root, 200, 100, YGDirection.LTR);
+            YGNodeCalculateLayout(root, 200, 100, DirectionType.LTR);
 
             Assert.IsTrue(root.Layout.HadOverflow);
         }
@@ -86,7 +86,7 @@ namespace Xamarin.Yoga.Tests
             child1.Style.FlexShrink = 1;
             root.Children.Insert(1, child1);
 
-            YGNodeCalculateLayout(root, 200, 100, YGDirection.LTR);
+            YGNodeCalculateLayout(root, 200, 100, DirectionType.LTR);
 
             Assert.IsFalse(root.Layout.HadOverflow);
         }
@@ -106,13 +106,13 @@ namespace Xamarin.Yoga.Tests
             child1.Style.Margin.Bottom = 5;
             root.Children.Insert(1, child1);
 
-            YGNodeCalculateLayout(root, 200, 100, YGDirection.LTR);
+            YGNodeCalculateLayout(root, 200, 100, DirectionType.LTR);
 
             Assert.IsTrue(root.Layout.HadOverflow);
 
             child1.Style.FlexShrink = 1;
 
-            YGNodeCalculateLayout(root, 200, 100, YGDirection.LTR);
+            YGNodeCalculateLayout(root, 200, 100, DirectionType.LTR);
 
             Assert.IsFalse(root.Layout.HadOverflow);
         }
@@ -136,7 +136,7 @@ namespace Xamarin.Yoga.Tests
             child1_1.Style.Margin.Bottom = 5;
             child1.Children.Add(child1_1);
 
-            YGNodeCalculateLayout(root, 200, 100, YGDirection.LTR);
+            YGNodeCalculateLayout(root, 200, 100, DirectionType.LTR);
 
             Assert.IsTrue(root.Layout.HadOverflow);
         }

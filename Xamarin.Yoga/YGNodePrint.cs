@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
@@ -9,10 +8,10 @@ namespace Xamarin.Yoga
 
     public class NodePrint
     {
-        private readonly YGNode         _node;
-        private readonly YGPrintOptions _options;
+        private readonly YGNode          _node;
+        private readonly PrintOptionType _options;
 
-        public NodePrint(YGNode node, YGPrintOptions options)
+        public NodePrint(YGNode node, PrintOptionType options)
         {
             _node    = node ?? throw new ArgumentNullException(nameof(node));
             _options = options;
@@ -25,19 +24,31 @@ namespace Xamarin.Yoga
             return sb.ToString();
         }
 
-
-        private void Indent(StringBuilder sb, int level)
+        private void AppendEdgeIfNotUndefined(
+            StringBuilder sb,
+            string        str,
+            Edges         edges,
+            EdgeType      edge)
         {
-            for (var i = 0; i < level; ++i)
-                sb.Append("  ");
+            AppendNumberIfNotUndefined(
+                sb,
+                str,
+                edges.ComputedEdgeValue(edge, YogaConst.YGValueUndefined));
         }
 
-        private bool AreFourValuesEqual(Edges edges)
+        private void AppendEdges(
+            StringBuilder sb,
+            string        key,
+            Edges         edges)
         {
-            return
-                YGValueEqual(edges.Left, edges.Top)   &&
-                YGValueEqual(edges.Left, edges.Right) &&
-                YGValueEqual(edges.Left, edges.Bottom);
+            if (AreFourValuesEqual(edges))
+                AppendNumberIfNotZero(sb, key, edges[EdgeType.Left]);
+            else
+                for (var edge = EdgeType.Left; edge != EdgeType.All; ++edge)
+                {
+                    var str = $"{key}-{edge.ToDescription()}";
+                    AppendNumberIfNotZero(sb, str, edges[edge]);
+                }
         }
 
         [SuppressMessage("ReSharper", "PossibleInvalidOperationException")]
@@ -50,71 +61,59 @@ namespace Xamarin.Yoga
                 sb.Append($"{key}: {num.Value}; ");
         }
 
+        private void AppendNumberIfNotAuto(StringBuilder sb, in string key, in YGValue number)
+        {
+            if (number.Unit != ValueUnit.Auto)
+                AppendNumberIfNotUndefined(sb, key, number);
+        }
+
         private void AppendNumberIfNotUndefined(
             StringBuilder sb,
             string        key,
             YGValue       number)
         {
-            if (number.unit != YGUnit.Undefined)
+            if (number.Unit != ValueUnit.Undefined)
             {
-                if (number.unit == YGUnit.Auto)
+                if (number.Unit == ValueUnit.Auto)
                 {
                     sb.Append($"{key}: auto; ");
                 }
                 else
                 {
-                    var unit = number.unit == YGUnit.Point ? "px" : "%";
-                    sb.Append($"{key}: {number.value}{unit}; ");
+                    var unit = number.Unit == ValueUnit.Point ? "px" : "%";
+                    sb.Append($"{key}: {number.Value}{unit}; ");
                 }
             }
         }
 
-        private void AppendNumberIfNotAuto(StringBuilder sb, in string key, in YGValue number)
-        {
-            if (number.unit != YGUnit.Auto)
-                AppendNumberIfNotUndefined(sb, key, number);
-        }
-
         private void AppendNumberIfNotZero(StringBuilder sb, in string str, in YGValue number)
         {
-            if (number.unit == YGUnit.Auto)
+            if (number.Unit == ValueUnit.Auto)
                 sb.Append($"{str}: auto; ");
-            else if (!FloatEqual(number.value, 0))
+            else if (!FloatEqual(number.Value, 0))
                 AppendNumberIfNotUndefined(sb, str, number);
         }
 
-        private void AppendEdges(
-            StringBuilder sb,
-            string        key,
-            Edges         edges)
+        private bool AreFourValuesEqual(Edges edges)
         {
-            if (AreFourValuesEqual(edges))
-                AppendNumberIfNotZero(sb, key, edges[YGEdge.Left]);
-            else
-                for (var edge = YGEdge.Left; edge != YGEdge.All; ++edge)
-                {
-                    var str = $"{key}-{edge.ToDescription()}";
-                    AppendNumberIfNotZero(sb, str, edges[edge]);
-                }
+            return
+                YGValueEqual(edges.Left, edges.Top)   &&
+                YGValueEqual(edges.Left, edges.Right) &&
+                YGValueEqual(edges.Left, edges.Bottom);
         }
 
-        private void AppendEdgeIfNotUndefined(
-            StringBuilder sb,
-            string        str,
-            Edges         edges,
-            YGEdge        edge)
+
+        private void Indent(StringBuilder sb, int level)
         {
-            AppendNumberIfNotUndefined(
-                sb,
-                str,
-                edges.ComputedEdgeValue(edge, YGConst.YGValueUndefined));
+            for (var i = 0; i < level; ++i)
+                sb.Append("  ");
         }
 
         private StringBuilder NodeToString(
-            StringBuilder  sb,
-            YGNode         node,
-            YGPrintOptions options,
-            int            level = 0)
+            StringBuilder   sb,
+            YGNode          node,
+            PrintOptionType options,
+            int             level = 0)
         {
             if (sb == null)
                 sb = new StringBuilder();
@@ -123,7 +122,7 @@ namespace Xamarin.Yoga
             sb.Append("<div ");
             node.PrintFunc?.Invoke(node);
 
-            if (options.HasFlag(YGPrintOptions.Layout))
+            if (options.HasFlag(PrintOptionType.Layout))
             {
                 sb.Append("layout=\"");
                 sb.Append($"width: {node.Layout.Width}; ");
@@ -133,7 +132,7 @@ namespace Xamarin.Yoga
                 sb.Append("\" ");
             }
 
-            if (options.HasFlag(YGPrintOptions.Style))
+            if (options.HasFlag(PrintOptionType.Style))
             {
                 var defaultStyle = new YGNode().Style;
 
@@ -181,10 +180,10 @@ namespace Xamarin.Yoga
                 if (node.Style.PositionType != defaultStyle.PositionType)
                     sb.Append($"position: {node.Style.PositionType.ToDescription()}; ");
 
-                AppendEdgeIfNotUndefined(sb, "left",   node.Style.Position, YGEdge.Left);
-                AppendEdgeIfNotUndefined(sb, "right",  node.Style.Position, YGEdge.Right);
-                AppendEdgeIfNotUndefined(sb, "top",    node.Style.Position, YGEdge.Top);
-                AppendEdgeIfNotUndefined(sb, "bottom", node.Style.Position, YGEdge.Bottom);
+                AppendEdgeIfNotUndefined(sb, "left",   node.Style.Position, EdgeType.Left);
+                AppendEdgeIfNotUndefined(sb, "right",  node.Style.Position, EdgeType.Right);
+                AppendEdgeIfNotUndefined(sb, "top",    node.Style.Position, EdgeType.Top);
+                AppendEdgeIfNotUndefined(sb, "bottom", node.Style.Position, EdgeType.Bottom);
                 sb.Append("\" ");
 
                 if (node.MeasureFunc != null)
@@ -194,7 +193,7 @@ namespace Xamarin.Yoga
             sb.Append(">");
 
             var childCount = node.Children.Count;
-            if (options.HasFlag(YGPrintOptions.Children) && childCount > 0)
+            if (options.HasFlag(PrintOptionType.Children) && childCount > 0)
             {
                 foreach (var child in node.Children)
                 {

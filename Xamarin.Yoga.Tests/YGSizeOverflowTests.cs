@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Xamarin.Yoga.Tests
 {
     using static YGGlobal;
-    using static YGConst;
+    using static YogaConst;
     
     
     
@@ -17,7 +17,7 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void nested_overflowing_child()
         {
-            YGConfig config = new YGConfig();
+            YogaConfig config = new YogaConfig();
 
             YGNode root = new YGNode(config);
             root.Style.Width = 100;
@@ -30,7 +30,7 @@ namespace Xamarin.Yoga.Tests
             root_child0_child0.Style.Width = 200;
             root_child0_child0.Style.Height = 200;
             root_child0.Children.Add(root_child0_child0);
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
+            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(0,   root.Layout.Position.Left);
             Assert.AreEqual(0,   root.Layout.Position.Top);
@@ -47,7 +47,7 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(200, root_child0_child0.Layout.Width);
             Assert.AreEqual(200, root_child0_child0.Layout.Height);
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.RTL);
+            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.RTL);
 
             Assert.AreEqual(0,   root.Layout.Position.Left);
             Assert.AreEqual(0,   root.Layout.Position.Top);
@@ -72,7 +72,7 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void nested_overflowing_child_in_constraint_parent()
         {
-            YGConfig config = new YGConfig();
+            YogaConfig config = new YogaConfig();
 
             YGNode root = new YGNode(config);
             root.Style.Width = 100;
@@ -87,7 +87,7 @@ namespace Xamarin.Yoga.Tests
             root_child0_child0.Style.Width = 200;
             root_child0_child0.Style.Height = 200;
             root_child0.Children.Add(root_child0_child0);
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
+            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(0,   root.Layout.Position.Left);
             Assert.AreEqual(0,   root.Layout.Position.Top);
@@ -104,7 +104,7 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(200, root_child0_child0.Layout.Width);
             Assert.AreEqual(200, root_child0_child0.Layout.Height);
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.RTL);
+            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.RTL);
 
             Assert.AreEqual(0,   root.Layout.Position.Left);
             Assert.AreEqual(0,   root.Layout.Position.Top);
@@ -129,7 +129,7 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void parent_wrap_child_size_overflowing_parent()
         {
-            YGConfig config = new YGConfig();
+            YogaConfig config = new YogaConfig();
 
             YGNode root = new YGNode(config);
             root.Style.Width = 100;
@@ -143,7 +143,7 @@ namespace Xamarin.Yoga.Tests
             root_child0_child0.Style.Width = 100;
             root_child0_child0.Style.Height = 200;
             root_child0.Children.Add(root_child0_child0);
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
+            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(0,   root.Layout.Position.Left);
             Assert.AreEqual(0,   root.Layout.Position.Top);
@@ -160,7 +160,7 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(100, root_child0_child0.Layout.Width);
             Assert.AreEqual(200, root_child0_child0.Layout.Height);
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.RTL);
+            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.RTL);
 
             Assert.AreEqual(0,   root.Layout.Position.Left);
             Assert.AreEqual(0,   root.Layout.Position.Top);

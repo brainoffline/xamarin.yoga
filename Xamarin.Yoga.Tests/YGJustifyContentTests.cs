@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Xamarin.Yoga.Tests
 {
     using static YGGlobal;
-    using static YGConst;
+    using static YogaConst;
 
 
     [TestClass]
@@ -15,10 +15,10 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void justify_content_row_flex_start()
         {
-            YGConfig config = new YGConfig();
+            YogaConfig config = new YogaConfig();
 
             YGNode root = new YGNode(config);
-            root.Style.FlexDirection = YGFlexDirection.Row;
+            root.Style.FlexDirection = FlexDirectionType.Row;
             root.Style.Width = 102;
             root.Style.Height = 102;
 
@@ -33,7 +33,7 @@ namespace Xamarin.Yoga.Tests
             YGNode root_child2 = new YGNode(config);
             root_child2.Style.Width = 10;
             root.Children.Insert(2, root_child2);
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
+            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(0,   root.Layout.Position.Left);
             Assert.AreEqual(0,   root.Layout.Position.Top);
@@ -55,7 +55,7 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(10,  root_child2.Layout.Width);
             Assert.AreEqual(102, root_child2.Layout.Height);
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.RTL);
+            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.RTL);
 
             Assert.AreEqual(0,   root.Layout.Position.Left);
             Assert.AreEqual(0,   root.Layout.Position.Top);
@@ -81,11 +81,11 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void justify_content_row_flex_end()
         {
-            YGConfig config = new YGConfig();
+            YogaConfig config = new YogaConfig();
 
             YGNode root = new YGNode(config);
-            root.Style.FlexDirection = YGFlexDirection.Row;
-            root.Style.JustifyContent = YGJustify.FlexEnd;
+            root.Style.FlexDirection = FlexDirectionType.Row;
+            root.Style.JustifyContent = JustifyType.FlexEnd;
             root.Style.Width = 102;
             root.Style.Height = 102;
 
@@ -100,7 +100,7 @@ namespace Xamarin.Yoga.Tests
             YGNode root_child2 = new YGNode(config);
             root_child2.Style.Width = 10;
             root.Children.Insert(2, root_child2);
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
+            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(0,   root.Layout.Position.Left);
             Assert.AreEqual(0,   root.Layout.Position.Top);
@@ -122,7 +122,7 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(10,  root_child2.Layout.Width);
             Assert.AreEqual(102, root_child2.Layout.Height);
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.RTL);
+            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.RTL);
 
             Assert.AreEqual(0,   root.Layout.Position.Left);
             Assert.AreEqual(0,   root.Layout.Position.Top);
@@ -148,11 +148,11 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void justify_content_row_center()
         {
-            YGConfig config = new YGConfig();
+            YogaConfig config = new YogaConfig();
 
             YGNode root = new YGNode(config);
-            root.Style.FlexDirection = YGFlexDirection.Row;
-            root.Style.JustifyContent = YGJustify.Center;
+            root.Style.FlexDirection = FlexDirectionType.Row;
+            root.Style.JustifyContent = JustifyType.Center;
             root.Style.Width = 102;
             root.Style.Height = 102;
 
@@ -167,7 +167,7 @@ namespace Xamarin.Yoga.Tests
             YGNode root_child2 = new YGNode(config);
             root_child2.Style.Width = 10;
             root.Children.Insert(2, root_child2);
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
+            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(0,   root.Layout.Position.Left);
             Assert.AreEqual(0,   root.Layout.Position.Top);
@@ -189,7 +189,7 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(10,  root_child2.Layout.Width);
             Assert.AreEqual(102, root_child2.Layout.Height);
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.RTL);
+            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.RTL);
 
             Assert.AreEqual(0,   root.Layout.Position.Left);
             Assert.AreEqual(0,   root.Layout.Position.Top);
@@ -215,11 +215,11 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void justify_content_row_space_between()
         {
-            YGConfig config = new YGConfig();
+            YogaConfig config = new YogaConfig();
 
             YGNode root = new YGNode(config);
-            root.Style.FlexDirection = YGFlexDirection.Row;
-            root.Style.JustifyContent = YGJustify.SpaceBetween;
+            root.Style.FlexDirection = FlexDirectionType.Row;
+            root.Style.JustifyContent = JustifyType.SpaceBetween;
             root.Style.Width = 102;
             root.Style.Height = 102;
 
@@ -234,7 +234,7 @@ namespace Xamarin.Yoga.Tests
             YGNode root_child2 = new YGNode(config);
             root_child2.Style.Width = 10;
             root.Children.Insert(2, root_child2);
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
+            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(0,   root.Layout.Position.Left);
             Assert.AreEqual(0,   root.Layout.Position.Top);
@@ -256,7 +256,7 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(10,  root_child2.Layout.Width);
             Assert.AreEqual(102, root_child2.Layout.Height);
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.RTL);
+            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.RTL);
 
             Assert.AreEqual(0,   root.Layout.Position.Left);
             Assert.AreEqual(0,   root.Layout.Position.Top);
@@ -282,11 +282,11 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void justify_content_row_space_around()
         {
-            YGConfig config = new YGConfig();
+            YogaConfig config = new YogaConfig();
 
             YGNode root = new YGNode(config);
-            root.Style.FlexDirection = YGFlexDirection.Row;
-            root.Style.JustifyContent = YGJustify.SpaceAround;
+            root.Style.FlexDirection = FlexDirectionType.Row;
+            root.Style.JustifyContent = JustifyType.SpaceAround;
             root.Style.Width = 102;
             root.Style.Height = 102;
 
@@ -301,7 +301,7 @@ namespace Xamarin.Yoga.Tests
             YGNode root_child2 = new YGNode(config);
             root_child2.Style.Width = 10;
             root.Children.Insert(2, root_child2);
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
+            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(0,   root.Layout.Position.Left);
             Assert.AreEqual(0,   root.Layout.Position.Top);
@@ -323,7 +323,7 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(10,  root_child2.Layout.Width);
             Assert.AreEqual(102, root_child2.Layout.Height);
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.RTL);
+            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.RTL);
 
             Assert.AreEqual(0,   root.Layout.Position.Left);
             Assert.AreEqual(0,   root.Layout.Position.Top);
@@ -349,7 +349,7 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void justify_content_column_flex_start()
         {
-            YGConfig config = new YGConfig();
+            YogaConfig config = new YogaConfig();
 
             YGNode root = new YGNode(config);
             root.Style.Width = 102;
@@ -366,7 +366,7 @@ namespace Xamarin.Yoga.Tests
             YGNode root_child2 = new YGNode(config);
             root_child2.Style.Height = 10;
             root.Children.Insert(2, root_child2);
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
+            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(0,   root.Layout.Position.Left);
             Assert.AreEqual(0,   root.Layout.Position.Top);
@@ -388,7 +388,7 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(102, root_child2.Layout.Width);
             Assert.AreEqual(10,  root_child2.Layout.Height);
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.RTL);
+            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.RTL);
 
             Assert.AreEqual(0,   root.Layout.Position.Left);
             Assert.AreEqual(0,   root.Layout.Position.Top);
@@ -414,10 +414,10 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void justify_content_column_flex_end()
         {
-            YGConfig config = new YGConfig();
+            YogaConfig config = new YogaConfig();
 
             YGNode root = new YGNode(config);
-            root.Style.JustifyContent = YGJustify.FlexEnd;
+            root.Style.JustifyContent = JustifyType.FlexEnd;
             root.Style.Width = 102;
             root.Style.Height = 102;
 
@@ -432,7 +432,7 @@ namespace Xamarin.Yoga.Tests
             YGNode root_child2 = new YGNode(config);
             root_child2.Style.Height = 10;
             root.Children.Insert(2, root_child2);
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
+            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(0,   root.Layout.Position.Left);
             Assert.AreEqual(0,   root.Layout.Position.Top);
@@ -454,7 +454,7 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(102, root_child2.Layout.Width);
             Assert.AreEqual(10,  root_child2.Layout.Height);
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.RTL);
+            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.RTL);
 
             Assert.AreEqual(0,   root.Layout.Position.Left);
             Assert.AreEqual(0,   root.Layout.Position.Top);
@@ -480,10 +480,10 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void justify_content_column_center()
         {
-            YGConfig config = new YGConfig();
+            YogaConfig config = new YogaConfig();
 
             YGNode root = new YGNode(config);
-            root.Style.JustifyContent = YGJustify.Center;
+            root.Style.JustifyContent = JustifyType.Center;
             root.Style.Width = 102;
             root.Style.Height = 102;
 
@@ -498,7 +498,7 @@ namespace Xamarin.Yoga.Tests
             YGNode root_child2 = new YGNode(config);
             root_child2.Style.Height = 10;
             root.Children.Insert(2, root_child2);
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
+            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(0,   root.Layout.Position.Left);
             Assert.AreEqual(0,   root.Layout.Position.Top);
@@ -520,7 +520,7 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(102, root_child2.Layout.Width);
             Assert.AreEqual(10,  root_child2.Layout.Height);
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.RTL);
+            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.RTL);
 
             Assert.AreEqual(0,   root.Layout.Position.Left);
             Assert.AreEqual(0,   root.Layout.Position.Top);
@@ -546,10 +546,10 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void justify_content_column_space_between()
         {
-            YGConfig config = new YGConfig();
+            YogaConfig config = new YogaConfig();
 
             YGNode root = new YGNode(config);
-            root.Style.JustifyContent = YGJustify.SpaceBetween;
+            root.Style.JustifyContent = JustifyType.SpaceBetween;
             root.Style.Width = 102;
             root.Style.Height = 102;
 
@@ -564,7 +564,7 @@ namespace Xamarin.Yoga.Tests
             YGNode root_child2 = new YGNode(config);
             root_child2.Style.Height = 10;
             root.Children.Insert(2, root_child2);
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
+            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(0,   root.Layout.Position.Left);
             Assert.AreEqual(0,   root.Layout.Position.Top);
@@ -586,7 +586,7 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(102, root_child2.Layout.Width);
             Assert.AreEqual(10,  root_child2.Layout.Height);
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.RTL);
+            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.RTL);
 
             Assert.AreEqual(0,   root.Layout.Position.Left);
             Assert.AreEqual(0,   root.Layout.Position.Top);
@@ -612,10 +612,10 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void justify_content_column_space_around()
         {
-            YGConfig config = new YGConfig();
+            YogaConfig config = new YogaConfig();
 
             YGNode root = new YGNode(config);
-            root.Style.JustifyContent = YGJustify.SpaceAround;
+            root.Style.JustifyContent = JustifyType.SpaceAround;
             root.Style.Width = 102;
             root.Style.Height = 102;
 
@@ -630,7 +630,7 @@ namespace Xamarin.Yoga.Tests
             YGNode root_child2 = new YGNode(config);
             root_child2.Style.Height = 10;
             root.Children.Insert(2, root_child2);
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
+            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(0,   root.Layout.Position.Left);
             Assert.AreEqual(0,   root.Layout.Position.Top);
@@ -652,7 +652,7 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(102, root_child2.Layout.Width);
             Assert.AreEqual(10,  root_child2.Layout.Height);
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.RTL);
+            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.RTL);
 
             Assert.AreEqual(0,   root.Layout.Position.Left);
             Assert.AreEqual(0,   root.Layout.Position.Top);
@@ -678,11 +678,11 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void justify_content_row_min_width_and_margin()
         {
-            YGConfig config = new YGConfig();
+            YogaConfig config = new YogaConfig();
 
             YGNode root = new YGNode(config);
-            root.Style.FlexDirection = YGFlexDirection.Row;
-            root.Style.JustifyContent = YGJustify.Center;
+            root.Style.FlexDirection = FlexDirectionType.Row;
+            root.Style.JustifyContent = JustifyType.Center;
             root.Style.Margin.Left = 100;
             root.Style.MinWidth = 50;
 
@@ -690,7 +690,7 @@ namespace Xamarin.Yoga.Tests
             root_child0.Style.Width = 20;
             root_child0.Style.Height = 20;
             root.Children.Add(root_child0);
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
+            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(100, root.Layout.Position.Left);
             Assert.AreEqual(0,   root.Layout.Position.Top);
@@ -702,7 +702,7 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(20, root_child0.Layout.Width);
             Assert.AreEqual(20, root_child0.Layout.Height);
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.RTL);
+            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.RTL);
 
             Assert.AreEqual(100, root.Layout.Position.Left);
             Assert.AreEqual(0,   root.Layout.Position.Top);
@@ -718,7 +718,7 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void justify_content_min_width_with_padding_child_width_greater_than_parent()
         {
-            YGConfig config = new YGConfig();
+            YogaConfig config = new YogaConfig();
 
             YGNode root = new YGNode(config);
             root.Style.AlignContent = YGAlign.Stretch;
@@ -726,26 +726,26 @@ namespace Xamarin.Yoga.Tests
             root.Style.Height = 1584;
 
             YGNode root_child0 = new YGNode(config);
-            root_child0.Style.FlexDirection = YGFlexDirection.Row;
+            root_child0.Style.FlexDirection = FlexDirectionType.Row;
             root_child0.Style.AlignContent = YGAlign.Stretch;
             root.Children.Add(root_child0);
 
             YGNode root_child0_child0 = new YGNode(config);
-            root_child0_child0.Style.FlexDirection = YGFlexDirection.Row;
-            root_child0_child0.Style.JustifyContent = YGJustify.Center;
+            root_child0_child0.Style.FlexDirection = FlexDirectionType.Row;
+            root_child0_child0.Style.JustifyContent = JustifyType.Center;
             root_child0_child0.Style.AlignContent = YGAlign.Stretch;
             root_child0_child0.Style.MinWidth = 400;
             root_child0_child0.Style.Padding.Horizontal = 100;
             root_child0.Children.Add(root_child0_child0);
 
             YGNode root_child0_child0_child0 = new YGNode(config);
-            root_child0_child0_child0.Style.FlexDirection = YGFlexDirection.Row;
+            root_child0_child0_child0.Style.FlexDirection = FlexDirectionType.Row;
             root_child0_child0_child0.Style.AlignContent = YGAlign.Stretch;
             root_child0_child0_child0.Style.Width = 300;
             root_child0_child0_child0.Style.Height = 100;
             root_child0_child0.Children.Add(root_child0_child0_child0);
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
+            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(0,    root.Layout.Position.Left);
             Assert.AreEqual(0,    root.Layout.Position.Top);
@@ -767,7 +767,7 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(300, root_child0_child0_child0.Layout.Width);
             Assert.AreEqual(100, root_child0_child0_child0.Layout.Height);
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.RTL);
+            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.RTL);
 
             Assert.AreEqual(0,    root.Layout.Position.Left);
             Assert.AreEqual(0,    root.Layout.Position.Top);
@@ -793,7 +793,7 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void justify_content_min_width_with_padding_child_width_lower_than_parent()
         {
-            YGConfig config = new YGConfig();
+            YogaConfig config = new YogaConfig();
 
             YGNode root = new YGNode(config);
             root.Style.AlignContent = YGAlign.Stretch;
@@ -801,26 +801,26 @@ namespace Xamarin.Yoga.Tests
             root.Style.Height = 1584;
 
             YGNode root_child0 = new YGNode(config);
-            root_child0.Style.FlexDirection = YGFlexDirection.Row;
+            root_child0.Style.FlexDirection = FlexDirectionType.Row;
             root_child0.Style.AlignContent = YGAlign.Stretch;
             root.Children.Add(root_child0);
 
             YGNode root_child0_child0 = new YGNode(config);
-            root_child0_child0.Style.FlexDirection = YGFlexDirection.Row;
-            root_child0_child0.Style.JustifyContent = YGJustify.Center;
+            root_child0_child0.Style.FlexDirection = FlexDirectionType.Row;
+            root_child0_child0.Style.JustifyContent = JustifyType.Center;
             root_child0_child0.Style.AlignContent = YGAlign.Stretch;
             root_child0_child0.Style.MinWidth = 400;
             root_child0_child0.Style.Padding.Horizontal = 100;
             root_child0.Children.Add(root_child0_child0);
 
             YGNode root_child0_child0_child0 = new YGNode(config);
-            root_child0_child0_child0.Style.FlexDirection = YGFlexDirection.Row;
+            root_child0_child0_child0.Style.FlexDirection = FlexDirectionType.Row;
             root_child0_child0_child0.Style.AlignContent = YGAlign.Stretch;
             root_child0_child0_child0.Style.Width = 199;
             root_child0_child0_child0.Style.Height = 100;
             root_child0_child0.Children.Add(root_child0_child0_child0);
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
+            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(0,    root.Layout.Position.Left);
             Assert.AreEqual(0,    root.Layout.Position.Top);
@@ -842,7 +842,7 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(199, root_child0_child0_child0.Layout.Width);
             Assert.AreEqual(100, root_child0_child0_child0.Layout.Height);
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.RTL);
+            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.RTL);
 
             Assert.AreEqual(0,    root.Layout.Position.Left);
             Assert.AreEqual(0,    root.Layout.Position.Top);
@@ -869,11 +869,11 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void justify_content_row_max_width_and_margin()
         {
-            YGConfig config = new YGConfig();
+            YogaConfig config = new YogaConfig();
 
             YGNode root = new YGNode(config);
-            root.Style.FlexDirection = YGFlexDirection.Row;
-            root.Style.JustifyContent = YGJustify.Center;
+            root.Style.FlexDirection = FlexDirectionType.Row;
+            root.Style.JustifyContent = JustifyType.Center;
             root.Style.Margin.Left = 100;
             root.Style.Width = 100;
             root.Style.MaxWidth = 80;
@@ -882,7 +882,7 @@ namespace Xamarin.Yoga.Tests
             root_child0.Style.Width = 20;
             root_child0.Style.Height = 20;
             root.Children.Add(root_child0);
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
+            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(100, root.Layout.Position.Left);
             Assert.AreEqual(0,   root.Layout.Position.Top);
@@ -894,7 +894,7 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(20, root_child0.Layout.Width);
             Assert.AreEqual(20, root_child0.Layout.Height);
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.RTL);
+            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.RTL);
 
             Assert.AreEqual(100, root.Layout.Position.Left);
             Assert.AreEqual(0,   root.Layout.Position.Top);
@@ -910,10 +910,10 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void justify_content_column_min_height_and_margin()
         {
-            YGConfig config = new YGConfig();
+            YogaConfig config = new YogaConfig();
 
             YGNode root = new YGNode(config);
-            root.Style.JustifyContent = YGJustify.Center;
+            root.Style.JustifyContent = JustifyType.Center;
             root.Style.Margin.Top = 100;
             root.Style.MinHeight = 50;
 
@@ -921,7 +921,7 @@ namespace Xamarin.Yoga.Tests
             root_child0.Style.Width = 20;
             root_child0.Style.Height = 20;
             root.Children.Add(root_child0);
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
+            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(0,   root.Layout.Position.Left);
             Assert.AreEqual(100, root.Layout.Position.Top);
@@ -933,7 +933,7 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(20, root_child0.Layout.Width);
             Assert.AreEqual(20, root_child0.Layout.Height);
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.RTL);
+            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.RTL);
 
             Assert.AreEqual(0,   root.Layout.Position.Left);
             Assert.AreEqual(100, root.Layout.Position.Top);
@@ -949,10 +949,10 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void justify_content_colunn_max_height_and_margin()
         {
-            YGConfig config = new YGConfig();
+            YogaConfig config = new YogaConfig();
 
             YGNode root = new YGNode(config);
-            root.Style.JustifyContent = YGJustify.Center;
+            root.Style.JustifyContent = JustifyType.Center;
             root.Style.Margin.Top = 100;
             root.Style.Height = 100;
             root.Style.MaxHeight = 80;
@@ -961,7 +961,7 @@ namespace Xamarin.Yoga.Tests
             root_child0.Style.Width = 20;
             root_child0.Style.Height = 20;
             root.Children.Add(root_child0);
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
+            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(0,   root.Layout.Position.Left);
             Assert.AreEqual(100, root.Layout.Position.Top);
@@ -973,7 +973,7 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(20, root_child0.Layout.Width);
             Assert.AreEqual(20, root_child0.Layout.Height);
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.RTL);
+            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.RTL);
 
             Assert.AreEqual(0,   root.Layout.Position.Left);
             Assert.AreEqual(100, root.Layout.Position.Top);
@@ -989,10 +989,10 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void justify_content_column_space_evenly()
         {
-            YGConfig config = new YGConfig();
+            YogaConfig config = new YogaConfig();
 
             YGNode root = new YGNode(config);
-            root.Style.JustifyContent = YGJustify.SpaceEvenly;
+            root.Style.JustifyContent = JustifyType.SpaceEvenly;
             root.Style.Width = 102;
             root.Style.Height = 102;
 
@@ -1007,7 +1007,7 @@ namespace Xamarin.Yoga.Tests
             YGNode root_child2 = new YGNode(config);
             root_child2.Style.Height = 10;
             root.Children.Insert(2, root_child2);
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
+            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(0,   root.Layout.Position.Left);
             Assert.AreEqual(0,   root.Layout.Position.Top);
@@ -1029,7 +1029,7 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(102, root_child2.Layout.Width);
             Assert.AreEqual(10,  root_child2.Layout.Height);
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.RTL);
+            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.RTL);
 
             Assert.AreEqual(0,   root.Layout.Position.Left);
             Assert.AreEqual(0,   root.Layout.Position.Top);
@@ -1055,11 +1055,11 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void justify_content_row_space_evenly()
         {
-            YGConfig config = new YGConfig();
+            YogaConfig config = new YogaConfig();
 
             YGNode root = new YGNode(config);
-            root.Style.FlexDirection = YGFlexDirection.Row;
-            root.Style.JustifyContent = YGJustify.SpaceEvenly;
+            root.Style.FlexDirection = FlexDirectionType.Row;
+            root.Style.JustifyContent = JustifyType.SpaceEvenly;
             root.Style.Width = 102;
             root.Style.Height = 102;
 
@@ -1074,7 +1074,7 @@ namespace Xamarin.Yoga.Tests
             YGNode root_child2 = new YGNode(config);
             root_child2.Style.Height = 10;
             root.Children.Insert(2, root_child2);
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
+            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(0,   root.Layout.Position.Left);
             Assert.AreEqual(0,   root.Layout.Position.Top);
@@ -1096,7 +1096,7 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(0,  root_child2.Layout.Width);
             Assert.AreEqual(10, root_child2.Layout.Height);
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.RTL);
+            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.RTL);
 
             Assert.AreEqual(0,   root.Layout.Position.Left);
             Assert.AreEqual(0,   root.Layout.Position.Top);

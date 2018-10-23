@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Xamarin.Yoga.Tests
 {
     using static YGGlobal;
-    using static YGConst;
+    using static YogaConst;
 
 
     [TestClass]
@@ -22,7 +22,7 @@ namespace Xamarin.Yoga.Tests
         public void align_baseline_customer_func()
         {
             YGNode root = new YGNode();
-            root.Style.FlexDirection = YGFlexDirection.Row;
+            root.Style.FlexDirection = FlexDirectionType.Row;
             root.Style.AlignItems = YGAlign.Baseline;
             root.Style.Width = 100;
             root.Style.Height = 100;
@@ -44,7 +44,7 @@ namespace Xamarin.Yoga.Tests
             root_child1_child0.BaselineFunc = _baseline;
             root_child1_child0.Style.Height = 20;
             root_child1.Children.Add(root_child1_child0);
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
+            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(0,   root.Layout.Position.Left);
             Assert.AreEqual(0,   root.Layout.Position.Top);

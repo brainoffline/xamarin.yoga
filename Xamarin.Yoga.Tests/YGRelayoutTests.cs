@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Xamarin.Yoga.Tests
 {
     using static YGGlobal;
-    using static YGConst;
+    using static YogaConst;
     
     
     
@@ -17,8 +17,8 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void dont_cache_computed_flex_basis_between_layouts()
         {
-            YGConfig config = new YGConfig();
-            config.ExperimentalFeatures |= YGExperimentalFeatures.WebFlexBasis;
+            YogaConfig config = new YogaConfig();
+            config.ExperimentalFeatures |= ExperimentalFeatures.WebFlexBasis;
 
              YGNode root = new YGNode(config);
             root.Style.Width = 100.Percent();
@@ -28,8 +28,8 @@ namespace Xamarin.Yoga.Tests
             root_child0.Style.FlexBasis = 100.Percent();
             root.Children.Add(root_child0);
 
-            YGNodeCalculateLayout(root, 100, float.NaN, YGDirection.LTR);
-            YGNodeCalculateLayout(root, 100, 100,         YGDirection.LTR);
+            YGNodeCalculateLayout(root, 100, float.NaN, DirectionType.LTR);
+            YGNodeCalculateLayout(root, 100, 100,         DirectionType.LTR);
 
             Assert.AreEqual(100, root_child0.Layout.Height);
 
@@ -48,11 +48,11 @@ namespace Xamarin.Yoga.Tests
             root_child0.Style.MaxHeight = 10;
             root.Children.Add(root_child0);
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
+            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.LTR);
             Assert.AreEqual(10, root_child0.Layout.Height);
 
             root_child0.Style.MinHeight = float.NaN;
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
+            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(0, root_child0.Layout.Height);
 

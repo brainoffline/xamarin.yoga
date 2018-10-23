@@ -4,45 +4,38 @@ using System.Diagnostics;
 
 namespace Xamarin.Yoga
 {
-    [DebuggerDisplay("{value} {unit}")]
+    [DebuggerDisplay("{Value} {Unit}")]
     public class YGValue : IEquatable<YGValue>
     {
-        public readonly float  value;
-        public readonly YGUnit unit;
+        public static readonly YGValue   Auto = new YGValue(float.NaN, ValueUnit.Auto);
+        public readonly        ValueUnit Unit;
+        public readonly        float     Value;
 
         public YGValue()
         {
-            value = float.NaN;
-            unit  = YGUnit.Undefined;
+            Value = float.NaN;
+            Unit  = ValueUnit.Undefined;
         }
 
         public YGValue(YGValue value)
         {
-            this.value = value.value;
-            unit       = value.unit;
+            Value = value.Value;
+            Unit  = value.Unit;
         }
 
-        public YGValue(float value, YGUnit unit)
+        public YGValue(float value, ValueUnit unit)
         {
-            this.value = value;
-            this.unit  = unit;
+            Value = value;
+            Unit  = unit;
         }
 
-        public bool IsNaN() => value.IsNaN();
-
-        public static YGValue Sanitized(float value, YGUnit unit)
+        /// <inheritdoc />
+        public bool Equals(YGValue other)
         {
-            return new YGValue(
-                value.IsNaN() ? 0 : value,
-                value.IsNaN() ? YGUnit.Undefined : unit);
+            if (ReferenceEquals(this, other)) return true;
+            if (ReferenceEquals(null, other)) return false;
+            return Value.Equals(other.Value) && Unit == other.Unit;
         }
-
-        public static YGValue Percent(float value)
-        {
-            return new YGValue(value, YGUnit.Percent);
-        }
-
-        public static readonly YGValue Auto = new YGValue(float.NaN, YGUnit.Auto);
 
         /// <inheritdoc />
         public override bool Equals(object obj)
@@ -50,10 +43,8 @@ namespace Xamarin.Yoga
             if (ReferenceEquals(this, obj)) return true;
             if (ReferenceEquals(null, obj)) return false;
             if (obj is float f)
-            {
-                if (YGGlobal.FloatEqual(value, f) && unit == YGUnit.Point)
+                if (YGGlobal.FloatEqual(Value, f) && Unit == ValueUnit.Point)
                     return true;
-            }
 
             if (obj is YGValue other)
                 return Equals(other);
@@ -62,37 +53,17 @@ namespace Xamarin.Yoga
         }
 
         /// <inheritdoc />
-        public bool Equals(YGValue other)
-        {
-            if (ReferenceEquals(this, other)) return true;
-            if (ReferenceEquals(null, other)) return false;
-            return value.Equals(other.value) && unit == other.unit;
-        }
-
-        /// <inheritdoc />
         public override int GetHashCode()
         {
             unchecked
             {
-                return (value.GetHashCode() * 397) ^ (int) unit;
+                return (Value.GetHashCode() * 397) ^ (int) Unit;
             }
         }
 
-        /// <inheritdoc />
-        public override string ToString()
+        public bool IsNaN()
         {
-            switch (unit)
-            {
-            case YGUnit.Auto:
-                return $"{value}: auto";
-            case YGUnit.Percent:
-                return $"{value}%";
-            case YGUnit.Point:
-                return $"{value}pt";
-            case YGUnit.Undefined:
-            default:
-                return string.Empty;
-            }
+            return Value.IsNaN();
         }
 
         public static bool operator ==(YGValue value1, YGValue value2)
@@ -100,14 +71,43 @@ namespace Xamarin.Yoga
             return EqualityComparer<YGValue>.Default.Equals(value1, value2);
         }
 
+        public static implicit operator YGValue(float value)
+        {
+            return new YGValue(value, ValueUnit.Point);
+        }
+
         public static bool operator !=(YGValue value1, YGValue value2)
         {
             return !(value1 == value2);
         }
 
-        public static implicit operator YGValue(float value)
+        public static YGValue Percent(float value)
         {
-            return new YGValue(value, YGUnit.Point);
+            return new YGValue(value, ValueUnit.Percent);
+        }
+
+        public static YGValue Sanitized(float value, ValueUnit unit)
+        {
+            return new YGValue(
+                value.IsNaN() ? 0 : value,
+                value.IsNaN() ? ValueUnit.Undefined : unit);
+        }
+
+        /// <inheritdoc />
+        public override string ToString()
+        {
+            switch (Unit)
+            {
+            case ValueUnit.Auto:
+                return $"{Value}: auto";
+            case ValueUnit.Percent:
+                return $"{Value}%";
+            case ValueUnit.Point:
+                return $"{Value}pt";
+            case ValueUnit.Undefined:
+            default:
+                return string.Empty;
+            }
         }
     }
 }

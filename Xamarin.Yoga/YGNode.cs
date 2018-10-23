@@ -3,22 +3,126 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
-using System.Runtime.CompilerServices;
 
 namespace Xamarin.Yoga
 {
-    using static YGConst;
+    using static YogaConst;
     using static YGGlobal;
 
 
     public class YGNode : IEquatable<YGNode>
     {
-        private YGStyle _style;
-        private YGNode  _owner;
+        private readonly ObservableCollection<YGNode> _children = new ObservableCollection<YGNode>();
+        private          bool                         _isDirty;
+        private          NodeLayout                   _layout = new NodeLayout();
 
-        public YGConfig Config  { get; set; }
-        public string   Name    { get; set; }
-        public object   Context { get; set; }
+        private MeasureFunc _measureFunc;
+        private YGNode      _owner;
+        private NodeStyle   _style;
+
+        public YGNode() : this(YogaConfig.DefaultConfig) { }
+
+        public YGNode(YogaConfig newConfig)
+        {
+            _style = new NodeStyle
+            {
+                Owner = this
+            };
+
+            Config = newConfig;
+
+            if (Config.UseWebDefaults)
+            {
+                Style.FlexDirection = FlexDirectionType.Row;
+                Style.AlignContent  = YGAlign.Stretch;
+            }
+
+            _children.CollectionChanged += ChildrenChanged;
+        }
+
+        public YGNode(YGNode node)
+        {
+            if (ReferenceEquals(node, this))
+                return;
+
+            _style = new NodeStyle(node.Style) {Owner = this};
+
+            Context           = node.Context;
+            PrintFunc         = node.PrintFunc;
+            HasNewLayout      = node.HasNewLayout;
+            NodeType          = node.NodeType;
+            MeasureFunc       = node.MeasureFunc;
+            BaselineFunc      = node.BaselineFunc;
+            DirtiedFunc       = node.DirtiedFunc;
+            _layout           = new NodeLayout(node._layout);
+            LineIndex         = node.LineIndex;
+            Owner             = null;
+            Config            = new YogaConfig(node.Config);
+            _isDirty          = node.IsDirty;
+            ResolvedDimension = node.ResolvedDimension.Clone();
+
+            foreach (var child in node.Children)
+                _children.Add(new YGNode(child));
+
+            _children.CollectionChanged += ChildrenChanged;
+        }
+
+        public BaselineFunc BaselineFunc { get; set; }
+
+        public Collection<YGNode> Children => _children;
+
+        public YogaConfig  Config       { get; set; }
+        public object      Context      { get; set; }
+        public DirtiedFunc DirtiedFunc  { get; set; }
+        public bool        HasNewLayout { get; set; } = true;
+
+        public bool IsDirty
+        {
+            get => _isDirty;
+            set
+            {
+                if (value == _isDirty)
+                    return;
+
+                _isDirty = value;
+                if (value)
+                    DirtiedFunc?.Invoke(this);
+            }
+        }
+
+        public NodeLayout Layout
+        {
+            get => _layout = _layout ?? new NodeLayout();
+            set => _layout = value;
+        }
+
+        public int LineIndex { get; set; }
+
+        public MeasureFunc MeasureFunc
+        {
+            get => _measureFunc;
+            set
+            {
+                if (value == null)
+                {
+                    NodeType = NodeType.Default;
+                }
+                else
+                {
+                    YGAssertWithNode(
+                        this,
+                        Children.Count == 0,
+                        "Cannot set measure function: Nodes with measure functions cannot have children.");
+
+                    NodeType = NodeType.Text;
+                }
+
+                _measureFunc = value;
+            }
+        }
+
+        public string   Name     { get; set; }
+        public NodeType NodeType { get; set; } = NodeType.Default;
 
         public YGNode Owner
         {
@@ -33,66 +137,10 @@ namespace Xamarin.Yoga
             }
         }
 
-        public YGPrintFunc PrintFunc { get; set; }
-        public YGNodeType  NodeType  { get; set; } = YGNodeType.Default;
-        public int         LineIndex { get; set; }
-        public YGDirtiedFunc DirtiedFunc { get; set; }
-        public YGBaselineFunc BaselineFunc { get; set; }
-        public bool           HasNewLayout { get; set; } = true;
+        public PrintFunc  PrintFunc         { get; set; }
+        public Dimensions ResolvedDimension { get; } = new Dimensions(YGValueUndefined, YGValueUndefined);
 
-        private YGLayout       layout_   = new YGLayout();
-
-        private bool       isDirty_           = false;
-        private Dimensions ResolvedDimensions = new Dimensions(YGValueUndefined, YGValueUndefined);
-
-        public YGNode() : this(YGConfig.DefaultConfig) { }
-
-        public YGNode(YGConfig newConfig)
-        {
-            _style = new YGStyle
-            {
-                Owner = this
-            };
-
-            Config = newConfig;
-
-            if (Config.UseWebDefaults)
-            {
-                Style.FlexDirection = YGFlexDirection.Row;
-                Style.AlignContent  = YGAlign.Stretch;
-            }
-
-            _children.CollectionChanged += ChildrenChanged;
-        }
-
-        public YGNode(YGNode node)
-        {
-            if (ReferenceEquals(node, this))
-                return;
-
-            _style = new YGStyle(node.Style) {Owner = this};
-
-            Context            = node.Context;
-            PrintFunc          = node.PrintFunc;
-            HasNewLayout       = node.HasNewLayout;
-            NodeType           = node.NodeType;
-            MeasureFunc        = node.MeasureFunc;
-            BaselineFunc       = node.BaselineFunc;
-            DirtiedFunc        = node.DirtiedFunc;
-            layout_            = new YGLayout(node.layout_);
-            LineIndex          = node.LineIndex;
-            Owner              = null;
-            Config             = new YGConfig(node.Config);
-            isDirty_           = node.IsDirty;
-            ResolvedDimensions = node.getResolvedDimensions().Clone();
-
-            foreach (var child in node.Children)
-                _children.Add(new YGNode(child));
-
-            _children.CollectionChanged += ChildrenChanged;
-        }
-
-        public YGStyle Style
+        public NodeStyle Style
         {
             get => _style;
             set
@@ -109,13 +157,410 @@ namespace Xamarin.Yoga
             }
         }
 
-        private readonly ObservableCollection<YGNode> _children = new ObservableCollection<YGNode>();
-        public           Collection<YGNode>           Children => _children;
+        /// <inheritdoc />
+        public bool Equals(YGNode other)
+        {
+            if (ReferenceEquals(this, other)) return true;
+            if (ReferenceEquals(null, other)) return false;
+
+            var result =
+                Equals(Context, other.Context)     &&
+                HasNewLayout == other.HasNewLayout &&
+                _isDirty     == other._isDirty     &&
+                NodeType     == other.NodeType     &&
+                LineIndex    == other.LineIndex;
+            result = result &&
+                Equals(_style, other._style);
+            result = result &&
+                Equals(_layout, other._layout);
+            result = result &&
+                Children.SequenceEqual(other.Children);
+            result = result                       &&
+                Config            == other.Config &&
+                ResolvedDimension == other.ResolvedDimension;
+            return result;
+        }
+
+        public void ClearChildren()
+        {
+            if (Children.Count == 0)
+                return;
+
+            _children.Clear();
+            MarkDirtyAndPropagate();
+        }
+
+        /// <inheritdoc />
+        public override bool Equals(object obj)
+        {
+            return Equals(obj as YGNode);
+        }
+
+        /// <inheritdoc />
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = (int) NodeType;
+                hashCode = (hashCode * 397) ^ LineIndex;
+                hashCode = (hashCode * 397) ^ (ResolvedDimension != null ? ResolvedDimension.GetHashCode() : 0);
+                return hashCode;
+            }
+        }
+
+        public float GetLeadingBorder(FlexDirectionType axis)
+        {
+            if (axis.IsRow()                                   &&
+                Style.Border.Start.Unit != ValueUnit.Undefined &&
+                Style.Border.Start.Value.HasValue()            &&
+                Style.Border.Start.Value >= 0.0f)
+                return Style.Border.Start.Value;
+
+            var computedEdgeValue =
+                Style.Border.ComputedEdgeValue(axis.ToLeadingEdge(), YGValueZero).Value;
+            return FloatMax(computedEdgeValue, 0.0f);
+        }
+
+        public float? GetLeadingMargin(FlexDirectionType axis, float widthSize)
+        {
+            if (axis.IsRow() &&
+                Style.Margin.Start.Unit != ValueUnit.Undefined)
+                return ResolveValueMargin(Style.Margin.Start, widthSize);
+
+            return ResolveValueMargin(
+                Style.Margin.ComputedEdgeValue(axis.ToLeadingEdge(), YGValueZero),
+                widthSize);
+        }
+
+        public float? GetLeadingPadding(FlexDirectionType axis, float widthSize)
+        {
+            var paddingEdgeStart =
+                ResolveValue(Style.Padding.Start, widthSize);
+            if (axis.IsRow()                                    &&
+                Style.Padding.Start.Unit != ValueUnit.Undefined &&
+                paddingEdgeStart.HasValue                       && paddingEdgeStart > 0.0f)
+                return paddingEdgeStart;
+
+            var resolvedValue = ResolveValue(
+                Style.Padding.ComputedEdgeValue(axis.ToLeadingEdge(), YGValueZero),
+                widthSize);
+            return FloatOptionalMax(resolvedValue, 0.0f);
+        }
+
+        public float? GetLeadingPaddingAndBorder(FlexDirectionType axis, float widthSize)
+        {
+            return GetLeadingPadding(axis, widthSize) + GetLeadingBorder(axis);
+        }
+
+        public float? GetLeadingPosition(FlexDirectionType axis, float axisSize)
+        {
+            if (axis.IsRow())
+            {
+                var leadingPosition =
+                    Style.Position.ComputedEdgeValue(EdgeType.Start, YGValueUndefined);
+                if (leadingPosition.Unit != ValueUnit.Undefined) return ResolveValue(leadingPosition, axisSize);
+            }
+
+            var leadingPos =
+                Style.Position.ComputedEdgeValue(axis.ToLeadingEdge(), YGValueUndefined);
+
+            return leadingPos.Unit == ValueUnit.Undefined
+                ? 0
+                : ResolveValue(leadingPos, axisSize);
+        }
+
+        public float? GetMarginForAxis(FlexDirectionType axis, float widthSize)
+        {
+            return GetLeadingMargin(axis, widthSize) + GetTrailingMargin(axis, widthSize);
+        }
+
+        public float GetTrailingBorder(FlexDirectionType flexDirection)
+        {
+            if (flexDirection.IsRow()                        &&
+                Style.Border.End.Unit != ValueUnit.Undefined &&
+                Style.Border.End.Value.HasValue()            &&
+                Style.Border.End.Value >= 0.0f)
+                return Style.Border.End.Value;
+
+            var computedEdgeValue = Style.Border.ComputedEdgeValue(flexDirection.ToTrailingEdge(), YGValueZero).Value;
+            return FloatMax(computedEdgeValue, 0.0f);
+        }
+
+        public float? GetTrailingMargin(FlexDirectionType axis, float widthSize)
+        {
+            if (axis.IsRow() &&
+                Style.Margin.End.Unit != ValueUnit.Undefined)
+                return ResolveValueMargin(Style.Margin.End, widthSize);
+
+            return ResolveValueMargin(
+                Style.Margin.ComputedEdgeValue(axis.ToTrailingEdge(), YGValueZero),
+                widthSize);
+        }
+
+        public float? GetTrailingPadding(FlexDirectionType axis, float widthSize)
+        {
+            if (axis.IsRow()                                        &&
+                Style.Padding.End.Unit != ValueUnit.Undefined       &&
+                ResolveValue(Style.Padding.End, widthSize).HasValue &&
+                ResolveValue(Style.Padding.End, widthSize) >= 0.0f)
+                return ResolveValue(Style.Padding.End, widthSize);
+
+            var resolvedValue = ResolveValue(
+                Style.Padding.ComputedEdgeValue(axis.ToTrailingEdge(), YGValueZero),
+                widthSize);
+
+            return FloatOptionalMax(resolvedValue, 0.0f);
+        }
+
+        public float? GetTrailingPaddingAndBorder(FlexDirectionType axis, float widthSize)
+        {
+            return GetTrailingPadding(axis, widthSize) + GetTrailingBorder(axis);
+        }
+
+        public float? GetTrailingPosition(FlexDirectionType axis, float axisSize)
+        {
+            if (axis.IsRow())
+            {
+                var trailingPosition =
+                    Style.Position.ComputedEdgeValue(EdgeType.End, YGValueUndefined);
+                if (trailingPosition.Unit != ValueUnit.Undefined) return ResolveValue(trailingPosition, axisSize);
+            }
+
+            var trailingPos =
+                Style.Position.ComputedEdgeValue(axis.ToTrailingEdge(), YGValueUndefined);
+
+            return trailingPos.Unit == ValueUnit.Undefined
+                ? 0
+                : ResolveValue(trailingPos, axisSize);
+        }
+
+        public bool IsLayoutTreeEqualToNode(YGNode node)
+        {
+            if (Children.Count != node.Children.Count)
+                return false;
+
+            if (_layout != node._layout)
+                return false;
+
+            if (Children.Count == 0)
+                return true;
+
+            for (var i = 0; i < Children.Count; ++i)
+            {
+                var otherNodeChildren = node._children[i];
+                var isLayoutTreeEqual = _children[i].IsLayoutTreeEqualToNode(otherNodeChildren);
+                if (!isLayoutTreeEqual)
+                    return false;
+            }
+
+            return true;
+        }
+
+        public bool IsLeadingPositionDefined(FlexDirectionType axis)
+        {
+            return axis.IsRow() &&
+                Style.Position.ComputedEdgeValue(EdgeType.Start, YGValueUndefined)
+                    .Unit != ValueUnit.Undefined ||
+                Style.Position.ComputedEdgeValue(axis.ToLeadingEdge(), YGValueUndefined)
+                    .Unit != ValueUnit.Undefined;
+        }
+
+        public bool IsNodeFlexible()
+        {
+            return Style.PositionType == PositionType.Relative &&
+                (ResolveFlexGrow() != 0 || ResolveFlexShrink() != 0);
+        }
+
+        public bool IsTrailingPosDefined(FlexDirectionType axis)
+        {
+            return axis.IsRow() &&
+                Style.Position.ComputedEdgeValue(EdgeType.End, YGValueUndefined).Unit != ValueUnit.Undefined ||
+                Style.Position.ComputedEdgeValue(axis.ToTrailingEdge(), YGValueUndefined).Unit !=
+                ValueUnit.Undefined;
+        }
+
+        public float LayoutGetMargin(EdgeType edge)
+        {
+            YGAssertWithNode(
+                this,
+                edge <= EdgeType.End,
+                "Cannot get layout properties of multi-edge shorthands");
+
+            switch (edge)
+            {
+            case EdgeType.Left when Layout.Direction == DirectionType.RTL:
+                return Layout.Margin.End;
+            case EdgeType.Left:
+                return Layout.Margin.Start;
+            case EdgeType.Right when Layout.Direction == DirectionType.RTL:
+                return Layout.Margin.Start;
+            case EdgeType.Right:
+                return Layout.Margin.End;
+            }
+
+            return Layout.Margin[edge];
+        }
+
+        public YGValue MarginLeadingValue(FlexDirectionType axis)
+        {
+            if (axis.IsRow() && Style.Margin.Start.Unit != ValueUnit.Undefined)
+                return Style.Margin.Start;
+            return Style.Margin[axis.ToLeadingEdge()];
+        }
+
+        public YGValue MarginTrailingValue(FlexDirectionType axis)
+        {
+            if (axis.IsRow() && Style.Margin.End.Unit != ValueUnit.Undefined)
+                return Style.Margin.End;
+            return Style.Margin[axis.ToTrailingEdge()];
+        }
+
+        public void MarkDirty()
+        {
+            YGAssertWithNode(
+                this,
+                MeasureFunc == null,
+                "Only leaf nodes with custom measure functions should manually mark themselves as dirty");
+
+            MarkDirtyAndPropagate();
+        }
+
+        public static bool operator ==(YGNode left, YGNode right)
+        {
+            return (object) left == null || (object) right == null ? ReferenceEquals(left, right) : Equals(left, right);
+        }
+
+        public static bool operator !=(YGNode left, YGNode right)
+        {
+            return !(left == right);
+        }
+
+        public void Print(PrintOptionType options)
+        {
+            YGLog(this, LogLevel.Debug, new NodePrint(this, options).ToString());
+        }
+
+        // If both left and right are defined, then use left. Otherwise return
+        // +left or -right depending on which is defined.
+        public float? RelativePosition(
+            FlexDirectionType axis,
+            float             axisSize)
+        {
+            if (IsLeadingPositionDefined(axis))
+                return GetLeadingPosition(axis, axisSize);
+
+            var trailingPosition = GetTrailingPosition(axis, axisSize);
+            if (trailingPosition.HasValue)
+                trailingPosition = -1 * trailingPosition;
+            return trailingPosition;
+        }
+
+        public void ResolveDimension()
+        {
+            if (Style.MaxWidth.Unit != ValueUnit.Undefined &&
+                YGValueEqual(Style.MaxWidth, Style.MinWidth))
+                ResolvedDimension.Width = Style.MaxWidth;
+            else
+                ResolvedDimension.Width = Style.Width;
+
+            if (Style.MaxHeight.Unit != ValueUnit.Undefined &&
+                YGValueEqual(Style.MaxHeight, Style.MinHeight))
+                ResolvedDimension.Height = Style.MaxHeight;
+            else
+                ResolvedDimension.Height = Style.Height;
+        }
+
+        public DirectionType ResolveDirection(DirectionType ownerDirection)
+        {
+            if (Style.Direction == DirectionType.Inherit)
+                return ownerDirection > DirectionType.Inherit
+                    ? ownerDirection
+                    : DirectionType.LTR;
+            return Style.Direction;
+        }
+
+        public YGValue ResolveFlexBasisPtr()
+        {
+            var flexBasis = Style.FlexBasis;
+            if (flexBasis.Unit != ValueUnit.Auto && flexBasis.Unit != ValueUnit.Undefined)
+                return flexBasis;
+            if (Style.Flex.HasValue && Style.Flex > 0.0f)
+                return Config.UseWebDefaults ? YGValueAuto : YGValueZero;
+            return YGValueAuto;
+        }
+
+        public float ResolveFlexGrow()
+        {
+            // Root nodes flexGrow should always be 0
+            if (Owner == null) return 0.0f;
+            if (Style.FlexGrow.HasValue)
+                return Style.FlexGrow.Value;
+            if (Style.Flex.HasValue && Style.Flex > 0.0f)
+                return Style.Flex.Value;
+            return DefaultFlexGrow;
+        }
+
+        public float ResolveFlexShrink()
+        {
+            if (Owner == null) return 0.0f;
+            if (Style.FlexShrink.HasValue)
+                return Style.FlexShrink.Value;
+            if (!Config.UseWebDefaults && Style.Flex.HasValue &&
+                Style.Flex < 0.0f)
+                return -Style.Flex.Value;
+            return Config.UseWebDefaults ? WebDefaultFlexShrink : DefaultFlexShrink;
+        }
+
+        public void SetChildren(IEnumerable<YGNode> children)
+        {
+            _children.Clear();
+
+            foreach (var child in children)
+                _children.Add(child);
+
+            MarkDirtyAndPropagate();
+        }
+
+        public void SetPosition(DirectionType direction, float mainSize, float crossSize, float ownerWidth)
+        {
+            /* Root nodes should be always laid-out as LTR, so we don't return negative values. */
+            var directionRespectingRoot = Owner != null ? direction : DirectionType.LTR;
+            var mainAxis                = ResolveFlexDirection(Style.FlexDirection, directionRespectingRoot);
+            var crossAxis               = FlexDirectionCross(mainAxis, directionRespectingRoot);
+
+            var relativePositionMain  = RelativePosition(mainAxis,  mainSize);
+            var relativePositionCross = RelativePosition(crossAxis, crossSize);
+
+            Layout.Position[mainAxis.ToLeadingEdge()] =
+                UnwrapFloatOptional(GetLeadingMargin(mainAxis, ownerWidth) + relativePositionMain);
+            Layout.Position[mainAxis.ToTrailingEdge()] =
+                UnwrapFloatOptional(GetTrailingMargin(mainAxis, ownerWidth) + relativePositionMain);
+            Layout.Position[crossAxis.ToLeadingEdge()] =
+                UnwrapFloatOptional(GetLeadingMargin(crossAxis, ownerWidth) + relativePositionCross);
+            Layout.Position[crossAxis.ToTrailingEdge()] =
+                UnwrapFloatOptional(GetTrailingMargin(crossAxis, ownerWidth) + relativePositionCross);
+        }
+
+        internal void MarkDirtyAndPropagate()
+        {
+            if (!_isDirty)
+            {
+                IsDirty                  = true;
+                Layout.ComputedFlexBasis = null;
+                Owner?.MarkDirtyAndPropagate();
+            }
+        }
+
+        internal void MarkDirtyAndPropagateDownwards()
+        {
+            _isDirty = true;
+            foreach (var child in Children)
+                child.MarkDirtyAndPropagateDownwards();
+        }
 
         private void ChildrenChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (e.NewItems != null)
-            {
                 foreach (YGNode child in e.NewItems)
                 {
                     YGAssertWithNode(
@@ -130,503 +575,12 @@ namespace Xamarin.Yoga
 
                     child.Owner = this;
                 }
-            }
 
             if (e.OldItems != null)
-            {
                 foreach (YGNode child in e.OldItems)
                     child.Owner = null;
-            }
 
             MarkDirtyAndPropagate();
-        }
-
-        public void Print(YGPrintOptions options)
-        {
-            YGLog(this, YGLogLevel.Debug, new NodePrint(this, options).ToString());
-        }
-
-        private YGMeasureFunc _measureFunc = null;
-
-        public YGMeasureFunc MeasureFunc
-        {
-            get => _measureFunc;
-            set
-            {
-                if (value == null)
-                {
-                    NodeType = YGNodeType.Default;
-                }
-                else
-                {
-                    YGAssertWithNode(
-                        this,
-                        Children.Count == 0,
-                        "Cannot set measure function: Nodes with measure functions cannot have children.");
-
-                    // TODO: t18095186 Move nodeType to opt-in function and mark appropriate
-                    // places in Litho
-                    NodeType = YGNodeType.Text;
-                }
-
-                _measureFunc = value;
-            }
-        }
-
-        // For Performance reasons passing as reference.
-        public YGLayout Layout
-        {
-            get => layout_ = layout_ ?? new YGLayout();
-            set => layout_ = value;
-        }
-
-        public bool IsDirty
-        {
-            get => isDirty_;
-            set
-            {
-                if (value == isDirty_)
-                    return;
-
-                isDirty_ = value;
-                if (value)
-                    DirtiedFunc?.Invoke(this);
-            }
-        }
-
-        public Dimensions getResolvedDimensions()
-        {
-            return ResolvedDimensions;
-        }
-
-        public YGValue getResolvedDimension(YGDimension dimension)
-        {
-            return ResolvedDimensions[dimension];
-        }
-
-        // Setters
-
-        public void SetChildren(IEnumerable<YGNode> children)
-        {
-            _children.Clear();
-
-            foreach (var child in children)
-                _children.Add(child);
-
-            MarkDirtyAndPropagate();
-        }
-
-
-        public float? getLeadingPosition(
-            in YGFlexDirection axis,
-            in float           axisSize)
-        {
-            if (YGFlexDirectionIsRow(axis))
-            {
-                YGValue leadingPosition =
-                    Style.Position.ComputedEdgeValue(YGEdge.Start, YGConst.YGValueUndefined);
-                if (leadingPosition.unit != YGUnit.Undefined) return YGResolveValue(leadingPosition, axisSize);
-            }
-
-            YGValue leadingPos =
-                Style.Position.ComputedEdgeValue(leading[(int) axis], YGConst.YGValueUndefined);
-
-            return leadingPos.unit == YGUnit.Undefined
-                ? new float?(0)
-                : YGResolveValue(leadingPos, axisSize);
-        }
-
-        public float? getTrailingPosition(
-            in YGFlexDirection axis,
-            in float           axisSize)
-        {
-            if (YGFlexDirectionIsRow(axis))
-            {
-                YGValue trailingPosition =
-                    Style.Position.ComputedEdgeValue(YGEdge.End, YGConst.YGValueUndefined);
-                if (trailingPosition.unit != YGUnit.Undefined) return YGResolveValue(trailingPosition, axisSize);
-            }
-
-            YGValue trailingPos =
-                Style.Position.ComputedEdgeValue(trailing[(int) axis], YGConst.YGValueUndefined);
-
-            return trailingPos.unit == YGUnit.Undefined
-                ? new float?(0)
-                : YGResolveValue(trailingPos, axisSize);
-        }
-
-        public bool isLeadingPositionDefined(in YGFlexDirection axis)
-        {
-            return YGFlexDirectionIsRow(axis) &&
-                Style.Position.ComputedEdgeValue(YGEdge.Start, YGConst.YGValueUndefined)
-                    .unit != YGUnit.Undefined ||
-                Style.Position.ComputedEdgeValue(leading[(int) axis], YGConst.YGValueUndefined)
-                    .unit != YGUnit.Undefined;
-        }
-
-        public bool isTrailingPosDefined(in YGFlexDirection axis)
-        {
-            return YGFlexDirectionIsRow(axis) &&
-                Style.Position.ComputedEdgeValue(YGEdge.End, YGConst.YGValueUndefined).unit != YGUnit.Undefined ||
-                Style.Position.ComputedEdgeValue(trailing[(int) axis], YGConst.YGValueUndefined).unit !=
-                YGUnit.Undefined;
-        }
-
-        public float? getLeadingMargin(
-            in YGFlexDirection axis,
-            in float           widthSize)
-        {
-            if (YGFlexDirectionIsRow(axis) &&
-                Style.Margin.Start.unit != YGUnit.Undefined)
-                return YGResolveValueMargin(Style.Margin.Start, widthSize);
-
-            return YGResolveValueMargin(
-                Style.Margin.ComputedEdgeValue(leading[(int) axis], YGConst.YGValueZero),
-                widthSize);
-        }
-
-        public float? getTrailingMargin(
-            in YGFlexDirection axis,
-            in float           widthSize)
-        {
-            if (YGFlexDirectionIsRow(axis) &&
-                Style.Margin.End.unit != YGUnit.Undefined)
-                return YGResolveValueMargin(Style.Margin.End, widthSize);
-
-            return YGResolveValueMargin(
-                Style.Margin.ComputedEdgeValue(trailing[(int) axis], YGConst.YGValueZero),
-                widthSize);
-        }
-
-        public float? getMarginForAxis(
-            in YGFlexDirection axis,
-            in float           widthSize)
-        {
-            return getLeadingMargin(axis, widthSize) + getTrailingMargin(axis, widthSize);
-        }
-
-        // If both left and right are defined, then use left. Otherwise return
-        // +left or -right depending on which is defined.
-        public float? relativePosition(
-            in YGFlexDirection axis,
-            in float           axisSize)
-        {
-            if (isLeadingPositionDefined(axis))
-                return getLeadingPosition(axis, axisSize);
-
-            float? trailingPosition = getTrailingPosition(axis, axisSize);
-            if (trailingPosition.HasValue)
-                trailingPosition = -1 * trailingPosition;
-            return trailingPosition;
-        }
-
-        public void SetPosition(
-            YGDirection direction,
-            float       mainSize,
-            float       crossSize,
-            float       ownerWidth)
-        {
-            /* Root nodes should be always layouted as LTR, so we don't return negative
-             * values. */
-            YGDirection directionRespectingRoot = Owner != null ? direction : YGDirection.LTR;
-            YGFlexDirection mainAxis =
-                YGResolveFlexDirection(Style.FlexDirection, directionRespectingRoot);
-            YGFlexDirection crossAxis = YGFlexDirectionCross(mainAxis, directionRespectingRoot);
-
-            float? relativePositionMain  = relativePosition(mainAxis,  mainSize);
-            float? relativePositionCross = relativePosition(crossAxis, crossSize);
-
-            Layout.Position[leading[(int) mainAxis]] =
-                YGUnwrapFloatOptional(getLeadingMargin(mainAxis, ownerWidth) + relativePositionMain);
-            Layout.Position[trailing[(int) mainAxis]] =
-                YGUnwrapFloatOptional(getTrailingMargin(mainAxis, ownerWidth) + relativePositionMain);
-            Layout.Position[leading[(int) crossAxis]] =
-                YGUnwrapFloatOptional(getLeadingMargin(crossAxis, ownerWidth) + relativePositionCross);
-            Layout.Position[trailing[(int) crossAxis]] =
-                YGUnwrapFloatOptional(getTrailingMargin(crossAxis, ownerWidth) + relativePositionCross);
-        }
-
-        public YGValue marginLeadingValue(in YGFlexDirection axis)
-        {
-            if (YGFlexDirectionIsRow(axis) && Style.Margin.Start.unit != YGUnit.Undefined)
-                return Style.Margin.Start;
-            return Style.Margin[leading[(int) axis]];
-        }
-
-        public YGValue marginTrailingValue(in YGFlexDirection axis)
-        {
-            if (YGFlexDirectionIsRow(axis) && Style.Margin.End.unit != YGUnit.Undefined)
-                return Style.Margin.End;
-            return Style.Margin[trailing[(int) axis]];
-        }
-
-        public YGValue resolveFlexBasisPtr()
-        {
-            YGValue flexBasis = Style.FlexBasis;
-            if (flexBasis.unit != YGUnit.Auto && flexBasis.unit != YGUnit.Undefined)
-                return flexBasis;
-            if (Style.Flex.HasValue && Style.Flex > 0.0f)
-                return Config.UseWebDefaults ? YGConst.YGValueAuto : YGConst.YGValueZero;
-            return YGConst.YGValueAuto;
-        }
-
-        public void resolveDimension()
-        {
-            if (Style.MaxWidth.unit != YGUnit.Undefined &&
-                YGValueEqual(Style.MaxWidth, Style.MinWidth))
-                ResolvedDimensions.Width = Style.MaxWidth;
-            else
-                ResolvedDimensions.Width = Style.Width;
-
-            if (Style.MaxHeight.unit != YGUnit.Undefined &&
-                YGValueEqual(Style.MaxHeight, Style.MinHeight))
-                ResolvedDimensions.Height = Style.MaxHeight;
-            else
-                ResolvedDimensions.Height = Style.Height;
-        }
-
-        public YGDirection ResolveDirection(YGDirection ownerDirection)
-        {
-            if (Style.Direction == YGDirection.Inherit)
-                return ownerDirection > YGDirection.Inherit
-                    ? ownerDirection
-                    : YGDirection.LTR;
-            return Style.Direction;
-        }
-
-        public void ClearChildren()
-        {
-            if (Children.Count == 0)
-                return;
-
-            _children.Clear();
-            MarkDirtyAndPropagate();
-        }
-
-        public void MarkDirty()
-        {
-            YGAssertWithNode(
-                this,
-                MeasureFunc == null,
-                "Only leaf nodes with custom measure functions should manually mark themselves as dirty");
-
-            MarkDirtyAndPropagate();
-        }
-
-        internal void MarkDirtyAndPropagate()
-        {
-            if (!isDirty_)
-            {
-                IsDirty                  = true;
-                Layout.ComputedFlexBasis = null;
-                Owner?.MarkDirtyAndPropagate();
-            }
-        }
-
-        internal void MarkDirtyAndPropagateDownwards()
-        {
-            isDirty_ = true;
-            foreach (var child in Children)
-                child.MarkDirtyAndPropagateDownwards();
-        }
-
-        public float resolveFlexGrow()
-        {
-            // Root nodes flexGrow should always be 0
-            if (Owner == null) return 0.0f;
-            if (Style.FlexGrow.HasValue)
-                return Style.FlexGrow.Value;
-            if (Style.Flex.HasValue && Style.Flex > 0.0f)
-                return Style.Flex.Value;
-            return kDefaultFlexGrow;
-        }
-
-        public float resolveFlexShrink()
-        {
-            if (Owner == null) return 0.0f;
-            if (Style.FlexShrink.HasValue)
-                return Style.FlexShrink.Value;
-            if (!Config.UseWebDefaults && Style.Flex.HasValue &&
-                Style.Flex < 0.0f)
-                return -Style.Flex.Value;
-            return Config.UseWebDefaults ? kWebDefaultFlexShrink : kDefaultFlexShrink;
-        }
-
-        public bool isNodeFlexible()
-        {
-            return Style.PositionType == YGPositionType.Relative &&
-                (resolveFlexGrow() != 0 || resolveFlexShrink() != 0);
-        }
-
-        public float getLeadingBorder(in YGFlexDirection axis)
-        {
-            if (YGFlexDirectionIsRow(axis)                  &&
-                Style.Border.Start.unit != YGUnit.Undefined &&
-                Style.Border.Start.value.HasValue()         &&
-                Style.Border.Start.value >= 0.0f)
-                return Style.Border.Start.value;
-
-            float computedEdgeValue =
-                Style.Border.ComputedEdgeValue(leading[(int) axis], YGConst.YGValueZero).value;
-            return YGFloatMax(computedEdgeValue, 0.0f);
-        }
-
-        public float getTrailingBorder(in YGFlexDirection flexDirection)
-        {
-            if (YGFlexDirectionIsRow(flexDirection)        &&
-                Style.Border.End.unit  != YGUnit.Undefined && Style.Border.End.value.HasValue() &&
-                Style.Border.End.value >= 0.0f)
-                return Style.Border.End.value;
-
-            float computedEdgeValue =
-                Style.Border.ComputedEdgeValue(trailing[(int) flexDirection], YGConst.YGValueZero).value;
-            return YGFloatMax(computedEdgeValue, 0.0f);
-        }
-
-        public float? getLeadingPadding(
-            in YGFlexDirection axis,
-            in float           widthSize)
-        {
-            float? paddingEdgeStart =
-                YGResolveValue(Style.Padding.Start, widthSize);
-            if (YGFlexDirectionIsRow(axis)                   &&
-                Style.Padding.Start.unit != YGUnit.Undefined &&
-                paddingEdgeStart.HasValue                    && paddingEdgeStart > 0.0f)
-                return paddingEdgeStart;
-
-            float? resolvedValue = YGResolveValue(
-                Style.Padding.ComputedEdgeValue(leading[(int) axis], YGConst.YGValueZero),
-                widthSize);
-            return FloatOptionalMax(resolvedValue, 0.0f);
-        }
-
-        public float? getTrailingPadding(
-            in YGFlexDirection axis,
-            in float           widthSize)
-        {
-            if (YGFlexDirectionIsRow(axis)                            &&
-                Style.Padding.End.unit != YGUnit.Undefined            &&
-                YGResolveValue(Style.Padding.End, widthSize).HasValue &&
-                YGResolveValue(Style.Padding.End, widthSize) >= 0.0f)
-                return YGResolveValue(Style.Padding.End, widthSize);
-
-            float? resolvedValue = YGResolveValue(
-                Style.Padding.ComputedEdgeValue(trailing[(int) axis], YGConst.YGValueZero),
-                widthSize);
-
-            return FloatOptionalMax(resolvedValue, 0.0f);
-        }
-
-        public float? getLeadingPaddingAndBorder(
-            in YGFlexDirection axis,
-            in float           widthSize)
-        {
-            return getLeadingPadding(axis, widthSize) + new float?(getLeadingBorder(axis));
-        }
-
-        public float? getTrailingPaddingAndBorder(
-            in YGFlexDirection axis,
-            in float           widthSize)
-        {
-            return getTrailingPadding(axis, widthSize) + new float?(getTrailingBorder(axis));
-        }
-
-
-        public float LayoutGetMargin(YGEdge edge)
-        {
-            YGAssertWithNode(
-                this,
-                edge <= YGEdge.End,
-                "Cannot get layout properties of multi-edge shorthands");
-
-            switch (edge)
-            {
-            case YGEdge.Left when Layout.Direction == YGDirection.RTL:
-                return Layout.Margin.End;
-            case YGEdge.Left:
-                return Layout.Margin.Start;
-            case YGEdge.Right when Layout.Direction == YGDirection.RTL:
-                return Layout.Margin.Start;
-            case YGEdge.Right:
-                return Layout.Margin.End;
-            }
-
-            return Layout.Margin[edge];
-        }
-
-
-        public bool IsLayoutTreeEqualToNode(YGNode node)
-        {
-            if (Children.Count != node.Children.Count)
-                return false;
-
-            if (layout_ != node.layout_)
-                return false;
-
-            if (Children.Count == 0)
-                return true;
-
-            for (int i = 0; i < Children.Count; ++i)
-            {
-                var otherNodeChildren = node._children[i];
-                var isLayoutTreeEqual = _children[i].IsLayoutTreeEqualToNode(otherNodeChildren);
-                if (!isLayoutTreeEqual)
-                    return false;
-            }
-
-            return true;
-        }
-
-        /// <inheritdoc />
-        public bool Equals(YGNode other)
-        {
-            if (ReferenceEquals(this, other)) return true;
-            if (ReferenceEquals(null, other)) return false;
-
-            bool result =
-                Equals(Context,   other.Context)   &&
-                HasNewLayout == other.HasNewLayout &&
-                isDirty_     == other.isDirty_     &&
-                NodeType     == other.NodeType     &&
-                LineIndex    == other.LineIndex;
-            result = result &&
-                Equals(Style, other.Style);
-            result = result &&
-                Equals(layout_, other.layout_);
-            result = result &&
-                Children.SequenceEqual(other.Children);
-            result = result                          &&
-                Config             == other.Config   &&
-                ResolvedDimensions == other.ResolvedDimensions;
-            return result;
-        }
-
-        /// <inheritdoc />
-        public override bool Equals(object obj)
-        {
-            return Equals(obj as YGNode);
-        }
-
-        /// <inheritdoc />
-        public override int GetHashCode()
-        {
-            unchecked
-            {
-                int hashCode = (int) NodeType;
-                hashCode = (hashCode * 397) ^ LineIndex;
-                hashCode = (hashCode * 397) ^ (ResolvedDimensions != null ? ResolvedDimensions.GetHashCode() : 0);
-                return hashCode;
-            }
-        }
-
-        public static bool operator ==(YGNode left, YGNode right)
-        {
-            return (object) left == null || (object) right == null ? ReferenceEquals(left, right) : Equals(left, right);
-        }
-
-        public static bool operator !=(YGNode left, YGNode right)
-        {
-            return !(left == right);
         }
     }
 }

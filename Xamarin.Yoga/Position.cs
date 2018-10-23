@@ -1,50 +1,58 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Xamarin.Yoga
 {
-    using static YGGlobal;
-    using static YGConst;
-
     public class Position : IEquatable<Position>
     {
-        public float Left   { get; set; }
-        public float Top    { get; set; }
-        public float Right  { get; set; }
         public float Bottom { get; set; }
 
-        public float this[YGEdge edge]
+        public float this[EdgeType edge]
         {
             get
             {
                 switch (edge)
                 {
-                case YGEdge.Left:   return Left;
-                case YGEdge.Top:    return Top;
-                case YGEdge.Right:  return Right;
-                case YGEdge.Bottom: return Bottom;
-                default:            return float.NaN;
+                case EdgeType.Left:   return Left;
+                case EdgeType.Top:    return Top;
+                case EdgeType.Right:  return Right;
+                case EdgeType.Bottom: return Bottom;
+                default:              return float.NaN;
                 }
             }
             set
             {
                 switch (edge)
                 {
-                case YGEdge.Left:
+                case EdgeType.Left:
                     Left = value;
                     break;
-                case YGEdge.Top:
+                case EdgeType.Top:
                     Top = value;
                     break;
-                case YGEdge.Right:
+                case EdgeType.Right:
                     Right = value;
                     break;
-                case YGEdge.Bottom:
+                case EdgeType.Bottom:
                     Bottom = value;
                     break;
                 }
             }
+        }
+
+        public float Left  { get; set; }
+        public float Right { get; set; }
+        public float Top   { get; set; }
+
+        /// <inheritdoc />
+        public bool Equals(Position other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return
+                Left.Equals(other.Left)   &&
+                Top.Equals(other.Top)     &&
+                Right.Equals(other.Right) &&
+                Bottom.Equals(other.Bottom);
         }
 
         public Position Clone()
@@ -59,23 +67,11 @@ namespace Xamarin.Yoga
         }
 
         /// <inheritdoc />
-        public bool Equals(Position other)
-        {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
-            return
-                Left.Equals(other.Left)   &&
-                Top.Equals(other.Top)     &&
-                Right.Equals(other.Right) &&
-                Bottom.Equals(other.Bottom);
-        }
-
-        /// <inheritdoc />
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
+            if (obj.GetType() != GetType()) return false;
             return Equals((Position) obj);
         }
 

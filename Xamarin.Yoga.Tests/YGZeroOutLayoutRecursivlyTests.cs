@@ -17,7 +17,7 @@ namespace Xamarin.Yoga.Tests
         public void zero_out_layout()
         {
             YGNode root = new YGNode();
-            root.Style.FlexDirection = YGFlexDirection.Row;
+            root.Style.FlexDirection = FlexDirectionType.Row;
             root.Style.Width = 200;
             root.Style.Height = 200;
 
@@ -28,17 +28,17 @@ namespace Xamarin.Yoga.Tests
             child.Style.Margin.Top = 10;
             child.Style.Padding.Top = 10;
 
-            YGNodeCalculateLayout(root, 100, 100, YGDirection.LTR);
+            YGNodeCalculateLayout(root, 100, 100, DirectionType.LTR);
 
-            Assert.AreEqual(10, child.LayoutGetMargin(YGEdge.Top));
-            Assert.AreEqual(10, YGNodeLayoutGetPadding(child, YGEdge.Top));
+            Assert.AreEqual(10, child.LayoutGetMargin(EdgeType.Top));
+            Assert.AreEqual(10, YGNodeLayoutGetPadding(child, EdgeType.Top));
 
-            child.Style.Display = YGDisplay.None;
+            child.Style.Display = DisplayType.None;
 
-            YGNodeCalculateLayout(root, 100, 100, YGDirection.LTR);
+            YGNodeCalculateLayout(root, 100, 100, DirectionType.LTR);
 
-            Assert.AreEqual(0, child.LayoutGetMargin(YGEdge.Top));
-            Assert.AreEqual(0, YGNodeLayoutGetPadding(child, YGEdge.Top));
+            Assert.AreEqual(0, child.LayoutGetMargin(EdgeType.Top));
+            Assert.AreEqual(0, YGNodeLayoutGetPadding(child, EdgeType.Top));
 
             
         }

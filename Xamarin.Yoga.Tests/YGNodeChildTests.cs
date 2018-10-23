@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Xamarin.Yoga.Tests
 {
     using static YGGlobal;
-    using static YGConst;
+    using static YogaConst;
     
     
     
@@ -24,7 +24,7 @@ namespace Xamarin.Yoga.Tests
             root_child0.Style.Height = 100;
             root.Children.Add(root_child0);
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, YGDirection.LTR);
+            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(0,   root_child0.Layout.Position.Left);
             Assert.AreEqual(0,   root_child0.Layout.Position.Top);

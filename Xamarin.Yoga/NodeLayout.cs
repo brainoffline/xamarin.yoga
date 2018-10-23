@@ -1,103 +1,31 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Xamarin.Yoga
 {
     using static YGGlobal;
-    using static YGConst;
 
-    public class YGLayout : IEquatable<YGLayout>
+    public class NodeLayout : IEquatable<NodeLayout>
     {
-        // This value was chosen based on empiracle data. Even the most complicated
+        // This value was chosen based on empirical data. Even the most complicated
         // layouts should not require more than 16 entries to fit within the cache.
-        private const int MaxCachedResultCount = 16;
+        private const   int                 MaxCachedResultCount = 16;
+        public readonly CachedMeasurement[] CachedMeasurements   = new CachedMeasurement[MaxCachedResultCount];
 
-        public float       Width              { get; private set; } = float.NaN;
-        public float       Height             { get; private set; } = float.NaN;
-        public float       MeasuredWidth      { get; private set; } = float.NaN;
-        public float       MeasuredHeight     { get; private set; } = float.NaN;
-        public YGDirection Direction          { get; set; }
-        public YGDirection LastOwnerDirection { get; set; }
-        public bool        HadOverflow        { get; set; }
-
-        // Instead of recomputing the entire layout every single time, we
-        // cache some information to break early when nothing changed
-        public          int                   GenerationCount             { get; set; }
-        public          int                   NextCachedMeasurementsIndex { get; private set; }
-        public readonly YGCachedMeasurement[] CachedMeasurements = new YGCachedMeasurement[MaxCachedResultCount];
-        public          YGCachedMeasurement   CachedLayout                { get; } = new YGCachedMeasurement();
-        public          int                   ComputedFlexBasisGeneration { get; set; }
-        public          float?                ComputedFlexBasis           { get; set; }
-
-        public Position    Position { get; } = new Position();
-        public LayoutEdges Margin   { get; } = new LayoutEdges();
-        public LayoutEdges Border   { get; } = new LayoutEdges();
-        public LayoutEdges Padding  { get; } = new LayoutEdges();
-
-
-        public void SetDimension(YGDimension dim, float value)
+        public NodeLayout()
         {
-            if (dim == YGDimension.Width)
-                Width = value;
-            else
-                Height = value;
-        }
-
-        public float GetMeasuredDimension(YGDimension dim)
-        {
-            return dim == YGDimension.Width ? MeasuredWidth : MeasuredHeight;
-        }
-
-        public void SetMeasuredDimension(YGDimension dim, float value)
-        {
-            if (dim == YGDimension.Width)
-                MeasuredWidth = value;
-            else
-                MeasuredHeight = value;
-        }
-
-        public void InvalidateCache()
-        {
-            NextCachedMeasurementsIndex    = 0;
-            CachedLayout.WidthMeasureMode  = YGMeasureMode.NotSet;
-            CachedLayout.HeightMeasureMode = YGMeasureMode.NotSet;
-            CachedLayout.ComputedWidth     = -1;
-            CachedLayout.ComputedHeight    = -1;
-        }
-
-        public YGCachedMeasurement GetNextCachedMeasurement()
-        {
-            var cache = CachedMeasurements[NextCachedMeasurementsIndex];
-            if (cache == null)
-                cache = CachedMeasurements[NextCachedMeasurementsIndex] = new YGCachedMeasurement();
-            NextCachedMeasurementsIndex++;
-            return cache;
-        }
-
-        public void ResetNextCachedMeasurement()
-        {
-            NextCachedMeasurementsIndex = 0;
-        }
-
-        public bool CachedMeasurementFull => NextCachedMeasurementsIndex >= MaxCachedResultCount;
-
-        public YGLayout()
-        {
-            Direction                   = YGDirection.Inherit;
+            Direction                   = DirectionType.Inherit;
             ComputedFlexBasisGeneration = 0;
             ComputedFlexBasis           = null;
             HadOverflow                 = false;
             GenerationCount             = 0;
 
-            LastOwnerDirection          = YGDirection.NotSet;
+            LastOwnerDirection          = DirectionType.NotSet;
             NextCachedMeasurementsIndex = 0;
 
-            for (var i = 0; i < MaxCachedResultCount; i++) CachedMeasurements[i] = new YGCachedMeasurement();
+            for (var i = 0; i < MaxCachedResultCount; i++) CachedMeasurements[i] = new CachedMeasurement();
         }
 
-        public YGLayout(YGLayout other)
+        public NodeLayout(NodeLayout other)
         {
             Width                       = other.Width;
             Height                      = other.Height;
@@ -120,8 +48,32 @@ namespace Xamarin.Yoga
                 CachedMeasurements[i] = other.CachedMeasurements[i].Clone();
         }
 
+        public LayoutEdges       Border       { get; } = new LayoutEdges();
+        public CachedMeasurement CachedLayout { get; } = new CachedMeasurement();
+
+        public bool          CachedMeasurementFull       => NextCachedMeasurementsIndex >= MaxCachedResultCount;
+        public float?        ComputedFlexBasis           { get; set; }
+        public int           ComputedFlexBasisGeneration { get; set; }
+        public DirectionType Direction                   { get; set; }
+
+        // Instead of recomputing the entire layout every single time, we
+        // cache some information to break early when nothing changed
+        public int           GenerationCount             { get; set; }
+        public bool          HadOverflow                 { get; set; }
+        public float         Height                      { get; private set; } = float.NaN;
+        public DirectionType LastOwnerDirection          { get; set; }
+        public LayoutEdges   Margin                      { get; }              = new LayoutEdges();
+        public float         MeasuredHeight              { get; private set; } = float.NaN;
+        public float         MeasuredWidth               { get; private set; } = float.NaN;
+        public int           NextCachedMeasurementsIndex { get; private set; }
+        public LayoutEdges   Padding                     { get; } = new LayoutEdges();
+
+        public Position Position { get; } = new Position();
+
+        public float Width { get; private set; } = float.NaN;
+
         /// <inheritdoc />
-        public bool Equals(YGLayout other)
+        public bool Equals(NodeLayout other)
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
@@ -155,7 +107,7 @@ namespace Xamarin.Yoga
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
-            if (obj is YGLayout layout)
+            if (obj is NodeLayout layout)
                 return Equals(layout);
             return false;
         }
@@ -186,16 +138,61 @@ namespace Xamarin.Yoga
             }
         }
 
-        public static bool operator ==(YGLayout left, YGLayout right)
+        public float GetMeasuredDimension(DimensionType dim)
+        {
+            return dim == DimensionType.Width ? MeasuredWidth : MeasuredHeight;
+        }
+
+        public CachedMeasurement GetNextCachedMeasurement()
+        {
+            var cache = CachedMeasurements[NextCachedMeasurementsIndex];
+            if (cache == null)
+                cache = CachedMeasurements[NextCachedMeasurementsIndex] = new CachedMeasurement();
+            NextCachedMeasurementsIndex++;
+            return cache;
+        }
+
+        public void InvalidateCache()
+        {
+            NextCachedMeasurementsIndex    = 0;
+            CachedLayout.WidthMeasureMode  = MeasureMode.NotSet;
+            CachedLayout.HeightMeasureMode = MeasureMode.NotSet;
+            CachedLayout.ComputedWidth     = -1;
+            CachedLayout.ComputedHeight    = -1;
+        }
+
+        public static bool operator ==(NodeLayout left, NodeLayout right)
         {
             if ((object) left == null || (object) right == null)
                 return ReferenceEquals(left, right);
             return Equals(left, right);
         }
 
-        public static bool operator !=(YGLayout left, YGLayout right)
+        public static bool operator !=(NodeLayout left, NodeLayout right)
         {
             return !Equals(left, right);
+        }
+
+        public void ResetNextCachedMeasurement()
+        {
+            NextCachedMeasurementsIndex = 0;
+        }
+
+
+        public void SetDimension(DimensionType dim, float value)
+        {
+            if (dim == DimensionType.Width)
+                Width = value;
+            else
+                Height = value;
+        }
+
+        public void SetMeasuredDimension(DimensionType dim, float value)
+        {
+            if (dim == DimensionType.Width)
+                MeasuredWidth = value;
+            else
+                MeasuredHeight = value;
         }
     }
 }

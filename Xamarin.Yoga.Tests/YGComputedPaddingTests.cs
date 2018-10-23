@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Xamarin.Yoga.Tests
 {
     using static YGGlobal;
-    using static YGConst;
+    using static YogaConst;
     
     
     
@@ -21,15 +21,15 @@ namespace Xamarin.Yoga.Tests
             root.Style.Height = 100;
             root.Style.Padding.Start = 10.Percent();
 
-            YGNodeCalculateLayout(root, 100, 100, YGDirection.LTR);
+            YGNodeCalculateLayout(root, 100, 100, DirectionType.LTR);
 
-            Assert.AreEqual(10, YGNodeLayoutGetPadding(root, YGEdge.Left));
-            Assert.AreEqual(0,  YGNodeLayoutGetPadding(root, YGEdge.Right));
+            Assert.AreEqual(10, YGNodeLayoutGetPadding(root, EdgeType.Left));
+            Assert.AreEqual(0,  YGNodeLayoutGetPadding(root, EdgeType.Right));
 
-            YGNodeCalculateLayout(root, 100, 100, YGDirection.RTL);
+            YGNodeCalculateLayout(root, 100, 100, DirectionType.RTL);
 
-            Assert.AreEqual(0,  YGNodeLayoutGetPadding(root, YGEdge.Left));
-            Assert.AreEqual(10, YGNodeLayoutGetPadding(root, YGEdge.Right));
+            Assert.AreEqual(0,  YGNodeLayoutGetPadding(root, EdgeType.Left));
+            Assert.AreEqual(10, YGNodeLayoutGetPadding(root, EdgeType.Right));
 
             
         }

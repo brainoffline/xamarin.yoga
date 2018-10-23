@@ -22,15 +22,15 @@ namespace Xamarin.Yoga.Tests
             root.Style.Height = 100;
             root.Style.Margin.Start = 10;
 
-            YGNodeCalculateLayout(root, 100, 100, YGDirection.LTR);
+            YGNodeCalculateLayout(root, 100, 100, DirectionType.LTR);
 
-            Assert.AreEqual(10, root.LayoutGetMargin(YGEdge.Left));
-            Assert.AreEqual(0,  root.LayoutGetMargin(YGEdge.Right));
+            Assert.AreEqual(10, root.LayoutGetMargin(EdgeType.Left));
+            Assert.AreEqual(0,  root.LayoutGetMargin(EdgeType.Right));
 
-            YGNodeCalculateLayout(root, 100, 100, YGDirection.RTL);
+            YGNodeCalculateLayout(root, 100, 100, DirectionType.RTL);
 
-            Assert.AreEqual(0,  root.LayoutGetMargin(YGEdge.Left));
-            Assert.AreEqual(10, root.LayoutGetMargin(YGEdge.Right));
+            Assert.AreEqual(0,  root.LayoutGetMargin(EdgeType.Left));
+            Assert.AreEqual(10, root.LayoutGetMargin(EdgeType.Right));
 
             
         }

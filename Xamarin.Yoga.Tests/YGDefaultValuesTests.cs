@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Xamarin.Yoga.Tests
 {
     using static YGGlobal;
-    using static YGConst;
+    using static YogaConst;
 
 
     [TestClass]
@@ -20,39 +20,39 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(0, root.Children.Count);
             //Assert.AreEqual(null, root.Children[1]);
 
-            Assert.AreEqual(YGDirection.Inherit,       root.Style.Direction);
-            Assert.AreEqual(YGFlexDirection.Column,    root.Style.FlexDirection);
-            Assert.AreEqual(YGJustify.FlexStart,       root.Style.JustifyContent);
+            Assert.AreEqual(DirectionType.Inherit,       root.Style.Direction);
+            Assert.AreEqual(FlexDirectionType.Column,    root.Style.FlexDirection);
+            Assert.AreEqual(JustifyType.FlexStart,       root.Style.JustifyContent);
             Assert.AreEqual(YGAlign.FlexStart,         root.Style.AlignContent);
             Assert.AreEqual(YGAlign.Stretch,           root.Style.AlignItems);
             Assert.AreEqual(YGAlign.Auto,              root.Style.AlignSelf);
-            Assert.AreEqual(YGPositionType.Relative,   root.Style.PositionType);
-            Assert.AreEqual(YGWrap.NoWrap,             root.Style.FlexWrap);
-            Assert.AreEqual(YGOverflow.Visible,        root.Style.Overflow);
+            Assert.AreEqual(PositionType.Relative,   root.Style.PositionType);
+            Assert.AreEqual(WrapType.NoWrap,             root.Style.FlexWrap);
+            Assert.AreEqual(OverflowType.Visible,        root.Style.Overflow);
             Assert.AreEqual(null,                      root.Style.FlexGrow);
             Assert.AreEqual(0,                         root.Style.FlexShrink);
-            Assert.AreEqual(root.Style.FlexBasis.unit, YGUnit.Auto);
+            Assert.AreEqual(root.Style.FlexBasis.Unit, ValueUnit.Auto);
 
-            Assert.AreEqual(root.Style.Position.Left.unit,   YGUnit.Undefined);
-            Assert.AreEqual(root.Style.Position.Top.unit,    YGUnit.Undefined);
-            Assert.AreEqual(root.Style.Position.Right.unit,  YGUnit.Undefined);
-            Assert.AreEqual(root.Style.Position.Bottom.unit, YGUnit.Undefined);
-            Assert.AreEqual(root.Style.Position.Start.unit,  YGUnit.Undefined);
-            Assert.AreEqual(root.Style.Position.End.unit,    YGUnit.Undefined);
+            Assert.AreEqual(root.Style.Position.Left.Unit,   ValueUnit.Undefined);
+            Assert.AreEqual(root.Style.Position.Top.Unit,    ValueUnit.Undefined);
+            Assert.AreEqual(root.Style.Position.Right.Unit,  ValueUnit.Undefined);
+            Assert.AreEqual(root.Style.Position.Bottom.Unit, ValueUnit.Undefined);
+            Assert.AreEqual(root.Style.Position.Start.Unit,  ValueUnit.Undefined);
+            Assert.AreEqual(root.Style.Position.End.Unit,    ValueUnit.Undefined);
 
-            Assert.AreEqual(root.Style.Margin.Left.unit,   YGUnit.Undefined);
-            Assert.AreEqual(root.Style.Margin.Top.unit,    YGUnit.Undefined);
-            Assert.AreEqual(root.Style.Margin.Right.unit,  YGUnit.Undefined);
-            Assert.AreEqual(root.Style.Margin.Bottom.unit, YGUnit.Undefined);
-            Assert.AreEqual(root.Style.Margin.Start.unit,  YGUnit.Undefined);
-            Assert.AreEqual(root.Style.Margin.End.unit,    YGUnit.Undefined);
+            Assert.AreEqual(root.Style.Margin.Left.Unit,   ValueUnit.Undefined);
+            Assert.AreEqual(root.Style.Margin.Top.Unit,    ValueUnit.Undefined);
+            Assert.AreEqual(root.Style.Margin.Right.Unit,  ValueUnit.Undefined);
+            Assert.AreEqual(root.Style.Margin.Bottom.Unit, ValueUnit.Undefined);
+            Assert.AreEqual(root.Style.Margin.Start.Unit,  ValueUnit.Undefined);
+            Assert.AreEqual(root.Style.Margin.End.Unit,    ValueUnit.Undefined);
 
-            Assert.AreEqual(root.Style.Padding.Left.unit,   YGUnit.Undefined);
-            Assert.AreEqual(root.Style.Padding.Top.unit,    YGUnit.Undefined);
-            Assert.AreEqual(root.Style.Padding.Right.unit,  YGUnit.Undefined);
-            Assert.AreEqual(root.Style.Padding.Bottom.unit, YGUnit.Undefined);
-            Assert.AreEqual(root.Style.Padding.Start.unit,  YGUnit.Undefined);
-            Assert.AreEqual(root.Style.Padding.End.unit,    YGUnit.Undefined);
+            Assert.AreEqual(root.Style.Padding.Left.Unit,   ValueUnit.Undefined);
+            Assert.AreEqual(root.Style.Padding.Top.Unit,    ValueUnit.Undefined);
+            Assert.AreEqual(root.Style.Padding.Right.Unit,  ValueUnit.Undefined);
+            Assert.AreEqual(root.Style.Padding.Bottom.Unit, ValueUnit.Undefined);
+            Assert.AreEqual(root.Style.Padding.Start.Unit,  ValueUnit.Undefined);
+            Assert.AreEqual(root.Style.Padding.End.Unit,    ValueUnit.Undefined);
 
             Assert.IsTrue(root.Style.Border.Left.IsNaN());
             Assert.IsTrue(root.Style.Border.Top.IsNaN());
@@ -61,45 +61,45 @@ namespace Xamarin.Yoga.Tests
             Assert.IsTrue(root.Style.Border.Start.IsNaN());
             Assert.IsTrue(root.Style.Border.End.IsNaN());
 
-            Assert.AreEqual(root.Style.Width.unit,  YGUnit.Auto);
-            Assert.AreEqual(root.Style.Height.unit, YGUnit.Auto);
-            Assert.AreEqual(root.Style.MinWidth.unit,   YGUnit.Undefined);
-            Assert.AreEqual(root.Style.MinHeight.unit,  YGUnit.Undefined);
-            Assert.AreEqual(root.Style.MaxWidth.unit,   YGUnit.Undefined);
-            Assert.AreEqual(root.Style.MaxHeight.unit,  YGUnit.Undefined);
+            Assert.AreEqual(root.Style.Width.Unit,  ValueUnit.Auto);
+            Assert.AreEqual(root.Style.Height.Unit, ValueUnit.Auto);
+            Assert.AreEqual(root.Style.MinWidth.Unit,   ValueUnit.Undefined);
+            Assert.AreEqual(root.Style.MinHeight.Unit,  ValueUnit.Undefined);
+            Assert.AreEqual(root.Style.MaxWidth.Unit,   ValueUnit.Undefined);
+            Assert.AreEqual(root.Style.MaxHeight.Unit,  ValueUnit.Undefined);
 
             Assert.AreEqual(0, root.Layout.Position.Left);
             Assert.AreEqual(0, root.Layout.Position.Top);
             Assert.AreEqual(0, root.Layout.Position.Right);
             Assert.AreEqual(0, root.Layout.Position.Bottom);
 
-            Assert.AreEqual(0, root.LayoutGetMargin(YGEdge.Left));
-            Assert.AreEqual(0, root.LayoutGetMargin(YGEdge.Top));
-            Assert.AreEqual(0, root.LayoutGetMargin(YGEdge.Right));
-            Assert.AreEqual(0, root.LayoutGetMargin(YGEdge.Bottom));
+            Assert.AreEqual(0, root.LayoutGetMargin(EdgeType.Left));
+            Assert.AreEqual(0, root.LayoutGetMargin(EdgeType.Top));
+            Assert.AreEqual(0, root.LayoutGetMargin(EdgeType.Right));
+            Assert.AreEqual(0, root.LayoutGetMargin(EdgeType.Bottom));
 
-            Assert.AreEqual(0, YGNodeLayoutGetPadding(root, YGEdge.Left));
-            Assert.AreEqual(0, YGNodeLayoutGetPadding(root, YGEdge.Top));
-            Assert.AreEqual(0, YGNodeLayoutGetPadding(root, YGEdge.Right));
-            Assert.AreEqual(0, YGNodeLayoutGetPadding(root, YGEdge.Bottom));
+            Assert.AreEqual(0, YGNodeLayoutGetPadding(root, EdgeType.Left));
+            Assert.AreEqual(0, YGNodeLayoutGetPadding(root, EdgeType.Top));
+            Assert.AreEqual(0, YGNodeLayoutGetPadding(root, EdgeType.Right));
+            Assert.AreEqual(0, YGNodeLayoutGetPadding(root, EdgeType.Bottom));
 
-            Assert.AreEqual(0, YGNodeLayoutGetBorder(root, YGEdge.Left));
-            Assert.AreEqual(0, YGNodeLayoutGetBorder(root, YGEdge.Top));
-            Assert.AreEqual(0, YGNodeLayoutGetBorder(root, YGEdge.Right));
-            Assert.AreEqual(0, YGNodeLayoutGetBorder(root, YGEdge.Bottom));
+            Assert.AreEqual(0, YGNodeLayoutGetBorder(root, EdgeType.Left));
+            Assert.AreEqual(0, YGNodeLayoutGetBorder(root, EdgeType.Top));
+            Assert.AreEqual(0, YGNodeLayoutGetBorder(root, EdgeType.Right));
+            Assert.AreEqual(0, YGNodeLayoutGetBorder(root, EdgeType.Bottom));
 
             Assert.IsTrue(root.Layout.Width.IsNaN());
             Assert.IsTrue(root.Layout.Height.IsNaN());
-            Assert.AreEqual(YGDirection.Inherit, root.Layout.Direction);
+            Assert.AreEqual(DirectionType.Inherit, root.Layout.Direction);
         }
 
         [TestMethod]
         public void assert_webdefault_values()
         {
-            var    config = new YGConfig {UseWebDefaults = true};
+            var    config = new YogaConfig {UseWebDefaults = true};
             YGNode root   = new YGNode(config);
 
-            Assert.AreEqual(YGFlexDirection.Row, root.Style.FlexDirection);
+            Assert.AreEqual(FlexDirectionType.Row, root.Style.FlexDirection);
             Assert.AreEqual(YGAlign.Stretch,     root.Style.AlignContent);
             Assert.AreEqual(1.0f,                root.Style.FlexShrink);
         }
@@ -107,11 +107,11 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void assert_webdefault_values_reset()
         {
-            var config = new YGConfig {UseWebDefaults = true};
+            var config = new YogaConfig {UseWebDefaults = true};
 
             YGNode root = new YGNode(config);
 
-            Assert.AreEqual(YGFlexDirection.Row, root.Style.FlexDirection);
+            Assert.AreEqual(FlexDirectionType.Row, root.Style.FlexDirection);
             Assert.AreEqual(YGAlign.Stretch,     root.Style.AlignContent);
             Assert.AreEqual(1.0f,                root.Style.FlexShrink);
         }

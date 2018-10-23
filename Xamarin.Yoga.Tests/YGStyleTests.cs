@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Xamarin.Yoga.Tests
 {
     using static YGGlobal;
-    using static YGConst;
+    using static YogaConst;
 
 
     [TestClass]
@@ -28,30 +28,30 @@ namespace Xamarin.Yoga.Tests
         {
             YGNode node0 = new YGNode();
             Assert.IsFalse(node0.IsDirty);
-            Assert.AreEqual(YGFlexDirection.Column, node0.Style.FlexDirection);
-            Assert.IsFalse(node0.Style.MaxHeight.unit != YGUnit.Undefined);
+            Assert.AreEqual(FlexDirectionType.Column, node0.Style.FlexDirection);
+            Assert.IsFalse(node0.Style.MaxHeight.Unit != ValueUnit.Undefined);
 
             YGNode node1 = new YGNode();
-            node1.Style.FlexDirection = YGFlexDirection.Row;
+            node1.Style.FlexDirection = FlexDirectionType.Row;
             node1.Style.MaxHeight = 10;
 
             node0.Style = node1.Style;
             Assert.IsTrue(node0.IsDirty);
-            Assert.AreEqual(YGFlexDirection.Row, node0.Style.FlexDirection);
-            Assert.AreEqual(10,                  node0.Style.MaxHeight.value);
+            Assert.AreEqual(FlexDirectionType.Row, node0.Style.FlexDirection);
+            Assert.AreEqual(10,                  node0.Style.MaxHeight.Value);
         }
 
         [TestMethod]
         public void copy_style_modified_same()
         {
             YGNode node0 = new YGNode();
-            node0.Style.FlexDirection = YGFlexDirection.Row;
+            node0.Style.FlexDirection = FlexDirectionType.Row;
             node0.Style.MaxHeight = 10;
-            YGNodeCalculateLayout(node0, float.NaN, float.NaN, YGDirection.LTR);
+            YGNodeCalculateLayout(node0, float.NaN, float.NaN, DirectionType.LTR);
             Assert.IsFalse(node0.IsDirty);
 
             YGNode node1 = new YGNode();
-            node1.Style.FlexDirection = YGFlexDirection.Row;
+            node1.Style.FlexDirection = FlexDirectionType.Row;
             node1.Style.MaxHeight = 10;
 
             node0.Style = node1.Style;

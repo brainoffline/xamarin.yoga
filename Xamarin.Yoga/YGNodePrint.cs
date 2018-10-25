@@ -122,6 +122,9 @@ namespace Xamarin.Yoga
             sb.Append("<div ");
             node.PrintFunc?.Invoke(node);
 
+            if (!string.IsNullOrWhiteSpace(node.Name))
+                sb.Append($"name=\"{node.Name}\" ");
+
             if (options.HasFlag(PrintOptionType.Layout))
             {
                 sb.Append("layout=\"");

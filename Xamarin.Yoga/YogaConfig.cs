@@ -8,9 +8,10 @@ namespace Xamarin.Yoga
 
     public class YogaConfig : IEquatable<YogaConfig>
     {
-        public static readonly YogaConfig DefaultConfig    = new YogaConfig(YGDefaultLog);
-        public                 float      pointScaleFactor = 1.0f;
-        public                 bool       printTree;
+        public static readonly YogaConfig DefaultConfig = new YogaConfig(YGDefaultLog);
+
+        public float pointScaleFactor = 1.0f;
+        public bool  printTree;
 
         public YogaConfig(LoggerFunc logger = null)
         {
@@ -74,7 +75,7 @@ namespace Xamarin.Yoga
             {
             case LogLevel.Error:
             case LogLevel.Fatal:
-                Console.Error.WriteLine(format, args);
+                Console.Error.Write(format, args);
                 return;
 
             case LogLevel.Warn:
@@ -82,7 +83,7 @@ namespace Xamarin.Yoga
             case LogLevel.Debug:
             case LogLevel.Verbose:
             default:
-                Console.WriteLine(format, args);
+                Console.Write(format, args);
                 return;
             }
         }

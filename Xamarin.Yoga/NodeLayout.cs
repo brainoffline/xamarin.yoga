@@ -60,17 +60,15 @@ namespace Xamarin.Yoga
         // cache some information to break early when nothing changed
         public int           GenerationCount             { get; set; }
         public bool          HadOverflow                 { get; set; }
-        public float         Height                      { get; private set; } = float.NaN;
+        public float         Height                      { get; set; } = float.NaN;
         public DirectionType LastOwnerDirection          { get; set; }
-        public LayoutEdges   Margin                      { get; }              = new LayoutEdges();
-        public float         MeasuredHeight              { get; private set; } = float.NaN;
-        public float         MeasuredWidth               { get; private set; } = float.NaN;
+        public LayoutEdges   Margin                      { get; }      = new LayoutEdges();
+        public float         MeasuredHeight              { get; set; } = float.NaN;
+        public float         MeasuredWidth               { get; set; } = float.NaN;
         public int           NextCachedMeasurementsIndex { get; private set; }
-        public LayoutEdges   Padding                     { get; } = new LayoutEdges();
-
-        public Position Position { get; } = new Position();
-
-        public float Width { get; private set; } = float.NaN;
+        public LayoutEdges   Padding                     { get; }      = new LayoutEdges();
+        public Position      Position                    { get; }      = new Position();
+        public float         Width                       { get; set; } = float.NaN;
 
         /// <inheritdoc />
         public bool Equals(NodeLayout other)

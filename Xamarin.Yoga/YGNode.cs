@@ -513,6 +513,9 @@ namespace Xamarin.Yoga
 
         public void SetChildren(IEnumerable<YGNode> children)
         {
+            foreach (var child in _children)
+                child.Owner = null;
+
             _children.Clear();
 
             foreach (var child in children)
@@ -561,6 +564,7 @@ namespace Xamarin.Yoga
         private void ChildrenChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (e.NewItems != null)
+            {
                 foreach (YGNode child in e.NewItems)
                 {
                     YGAssertWithNode(
@@ -575,10 +579,13 @@ namespace Xamarin.Yoga
 
                     child.Owner = this;
                 }
+            }
 
             if (e.OldItems != null)
+            {
                 foreach (YGNode child in e.OldItems)
                     child.Owner = null;
+            }
 
             MarkDirtyAndPropagate();
         }

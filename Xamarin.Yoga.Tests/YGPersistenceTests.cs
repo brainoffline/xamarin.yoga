@@ -10,20 +10,17 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void cloning_shared_root()
         {
-            YogaConfig config = new YogaConfig();
+            YGNode root_child0, root_child1;
+            YGNode root = new YGNode
+            {
+                Style = {Width = 100, Height = 100},
+                Children =
+                {
+                    (root_child0 = new YGNode {Style = {FlexGrow = 1, FlexBasis = 50}}),
+                    (root_child1 = new YGNode {Style = {FlexGrow = 1}})
+                }
+            };
 
-            YGNode root = new YGNode(config);
-            root.Style.Width = 100;
-            root.Style.Height = 100;
-
-            YGNode root_child0 = new YGNode(config);
-            root_child0.Style.FlexGrow = 1;
-            root_child0.Style.FlexBasis = 50;
-            root.Children.Add(root_child0);
-
-            YGNode root_child1 = new YGNode(config);
-            root_child1.Style.FlexGrow = 1;
-            root.Children.Insert(1, root_child1);
             YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(0,   root.Layout.Position.Left);
@@ -41,10 +38,10 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(100, root_child1.Layout.Width);
             Assert.AreEqual(25,  root_child1.Layout.Height);
 
-            YGNode root2 = new YGNode(root);
-            root2.Style.Width = 100;
+            YGNode root2 = new YGNode(root) {Style = {Width = 100}};
 
             Assert.AreEqual(2, root2.Children.Count);
+
             // The children should have referential equality at this point.
             Assert.AreEqual(root_child0, root2.Children[0]);
             Assert.AreEqual(root_child1, root2.Children[1]);
@@ -52,16 +49,19 @@ namespace Xamarin.Yoga.Tests
             YGNodeCalculateLayout(root2, float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(2, root2.Children.Count);
-            // Relayout with no changed input should result in referential equality.
+
+            // Re-layout with no changed input should result in referential equality.
             Assert.AreEqual(root_child0, root2.Children[0]);
             Assert.AreEqual(root_child1, root2.Children[1]);
 
             root2.Style.Width = 150;
             root2.Style.Height = 200;
+
             YGNodeCalculateLayout(root2, float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(2, root2.Children.Count);
-            // Relayout with changed input should result in cloned children.
+
+            // Re-layout with changed input should result in cloned children.
             YGNode root2_child0 = root2.Children[0];
             YGNode root2_child1 = root2.Children[1];
             Assert.AreNotEqual(root_child0, root2_child0);

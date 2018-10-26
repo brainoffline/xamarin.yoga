@@ -8,7 +8,10 @@ namespace Xamarin.Yoga
 
     public class YogaConfig : IEquatable<YogaConfig>
     {
-        public static readonly YogaConfig DefaultConfig = new YogaConfig(YGDefaultLog);
+        public static readonly YogaConfig DefaultConfig = new YogaConfig(YGDefaultLog)
+        {
+            printTree = true
+        };
 
         public float pointScaleFactor = 1.0f;
         public bool  printTree;

@@ -2152,7 +2152,7 @@ namespace Xamarin.Yoga
                 mainAxis,
                 config,
                 performLayout,
-                totalOuterFlexBasis);
+                ref totalOuterFlexBasis);
 
             var flexBasisOverflows = measureModeMainDim == MeasureMode.Undefined
                 ? false
@@ -3016,7 +3016,7 @@ namespace Xamarin.Yoga
             FlexDirectionType mainAxis,
             YogaConfig        config,
             bool              performLayout,
-            float             totalOuterFlexBasis)
+            ref float         totalOuterFlexBasis)
         {
             YGNode singleFlexChild    = null;
             var    children           = node.Children;

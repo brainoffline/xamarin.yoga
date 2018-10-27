@@ -1,10 +1,30 @@
 ﻿// ReSharper disable InconsistentNaming
 
 using System;
+using System.Drawing;
 
 namespace Xamarin.Yoga
 {
     using static YGGlobal;
+
+    public delegate SizeF MeasureFunc(
+        YGNode      node,
+        float       width,
+        MeasureMode widthMode,
+        float       height,
+        MeasureMode heightMode);
+
+    public delegate float BaselineFunc(YGNode node, float width, float height);
+
+    public delegate void DirtiedFunc(YGNode node);
+
+    public delegate void PrintFunc(YGNode node);
+
+    public delegate void LoggerFunc(
+        YogaConfig config,
+        YGNode     node,
+        LogLevel   level,
+        string     message);
 
     public class YogaConfig : IEquatable<YogaConfig>
     {
@@ -71,14 +91,13 @@ namespace Xamarin.Yoga
             YogaConfig      config,
             YGNode          node,
             LogLevel        level,
-            string          format,
-            params object[] args)
+            string          message)
         {
             switch (level)
             {
             case LogLevel.Error:
             case LogLevel.Fatal:
-                Console.Error.Write(format, args);
+                Console.Error.Write(message);
                 return;
 
             case LogLevel.Warn:
@@ -86,7 +105,7 @@ namespace Xamarin.Yoga
             case LogLevel.Debug:
             case LogLevel.Verbose:
             default:
-                Console.Write(format, args);
+                Console.Write(message);
                 return;
             }
         }

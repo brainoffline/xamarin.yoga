@@ -15,10 +15,9 @@ namespace Xamarin.Yoga.Tests
             YogaConfig        config,
             YGNode          node,
             LogLevel      level,
-            string          format,
-            params object[] args)
+            string          message)
         {
-            sb.AppendFormat(format, args);
+            sb.AppendFormat(message);
         }
 
         [TestMethod]

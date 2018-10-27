@@ -17,33 +17,13 @@ namespace Xamarin.Yoga
 
         internal static string spacer = "                                                            ";
 
-        public static void YGAssert(bool condition, string message)
-        {
-            if (!condition) YGLog(null, LogLevel.Fatal, $"{message}\n");
-        }
 
-        public static void YGAssertWithConfig(
-            YogaConfig config,
-            bool       condition,
-            string     message)
-        {
-            if (!condition)
-                YGLogWithConfig(config, LogLevel.Fatal, "{message}\n");
-        }
-
-        public static void YGAssertWithNode(
-            YGNode node,
-            bool   condition,
-            string message)
-        {
-            if (!condition) YGLog(node, LogLevel.Fatal, $"{message}\n");
-        }
 
         public static void YGConfigSetPointScaleFactor(
             YogaConfig config,
             float      pixelsInPoint)
         {
-            YGAssertWithConfig(
+            YogaGlobal.YGAssert(
                 config,
                 pixelsInPoint >= 0.0f,
                 "Scale factor should not be less than zero");
@@ -178,14 +158,14 @@ namespace Xamarin.Yoga
 
                 if (gPrintChanges && gPrintSkips)
                 {
-                    YGLog(
+                    YogaGlobal.Log(
                         node,
                         LogLevel.Verbose,
                         $"{YGSpacer(gDepth)}{gDepth}.[[skipped] ");
 
                     node.PrintFunc?.Invoke(node);
 
-                    YGLog(
+                    YogaGlobal.Log(
                         node,
                         LogLevel.Verbose,
                         $"wm: {YGMeasureModeName(widthMeasureMode, performLayout)}, hm: {YGMeasureModeName(heightMeasureMode, performLayout)}, aw: {availableWidth} ah: {availableHeight} => d: ({cachedResults.ComputedWidth}, {cachedResults.ComputedHeight}) {reason}\n");
@@ -195,14 +175,14 @@ namespace Xamarin.Yoga
             {
                 if (gPrintChanges)
                 {
-                    YGLog(
+                    YogaGlobal.Log(
                         node,
                         LogLevel.Verbose,
                         $"{YGSpacer(gDepth)}{gDepth}.{(needToVisitNode ? " * " : "")}");
 
                     node.PrintFunc?.Invoke(node);
 
-                    YGLog(
+                    YogaGlobal.Log(
                         node,
                         LogLevel.Verbose,
                         $"wm: {YGMeasureModeName(widthMeasureMode, performLayout)}, hm: {YGMeasureModeName(heightMeasureMode, performLayout)}, aw: {availableWidth} ah: {availableHeight} {reason}\n");
@@ -222,14 +202,14 @@ namespace Xamarin.Yoga
 
                 if (gPrintChanges)
                 {
-                    YGLog(
+                    YogaGlobal.Log(
                         node,
                         LogLevel.Verbose,
                         $"{YGSpacer(gDepth)}{gDepth}.]{(needToVisitNode ? "*" : "")}");
 
                     node.PrintFunc?.Invoke(node);
 
-                    YGLog(
+                    YogaGlobal.Log(
                         node,
                         LogLevel.Verbose,
                         $"wm: {YGMeasureModeName(widthMeasureMode, performLayout)}, hm: {YGMeasureModeName(heightMeasureMode, performLayout)}, d: ({layout.MeasuredWidth}, {layout.MeasuredHeight}) {reason}\n");
@@ -241,8 +221,7 @@ namespace Xamarin.Yoga
                 {
                     if (layout.CachedMeasurementFull)
                     {
-                        if (gPrintChanges)
-                            YGLog(node, LogLevel.Verbose, "Out of cache entries!\n");
+                        if (gPrintChanges) YogaGlobal.Log(node, LogLevel.Verbose, "Out of cache entries!\n");
 
                         layout.ResetNextCachedMeasurement();
                     }
@@ -276,19 +255,6 @@ namespace Xamarin.Yoga
             return needToVisitNode || cachedResults == null;
         }
 
-        public static void YGLog(YGNode node, LogLevel level, string message)
-        {
-            YGVLog(
-                node == null ? null : node.Config,
-                node,
-                level,
-                message);
-        }
-
-        public static void YGLogWithConfig(YogaConfig config, LogLevel level, string message)
-        {
-            YGVLog(config, null, level, message);
-        }
 
         public static void YGNodeCalculateLayout(
             YGNode        node,
@@ -465,7 +431,7 @@ namespace Xamarin.Yoga
         // YG_NODE_LAYOUT_RESOLVED_PROPERTY_IMPL(float, Border,  border);
         public static float YGNodeLayoutGetBorder(YGNode node, EdgeType edge)
         {
-            YGAssertWithNode(
+            YogaGlobal.YGAssert(
                 node,
                 edge <= EdgeType.End,
                 "Cannot get layout properties of multi-edge shorthands");
@@ -488,7 +454,7 @@ namespace Xamarin.Yoga
         // YG_NODE_LAYOUT_RESOLVED_PROPERTY_IMPL(float, Padding, padding);
         public static float YGNodeLayoutGetPadding(YGNode node, EdgeType edge)
         {
-            YGAssertWithNode(
+            YogaGlobal.YGAssert(
                 node,
                 edge <= EdgeType.End,
                 "Cannot get layout properties of multi-edge shorthands");
@@ -536,17 +502,6 @@ namespace Xamarin.Yoga
                 : scaledValue / pointScaleFactor;
         }
 
-        public static void YGTraversePreOrder(
-            YGNode         node,
-            Action<YGNode> f)
-        {
-            if (node == null)
-                return;
-
-            f(node);
-            YGTraverseChildrenPreOrder(node.Children, f);
-        }
-
         internal static float YGBaseline(YGNode node)
         {
             if (node.BaselineFunc != null)
@@ -556,7 +511,7 @@ namespace Xamarin.Yoga
                     node.Layout.MeasuredWidth,
                     node.Layout.MeasuredHeight);
 
-                YGAssertWithNode(
+                YogaGlobal.YGAssert(
                     node,
                     baseline.HasValue(),
                     "Expect custom baseline function to not return NaN");
@@ -2007,13 +1962,13 @@ namespace Xamarin.Yoga
             bool          performLayout,
             YogaConfig    config)
         {
-            YGAssertWithNode(
+            YogaGlobal.YGAssert(
                 node,
                 availableWidth.IsNaN()
                     ? widthMeasureMode == MeasureMode.Undefined
                     : true,
                 "availableWidth is indefinite so widthMeasureMode must be YGMeasureMode.Undefined");
-            YGAssertWithNode(
+            YogaGlobal.YGAssert(
                 node,
                 availableHeight.IsNaN()
                     ? heightMeasureMode == MeasureMode.Undefined
@@ -2828,7 +2783,7 @@ namespace Xamarin.Yoga
             float       ownerWidth,
             float       ownerHeight)
         {
-            YGAssertWithNode(
+            YogaGlobal.YGAssert(
                 node,
                 node.MeasureFunc != null,
                 "Expected node to have custom measure function");
@@ -2981,29 +2936,6 @@ namespace Xamarin.Yoga
             if (level > spacerLen)
                 return spacer;
             return spacer.Substring(spacerLen - level);
-        }
-
-        internal static void YGTraverseChildrenPreOrder(
-            IEnumerable<YGNode> children,
-            Action<YGNode>      f)
-        {
-            foreach (var node in children)
-            {
-                f(node);
-                YGTraverseChildrenPreOrder(node.Children, f);
-            }
-        }
-
-        internal static void YGVLog(
-            YogaConfig config,
-            YGNode     node,
-            LogLevel   level,
-            string     format, params object[] args)
-        {
-            var logConfig = config ?? YogaConfig.DefaultConfig;
-            logConfig.Logger(logConfig, node, level, format, args);
-
-            if (level == LogLevel.Fatal) throw new SystemException();
         }
 
         private static void YGNodeComputeFlexBasisForChildren(

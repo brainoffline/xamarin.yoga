@@ -19,6 +19,7 @@ namespace Xamarin.Yoga
         private MeasureFunc _measureFunc;
         private YGNode      _owner;
         private NodeStyle   _style;
+        private CalculateLayout _calculateLayout;
 
         public YGNode() : this(YogaConfig.DefaultConfig) { }
 
@@ -109,7 +110,7 @@ namespace Xamarin.Yoga
                 }
                 else
                 {
-                    YGAssertWithNode(
+                    YogaGlobal.YGAssert(
                         this,
                         Children.Count == 0,
                         "Cannot set measure function: Nodes with measure functions cannot have children.");
@@ -381,7 +382,7 @@ namespace Xamarin.Yoga
 
         public float LayoutGetMargin(EdgeType edge)
         {
-            YGAssertWithNode(
+            YogaGlobal.YGAssert(
                 this,
                 edge <= EdgeType.End,
                 "Cannot get layout properties of multi-edge shorthands");
@@ -417,7 +418,7 @@ namespace Xamarin.Yoga
 
         public void MarkDirty()
         {
-            YGAssertWithNode(
+            YogaGlobal.YGAssert(
                 this,
                 MeasureFunc == null,
                 "Only leaf nodes with custom measure functions should manually mark themselves as dirty");
@@ -437,7 +438,7 @@ namespace Xamarin.Yoga
 
         public void Print(PrintOptionType options)
         {
-            YGLog(this, LogLevel.Debug, new NodePrint(this, options).ToString());
+            YogaGlobal.Log(this, LogLevel.Debug, new NodePrint(this, options).ToString());
         }
 
         // If both left and right are defined, then use left. Otherwise return
@@ -567,12 +568,12 @@ namespace Xamarin.Yoga
             {
                 foreach (YGNode child in e.NewItems)
                 {
-                    YGAssertWithNode(
+                    YogaGlobal.YGAssert(
                         this,
                         child.Owner == null,
                         "Child already has a owner, it must be removed first.");
 
-                    YGAssertWithNode(
+                    YogaGlobal.YGAssert(
                         this,
                         MeasureFunc == null,
                         "Cannot add child: Nodes with measure functions cannot have children.");
@@ -588,6 +589,15 @@ namespace Xamarin.Yoga
             }
 
             MarkDirtyAndPropagate();
+        }
+
+        public CalculateLayout Calc => _calculateLayout ?? (_calculateLayout = new CalculateLayout(this));
+
+        public void Traverse(Action<YGNode> f)
+        {
+            f(this);
+            foreach (var child in Children)
+                child.Traverse(f);
         }
     }
 }

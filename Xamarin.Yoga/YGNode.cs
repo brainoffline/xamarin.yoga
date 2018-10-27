@@ -600,7 +600,7 @@ namespace Xamarin.Yoga
 
                 if (child.Style.PositionType == PositionType.Absolute) continue;
 
-                if (YGNodeAlignItem(this, child) == YGAlign.Baseline)
+                if (YGNodeAlignItem(child) == YGAlign.Baseline)
                 {
                     baselineChild = child;
                     break;
@@ -614,6 +614,88 @@ namespace Xamarin.Yoga
 
             var childBaseline = baselineChild.Baseline();
             return childBaseline + baselineChild.Layout.Position.Top;
+        }
+
+        internal bool YGIsBaselineLayout()
+        {
+            if (Style.FlexDirection.IsColumn())
+                return false;
+
+            if (Style.AlignItems == YGAlign.Baseline)
+                return true;
+
+            foreach (var child in Children)
+            {
+                if (child.Style.PositionType == PositionType.Relative &&
+                    child.Style.AlignSelf    == YGAlign.Baseline)
+                    return true;
+            }
+
+            return false;
+        }
+
+        internal YGAlign YGNodeAlignItem(YGNode child)
+        {
+            var align = child.Style.AlignSelf == YGAlign.Auto
+                ? Style.AlignItems
+                : child.Style.AlignSelf;
+            if (align == YGAlign.Baseline && Style.FlexDirection.IsColumn())
+                return YGAlign.FlexStart;
+
+            return align;
+        }
+
+        // Like YGNodeBoundAxisWithinMinAndMax but also ensures that the value doesn't
+        // go below the padding and border amount.
+        // inline
+
+        internal float YGNodeBoundAxis(
+            FlexDirectionType axis,
+            float             value,
+            float             axisSize,
+            float             widthSize)
+        {
+            return NumberExtensions.FloatMax(
+                UnwrapFloatOptional(
+                    YGNodeBoundAxisWithinMinAndMax(axis, value, axisSize)),
+                YGNodePaddingAndBorderForAxis(axis, widthSize));
+        }
+
+        internal float? YGNodeBoundAxisWithinMinAndMax(
+            FlexDirectionType axis,
+            float             value,
+            float             axisSize)
+        {
+            float? min = null;
+            float? max = null;
+
+            if (axis.IsColumn())
+            {
+                min = Style.MinHeight.ResolveValue(axisSize);
+                max = Style.MaxHeight.ResolveValue(axisSize);
+            }
+            else if (axis.IsRow())
+            {
+                min = Style.MinWidth.ResolveValue(axisSize);
+                max = Style.MaxWidth.ResolveValue(axisSize);
+            }
+
+            if (max.HasValue && max >= 0 && value > max)
+                return max;
+
+            if (min.HasValue && min >= 0 && value < min)
+                return min;
+
+            return value;
+        }
+
+        internal float YGNodePaddingAndBorderForAxis(
+            FlexDirectionType axis,
+            float             widthSize)
+        {
+            return UnwrapFloatOptional(
+                GetLeadingPaddingAndBorder(axis, widthSize) +
+                GetTrailingPaddingAndBorder(axis, widthSize));
         }
     }
 }

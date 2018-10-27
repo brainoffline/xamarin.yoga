@@ -38,7 +38,7 @@ namespace Xamarin.Yoga.Tests
             root_child0.Style.AspectRatio = 1;
             root.Children.Add(root_child0);
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.LTR);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(0,  root_child0.Layout.Position.Left);
             Assert.AreEqual(0,  root_child0.Layout.Position.Top);
@@ -59,7 +59,7 @@ namespace Xamarin.Yoga.Tests
             root_child0.Style.AspectRatio = 1;
             root.Children.Add(root_child0);
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.LTR);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(0,  root_child0.Layout.Position.Left);
             Assert.AreEqual(0,  root_child0.Layout.Position.Top);
@@ -82,7 +82,7 @@ namespace Xamarin.Yoga.Tests
             root_child0.Style.AspectRatio = 1;
             root.Children.Add(root_child0);
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.LTR);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(0,   root_child0.Layout.Position.Left);
             Assert.AreEqual(0,   root_child0.Layout.Position.Top);
@@ -104,7 +104,7 @@ namespace Xamarin.Yoga.Tests
             root_child0.Style.AspectRatio = 1;
             root.Children.Add(root_child0);
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.LTR);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(0,  root_child0.Layout.Position.Left);
             Assert.AreEqual(0,  root_child0.Layout.Position.Top);
@@ -123,7 +123,7 @@ namespace Xamarin.Yoga.Tests
             root_child0.Style.AspectRatio = 1;
             root.Children.Add(root_child0);
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.LTR);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(0,   root_child0.Layout.Position.Left);
             Assert.AreEqual(0,   root_child0.Layout.Position.Top);
@@ -145,7 +145,7 @@ namespace Xamarin.Yoga.Tests
             root_child0.Style.AspectRatio = 1;
             root.Children.Add(root_child0);
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.LTR);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(0,   root_child0.Layout.Position.Left);
             Assert.AreEqual(0,   root_child0.Layout.Position.Top);
@@ -167,7 +167,7 @@ namespace Xamarin.Yoga.Tests
             root_child0.Style.AspectRatio = 1;
             root.Children.Add(root_child0);
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.LTR);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(0,   root_child0.Layout.Position.Left);
             Assert.AreEqual(0,   root_child0.Layout.Position.Top);
@@ -194,7 +194,7 @@ namespace Xamarin.Yoga.Tests
             root_child1.Style.AspectRatio = 1;
             root.Children.Insert(1, root_child1);
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.LTR);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(0,  root_child0.Layout.Position.Left);
             Assert.AreEqual(0,  root_child0.Layout.Position.Top);
@@ -220,7 +220,7 @@ namespace Xamarin.Yoga.Tests
             root_child0.Style.AspectRatio = 1;
             root.Children.Add(root_child0);
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.LTR);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(0,  root_child0.Layout.Position.Left);
             Assert.AreEqual(0,  root_child0.Layout.Position.Top);
@@ -243,7 +243,7 @@ namespace Xamarin.Yoga.Tests
             root_child0.Style.AspectRatio = 1;
             root.Children.Add(root_child0);
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.LTR);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(0,  root_child0.Layout.Position.Left);
             Assert.AreEqual(0,  root_child0.Layout.Position.Top);
@@ -266,7 +266,7 @@ namespace Xamarin.Yoga.Tests
             root_child0.Style.AspectRatio = 1;
             root.Children.Add(root_child0);
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.LTR);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(0,  root_child0.Layout.Position.Left);
             Assert.AreEqual(0,  root_child0.Layout.Position.Top);
@@ -288,7 +288,7 @@ namespace Xamarin.Yoga.Tests
             root_child0.Style.AspectRatio = 1;
             root.Children.Add(root_child0);
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.LTR);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(0,  root_child0.Layout.Position.Left);
             Assert.AreEqual(0,  root_child0.Layout.Position.Top);
@@ -310,7 +310,7 @@ namespace Xamarin.Yoga.Tests
             root_child0.Style.AspectRatio = 1;
             root.Children.Add(root_child0);
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.LTR);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(0,  root_child0.Layout.Position.Left);
             Assert.AreEqual(0,  root_child0.Layout.Position.Top);
@@ -332,7 +332,7 @@ namespace Xamarin.Yoga.Tests
             root_child0.Style.AspectRatio = 1;
             root.Children.Add(root_child0);
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.LTR);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(0,  root_child0.Layout.Position.Left);
             Assert.AreEqual(0,  root_child0.Layout.Position.Top);
@@ -354,7 +354,7 @@ namespace Xamarin.Yoga.Tests
             root_child0.Style.AspectRatio = 1;
             root.Children.Add(root_child0);
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.LTR);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(0,  root_child0.Layout.Position.Left);
             Assert.AreEqual(0,  root_child0.Layout.Position.Top);
@@ -375,7 +375,7 @@ namespace Xamarin.Yoga.Tests
             root_child0.Style.AspectRatio = 2;
             root.Children.Add(root_child0);
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.LTR);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(0,   root_child0.Layout.Position.Left);
             Assert.AreEqual(0,   root_child0.Layout.Position.Top);
@@ -396,7 +396,7 @@ namespace Xamarin.Yoga.Tests
             root_child0.Style.AspectRatio = 0.5f;
             root.Children.Add(root_child0);
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.LTR);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(0,   root_child0.Layout.Position.Left);
             Assert.AreEqual(0,   root_child0.Layout.Position.Top);
@@ -417,7 +417,7 @@ namespace Xamarin.Yoga.Tests
             root_child0.Style.AspectRatio = 0.5f;
             root.Children.Add(root_child0);
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.LTR);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(0,   root_child0.Layout.Position.Left);
             Assert.AreEqual(0,   root_child0.Layout.Position.Top);
@@ -438,7 +438,7 @@ namespace Xamarin.Yoga.Tests
             root_child0.Style.AspectRatio = 2;
             root.Children.Add(root_child0);
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.LTR);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(0,   root_child0.Layout.Position.Left);
             Assert.AreEqual(0,   root_child0.Layout.Position.Top);
@@ -459,7 +459,7 @@ namespace Xamarin.Yoga.Tests
             root_child0.Style.AspectRatio = 1;
             root.Children.Add(root_child0);
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.LTR);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(0,  root_child0.Layout.Position.Left);
             Assert.AreEqual(0,  root_child0.Layout.Position.Top);
@@ -483,7 +483,7 @@ namespace Xamarin.Yoga.Tests
             root_child0.Style.AspectRatio = 1;
             root.Children.Add(root_child0);
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.LTR);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(0,   root_child0.Layout.Position.Left);
             Assert.AreEqual(0,   root_child0.Layout.Position.Top);
@@ -506,7 +506,7 @@ namespace Xamarin.Yoga.Tests
             root_child0.Style.AspectRatio = 1;
             root.Children.Add(root_child0);
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.LTR);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(0,   root_child0.Layout.Position.Left);
             Assert.AreEqual(0,   root_child0.Layout.Position.Top);
@@ -535,7 +535,7 @@ namespace Xamarin.Yoga.Tests
             root_child1.Style.AspectRatio = 1;
             root.Children.Insert(1, root_child1);
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.LTR);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(0,  root_child0.Layout.Position.Left);
             Assert.AreEqual(0,  root_child0.Layout.Position.Top);
@@ -568,7 +568,7 @@ namespace Xamarin.Yoga.Tests
             root_child1.Style.AspectRatio = 1;
             root.Children.Insert(1, root_child1);
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.LTR);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(0,  root_child0.Layout.Position.Left);
             Assert.AreEqual(0,  root_child0.Layout.Position.Top);
@@ -596,7 +596,7 @@ namespace Xamarin.Yoga.Tests
             root_child0.Style.AspectRatio = 0.5f;
             root.Children.Add(root_child0);
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.LTR);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(0,   root_child0.Layout.Position.Left);
             Assert.AreEqual(0,   root_child0.Layout.Position.Top);
@@ -618,7 +618,7 @@ namespace Xamarin.Yoga.Tests
             root_child0.Style.AspectRatio = 2;
             root.Children.Add(root_child0);
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.LTR);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(0,   root_child0.Layout.Position.Left);
             Assert.AreEqual(0,   root_child0.Layout.Position.Top);
@@ -641,7 +641,7 @@ namespace Xamarin.Yoga.Tests
             root_child0.Style.AspectRatio = 1;
             root.Children.Add(root_child0);
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.LTR);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(10, root_child0.Layout.Position.Left);
             Assert.AreEqual(10, root_child0.Layout.Position.Top);
@@ -664,7 +664,7 @@ namespace Xamarin.Yoga.Tests
             root_child0.Style.AspectRatio = 1;
             root.Children.Add(root_child0);
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.LTR);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(10, root_child0.Layout.Position.Left);
             Assert.AreEqual(10, root_child0.Layout.Position.Top);
@@ -685,7 +685,7 @@ namespace Xamarin.Yoga.Tests
             root_child0.Style.AspectRatio = 1;
             root.Children.Add(root_child0);
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.LTR);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(0,  root_child0.Layout.Position.Left);
             Assert.AreEqual(0,  root_child0.Layout.Position.Top);
@@ -705,7 +705,7 @@ namespace Xamarin.Yoga.Tests
             root_child0.Style.AspectRatio = 1;
             root.Children.Add(root_child0);
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.LTR);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(0,  root_child0.Layout.Position.Left);
             Assert.AreEqual(0,  root_child0.Layout.Position.Top);
@@ -725,7 +725,7 @@ namespace Xamarin.Yoga.Tests
             root_child0.Style.AspectRatio = 4;
             root.Children.Add(root_child0);
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.LTR);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(100, root.Layout.Width);
             Assert.AreEqual(50,  root.Layout.Height);
@@ -750,7 +750,7 @@ namespace Xamarin.Yoga.Tests
             root_child0.Style.Margin.Right = 10;
             root.Children.Add(root_child0);
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.LTR);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(100, root.Layout.Width);
             Assert.AreEqual(100, root.Layout.Height);
@@ -775,7 +775,7 @@ namespace Xamarin.Yoga.Tests
             root_child0.Style.Margin.Right = 10;
             root.Children.Add(root_child0);
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.LTR);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(100, root.Layout.Width);
             Assert.AreEqual(100, root.Layout.Height);
@@ -800,7 +800,7 @@ namespace Xamarin.Yoga.Tests
             root_child0.Style.Margin.Bottom = 10;
             root.Children.Add(root_child0);
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.LTR);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(100, root.Layout.Width);
             Assert.AreEqual(100, root.Layout.Height);
@@ -827,7 +827,7 @@ namespace Xamarin.Yoga.Tests
             root_child0_child0.Style.AspectRatio = 2;
             root_child0.Children.Add(root_child0_child0);
 
-            YGNodeCalculateLayout(root, 100, 200, DirectionType.LTR);
+            root.Calc.CalculateLayout(100, 200, DirectionType.LTR);
 
             Assert.AreEqual(100, root.Layout.Width);
             Assert.AreEqual(200, root.Layout.Height);
@@ -857,7 +857,7 @@ namespace Xamarin.Yoga.Tests
             root_child0_child0.Style.AspectRatio = 0.5f;
             root_child0.Children.Add(root_child0_child0);
 
-            YGNodeCalculateLayout(root, 200, 100, DirectionType.LTR);
+            root.Calc.CalculateLayout(200, 100, DirectionType.LTR);
 
             Assert.AreEqual(200, root.Layout.Width);
             Assert.AreEqual(100, root.Layout.Height);
@@ -887,7 +887,7 @@ namespace Xamarin.Yoga.Tests
             root_child0_child0.Style.FlexGrow = 1;
             root_child0.Children.Add(root_child0_child0);
 
-            YGNodeCalculateLayout(root, 100, 100, DirectionType.LTR);
+            root.Calc.CalculateLayout(100, 100, DirectionType.LTR);
 
             Assert.AreEqual(100, root.Layout.Width);
             Assert.AreEqual(100, root.Layout.Height);

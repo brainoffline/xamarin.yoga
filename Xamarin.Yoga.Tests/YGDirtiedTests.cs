@@ -22,7 +22,7 @@ namespace Xamarin.Yoga.Tests
             root.Style.Width = 100;
             root.Style.Height = 100;
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.LTR);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
             int dirtiedCount = 0;
             root.Context = dirtiedCount ;
@@ -57,7 +57,7 @@ namespace Xamarin.Yoga.Tests
             root_child1.Style.Height = 20;
             root.Children.Insert(1, root_child1);
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.LTR);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
             int dirtiedCount = 0;
             root.Context = dirtiedCount;
@@ -92,7 +92,7 @@ namespace Xamarin.Yoga.Tests
             root_child1.Style.Height = 20;
             root.Children.Insert(1, root_child1);
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.LTR);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
             int dirtiedCount = 0;
             root_child0.Context = dirtiedCount;

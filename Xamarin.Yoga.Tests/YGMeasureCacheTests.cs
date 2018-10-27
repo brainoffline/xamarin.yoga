@@ -69,7 +69,7 @@ namespace Xamarin.Yoga.Tests
             root_child0.Style.FlexGrow = 1;
             root.Children.Add(root_child0);
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.LTR);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
             int measureCount = (int) root_child0.Context;
             Assert.AreEqual(1, measureCount);
@@ -85,8 +85,8 @@ namespace Xamarin.Yoga.Tests
             root_child0.MeasureFunc = _measureMin;
             root.Children.Add(root_child0);
 
-            YGNodeCalculateLayout(root, 100, 100, DirectionType.LTR);
-            YGNodeCalculateLayout(root, 100, 50,  DirectionType.LTR);
+            root.Calc.CalculateLayout(100, 100, DirectionType.LTR);
+            root.Calc.CalculateLayout(100, 50,  DirectionType.LTR);
 
             int measureCount = (int)root_child0.Context;
             Assert.AreEqual(1, measureCount);
@@ -103,8 +103,8 @@ namespace Xamarin.Yoga.Tests
             root_child0.MeasureFunc = _measureMin;
             root.Children.Add(root_child0);
 
-            YGNodeCalculateLayout(root, 100, 100, DirectionType.LTR);
-            YGNodeCalculateLayout(root, 100, 50,  DirectionType.LTR);
+            root.Calc.CalculateLayout(100, 100, DirectionType.LTR);
+            root.Calc.CalculateLayout(100, 50,  DirectionType.LTR);
 
             int measureCount = (int)root_child0.Context;
             Assert.AreEqual(1, measureCount);
@@ -121,9 +121,9 @@ namespace Xamarin.Yoga.Tests
             root_child0.MeasureFunc = _measureMin;
             root.Children.Add(root_child0);
 
-            YGNodeCalculateLayout(root, 100, 100, DirectionType.LTR);
+            root.Calc.CalculateLayout(100, 100, DirectionType.LTR);
             root.Style.AlignItems = YGAlign.Stretch;
-            YGNodeCalculateLayout(root, 10, 50, DirectionType.LTR);
+            root.Calc.CalculateLayout(10, 50, DirectionType.LTR);
 
             int measureCount = (int)root_child0.Context;
             Assert.AreEqual(1, measureCount);
@@ -140,8 +140,8 @@ namespace Xamarin.Yoga.Tests
             root_child0.MeasureFunc = _measureMin;
             root.Children.Add(root_child0);
 
-            YGNodeCalculateLayout(root, 100, float.NaN, DirectionType.LTR);
-            YGNodeCalculateLayout(root, 10,  float.NaN, DirectionType.LTR);
+            root.Calc.CalculateLayout(100, float.NaN, DirectionType.LTR);
+            root.Calc.CalculateLayout(10,  float.NaN, DirectionType.LTR);
 
             int measureCount = (int)root_child0.Context;
             Assert.AreEqual(1, measureCount);
@@ -165,7 +165,7 @@ namespace Xamarin.Yoga.Tests
             root_child0_child0.MeasureFunc = _measure_84_49;
             root_child0.Children.Add(root_child0_child0);
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.LTR);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
             int measureCount = (int)root_child0_child0.Context;
             Assert.AreEqual(1, measureCount);

@@ -20,7 +20,7 @@ namespace Xamarin.Yoga.Tests
                 }
             };
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.LTR);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(0,   root.Layout.Position.Left);
             Assert.AreEqual(0,   root.Layout.Position.Top);
@@ -32,7 +32,7 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(100, root_child0.Layout.Width);
             Assert.AreEqual(10,  root_child0.Layout.Height);
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.RTL);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.RTL);
 
             Assert.AreEqual(0,   root.Layout.Position.Left);
             Assert.AreEqual(0,   root.Layout.Position.Top);
@@ -63,7 +63,7 @@ namespace Xamarin.Yoga.Tests
                 }
             };
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.LTR);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(0,   root.Layout.Position.Left);
             Assert.AreEqual(0,   root.Layout.Position.Top);
@@ -75,7 +75,7 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(10, root_child0.Layout.Width);
             Assert.AreEqual(10, root_child0.Layout.Height);
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.RTL);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.RTL);
 
             Assert.AreEqual(0,   root.Layout.Position.Left);
             Assert.AreEqual(0,   root.Layout.Position.Top);
@@ -106,7 +106,7 @@ namespace Xamarin.Yoga.Tests
                 }
             };
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.LTR);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(0,   root.Layout.Position.Left);
             Assert.AreEqual(0,   root.Layout.Position.Top);
@@ -118,7 +118,7 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(10, root_child0.Layout.Width);
             Assert.AreEqual(10, root_child0.Layout.Height);
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.RTL);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.RTL);
 
             Assert.AreEqual(0,   root.Layout.Position.Left);
             Assert.AreEqual(0,   root.Layout.Position.Top);
@@ -149,7 +149,7 @@ namespace Xamarin.Yoga.Tests
                 }
             };
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.LTR);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(0,   root.Layout.Position.Left);
             Assert.AreEqual(0,   root.Layout.Position.Top);
@@ -161,7 +161,7 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(10, root_child0.Layout.Width);
             Assert.AreEqual(10, root_child0.Layout.Height);
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.RTL);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.RTL);
 
             Assert.AreEqual(0,   root.Layout.Position.Left);
             Assert.AreEqual(0,   root.Layout.Position.Top);
@@ -194,7 +194,7 @@ namespace Xamarin.Yoga.Tests
                 }
             };
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.LTR);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(0,   root.Layout.Position.Left);
             Assert.AreEqual(0,   root.Layout.Position.Top);
@@ -211,7 +211,7 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(50, root_child1.Layout.Width);
             Assert.AreEqual(20, root_child1.Layout.Height);
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.RTL);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.RTL);
 
             Assert.AreEqual(0,   root.Layout.Position.Left);
             Assert.AreEqual(0,   root.Layout.Position.Top);
@@ -256,7 +256,7 @@ namespace Xamarin.Yoga.Tests
                 }
             };
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.LTR);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(0,   root.Layout.Position.Left);
             Assert.AreEqual(0,   root.Layout.Position.Top);
@@ -278,7 +278,7 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(50, root_child1_child0.Layout.Width);
             Assert.AreEqual(10, root_child1_child0.Layout.Height);
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.RTL);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.RTL);
 
             Assert.AreEqual(0,   root.Layout.Position.Left);
             Assert.AreEqual(0,   root.Layout.Position.Top);
@@ -342,7 +342,7 @@ namespace Xamarin.Yoga.Tests
                 }
             };
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.LTR);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(0,   root.Layout.Position.Left);
             Assert.AreEqual(0,   root.Layout.Position.Top);
@@ -379,7 +379,7 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(25, root_child1_child3.Layout.Width);
             Assert.AreEqual(10, root_child1_child3.Layout.Height);
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.RTL);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.RTL);
 
             Assert.AreEqual(0,   root.Layout.Position.Left);
             Assert.AreEqual(0,   root.Layout.Position.Top);
@@ -465,7 +465,7 @@ namespace Xamarin.Yoga.Tests
             };
 
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.LTR);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(0,   root.Layout.Position.Left);
             Assert.AreEqual(0,   root.Layout.Position.Top);
@@ -502,7 +502,7 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(25, root_child1_child3.Layout.Width);
             Assert.AreEqual(10, root_child1_child3.Layout.Height);
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.RTL);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.RTL);
 
             Assert.AreEqual(0,   root.Layout.Position.Left);
             Assert.AreEqual(0,   root.Layout.Position.Top);
@@ -580,7 +580,7 @@ namespace Xamarin.Yoga.Tests
                 }
             };
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.LTR);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(0,   root.Layout.Position.Left);
             Assert.AreEqual(0,   root.Layout.Position.Top);
@@ -617,7 +617,7 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(25, root_child1_child3.Layout.Width);
             Assert.AreEqual(10, root_child1_child3.Layout.Height);
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.RTL);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.RTL);
 
             Assert.AreEqual(0,   root.Layout.Position.Left);
             Assert.AreEqual(0,   root.Layout.Position.Top);
@@ -690,7 +690,7 @@ namespace Xamarin.Yoga.Tests
                 }
             };
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.LTR);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(0,   root.Layout.Position.Left);
             Assert.AreEqual(0,   root.Layout.Position.Top);
@@ -712,7 +712,7 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(50, root_child1_child0.Layout.Width);
             Assert.AreEqual(10, root_child1_child0.Layout.Height);
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.RTL);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.RTL);
 
             Assert.AreEqual(0,   root.Layout.Position.Left);
             Assert.AreEqual(0,   root.Layout.Position.Top);
@@ -762,7 +762,7 @@ namespace Xamarin.Yoga.Tests
                 }
             };
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.LTR);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(0,   root.Layout.Position.Left);
             Assert.AreEqual(0,   root.Layout.Position.Top);
@@ -784,7 +784,7 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(50, root_child1_child0.Layout.Width);
             Assert.AreEqual(10, root_child1_child0.Layout.Height);
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.RTL);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.RTL);
 
             Assert.AreEqual(0,   root.Layout.Position.Left);
             Assert.AreEqual(0,   root.Layout.Position.Top);
@@ -842,7 +842,7 @@ namespace Xamarin.Yoga.Tests
                 }
             };
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.LTR);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(0,   root.Layout.Position.Left);
             Assert.AreEqual(0,   root.Layout.Position.Top);
@@ -869,7 +869,7 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(50, root_child1_child0.Layout.Width);
             Assert.AreEqual(15, root_child1_child0.Layout.Height);
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.RTL);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.RTL);
 
             Assert.AreEqual(0,   root.Layout.Position.Left);
             Assert.AreEqual(0,   root.Layout.Position.Top);
@@ -916,7 +916,7 @@ namespace Xamarin.Yoga.Tests
                 }
             };
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.LTR);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(0,   root.Layout.Position.Left);
             Assert.AreEqual(0,   root.Layout.Position.Top);
@@ -933,7 +933,7 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(50, root_child1.Layout.Width);
             Assert.AreEqual(20, root_child1.Layout.Height);
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.RTL);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.RTL);
 
             Assert.AreEqual(0,   root.Layout.Position.Left);
             Assert.AreEqual(0,   root.Layout.Position.Top);
@@ -993,7 +993,7 @@ namespace Xamarin.Yoga.Tests
                 }
             };
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.LTR);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(0,   root.Layout.Position.Left);
             Assert.AreEqual(0,   root.Layout.Position.Top);
@@ -1015,7 +1015,7 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(50, root_child1_child0.Layout.Width);
             Assert.AreEqual(10, root_child1_child0.Layout.Height);
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.RTL);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.RTL);
 
             Assert.AreEqual(0,   root.Layout.Position.Left);
             Assert.AreEqual(0,   root.Layout.Position.Top);
@@ -1068,7 +1068,7 @@ namespace Xamarin.Yoga.Tests
                 }
             };
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.LTR);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(0,   root.Layout.Position.Left);
             Assert.AreEqual(0,   root.Layout.Position.Top);
@@ -1090,7 +1090,7 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(50, root_child1_child0.Layout.Width);
             Assert.AreEqual(10, root_child1_child0.Layout.Height);
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.RTL);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.RTL);
 
             Assert.AreEqual(0,   root.Layout.Position.Left);
             Assert.AreEqual(0,   root.Layout.Position.Top);
@@ -1155,7 +1155,7 @@ namespace Xamarin.Yoga.Tests
                 }
             };
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.LTR);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(0,   root.Layout.Position.Left);
             Assert.AreEqual(0,   root.Layout.Position.Top);
@@ -1192,7 +1192,7 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(50, root_child3.Layout.Width);
             Assert.AreEqual(50, root_child3.Layout.Height);
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.RTL);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.RTL);
 
             Assert.AreEqual(0,   root.Layout.Position.Left);
             Assert.AreEqual(0,   root.Layout.Position.Top);
@@ -1271,7 +1271,7 @@ namespace Xamarin.Yoga.Tests
                 }
             };
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.LTR);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(0,   root.Layout.Position.Left);
             Assert.AreEqual(0,   root.Layout.Position.Top);
@@ -1308,7 +1308,7 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(50, root_child3.Layout.Width);
             Assert.AreEqual(20, root_child3.Layout.Height);
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.RTL);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.RTL);
 
             Assert.AreEqual(0,   root.Layout.Position.Left);
             Assert.AreEqual(0,   root.Layout.Position.Top);
@@ -1387,7 +1387,7 @@ namespace Xamarin.Yoga.Tests
                 }
             };
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.LTR);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(0,   root.Layout.Position.Left);
             Assert.AreEqual(0,   root.Layout.Position.Top);
@@ -1424,7 +1424,7 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(50, root_child3.Layout.Width);
             Assert.AreEqual(20, root_child3.Layout.Height);
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.RTL);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.RTL);
 
             Assert.AreEqual(0,   root.Layout.Position.Left);
             Assert.AreEqual(0,   root.Layout.Position.Top);
@@ -1504,7 +1504,7 @@ namespace Xamarin.Yoga.Tests
                 }
             };
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.LTR);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(0,   root.Layout.Position.Left);
             Assert.AreEqual(0,   root.Layout.Position.Top);
@@ -1541,7 +1541,7 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(50, root_child3.Layout.Width);
             Assert.AreEqual(20, root_child3.Layout.Height);
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.RTL);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.RTL);
 
             Assert.AreEqual(0,   root.Layout.Position.Left);
             Assert.AreEqual(0,   root.Layout.Position.Top);
@@ -1614,7 +1614,7 @@ namespace Xamarin.Yoga.Tests
                 }
             };
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.LTR);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(0,  root.Layout.Position.Left);
             Assert.AreEqual(0,  root.Layout.Position.Top);
@@ -1631,7 +1631,7 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(52, root_child0_child0.Layout.Width);
             Assert.AreEqual(52, root_child0_child0.Layout.Height);
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.RTL);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.RTL);
 
             Assert.AreEqual(0,  root.Layout.Position.Left);
             Assert.AreEqual(0,  root.Layout.Position.Top);
@@ -1684,7 +1684,7 @@ namespace Xamarin.Yoga.Tests
                 }
             };
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.LTR);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(0,  root.Layout.Position.Left);
             Assert.AreEqual(0,  root.Layout.Position.Top);
@@ -1701,7 +1701,7 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(52, root_child0_child0.Layout.Width);
             Assert.AreEqual(52, root_child0_child0.Layout.Height);
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.RTL);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.RTL);
 
             Assert.AreEqual(0,  root.Layout.Position.Left);
             Assert.AreEqual(0,  root.Layout.Position.Top);
@@ -1746,7 +1746,7 @@ namespace Xamarin.Yoga.Tests
                 }
             };
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.LTR);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(0,  root.Layout.Position.Left);
             Assert.AreEqual(0,  root.Layout.Position.Top);
@@ -1763,7 +1763,7 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(72, root_child0_child0.Layout.Width);
             Assert.AreEqual(72, root_child0_child0.Layout.Height);
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.RTL);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.RTL);
 
             Assert.AreEqual(0,  root.Layout.Position.Left);
             Assert.AreEqual(0,  root.Layout.Position.Top);
@@ -1808,7 +1808,7 @@ namespace Xamarin.Yoga.Tests
                 }
             };
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.LTR);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(0,  root.Layout.Position.Left);
             Assert.AreEqual(0,  root.Layout.Position.Top);
@@ -1825,7 +1825,7 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(72, root_child0_child0.Layout.Width);
             Assert.AreEqual(72, root_child0_child0.Layout.Height);
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.RTL);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.RTL);
 
             Assert.AreEqual(0,  root.Layout.Position.Left);
             Assert.AreEqual(0,  root.Layout.Position.Top);
@@ -1881,7 +1881,7 @@ namespace Xamarin.Yoga.Tests
                 }
             };
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.LTR);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(0,   root.Layout.Position.Left);
             Assert.AreEqual(20,  root.Layout.Position.Top);
@@ -1903,7 +1903,7 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(20, root_child0_child0_child0.Layout.Width);
             Assert.AreEqual(20, root_child0_child0_child0.Layout.Height);
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.RTL);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.RTL);
 
             Assert.AreEqual(0,   root.Layout.Position.Left);
             Assert.AreEqual(20,  root.Layout.Position.Top);
@@ -1963,7 +1963,7 @@ namespace Xamarin.Yoga.Tests
                 }
             };
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.LTR);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(0,   root.Layout.Position.Left);
             Assert.AreEqual(20,  root.Layout.Position.Top);
@@ -1985,7 +1985,7 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(20, root_child0_child0_child0.Layout.Width);
             Assert.AreEqual(20, root_child0_child0_child0.Layout.Height);
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.RTL);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.RTL);
 
             Assert.AreEqual(0,   root.Layout.Position.Left);
             Assert.AreEqual(20,  root.Layout.Position.Top);
@@ -2040,7 +2040,7 @@ namespace Xamarin.Yoga.Tests
                 }
             };
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.LTR);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(0,   root.Layout.Position.Left);
             Assert.AreEqual(0,   root.Layout.Position.Top);
@@ -2062,7 +2062,7 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(0, root_child0_child0_child0.Layout.Width);
             Assert.AreEqual(0, root_child0_child0_child0.Layout.Height);
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.RTL);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.RTL);
 
             Assert.AreEqual(0,   root.Layout.Position.Left);
             Assert.AreEqual(0,   root.Layout.Position.Top);
@@ -2116,7 +2116,7 @@ namespace Xamarin.Yoga.Tests
                 }
             };
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.LTR);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(0,   root.Layout.Position.Left);
             Assert.AreEqual(0,   root.Layout.Position.Top);
@@ -2138,7 +2138,7 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(500, root_child0_child0_child0.Layout.Width);
             Assert.AreEqual(0,   root_child0_child0_child0.Layout.Height);
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.RTL);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.RTL);
 
             Assert.AreEqual(0,   root.Layout.Position.Left);
             Assert.AreEqual(0,   root.Layout.Position.Top);
@@ -2193,7 +2193,7 @@ namespace Xamarin.Yoga.Tests
                 }
             };
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.LTR);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(0,   root.Layout.Position.Left);
             Assert.AreEqual(0,   root.Layout.Position.Top);
@@ -2215,7 +2215,7 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(0, root_child0_child0_child0.Layout.Width);
             Assert.AreEqual(0, root_child0_child0_child0.Layout.Height);
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.RTL);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.RTL);
 
             Assert.AreEqual(0,   root.Layout.Position.Left);
             Assert.AreEqual(0,   root.Layout.Position.Top);

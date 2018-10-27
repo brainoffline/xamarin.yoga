@@ -90,7 +90,7 @@ namespace Xamarin.Yoga
         {
             if (number.Unit == ValueUnit.Auto)
                 sb.Append($"{str}: auto; ");
-            else if (!FloatEqual(number.Value, 0))
+            else if (!NumberExtensions.FloatEqual(number.Value, 0))
                 AppendNumberIfNotUndefined(sb, str, number);
         }
 

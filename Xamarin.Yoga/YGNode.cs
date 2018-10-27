@@ -19,7 +19,7 @@ namespace Xamarin.Yoga
         private MeasureFunc _measureFunc;
         private YGNode      _owner;
         private NodeStyle   _style;
-        private CalculateLayout _calculateLayout;
+        private NodeCalculator _nodeCalculator;
 
         public YGNode() : this(YogaConfig.DefaultConfig) { }
 
@@ -219,7 +219,7 @@ namespace Xamarin.Yoga
 
             var computedEdgeValue =
                 Style.Border.ComputedEdgeValue(axis.ToLeadingEdge(), YGValueZero).Value;
-            return FloatMax(computedEdgeValue, 0.0f);
+            return NumberExtensions.FloatMax(computedEdgeValue, 0.0f);
         }
 
         public float? GetLeadingMargin(FlexDirectionType axis, float widthSize)
@@ -236,16 +236,14 @@ namespace Xamarin.Yoga
         public float? GetLeadingPadding(FlexDirectionType axis, float widthSize)
         {
             var paddingEdgeStart =
-                ResolveValue(Style.Padding.Start, widthSize);
+                Style.Padding.Start.ResolveValue(widthSize);
             if (axis.IsRow()                                    &&
                 Style.Padding.Start.Unit != ValueUnit.Undefined &&
                 paddingEdgeStart.HasValue                       && paddingEdgeStart > 0.0f)
                 return paddingEdgeStart;
 
-            var resolvedValue = ResolveValue(
-                Style.Padding.ComputedEdgeValue(axis.ToLeadingEdge(), YGValueZero),
-                widthSize);
-            return FloatOptionalMax(resolvedValue, 0.0f);
+            var resolvedValue = Style.Padding.ComputedEdgeValue(axis.ToLeadingEdge(), YGValueZero).ResolveValue(widthSize);
+            return NumberExtensions.FloatOptionalMax(resolvedValue, 0.0f);
         }
 
         public float? GetLeadingPaddingAndBorder(FlexDirectionType axis, float widthSize)
@@ -259,7 +257,8 @@ namespace Xamarin.Yoga
             {
                 var leadingPosition =
                     Style.Position.ComputedEdgeValue(EdgeType.Start, YGValueUndefined);
-                if (leadingPosition.Unit != ValueUnit.Undefined) return ResolveValue(leadingPosition, axisSize);
+                if (leadingPosition.Unit != ValueUnit.Undefined)
+                    return leadingPosition.ResolveValue(axisSize);
             }
 
             var leadingPos =
@@ -267,7 +266,7 @@ namespace Xamarin.Yoga
 
             return leadingPos.Unit == ValueUnit.Undefined
                 ? 0
-                : ResolveValue(leadingPos, axisSize);
+                : leadingPos.ResolveValue(axisSize);
         }
 
         public float? GetMarginForAxis(FlexDirectionType axis, float widthSize)
@@ -284,7 +283,7 @@ namespace Xamarin.Yoga
                 return Style.Border.End.Value;
 
             var computedEdgeValue = Style.Border.ComputedEdgeValue(flexDirection.ToTrailingEdge(), YGValueZero).Value;
-            return FloatMax(computedEdgeValue, 0.0f);
+            return NumberExtensions.FloatMax(computedEdgeValue, 0.0f);
         }
 
         public float? GetTrailingMargin(FlexDirectionType axis, float widthSize)
@@ -302,15 +301,13 @@ namespace Xamarin.Yoga
         {
             if (axis.IsRow()                                        &&
                 Style.Padding.End.Unit != ValueUnit.Undefined       &&
-                ResolveValue(Style.Padding.End, widthSize).HasValue &&
-                ResolveValue(Style.Padding.End, widthSize) >= 0.0f)
-                return ResolveValue(Style.Padding.End, widthSize);
+                Style.Padding.End.ResolveValue(widthSize).HasValue &&
+                Style.Padding.End.ResolveValue(widthSize) >= 0.0f)
+                return Style.Padding.End.ResolveValue(widthSize);
 
-            var resolvedValue = ResolveValue(
-                Style.Padding.ComputedEdgeValue(axis.ToTrailingEdge(), YGValueZero),
-                widthSize);
+            var resolvedValue = Style.Padding.ComputedEdgeValue(axis.ToTrailingEdge(), YGValueZero).ResolveValue(widthSize);
 
-            return FloatOptionalMax(resolvedValue, 0.0f);
+            return NumberExtensions.FloatOptionalMax(resolvedValue, 0.0f);
         }
 
         public float? GetTrailingPaddingAndBorder(FlexDirectionType axis, float widthSize)
@@ -324,7 +321,8 @@ namespace Xamarin.Yoga
             {
                 var trailingPosition =
                     Style.Position.ComputedEdgeValue(EdgeType.End, YGValueUndefined);
-                if (trailingPosition.Unit != ValueUnit.Undefined) return ResolveValue(trailingPosition, axisSize);
+                if (trailingPosition.Unit != ValueUnit.Undefined)
+                    return trailingPosition.ResolveValue(axisSize);
             }
 
             var trailingPos =
@@ -332,7 +330,7 @@ namespace Xamarin.Yoga
 
             return trailingPos.Unit == ValueUnit.Undefined
                 ? 0
-                : ResolveValue(trailingPos, axisSize);
+                : trailingPos.ResolveValue(axisSize);
         }
 
         public bool IsLayoutTreeEqualToNode(YGNode node)
@@ -378,28 +376,6 @@ namespace Xamarin.Yoga
                 Style.Position.ComputedEdgeValue(EdgeType.End, YGValueUndefined).Unit != ValueUnit.Undefined ||
                 Style.Position.ComputedEdgeValue(axis.ToTrailingEdge(), YGValueUndefined).Unit !=
                 ValueUnit.Undefined;
-        }
-
-        public float LayoutGetMargin(EdgeType edge)
-        {
-            YogaGlobal.YGAssert(
-                this,
-                edge <= EdgeType.End,
-                "Cannot get layout properties of multi-edge shorthands");
-
-            switch (edge)
-            {
-            case EdgeType.Left when Layout.Direction == DirectionType.RTL:
-                return Layout.Margin.End;
-            case EdgeType.Left:
-                return Layout.Margin.Start;
-            case EdgeType.Right when Layout.Direction == DirectionType.RTL:
-                return Layout.Margin.Start;
-            case EdgeType.Right:
-                return Layout.Margin.End;
-            }
-
-            return Layout.Margin[edge];
         }
 
         public YGValue MarginLeadingValue(FlexDirectionType axis)
@@ -591,13 +567,53 @@ namespace Xamarin.Yoga
             MarkDirtyAndPropagate();
         }
 
-        public CalculateLayout Calc => _calculateLayout ?? (_calculateLayout = new CalculateLayout(this));
+        public NodeCalculator Calc => _nodeCalculator ?? (_nodeCalculator = new NodeCalculator(this));
 
         public void Traverse(Action<YGNode> f)
         {
             f(this);
             foreach (var child in Children)
                 child.Traverse(f);
+        }
+
+        internal float Baseline()
+        {
+            if (BaselineFunc != null)
+            {
+                var baseline = BaselineFunc(
+                    this,
+                    Layout.MeasuredWidth,
+                    Layout.MeasuredHeight);
+
+                YogaGlobal.YGAssert(
+                    this,
+                    baseline.HasValue(),
+                    "Expect custom baseline function to not return NaN");
+
+                return baseline;
+            }
+
+            YGNode baselineChild = null;
+            foreach (var child in Children)
+            {
+                if (child.LineIndex > 0) break;
+
+                if (child.Style.PositionType == PositionType.Absolute) continue;
+
+                if (YGNodeAlignItem(this, child) == YGAlign.Baseline)
+                {
+                    baselineChild = child;
+                    break;
+                }
+
+                if (baselineChild == null) baselineChild = child;
+            }
+
+            if (baselineChild == null)
+                return Layout.MeasuredHeight;
+
+            var childBaseline = baselineChild.Baseline();
+            return childBaseline + baselineChild.Layout.Position.Top;
         }
     }
 }

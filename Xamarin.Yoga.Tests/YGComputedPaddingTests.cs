@@ -21,15 +21,15 @@ namespace Xamarin.Yoga.Tests
             root.Style.Height = 100;
             root.Style.Padding.Start = 10.Percent();
 
-            YGNodeCalculateLayout(root, 100, 100, DirectionType.LTR);
+            root.Calc.CalculateLayout(100, 100, DirectionType.LTR);
 
-            Assert.AreEqual(10, YGNodeLayoutGetPadding(root, EdgeType.Left));
-            Assert.AreEqual(0,  YGNodeLayoutGetPadding(root, EdgeType.Right));
+            Assert.AreEqual(10, root.Layout.YGNodeLayoutGetPadding(EdgeType.Left));
+            Assert.AreEqual(0,  root.Layout.YGNodeLayoutGetPadding(EdgeType.Right));
 
-            YGNodeCalculateLayout(root, 100, 100, DirectionType.RTL);
+            root.Calc.CalculateLayout(100, 100, DirectionType.RTL);
 
-            Assert.AreEqual(0,  YGNodeLayoutGetPadding(root, EdgeType.Left));
-            Assert.AreEqual(10, YGNodeLayoutGetPadding(root, EdgeType.Right));
+            Assert.AreEqual(0,  root.Layout.YGNodeLayoutGetPadding(EdgeType.Left));
+            Assert.AreEqual(10, root.Layout.YGNodeLayoutGetPadding(EdgeType.Right));
 
             
         }

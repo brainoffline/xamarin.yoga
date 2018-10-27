@@ -44,7 +44,7 @@ namespace Xamarin.Yoga.Tests
             root_child1_child0.BaselineFunc = _baseline;
             root_child1_child0.Style.Height = 20;
             root_child1.Children.Add(root_child1_child0);
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.LTR);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(0,   root.Layout.Position.Left);
             Assert.AreEqual(0,   root.Layout.Position.Top);

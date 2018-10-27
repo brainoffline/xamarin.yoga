@@ -73,20 +73,20 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(0, root.Layout.Position.Right);
             Assert.AreEqual(0, root.Layout.Position.Bottom);
 
-            Assert.AreEqual(0, root.LayoutGetMargin(EdgeType.Left));
-            Assert.AreEqual(0, root.LayoutGetMargin(EdgeType.Top));
-            Assert.AreEqual(0, root.LayoutGetMargin(EdgeType.Right));
-            Assert.AreEqual(0, root.LayoutGetMargin(EdgeType.Bottom));
+            Assert.AreEqual(0, root.Layout.GetMargin(EdgeType.Left));
+            Assert.AreEqual(0, root.Layout.GetMargin(EdgeType.Top));
+            Assert.AreEqual(0, root.Layout.GetMargin(EdgeType.Right));
+            Assert.AreEqual(0, root.Layout.GetMargin(EdgeType.Bottom));
 
-            Assert.AreEqual(0, YGNodeLayoutGetPadding(root, EdgeType.Left));
-            Assert.AreEqual(0, YGNodeLayoutGetPadding(root, EdgeType.Top));
-            Assert.AreEqual(0, YGNodeLayoutGetPadding(root, EdgeType.Right));
-            Assert.AreEqual(0, YGNodeLayoutGetPadding(root, EdgeType.Bottom));
+            Assert.AreEqual(0, root.Layout.YGNodeLayoutGetPadding(EdgeType.Left));
+            Assert.AreEqual(0, root.Layout.YGNodeLayoutGetPadding(EdgeType.Top));
+            Assert.AreEqual(0, root.Layout.YGNodeLayoutGetPadding(EdgeType.Right));
+            Assert.AreEqual(0, root.Layout.YGNodeLayoutGetPadding(EdgeType.Bottom));
 
-            Assert.AreEqual(0, YGNodeLayoutGetBorder(root, EdgeType.Left));
-            Assert.AreEqual(0, YGNodeLayoutGetBorder(root, EdgeType.Top));
-            Assert.AreEqual(0, YGNodeLayoutGetBorder(root, EdgeType.Right));
-            Assert.AreEqual(0, YGNodeLayoutGetBorder(root, EdgeType.Bottom));
+            Assert.AreEqual(0, root.Layout.YGNodeLayoutGetBorder(EdgeType.Left));
+            Assert.AreEqual(0, root.Layout.YGNodeLayoutGetBorder(EdgeType.Top));
+            Assert.AreEqual(0, root.Layout.YGNodeLayoutGetBorder(EdgeType.Right));
+            Assert.AreEqual(0, root.Layout.YGNodeLayoutGetBorder(EdgeType.Bottom));
 
             Assert.IsTrue(root.Layout.Width.IsNaN());
             Assert.IsTrue(root.Layout.Height.IsNaN());

@@ -16,29 +16,30 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void zero_out_layout()
         {
-            YGNode root = new YGNode();
-            root.Style.FlexDirection = FlexDirectionType.Row;
-            root.Style.Width = 200;
-            root.Style.Height = 200;
+            YGNode child;
+            YGNode root = new YGNode
+            {
+                Style = {FlexDirection = FlexDirectionType.Row, Width = 200, Height = 200},
+                Children =
+                {
+                    (child = new YGNode
+                    {
+                        Style = {Width = 100, Height = 100, Margin = {Top = 10}, Padding = {Top = 10}}
+                    })
+                }
+            };
 
-            YGNode child = new YGNode();
-            root.Children.Add(child);
-            child.Style.Width = 100;
-            child.Style.Height = 100;
-            child.Style.Margin.Top = 10;
-            child.Style.Padding.Top = 10;
+            root.Calc.CalculateLayout(100, 100, DirectionType.LTR);
 
-            YGNodeCalculateLayout(root, 100, 100, DirectionType.LTR);
-
-            Assert.AreEqual(10, child.LayoutGetMargin(EdgeType.Top));
-            Assert.AreEqual(10, YGNodeLayoutGetPadding(child, EdgeType.Top));
+            Assert.AreEqual(10, child.Layout.GetMargin(EdgeType.Top));
+            Assert.AreEqual(10, child.Layout.YGNodeLayoutGetPadding(EdgeType.Top));
 
             child.Style.Display = DisplayType.None;
 
-            YGNodeCalculateLayout(root, 100, 100, DirectionType.LTR);
+            root.Calc.CalculateLayout(100, 100, DirectionType.LTR);
 
-            Assert.AreEqual(0, child.LayoutGetMargin(EdgeType.Top));
-            Assert.AreEqual(0, YGNodeLayoutGetPadding(child, EdgeType.Top));
+            Assert.AreEqual(0, child.Layout.GetMargin(EdgeType.Top));
+            Assert.AreEqual(0, child.Layout.YGNodeLayoutGetPadding(EdgeType.Top));
 
             
         }

@@ -47,7 +47,7 @@ namespace Xamarin.Yoga.Tests
             YGNode node0 = new YGNode();
             node0.Style.FlexDirection = FlexDirectionType.Row;
             node0.Style.MaxHeight = 10;
-            YGNodeCalculateLayout(node0, float.NaN, float.NaN, DirectionType.LTR);
+            node0.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
             Assert.IsFalse(node0.IsDirty);
 
             YGNode node1 = new YGNode();

@@ -21,7 +21,7 @@ namespace Xamarin.Yoga.Tests
                 }
             };
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.LTR);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(0,   root.Layout.Position.Left);
             Assert.AreEqual(0,   root.Layout.Position.Top);
@@ -46,7 +46,7 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(root_child0, root2.Children[0]);
             Assert.AreEqual(root_child1, root2.Children[1]);
 
-            YGNodeCalculateLayout(root2, float.NaN, float.NaN, DirectionType.LTR);
+            root2.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(2, root2.Children.Count);
 
@@ -57,7 +57,7 @@ namespace Xamarin.Yoga.Tests
             root2.Style.Width = 150;
             root2.Style.Height = 200;
 
-            YGNodeCalculateLayout(root2, float.NaN, float.NaN, DirectionType.LTR);
+            root2.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(2, root2.Children.Count);
 
@@ -166,7 +166,7 @@ namespace Xamarin.Yoga.Tests
             root_child1_1.Style.FlexBasis = 25;
             root_child1.Children.Insert(1, root_child1_1);
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.LTR);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(40, root_child0.Layout.Height);
             Assert.AreEqual(60, root_child1.Layout.Height);
@@ -185,7 +185,7 @@ namespace Xamarin.Yoga.Tests
             root2.Children.Insert(1, root2_child1);
             Assert.AreEqual(2, root2.Children.Count);
 
-            YGNodeCalculateLayout(root2, float.NaN, float.NaN, DirectionType.LTR);
+            root2.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
             // Original root is unchanged
             Assert.AreEqual(40, root_child0.Layout.Height);
@@ -215,14 +215,14 @@ namespace Xamarin.Yoga.Tests
             YGNode root_child1 = new YGNode(config);
             root.Children.Insert(1, root_child1);
 
-            YGNodeCalculateLayout(root, float.NaN, float.NaN, DirectionType.LTR);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
             YGNode root2 = new YGNode(root);
 
             // Freeing the original root should be safe as long as we don't free its
             // children.
 
-            YGNodeCalculateLayout(root2, float.NaN, float.NaN, DirectionType.LTR);
+            root2.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
         }
     }
 }

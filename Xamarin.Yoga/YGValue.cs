@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 
 namespace Xamarin.Yoga
 {
@@ -43,7 +44,7 @@ namespace Xamarin.Yoga
             if (ReferenceEquals(this, obj)) return true;
             if (ReferenceEquals(null, obj)) return false;
             if (obj is float f)
-                if (YGGlobal.FloatEqual(Value, f) && Unit == ValueUnit.Point)
+                if (NumberExtensions.FloatEqual(Value, f) && Unit == ValueUnit.Point)
                     return true;
 
             if (obj is YGValue other)
@@ -109,5 +110,23 @@ namespace Xamarin.Yoga
                 return string.Empty;
             }
         }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public float? ResolveValue(float ownerSize)
+        {
+            switch (Unit)
+            {
+            case ValueUnit.Undefined:
+            case ValueUnit.Auto:
+                return null;
+            case ValueUnit.Point:
+                return Value;
+            case ValueUnit.Percent:
+                return Value * ownerSize * 0.01f;
+            }
+
+            return null;
+        }
+
     }
 }

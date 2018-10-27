@@ -8,10 +8,10 @@ namespace Xamarin.Yoga
     using static YGGlobal;
 
     public delegate SizeF MeasureFunc(
-        YGNode      node,
-        float       width,
+        YGNode node,
+        float width,
         MeasureMode widthMode,
-        float       height,
+        float height,
         MeasureMode heightMode);
 
     public delegate float BaselineFunc(YGNode node, float width, float height);
@@ -22,9 +22,9 @@ namespace Xamarin.Yoga
 
     public delegate void LoggerFunc(
         YogaConfig config,
-        YGNode     node,
-        LogLevel   level,
-        string     message);
+        YGNode node,
+        LogLevel level,
+        string message);
 
     public class YogaConfig : IEquatable<YogaConfig>
     {
@@ -33,8 +33,23 @@ namespace Xamarin.Yoga
             printTree = true
         };
 
-        public float pointScaleFactor = 1.0f;
-        public bool  printTree;
+        private float _pointScaleFactor = 1.0f;
+
+        public float PointScaleFactor
+        {
+            get => _pointScaleFactor;
+            set
+            {
+                YogaGlobal.YGAssert(
+                    value >= 0.0f,
+                    "Scale factor should not be less than zero");
+
+                // We store points for Pixel as we will use it for rounding
+                _pointScaleFactor = Math.Abs(value) < float.Epsilon ? 0.0f : value;
+            }
+        }
+
+        public bool printTree;
 
         public YogaConfig(LoggerFunc logger = null)
         {
@@ -44,25 +59,25 @@ namespace Xamarin.Yoga
         public YogaConfig(YogaConfig config)
         {
             ExperimentalFeatures = config.ExperimentalFeatures;
-            UseWebDefaults       = config.UseWebDefaults;
-            pointScaleFactor     = config.pointScaleFactor;
-            Logger               = config.Logger;
-            printTree            = config.printTree;
+            UseWebDefaults = config.UseWebDefaults;
+            PointScaleFactor = config.PointScaleFactor;
+            Logger = config.Logger;
+            printTree = config.printTree;
         }
 
         public ExperimentalFeatures ExperimentalFeatures { get; set; }
-        public LoggerFunc           Logger               { get; set; }
-        public bool                 UseWebDefaults       { get; set; }
+        public LoggerFunc Logger { get; set; }
+        public bool UseWebDefaults { get; set; }
 
         public bool Equals(YogaConfig other)
         {
             if (ReferenceEquals(this, other)) return true;
             if (ReferenceEquals(null, other)) return false;
 
-            var result =
-                ExperimentalFeatures == other.ExperimentalFeatures   &&
-                UseWebDefaults       == other.UseWebDefaults         &&
-                FloatEqual(pointScaleFactor, other.pointScaleFactor) &&
+            bool result =
+                ExperimentalFeatures == other.ExperimentalFeatures &&
+                UseWebDefaults == other.UseWebDefaults &&
+                NumberExtensions.FloatEqual(PointScaleFactor, other.PointScaleFactor) &&
                 printTree == other.printTree;
             return result;
         }
@@ -88,25 +103,25 @@ namespace Xamarin.Yoga
         }
 
         private static void YGDefaultLog(
-            YogaConfig      config,
-            YGNode          node,
-            LogLevel        level,
-            string          message)
+            YogaConfig config,
+            YGNode node,
+            LogLevel level,
+            string message)
         {
             switch (level)
             {
-            case LogLevel.Error:
-            case LogLevel.Fatal:
-                Console.Error.Write(message);
-                return;
+                case LogLevel.Error:
+                case LogLevel.Fatal:
+                    Console.Error.Write(message);
+                    return;
 
-            case LogLevel.Warn:
-            case LogLevel.Info:
-            case LogLevel.Debug:
-            case LogLevel.Verbose:
-            default:
-                Console.Write(message);
-                return;
+                case LogLevel.Warn:
+                case LogLevel.Info:
+                case LogLevel.Debug:
+                case LogLevel.Verbose:
+                default:
+                    Console.Write(message);
+                    return;
             }
         }
     }

@@ -110,7 +110,7 @@ namespace Xamarin.Yoga
             get => _aspectRatio;
             set
             {
-                if (!FloatOptionalEqual(_aspectRatio, value))
+                if (!NumberExtensions.FloatOptionalEqual(_aspectRatio, value))
                 {
                     _aspectRatio = value;
                     Owner?.MarkDirtyAndPropagate();
@@ -164,7 +164,7 @@ namespace Xamarin.Yoga
             get => _flex;
             set
             {
-                if (!FloatOptionalEqual(_flex, value))
+                if (!NumberExtensions.FloatOptionalEqual(_flex, value))
                 {
                     _flex = value;
                     Owner?.MarkDirtyAndPropagate();
@@ -208,7 +208,7 @@ namespace Xamarin.Yoga
             get => _flexGrow;
             set
             {
-                if (!FloatOptionalEqual(_flexGrow, value))
+                if (!NumberExtensions.FloatOptionalEqual(_flexGrow, value))
                 {
                     _flexGrow = value.IsNaN() ? null : value;
                     Owner?.MarkDirtyAndPropagate();
@@ -231,7 +231,7 @@ namespace Xamarin.Yoga
             }
             set
             {
-                if (!FloatOptionalEqual(_flexShrink, value))
+                if (!NumberExtensions.FloatOptionalEqual(_flexShrink, value))
                 {
                     _flexShrink = value.IsNaN() ? null : value;
                     Owner?.MarkDirtyAndPropagate();

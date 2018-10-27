@@ -61,12 +61,12 @@ namespace Xamarin.Yoga
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            return FloatEqual(Left, other.Left)   &&
-                FloatEqual(Top,     other.Top)    &&
-                FloatEqual(Right,   other.Right)  &&
-                FloatEqual(Bottom,  other.Bottom) &&
-                FloatEqual(Start,   other.Start)  &&
-                FloatEqual(End,     other.End);
+            return NumberExtensions.FloatEqual(Left, other.Left)   &&
+                NumberExtensions.FloatEqual(Top,     other.Top)    &&
+                NumberExtensions.FloatEqual(Right,   other.Right)  &&
+                NumberExtensions.FloatEqual(Bottom,  other.Bottom) &&
+                NumberExtensions.FloatEqual(Start,   other.Start)  &&
+                NumberExtensions.FloatEqual(End,     other.End);
         }
 
         public LayoutEdges Clone()

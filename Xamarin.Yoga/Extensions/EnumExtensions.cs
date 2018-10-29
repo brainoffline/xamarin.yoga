@@ -91,5 +91,24 @@ namespace Xamarin.Yoga
             return flexDirection == FlexDirectionType.Row ||
                 flexDirection    == FlexDirectionType.RowReverse;
         }
+
+        public static FlexDirectionType FlexDirectionCross(FlexDirectionType flexDirection, DirectionType direction)
+        {
+            return flexDirection.IsColumn()
+                ? ResolveFlexDirection(FlexDirectionType.Row, direction)
+                : FlexDirectionType.Column;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static FlexDirectionType ResolveFlexDirection(FlexDirectionType flexDirection, DirectionType direction)
+        {
+            if (direction == DirectionType.RTL)
+            {
+                if (flexDirection == FlexDirectionType.Row) return FlexDirectionType.RowReverse;
+                if (flexDirection == FlexDirectionType.RowReverse) return FlexDirectionType.Row;
+            }
+
+            return flexDirection;
+        }
     }
 }

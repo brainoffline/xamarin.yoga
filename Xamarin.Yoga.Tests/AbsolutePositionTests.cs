@@ -2,16 +2,14 @@
 
 namespace Xamarin.Yoga.Tests
 {
-    using static YGGlobal;
-
     [TestClass]
     public class AbsolutePositionTests
     {
         [TestMethod]
         public void absolute_layout_width_height_start_top()
         {
-            YGNode root_child0;
-            YGNode root = new YGNode
+            YogaNode root_child0;
+            YogaNode root = new YogaNode
             {
                 Style =
                 {
@@ -20,7 +18,7 @@ namespace Xamarin.Yoga.Tests
                 },
                 Children =
                 {
-                    (root_child0 = new YGNode
+                    (root_child0 = new YogaNode
                     {
                         Style =
                         {
@@ -61,12 +59,12 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void absolute_layout_width_height_end_bottom()
         {
-            YGNode root = new YGNode
+            YogaNode root = new YogaNode
             {
                 Style = {Width = 100, Height = 100},
             };
 
-            YGNode root_child0 = new YGNode
+            YogaNode root_child0 = new YogaNode
             {
                 Style =
                 {
@@ -106,9 +104,9 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void absolute_layout_start_top_end_bottom()
         {
-            YGNode root = new YGNode {Style = {Width = 100, Height = 100}};
+            YogaNode root = new YogaNode {Style = {Width = 100, Height = 100}};
 
-            YGNode root_child0 = new YGNode
+            YogaNode root_child0 = new YogaNode
             {
                 Style =
                 {
@@ -145,9 +143,9 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void absolute_layout_width_height_start_top_end_bottom()
         {
-            YGNode root = new YGNode {Style = {Width = 100, Height = 100}};
+            YogaNode root = new YogaNode {Style = {Width = 100, Height = 100}};
 
-            YGNode root_child0 = new YGNode
+            YogaNode root_child0 = new YogaNode
             {
                 Style =
                 {
@@ -186,7 +184,7 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void do_not_clamp_height_of_absolute_node_to_height_of_its_overflow_hidden_parent()
         {
-            YGNode root = new YGNode
+            YogaNode root = new YogaNode
             {
                 Style =
                 {
@@ -196,7 +194,7 @@ namespace Xamarin.Yoga.Tests
                 }
             };
 
-            YGNode root_child0 = new YGNode
+            YogaNode root_child0 = new YogaNode
             {
                 Style =
                 {
@@ -206,7 +204,7 @@ namespace Xamarin.Yoga.Tests
             };
             root.Children.Add(root_child0);
 
-            YGNode root_child0_child0 = new YGNode
+            YogaNode root_child0_child0 = new YogaNode
             {
                 Style = {Width = 100, Height = 100}
             };
@@ -249,7 +247,7 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void absolute_layout_within_border()
         {
-            YGNode root = new YGNode
+            YogaNode root = new YogaNode
             {
                 Style =
                 {
@@ -261,7 +259,7 @@ namespace Xamarin.Yoga.Tests
                 }
             };
 
-            YGNode root_child0 = new YGNode
+            YogaNode root_child0 = new YogaNode
             {
                 Style =
                 {
@@ -273,7 +271,7 @@ namespace Xamarin.Yoga.Tests
             };
             root.Children.Add(root_child0);
 
-            YGNode root_child1 = new YGNode
+            YogaNode root_child1 = new YogaNode
             {
                 Style =
                 {
@@ -285,7 +283,7 @@ namespace Xamarin.Yoga.Tests
             };
             root.Children.Insert(1, root_child1);
 
-            YGNode root_child2 = new YGNode
+            YogaNode root_child2 = new YogaNode
             {
                 Style =
                 {
@@ -298,7 +296,7 @@ namespace Xamarin.Yoga.Tests
             };
             root.Children.Insert(2, root_child2);
 
-            YGNode root_child3 = new YGNode
+            YogaNode root_child3 = new YogaNode
             {
                 Style =
                 {
@@ -368,19 +366,19 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void absolute_layout_align_items_and_justify_content_center()
         {
-            YGNode root = new YGNode
+            YogaNode root = new YogaNode
             {
                 Style =
                 {
                     JustifyContent = JustifyType.Center,
-                    AlignItems     = YGAlign.Center,
+                    AlignItems     = AlignType.Center,
                     FlexGrow       = 1,
                     Width          = 110,
                     Height         = 100
                 }
             };
 
-            YGNode root_child0 = new YGNode
+            YogaNode root_child0 = new YogaNode
             {
                 Style =
                 {
@@ -417,19 +415,19 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void absolute_layout_align_items_and_justify_content_flex_end()
         {
-            YGNode root = new YGNode
+            YogaNode root = new YogaNode
             {
                 Style =
                 {
                     JustifyContent = JustifyType.FlexEnd,
-                    AlignItems     = YGAlign.FlexEnd,
+                    AlignItems     = AlignType.FlexEnd,
                     FlexGrow       = 1,
                     Width          = 110,
                     Height         = 100
                 }
             };
 
-            YGNode root_child0 = new YGNode
+            YogaNode root_child0 = new YogaNode
             {
                 Style =
                 {
@@ -466,7 +464,7 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void absolute_layout_justify_content_center()
         {
-            YGNode root = new YGNode
+            YogaNode root = new YogaNode
             {
                 Style =
                 {
@@ -476,7 +474,7 @@ namespace Xamarin.Yoga.Tests
                 }
             };
 
-            YGNode root_child0 = new YGNode
+            YogaNode root_child0 = new YogaNode
             {
                 Style =
                 {
@@ -513,17 +511,17 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void absolute_layout_align_items_center()
         {
-            YGNode root = new YGNode
+            YogaNode root = new YogaNode
             {
                 Style =
                 {
-                    AlignItems = YGAlign.Center,
+                    AlignItems = AlignType.Center,
                     FlexGrow   = 1,
                     Width      = 110, Height = 100
                 }
             };
 
-            YGNode root_child0 = new YGNode
+            YogaNode root_child0 = new YogaNode
             {
                 Style =
                 {
@@ -560,16 +558,16 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void absolute_layout_align_items_center_on_child_only()
         {
-            YGNode root = new YGNode
+            YogaNode root = new YogaNode
             {
                 Style = {FlexGrow = 1, Width = 110, Height = 100}
             };
 
-            YGNode root_child0 = new YGNode
+            YogaNode root_child0 = new YogaNode
             {
                 Style =
                 {
-                    AlignSelf    = YGAlign.Center,
+                    AlignSelf    = AlignType.Center,
                     PositionType = PositionType.Absolute,
                     Width        = 60, Height = 40
                 }
@@ -603,19 +601,19 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void absolute_layout_align_items_and_justify_content_center_and_top_position()
         {
-            YGNode root = new YGNode
+            YogaNode root = new YogaNode
             {
                 Style =
                 {
                     JustifyContent = JustifyType.Center,
-                    AlignItems     = YGAlign.Center,
+                    AlignItems     = AlignType.Center,
                     FlexGrow       = 1,
                     Width          = 110,
                     Height         = 100
                 }
             };
 
-            YGNode root_child0 = new YGNode
+            YogaNode root_child0 = new YogaNode
             {
                 Style =
                 {
@@ -653,19 +651,19 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void absolute_layout_align_items_and_justify_content_center_and_bottom_position()
         {
-            YGNode root = new YGNode
+            YogaNode root = new YogaNode
             {
                 Style =
                 {
                     JustifyContent = JustifyType.Center,
-                    AlignItems     = YGAlign.Center,
+                    AlignItems     = AlignType.Center,
                     FlexGrow       = 1,
                     Width          = 110,
                     Height         = 100
                 }
             };
 
-            YGNode root_child0 = new YGNode
+            YogaNode root_child0 = new YogaNode
             {
                 Style =
                 {
@@ -703,19 +701,19 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void absolute_layout_align_items_and_justify_content_center_and_left_position()
         {
-            YGNode root = new YGNode
+            YogaNode root = new YogaNode
             {
                 Style =
                 {
                     JustifyContent = JustifyType.Center,
-                    AlignItems     = YGAlign.Center,
+                    AlignItems     = AlignType.Center,
                     FlexGrow       = 1,
                     Width          = 110,
                     Height         = 100
                 }
             };
 
-            YGNode root_child0 = new YGNode
+            YogaNode root_child0 = new YogaNode
             {
                 Style =
                 {
@@ -753,19 +751,19 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void absolute_layout_align_items_and_justify_content_center_and_right_position()
         {
-            YGNode root = new YGNode
+            YogaNode root = new YogaNode
             {
                 Style =
                 {
                     JustifyContent = JustifyType.Center,
-                    AlignItems     = YGAlign.Center,
+                    AlignItems     = AlignType.Center,
                     FlexGrow       = 1,
                     Width          = 110,
                     Height         = 100
                 }
             };
 
-            YGNode root_child0 = new YGNode
+            YogaNode root_child0 = new YogaNode
             {
                 Style =
                 {
@@ -803,7 +801,7 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void position_root_with_rtl_should_position_withoutdirection()
         {
-            YGNode root = new YGNode
+            YogaNode root = new YogaNode
             {
                 Style =
                 {
@@ -829,9 +827,9 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void absolute_layout_percentage_bottom_based_on_parent_height()
         {
-            YGNode root = new YGNode {Style = {Width = 100, Height = 200}};
+            YogaNode root = new YogaNode {Style = {Width = 100, Height = 200}};
 
-            YGNode root_child0 = new YGNode
+            YogaNode root_child0 = new YogaNode
             {
                 Style =
                 {
@@ -843,7 +841,7 @@ namespace Xamarin.Yoga.Tests
             };
             root.Children.Add(root_child0);
 
-            YGNode root_child1 = new YGNode
+            YogaNode root_child1 = new YogaNode
             {
                 Style =
                 {
@@ -855,7 +853,7 @@ namespace Xamarin.Yoga.Tests
             };
             root.Children.Insert(1, root_child1);
 
-            YGNode root_child2 = new YGNode
+            YogaNode root_child2 = new YogaNode
             {
                 Style =
                 {
@@ -913,7 +911,7 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void absolute_layout_in_wrap_reverse_column_container()
         {
-            YGNode root = new YGNode
+            YogaNode root = new YogaNode
             {
                 Style =
                 {
@@ -922,7 +920,7 @@ namespace Xamarin.Yoga.Tests
                 }
             };
 
-            YGNode root_child0 = new YGNode
+            YogaNode root_child0 = new YogaNode
             {
                 Style =
                 {
@@ -959,7 +957,7 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void absolute_layout_in_wrap_reverse_row_container()
         {
-            YGNode root = new YGNode
+            YogaNode root = new YogaNode
             {
                 Style =
                 {
@@ -970,7 +968,7 @@ namespace Xamarin.Yoga.Tests
                 }
             };
 
-            YGNode root_child0 = new YGNode
+            YogaNode root_child0 = new YogaNode
             {
                 Style =
                 {
@@ -1007,13 +1005,13 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void absolute_layout_in_wrap_reverse_column_container_flex_end()
         {
-            YGNode root = new YGNode {Style = {FlexWrap = WrapType.WrapReverse, Width = 100, Height = 100}};
+            YogaNode root = new YogaNode {Style = {FlexWrap = WrapType.WrapReverse, Width = 100, Height = 100}};
 
-            YGNode root_child0 = new YGNode
+            YogaNode root_child0 = new YogaNode
             {
                 Style =
                 {
-                    AlignSelf    = YGAlign.FlexEnd,
+                    AlignSelf    = AlignType.FlexEnd,
                     PositionType = PositionType.Absolute,
                     Width        = 20, Height = 20
                 }
@@ -1047,7 +1045,7 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void absolute_layout_in_wrap_reverse_row_container_flex_end()
         {
-            YGNode root = new YGNode
+            YogaNode root = new YogaNode
             {
                 Style =
                 {
@@ -1058,11 +1056,11 @@ namespace Xamarin.Yoga.Tests
                 }
             };
 
-            YGNode root_child0 = new YGNode
+            YogaNode root_child0 = new YogaNode
             {
                 Style =
                 {
-                    AlignSelf    = YGAlign.FlexEnd,
+                    AlignSelf    = AlignType.FlexEnd,
                     PositionType = PositionType.Absolute,
                     Width        = 20, Height = 20
                 }

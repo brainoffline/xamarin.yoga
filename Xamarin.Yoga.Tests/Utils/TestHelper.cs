@@ -8,7 +8,7 @@ namespace Xamarin.Yoga.Tests.Utils
 
     public static class TestHelper
     {
-        public static bool AreEqual(IReadOnlyList<YGNode> left, IReadOnlyList<YGNode> right)
+        public static bool AreEqual(IReadOnlyList<YogaNode> left, IReadOnlyList<YogaNode> right)
         {
             if (ReferenceEquals(left, right))
                 return true;

@@ -4,14 +4,14 @@ using System.Text;
 
 namespace Xamarin.Yoga
 {
-    using static YGGlobal;
+    using static NumberExtensions;    
 
     public class NodePrint
     {
-        private readonly YGNode          _node;
+        private readonly YogaNode          _node;
         private readonly PrintOptionType _options;
 
-        public NodePrint(YGNode node, PrintOptionType options)
+        public NodePrint(YogaNode node, PrintOptionType options)
         {
             _node    = node ?? throw new ArgumentNullException(nameof(node));
             _options = options;
@@ -33,7 +33,7 @@ namespace Xamarin.Yoga
             AppendNumberIfNotUndefined(
                 sb,
                 str,
-                edges.ComputedEdgeValue(edge, YogaConst.YGValueUndefined));
+                edges.ComputedEdgeValue(edge, YogaConst.ValueUndefined));
         }
 
         private void AppendEdges(
@@ -61,7 +61,7 @@ namespace Xamarin.Yoga
                 sb.Append($"{key}: {num.Value}; ");
         }
 
-        private void AppendNumberIfNotAuto(StringBuilder sb, in string key, in YGValue number)
+        private void AppendNumberIfNotAuto(StringBuilder sb, in string key, in Value number)
         {
             if (number.Unit != ValueUnit.Auto)
                 AppendNumberIfNotUndefined(sb, key, number);
@@ -70,7 +70,7 @@ namespace Xamarin.Yoga
         private void AppendNumberIfNotUndefined(
             StringBuilder sb,
             string        key,
-            YGValue       number)
+            Value       number)
         {
             if (number.Unit != ValueUnit.Undefined)
             {
@@ -81,25 +81,25 @@ namespace Xamarin.Yoga
                 else
                 {
                     var unit = number.Unit == ValueUnit.Point ? "px" : "%";
-                    sb.Append($"{key}: {number.Value}{unit}; ");
+                    sb.Append($"{key}: {number.Number}{unit}; ");
                 }
             }
         }
 
-        private void AppendNumberIfNotZero(StringBuilder sb, in string str, in YGValue number)
+        private void AppendNumberIfNotZero(StringBuilder sb, in string str, in Value number)
         {
             if (number.Unit == ValueUnit.Auto)
                 sb.Append($"{str}: auto; ");
-            else if (!NumberExtensions.FloatEqual(number.Value, 0))
+            else if (!FloatEqual(number.Number, 0))
                 AppendNumberIfNotUndefined(sb, str, number);
         }
 
         private bool AreFourValuesEqual(Edges edges)
         {
             return
-                YGValueEqual(edges.Left, edges.Top)   &&
-                YGValueEqual(edges.Left, edges.Right) &&
-                YGValueEqual(edges.Left, edges.Bottom);
+                ValueEqual(edges.Left, edges.Top)   &&
+                ValueEqual(edges.Left, edges.Right) &&
+                ValueEqual(edges.Left, edges.Bottom);
         }
 
 
@@ -111,7 +111,7 @@ namespace Xamarin.Yoga
 
         private StringBuilder NodeToString(
             StringBuilder   sb,
-            YGNode          node,
+            YogaNode          node,
             PrintOptionType options,
             int             level = 0)
         {
@@ -137,7 +137,7 @@ namespace Xamarin.Yoga
 
             if (options.HasFlag(PrintOptionType.Style))
             {
-                var defaultStyle = new YGNode().Style;
+                var defaultStyle = new YogaNode().Style;
 
                 sb.Append("style=\"");
                 if (node.Style.FlexDirection != defaultStyle.FlexDirection)

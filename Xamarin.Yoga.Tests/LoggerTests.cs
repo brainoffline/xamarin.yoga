@@ -3,7 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Xamarin.Yoga.Tests
 {
-    using static YGGlobal;
+    
 
 
     [TestClass]
@@ -13,7 +13,7 @@ namespace Xamarin.Yoga.Tests
 
         private void _unmanagedLogger(
             YogaConfig        config,
-            YGNode          node,
+            YogaNode          node,
             LogLevel      level,
             string          message)
         {
@@ -27,16 +27,16 @@ namespace Xamarin.Yoga.Tests
 
             var config = new YogaConfig
             {
-                printTree = true,
+                PrintTree = true,
                 Logger    = _unmanagedLogger
             };
 
-            YGNode root = new YGNode(config)
+            YogaNode root = new YogaNode(config)
             {
                 Children =
                 {
-                    new YGNode(config),
-                    new YGNode(config)
+                    new YogaNode(config),
+                    new YogaNode(config)
                 }
             };
 
@@ -58,16 +58,16 @@ namespace Xamarin.Yoga.Tests
 
             YogaConfig config = new YogaConfig
             {
-                printTree = false,
+                PrintTree = false,
                 Logger    = _unmanagedLogger
             };
 
-            YGNode root = new YGNode(config)
+            YogaNode root = new YogaNode(config)
             {
                 Children =
                 {
-                    new YGNode(config),
-                    new YGNode(config)
+                    new YogaNode(config),
+                    new YogaNode(config)
                 }
             };
 
@@ -85,7 +85,7 @@ namespace Xamarin.Yoga.Tests
 
             YogaConfig config = new YogaConfig {Logger = _unmanagedLogger};
 
-            YGNode root = new YGNode(config);
+            YogaNode root = new YogaNode(config);
             root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
             root.Print(PrintOptionType.All);
             config.Logger = null;
@@ -99,7 +99,7 @@ namespace Xamarin.Yoga.Tests
         {
             sb.Clear();
 
-            YGNode root = new YGNode(new YogaConfig {Logger = _unmanagedLogger})
+            YogaNode root = new YogaNode(new YogaConfig {Logger = _unmanagedLogger})
             {
                 Style =
                 {
@@ -107,7 +107,7 @@ namespace Xamarin.Yoga.Tests
                     Width        = 50.Percent(),
                     Height       = 75.Percent(),
                     Flex         = 1,
-                    Margin       = {Right = 10, Left = YGValue.Auto}
+                    Margin       = {Right = 10, Left = Value.Auto}
                 }
             };
 
@@ -127,12 +127,12 @@ namespace Xamarin.Yoga.Tests
             sb.Clear();
 
             YogaConfig config = new YogaConfig {Logger = _unmanagedLogger};
-            YGNode root = new YGNode(config)
+            YogaNode root = new YogaNode(config)
             {
                 Children =
                 {
-                    new YGNode(config),
-                    new YGNode(config)
+                    new YogaNode(config),
+                    new YogaNode(config)
                 }
             };
 

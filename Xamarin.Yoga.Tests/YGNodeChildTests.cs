@@ -5,7 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Xamarin.Yoga.Tests
 {
-    using static YGGlobal;
+    
     using static YogaConst;
     
     
@@ -17,9 +17,9 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void reset_layout_when_child_removed()
         {
-             YGNode root = new YGNode();
+             YogaNode root = new YogaNode();
 
-             YGNode root_child0 = new YGNode();
+             YogaNode root_child0 = new YogaNode();
             root_child0.Style.Width = 100;
             root_child0.Style.Height = 100;
             root.Children.Add(root_child0);

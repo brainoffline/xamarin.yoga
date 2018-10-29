@@ -5,7 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Xamarin.Yoga.Tests
 {
-    using static YGGlobal;
+    
     using static YogaConst;
 
 
@@ -20,16 +20,16 @@ namespace Xamarin.Yoga.Tests
         {
             YogaConfig config = new YogaConfig();
 
-            YGNode root = new YGNode(config);
+            YogaNode root = new YogaNode(config);
             root.Style.FlexDirection = FlexDirectionType.Row;
             root.Style.Width = 300;
 
-            YGNode root_child0 = new YGNode(config);
+            YogaNode root_child0 = new YogaNode(config);
             root_child0.Style.Width = 300;
             root_child0.Style.Height = 300;
             root.Children.Add(root_child0);
 
-            YGNode root_child1 = new YGNode(config);
+            YogaNode root_child1 = new YogaNode(config);
             root_child1.Style.PositionType = PositionType.Absolute;
             root_child1.Style.Position.Left = 20.Percent();
             root_child1.Style.Position.Top = 20.Percent();

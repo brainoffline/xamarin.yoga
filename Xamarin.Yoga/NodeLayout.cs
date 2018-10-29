@@ -2,7 +2,7 @@
 
 namespace Xamarin.Yoga
 {
-    using static YGGlobal;
+    using static NumberExtensions;
 
     public class NodeLayout : IEquatable<NodeLayout>
     {
@@ -81,22 +81,22 @@ namespace Xamarin.Yoga
                 Margin   == other.Margin                                         &&
                 Border   == other.Border                                         &&
                 Padding  == other.Padding                                        &&
-                NumberExtensions.FloatEqual(Width,  other.Width)                                  &&
-                NumberExtensions.FloatEqual(Height, other.Height)                                 &&
+                FloatEqual(Width,  other.Width)                                  &&
+                FloatEqual(Height, other.Height)                                 &&
                 Direction                   == other.Direction                   &&
                 HadOverflow                 == other.HadOverflow                 &&
                 LastOwnerDirection          == other.LastOwnerDirection          &&
                 NextCachedMeasurementsIndex == other.NextCachedMeasurementsIndex &&
                 CachedLayout                == other.CachedLayout                &&
-                NumberExtensions.FloatOptionalEqual(ComputedFlexBasis, other.ComputedFlexBasis);
+                FloatOptionalEqual(ComputedFlexBasis, other.ComputedFlexBasis);
 
             for (var i = 0; i < MaxCachedResultCount && isEqual; ++i)
                 isEqual = isEqual && CachedMeasurements[i] == other.CachedMeasurements[i];
 
             if (MeasuredWidth.HasValue() || other.MeasuredWidth.HasValue())
-                isEqual = isEqual && NumberExtensions.FloatEqual(MeasuredWidth, other.MeasuredWidth);
+                isEqual = isEqual && FloatEqual(MeasuredWidth, other.MeasuredWidth);
             if (MeasuredHeight.HasValue() || other.MeasuredHeight.HasValue())
-                isEqual = isEqual && NumberExtensions.FloatEqual(MeasuredHeight, other.MeasuredHeight);
+                isEqual = isEqual && FloatEqual(MeasuredHeight, other.MeasuredHeight);
             return isEqual;
         }
 
@@ -195,7 +195,7 @@ namespace Xamarin.Yoga
 
         public float YGNodeLayoutGetBorder(EdgeType edge)
         {
-            YogaGlobal.YGAssert(
+            YogaGlobal.YogaAssert(
                 edge <= EdgeType.End,
                 "Cannot get layout properties of multi-edge shorthands");
 
@@ -216,7 +216,7 @@ namespace Xamarin.Yoga
 
         public float YGNodeLayoutGetPadding(EdgeType edge)
         {
-            YogaGlobal.YGAssert(
+            YogaGlobal.YogaAssert(
                 edge <= EdgeType.End,
                 "Cannot get layout properties of multi-edge shorthands");
 
@@ -237,7 +237,7 @@ namespace Xamarin.Yoga
 
         public float GetMargin(EdgeType edge)
         {
-            YogaGlobal.YGAssert(
+            YogaGlobal.YogaAssert(
                 edge <= EdgeType.End,
                 "Cannot get layout properties of multi-edge shorthands");
 

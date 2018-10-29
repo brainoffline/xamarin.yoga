@@ -5,7 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Xamarin.Yoga.Tests
 {
-    using static YGGlobal;
+    
     using static YogaConst;
 
 
@@ -15,12 +15,12 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void start_overrides()
         {
-            YGNode root = new YGNode();
+            YogaNode root = new YogaNode();
             root.Style.FlexDirection = FlexDirectionType.Row;
             root.Style.Width = 100;
             root.Style.Height = 100;
 
-            YGNode root_child0 = new YGNode();
+            YogaNode root_child0 = new YogaNode();
             root_child0.Style.FlexGrow = 1;
             root_child0.Style.Margin.Start = 10;
             root_child0.Style.Margin.Left =  20;
@@ -39,12 +39,12 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void end_overrides()
         {
-            YGNode root = new YGNode();
+            YogaNode root = new YogaNode();
             root.Style.FlexDirection = FlexDirectionType.Row;
             root.Style.Width = 100;
             root.Style.Height = 100;
 
-            YGNode root_child0 = new YGNode();
+            YogaNode root_child0 = new YogaNode();
             root_child0.Style.FlexGrow = 1;
             root_child0.Style.Margin.End =   10;
             root_child0.Style.Margin.Left =  20;
@@ -63,12 +63,12 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void horizontal_overridden()
         {
-            YGNode root = new YGNode();
+            YogaNode root = new YogaNode();
             root.Style.FlexDirection = FlexDirectionType.Row;
             root.Style.Width = 100;
             root.Style.Height = 100;
 
-            YGNode root_child0 = new YGNode();
+            YogaNode root_child0 = new YogaNode();
             root_child0.Style.FlexGrow = 1;
             root_child0.Style.Margin.Horizontal = 10;
             root_child0.Style.Margin.Left =       20;
@@ -82,12 +82,12 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void vertical_overridden()
         {
-            YGNode root = new YGNode();
+            YogaNode root = new YogaNode();
             root.Style.FlexDirection = FlexDirectionType.Column;
             root.Style.Width = 100;
             root.Style.Height = 100;
 
-            YGNode root_child0 = new YGNode();
+            YogaNode root_child0 = new YogaNode();
             root_child0.Style.FlexGrow = 1;
             root_child0.Style.Margin.Vertical = 10;
             root_child0.Style.Margin.Top =      20;
@@ -101,12 +101,12 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void horizontal_overrides_all()
         {
-            YGNode root = new YGNode();
+            YogaNode root = new YogaNode();
             root.Style.FlexDirection = FlexDirectionType.Column;
             root.Style.Width = 100;
             root.Style.Height = 100;
 
-            YGNode root_child0 = new YGNode();
+            YogaNode root_child0 = new YogaNode();
             root_child0.Style.FlexGrow = 1;
             root_child0.Style.Margin.Horizontal = 10;
             root_child0.Style.Margin.All =        20;
@@ -122,12 +122,12 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void vertical_overrides_all()
         {
-            YGNode root = new YGNode();
+            YogaNode root = new YogaNode();
             root.Style.FlexDirection = FlexDirectionType.Column;
             root.Style.Width = 100;
             root.Style.Height = 100;
 
-            YGNode root_child0 = new YGNode();
+            YogaNode root_child0 = new YogaNode();
             root_child0.Style.FlexGrow = 1;
             root_child0.Style.Margin.Vertical = 10;
             root_child0.Style.Margin.All =      20;
@@ -143,12 +143,12 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void all_overridden()
         {
-            YGNode root = new YGNode();
+            YogaNode root = new YogaNode();
             root.Style.FlexDirection = FlexDirectionType.Column;
             root.Style.Width = 100;
             root.Style.Height = 100;
 
-            YGNode root_child0 = new YGNode();
+            YogaNode root_child0 = new YogaNode();
             root_child0.Style.FlexGrow = 1;
             root_child0.Style.Margin.Left =   10;
             root_child0.Style.Margin.Top =    10;

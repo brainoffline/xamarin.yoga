@@ -5,7 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Xamarin.Yoga.Tests
 {
-    using static YGGlobal;
+    
     using static YogaConst;
 
 
@@ -15,7 +15,7 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void assert_default_values()
         {
-            YGNode root = new YGNode();
+            YogaNode root = new YogaNode();
 
             Assert.AreEqual(0, root.Children.Count);
             //Assert.AreEqual(null, root.Children[1]);
@@ -23,9 +23,9 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(DirectionType.Inherit,       root.Style.Direction);
             Assert.AreEqual(FlexDirectionType.Column,    root.Style.FlexDirection);
             Assert.AreEqual(JustifyType.FlexStart,       root.Style.JustifyContent);
-            Assert.AreEqual(YGAlign.FlexStart,         root.Style.AlignContent);
-            Assert.AreEqual(YGAlign.Stretch,           root.Style.AlignItems);
-            Assert.AreEqual(YGAlign.Auto,              root.Style.AlignSelf);
+            Assert.AreEqual(AlignType.FlexStart,         root.Style.AlignContent);
+            Assert.AreEqual(AlignType.Stretch,           root.Style.AlignItems);
+            Assert.AreEqual(AlignType.Auto,              root.Style.AlignSelf);
             Assert.AreEqual(PositionType.Relative,   root.Style.PositionType);
             Assert.AreEqual(WrapType.NoWrap,             root.Style.FlexWrap);
             Assert.AreEqual(OverflowType.Visible,        root.Style.Overflow);
@@ -97,10 +97,10 @@ namespace Xamarin.Yoga.Tests
         public void assert_webdefault_values()
         {
             var    config = new YogaConfig {UseWebDefaults = true};
-            YGNode root   = new YGNode(config);
+            YogaNode root   = new YogaNode(config);
 
             Assert.AreEqual(FlexDirectionType.Row, root.Style.FlexDirection);
-            Assert.AreEqual(YGAlign.Stretch,     root.Style.AlignContent);
+            Assert.AreEqual(AlignType.Stretch,     root.Style.AlignContent);
             Assert.AreEqual(1.0f,                root.Style.FlexShrink);
         }
 
@@ -109,10 +109,10 @@ namespace Xamarin.Yoga.Tests
         {
             var config = new YogaConfig {UseWebDefaults = true};
 
-            YGNode root = new YGNode(config);
+            YogaNode root = new YogaNode(config);
 
             Assert.AreEqual(FlexDirectionType.Row, root.Style.FlexDirection);
-            Assert.AreEqual(YGAlign.Stretch,     root.Style.AlignContent);
+            Assert.AreEqual(AlignType.Stretch,     root.Style.AlignContent);
             Assert.AreEqual(1.0f,                root.Style.FlexShrink);
         }
     }

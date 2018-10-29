@@ -2,7 +2,7 @@
 
 namespace Xamarin.Yoga.Tests
 {
-    using static YGGlobal;
+    
 
 
     [TestClass]
@@ -11,11 +11,11 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void dirty_mark_all_children_as_dirty_when_display_changes()
         {
-            YGNode child0;
-            YGNode child1;
-            YGNode child1_child0;
-            YGNode child1_child0_child0;
-            var root = new YGNode
+            YogaNode child0;
+            YogaNode child1;
+            YogaNode child1_child0;
+            YogaNode child1_child0_child0;
+            var root = new YogaNode
             {
                 Name = "Root",
                 Style =
@@ -25,23 +25,23 @@ namespace Xamarin.Yoga.Tests
                 },
                 Children =
                 {
-                    (child1 = new YGNode
+                    (child1 = new YogaNode
                     {
                         Name  = "Child1",
                         Style = {FlexGrow = 1, Display = DisplayType.None},
                         Children =
                         {
-                            (child1_child0 = new YGNode
+                            (child1_child0 = new YogaNode
                             {
                                 Name = "child1_child0",
                                 Children =
                                 {
-                                    (child1_child0_child0 = new YGNode {Name = "child1_child0_child0", Style = {Width = 8, Height = 16}})
+                                    (child1_child0_child0 = new YogaNode {Name = "child1_child0_child0", Style = {Width = 8, Height = 16}})
                                 }
                             })
                         }
                     }),
-                    (child0 = new YGNode {Style = {FlexGrow = 1, Display = DisplayType.Flex}})
+                    (child0 = new YogaNode {Style = {FlexGrow = 1, Display = DisplayType.Flex}})
                 }
             };
 
@@ -78,19 +78,19 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void dirty_node_only_if_children_are_actually_removed()
         {
-            var root = new YGNode();
-            root.Style.AlignItems = YGAlign.FlexStart;
+            var root = new YogaNode();
+            root.Style.AlignItems = AlignType.FlexStart;
             root.Style.Width      = 50;
             root.Style.Height     = 50;
 
-            var child0 = new YGNode();
+            var child0 = new YogaNode();
             child0.Style.Width  = 50;
             child0.Style.Height = 25;
             root.Children.Add(child0);
 
             root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
-            var child1 = new YGNode();
+            var child1 = new YogaNode();
             root.Children.Remove(child1);
             Assert.IsFalse(root.IsDirty);
 
@@ -101,7 +101,7 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void dirty_node_only_if_undefined_values_gets_set_to_undefined()
         {
-            var root = new YGNode();
+            var root = new YogaNode();
             root.Style.Width    = 50;
             root.Style.Height   = 50;
             root.Style.MinWidth = float.NaN;
@@ -118,17 +118,17 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void dirty_propagation()
         {
-            var root = new YGNode();
-            root.Style.AlignItems = YGAlign.FlexStart;
+            var root = new YogaNode();
+            root.Style.AlignItems = AlignType.FlexStart;
             root.Style.Width      = 100;
             root.Style.Height     = 100;
 
-            var root_child0 = new YGNode();
+            var root_child0 = new YogaNode();
             root_child0.Style.Width  = 50;
             root_child0.Style.Height = 20;
             root.Children.Add(root_child0);
 
-            var root_child1 = new YGNode();
+            var root_child1 = new YogaNode();
             root_child1.Style.Width  = 50;
             root_child1.Style.Height = 20;
             root.Children.Insert(1, root_child1);
@@ -151,17 +151,17 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void dirty_propagation_only_if_prop_changed()
         {
-            var root = new YGNode();
-            root.Style.AlignItems = YGAlign.FlexStart;
+            var root = new YogaNode();
+            root.Style.AlignItems = AlignType.FlexStart;
             root.Style.Width      = 100;
             root.Style.Height     = 100;
 
-            var root_child0 = new YGNode();
+            var root_child0 = new YogaNode();
             root_child0.Style.Width  = 50;
             root_child0.Style.Height = 20;
             root.Children.Add(root_child0);
 
-            var root_child1 = new YGNode();
+            var root_child1 = new YogaNode();
             root_child1.Style.Width  = 50;
             root_child1.Style.Height = 20;
             root.Children.Insert(1, root_child1);

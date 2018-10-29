@@ -5,7 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Xamarin.Yoga.Tests
 {
-    using static YGGlobal;
+    
     using static YogaConst;
     
     
@@ -20,11 +20,11 @@ namespace Xamarin.Yoga.Tests
             YogaConfig config = new YogaConfig();
             config.ExperimentalFeatures |= ExperimentalFeatures.WebFlexBasis;
 
-             YGNode root = new YGNode(config);
+             YogaNode root = new YogaNode(config);
             root.Style.Width = 100.Percent();
             root.Style.Height = 100.Percent();
 
-             YGNode root_child0 = new YGNode(config);
+             YogaNode root_child0 = new YogaNode(config);
             root_child0.Style.FlexBasis = 100.Percent();
             root.Children.Add(root_child0);
 
@@ -41,9 +41,9 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void recalculate_resolvedDimonsion_onchange()
         {
-             YGNode root = new YGNode();
+             YogaNode root = new YogaNode();
 
-             YGNode root_child0 = new YGNode();
+             YogaNode root_child0 = new YogaNode();
             root_child0.Style.MinHeight = 10;
             root_child0.Style.MaxHeight = 10;
             root.Children.Add(root_child0);

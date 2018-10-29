@@ -11,25 +11,25 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void pre_order_traversal()
         {
-            YGNode root_child0;
-            YGNode root_child0_child0;
-            YGNode root_child1;
-            var root = new YGNode
+            YogaNode root_child0;
+            YogaNode root_child0_child0;
+            YogaNode root_child1;
+            var root = new YogaNode
             {
                 Children =
                 {
-                    (root_child0 = new YGNode
+                    (root_child0 = new YogaNode
                     {
                         Children =
                         {
-                            (root_child0_child0 = new YGNode())
+                            (root_child0_child0 = new YogaNode())
                         }
                     }),
-                    (root_child1 = new YGNode())
+                    (root_child1 = new YogaNode())
                 }
             };
 
-            var visited = new List<YGNode>();
+            var visited = new List<YogaNode>();
             root.Traverse(node => visited.Add(node));
 
             var expected = new[]

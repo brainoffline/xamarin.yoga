@@ -5,14 +5,14 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Xamarin.Yoga.Tests
 {
-    using static YGGlobal;
+    
     using static YogaConst;
 
 
     [TestClass]
     public class YGBaselineFuncTests
     {
-        private static float _baseline(YGNode node, float width, float height)
+        private static float _baseline(YogaNode node, float width, float height)
         {
             float baseline = (float) node.Context;
             return baseline;
@@ -21,24 +21,24 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void align_baseline_customer_func()
         {
-            YGNode root = new YGNode();
+            YogaNode root = new YogaNode();
             root.Style.FlexDirection = FlexDirectionType.Row;
-            root.Style.AlignItems = YGAlign.Baseline;
+            root.Style.AlignItems = AlignType.Baseline;
             root.Style.Width = 100;
             root.Style.Height = 100;
 
-            YGNode root_child0 = new YGNode();
+            YogaNode root_child0 = new YogaNode();
             root_child0.Style.Width = 50;
             root_child0.Style.Height = 50;
             root.Children.Add(root_child0);
 
-            YGNode root_child1 = new YGNode();
+            YogaNode root_child1 = new YogaNode();
             root_child1.Style.Width = 50;
             root_child1.Style.Height = 20;
             root.Children.Insert(1, root_child1);
 
             float  baselineValue      = 10;
-            YGNode root_child1_child0 = new YGNode();
+            YogaNode root_child1_child0 = new YogaNode();
             root_child1_child0.Context = baselineValue;
             root_child1_child0.Style.Width = 50;
             root_child1_child0.BaselineFunc = _baseline;

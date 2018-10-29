@@ -5,15 +5,15 @@ namespace Xamarin.Yoga
 {
     public class Dimensions : IEquatable<Dimensions>
     {
-        public Dimensions(YGValue width, YGValue height)
+        public Dimensions(Value width, Value height)
         {
             Width  = width;
             Height = height;
         }
 
-        public YGValue Height { get; internal set; }
+        public Value Height { get; internal set; }
 
-        public YGValue this[DimensionType key]
+        public Value this[DimensionType key]
         {
             get => key == DimensionType.Width ? Width : Height;
             set
@@ -25,7 +25,7 @@ namespace Xamarin.Yoga
             }
         }
 
-        public YGValue Width { get; internal set; }
+        public Value Width { get; internal set; }
 
         /// <inheritdoc />
         public bool Equals(Dimensions other)

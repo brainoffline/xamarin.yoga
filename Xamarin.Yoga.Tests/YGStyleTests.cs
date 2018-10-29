@@ -5,7 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Xamarin.Yoga.Tests
 {
-    using static YGGlobal;
+    
     using static YogaConst;
 
 
@@ -15,8 +15,8 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void copy_style_same()
         {
-            YGNode node0 = new YGNode();
-            YGNode node1 = new YGNode();
+            YogaNode node0 = new YogaNode();
+            YogaNode node1 = new YogaNode();
             Assert.IsFalse(node0.IsDirty);
 
             node0.Style = node1.Style;
@@ -26,31 +26,31 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void copy_style_modified()
         {
-            YGNode node0 = new YGNode();
+            YogaNode node0 = new YogaNode();
             Assert.IsFalse(node0.IsDirty);
             Assert.AreEqual(FlexDirectionType.Column, node0.Style.FlexDirection);
             Assert.IsFalse(node0.Style.MaxHeight.Unit != ValueUnit.Undefined);
 
-            YGNode node1 = new YGNode();
+            YogaNode node1 = new YogaNode();
             node1.Style.FlexDirection = FlexDirectionType.Row;
             node1.Style.MaxHeight = 10;
 
             node0.Style = node1.Style;
             Assert.IsTrue(node0.IsDirty);
             Assert.AreEqual(FlexDirectionType.Row, node0.Style.FlexDirection);
-            Assert.AreEqual(10,                  node0.Style.MaxHeight.Value);
+            Assert.AreEqual(10,                  node0.Style.MaxHeight.Number);
         }
 
         [TestMethod]
         public void copy_style_modified_same()
         {
-            YGNode node0 = new YGNode();
+            YogaNode node0 = new YogaNode();
             node0.Style.FlexDirection = FlexDirectionType.Row;
             node0.Style.MaxHeight = 10;
             node0.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
             Assert.IsFalse(node0.IsDirty);
 
-            YGNode node1 = new YGNode();
+            YogaNode node1 = new YogaNode();
             node1.Style.FlexDirection = FlexDirectionType.Row;
             node1.Style.MaxHeight = 10;
 
@@ -61,7 +61,7 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void initialise_flexShrink_flexGrow()
         {
-            YGNode node0 = new YGNode();
+            YogaNode node0 = new YogaNode();
             node0.Style.FlexShrink = 1;
             Assert.AreEqual(1, node0.Style.FlexShrink);
 

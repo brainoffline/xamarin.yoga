@@ -5,7 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Xamarin.Yoga.Tests
 {
-    using static YGGlobal;
+    
     using static YogaConst;
     
     
@@ -16,7 +16,7 @@ namespace Xamarin.Yoga.Tests
     {
         [TestMethod] public void computed_layout_padding()
         {
-             YGNode root = new YGNode();
+             YogaNode root = new YogaNode();
             root.Style.Width = 100;
             root.Style.Height = 100;
             root.Style.Padding.Start = 10.Percent();

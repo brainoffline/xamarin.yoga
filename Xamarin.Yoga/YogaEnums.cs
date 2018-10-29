@@ -6,7 +6,7 @@ using System.ComponentModel;
 
 namespace Xamarin.Yoga
 {
-    public enum YGAlign
+    public enum AlignType
     {
         [Description("auto")] Auto,
 

@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Xamarin.Yoga.Tests
 {
-    using static YGGlobal;
+    
     using static YogaConst;
     
     
@@ -15,7 +15,7 @@ namespace Xamarin.Yoga.Tests
     [TestClass]
     public class YGRoundingMeasureFuncTests
     {
-        static SizeF _measureFloor(YGNode node,
+        static SizeF _measureFloor(YogaNode node,
             float                             width,
             MeasureMode                     widthMode,
             float                             height,
@@ -24,7 +24,7 @@ namespace Xamarin.Yoga.Tests
             return new SizeF(width = 10.2f, height = 10.2f);
         }
 
-        static SizeF _measureCeil(YGNode node,
+        static SizeF _measureCeil(YogaNode node,
             float                            width,
             MeasureMode                    widthMode,
             float                            height,
@@ -33,7 +33,7 @@ namespace Xamarin.Yoga.Tests
             return new SizeF(width = 10.5f, height = 10.5f);
         }
 
-        static SizeF _measureFractial(YGNode node,
+        static SizeF _measureFractial(YogaNode node,
             float                                width,
             MeasureMode                        widthMode,
             float                                height,
@@ -46,12 +46,12 @@ namespace Xamarin.Yoga.Tests
         public void rounding_feature_with_custom_measure_func_floor()
         {
             YogaConfig config = new YogaConfig();
-            YGNode root_child0;
-            YGNode root = new YGNode(config)
+            YogaNode root_child0;
+            YogaNode root = new YogaNode(config)
             {
                 Children =
                 {
-                    (root_child0 = new YGNode(config) {MeasureFunc = _measureFloor})
+                    (root_child0 = new YogaNode(config) {MeasureFunc = _measureFloor})
                 }
             };
 
@@ -95,8 +95,8 @@ namespace Xamarin.Yoga.Tests
         public void rounding_feature_with_custom_measure_func_ceil()
         {
             YogaConfig config      = new YogaConfig();
-            YGNode   root        = new YGNode(config);
-            YGNode   root_child0 = new YGNode(config);
+            YogaNode   root        = new YogaNode(config);
+            YogaNode   root_child0 = new YogaNode(config);
 
             root_child0.MeasureFunc = _measureCeil;
             root.Children.Add(root_child0);
@@ -114,9 +114,9 @@ namespace Xamarin.Yoga.Tests
         public void rounding_feature_with_custom_measure_and_fractial_matching_scale()
         {
             YogaConfig config = new YogaConfig();
-            YGNode   root   = new YGNode(config);
+            YogaNode   root   = new YogaNode(config);
 
-            YGNode root_child0 = new YGNode(config);
+            YogaNode root_child0 = new YogaNode(config);
             root_child0.Style.Position.Left = 73.625f;
             root_child0.MeasureFunc = _measureFractial;
             root.Children.Add(root_child0);

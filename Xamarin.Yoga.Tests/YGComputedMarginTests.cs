@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Xamarin.Yoga.Tests
 {
-    using static YGGlobal;
+    
     
     
     
@@ -17,7 +17,7 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void computed_layout_margin()
         {
-            var root = new YGNode();
+            var root = new YogaNode();
             root.Style.Width = 100;
             root.Style.Height = 100;
             root.Style.Margin.Start = 10;

@@ -2,8 +2,6 @@
 
 namespace Xamarin.Yoga
 {
-    using static YGGlobal;
-
     public class LayoutEdges : IEquatable<LayoutEdges>
     {
         public float Bottom { get; set; }

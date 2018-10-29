@@ -5,25 +5,24 @@ using System.Collections.Generic;
 
 namespace Xamarin.Yoga
 {
-    using static YGGlobal;
     using static YogaConst;
 
     public class NodeStyle : IEquatable<NodeStyle>
     {
-        private static readonly YGValue YGValueAuto      = new YGValue(0, ValueUnit.Auto);
-        private static readonly YGValue YGValueUndefined = new YGValue(0, ValueUnit.Undefined);
+        private static readonly Value ValueAuto      = new Value(0, ValueUnit.Auto);
+        private static readonly Value ValueUndefined = new Value(0, ValueUnit.Undefined);
 
-        private          YGAlign       _alignContent = YGAlign.FlexStart;
-        private          YGAlign       _alignItems   = YGAlign.Stretch;
-        private          YGAlign       _alignSelf    = YGAlign.Auto;
+        private          AlignType       _alignContent = AlignType.FlexStart;
+        private          AlignType       _alignItems   = AlignType.Stretch;
+        private          AlignType       _alignSelf    = AlignType.Auto;
         private          float?        _aspectRatio;
         private          Edges         _border     = new Edges();
-        private readonly Dimensions    _dimensions = new Dimensions(YGValueAuto, YGValueAuto);
+        private readonly Dimensions    _dimensions = new Dimensions(ValueAuto, ValueAuto);
         private          DirectionType _direction  = DirectionType.Inherit;
         private          DisplayType   _display    = DisplayType.Flex;
 
         internal float?            _flex;
-        private  YGValue           _flexBasis     = YGValueAuto;
+        private  Value           _flexBasis     = ValueAuto;
         private  FlexDirectionType _flexDirection = FlexDirectionType.Column;
         internal float?            _flexGrow;
         internal float?            _flexShrink;
@@ -31,7 +30,7 @@ namespace Xamarin.Yoga
         private  JustifyType       _justifyContent = JustifyType.FlexStart;
         private  Edges             _margin         = new Edges();
         private  OverflowType      _overflow       = OverflowType.Visible;
-        private  YGNode            _owner;
+        private  YogaNode            _owner;
         private  Edges             _padding      = new Edges();
         private  Edges             _position     = new Edges();
         private  PositionType      _positionType = PositionType.Relative;
@@ -65,7 +64,7 @@ namespace Xamarin.Yoga
             AspectRatio    = style.AspectRatio;
         }
 
-        public YGAlign AlignContent
+        public AlignType AlignContent
         {
             get => _alignContent;
             set
@@ -78,7 +77,7 @@ namespace Xamarin.Yoga
             }
         }
 
-        public YGAlign AlignItems
+        public AlignType AlignItems
         {
             get => _alignItems;
             set
@@ -91,7 +90,7 @@ namespace Xamarin.Yoga
             }
         }
 
-        public YGAlign AlignSelf
+        public AlignType AlignSelf
         {
             get => _alignSelf;
             set
@@ -172,15 +171,15 @@ namespace Xamarin.Yoga
             }
         }
 
-        public YGValue FlexBasis
+        public Value FlexBasis
         {
             get => _flexBasis;
             set
             {
-                if ((value.Unit == ValueUnit.Undefined || value.Unit == ValueUnit.Auto) && !value.Value.IsNaN())
-                    value = new YGValue(float.NaN, value.Unit);
-                if (value.Unit == ValueUnit.Percent && value.Value.IsNaN())
-                    value = YGValue.Auto;
+                if ((value.Unit == ValueUnit.Undefined || value.Unit == ValueUnit.Auto) && !value.Number.IsNaN())
+                    value = new Value(float.NaN, value.Unit);
+                if (value.Unit == ValueUnit.Percent && value.Number.IsNaN())
+                    value = Value.Auto;
 
                 if (_flexBasis != value)
                 {
@@ -252,15 +251,15 @@ namespace Xamarin.Yoga
             }
         }
 
-        public YGValue Height
+        public Value Height
         {
             get => _dimensions.Height;
             set
             {
-                if ((value.Unit == ValueUnit.Undefined || value.Unit == ValueUnit.Auto) && !value.Value.IsNaN())
-                    value = new YGValue(float.NaN, value.Unit);
-                if (value.Unit == ValueUnit.Percent && value.Value.IsNaN())
-                    value = YGValue.Auto;
+                if ((value.Unit == ValueUnit.Undefined || value.Unit == ValueUnit.Auto) && !value.Number.IsNaN())
+                    value = new Value(float.NaN, value.Unit);
+                if (value.Unit == ValueUnit.Percent && value.Number.IsNaN())
+                    value = Value.Auto;
 
                 if (_dimensions.Height != value)
                 {
@@ -297,15 +296,15 @@ namespace Xamarin.Yoga
             }
         }
 
-        private Dimensions MaxDimensions { get; } = new Dimensions(YGValueUndefined, YGValueUndefined);
+        private Dimensions MaxDimensions { get; } = new Dimensions(ValueUndefined, ValueUndefined);
 
-        public YGValue MaxHeight
+        public Value MaxHeight
         {
             get => MaxDimensions.Height;
             set
             {
-                if ((value.Unit == ValueUnit.Undefined || value.Unit == ValueUnit.Auto) && !value.Value.IsNaN())
-                    value = new YGValue(float.NaN, value.Unit);
+                if ((value.Unit == ValueUnit.Undefined || value.Unit == ValueUnit.Auto) && !value.Number.IsNaN())
+                    value = new Value(float.NaN, value.Unit);
                 if (MaxDimensions.Height != value)
                 {
                     MaxDimensions.Height = value;
@@ -314,13 +313,13 @@ namespace Xamarin.Yoga
             }
         }
 
-        public YGValue MaxWidth
+        public Value MaxWidth
         {
             get => MaxDimensions.Width;
             set
             {
-                if ((value.Unit == ValueUnit.Undefined || value.Unit == ValueUnit.Auto) && !value.Value.IsNaN())
-                    value = new YGValue(float.NaN, value.Unit);
+                if ((value.Unit == ValueUnit.Undefined || value.Unit == ValueUnit.Auto) && !value.Number.IsNaN())
+                    value = new Value(float.NaN, value.Unit);
                 if (MaxDimensions.Width != value)
                 {
                     MaxDimensions.Width = value;
@@ -329,15 +328,15 @@ namespace Xamarin.Yoga
             }
         }
 
-        private Dimensions MinDimensions { get; } = new Dimensions(YGValueUndefined, YGValueUndefined);
+        private Dimensions MinDimensions { get; } = new Dimensions(ValueUndefined, ValueUndefined);
 
-        public YGValue MinHeight
+        public Value MinHeight
         {
             get => MinDimensions.Height;
             set
             {
-                if ((value.Unit == ValueUnit.Undefined || value.Unit == ValueUnit.Auto) && !value.Value.IsNaN())
-                    value = new YGValue(float.NaN, value.Unit);
+                if ((value.Unit == ValueUnit.Undefined || value.Unit == ValueUnit.Auto) && !value.Number.IsNaN())
+                    value = new Value(float.NaN, value.Unit);
                 if (MinDimensions.Height != value)
                 {
                     MinDimensions.Height = value;
@@ -346,13 +345,13 @@ namespace Xamarin.Yoga
             }
         }
 
-        public YGValue MinWidth
+        public Value MinWidth
         {
             get => MinDimensions.Width;
             set
             {
-                if ((value.Unit == ValueUnit.Undefined || value.Unit == ValueUnit.Auto) && !value.Value.IsNaN())
-                    value = new YGValue(float.NaN, value.Unit);
+                if ((value.Unit == ValueUnit.Undefined || value.Unit == ValueUnit.Auto) && !value.Number.IsNaN())
+                    value = new Value(float.NaN, value.Unit);
                 if (MinDimensions.Width != value)
                 {
                     MinDimensions.Width = value;
@@ -374,7 +373,7 @@ namespace Xamarin.Yoga
             }
         }
 
-        internal YGNode Owner
+        internal YogaNode Owner
         {
             get => _owner;
             set
@@ -428,15 +427,15 @@ namespace Xamarin.Yoga
             }
         }
 
-        public YGValue Width
+        public Value Width
         {
             get => _dimensions.Width;
             set
             {
-                if ((value.Unit == ValueUnit.Undefined || value.Unit == ValueUnit.Auto) && !value.Value.IsNaN())
-                    value = new YGValue(float.NaN, value.Unit);
-                if (value.Unit == ValueUnit.Percent && value.Value.IsNaN())
-                    value = YGValue.Auto;
+                if ((value.Unit == ValueUnit.Undefined || value.Unit == ValueUnit.Auto) && !value.Number.IsNaN())
+                    value = new Value(float.NaN, value.Unit);
+                if (value.Unit == ValueUnit.Percent && value.Number.IsNaN())
+                    value = Value.Auto;
 
                 if (_dimensions.Width != value)
                 {
@@ -481,7 +480,7 @@ namespace Xamarin.Yoga
             return result;
         }
 
-        public YGValue Dimension(DimensionType dim)
+        public Value Dimension(DimensionType dim)
         {
             return _dimensions[dim];
         }
@@ -522,12 +521,12 @@ namespace Xamarin.Yoga
             }
         }
 
-        public YGValue MaxDimension(DimensionType dim)
+        public Value MaxDimension(DimensionType dim)
         {
             return MaxDimensions[dim];
         }
 
-        public YGValue MinDimension(DimensionType dim)
+        public Value MinDimension(DimensionType dim)
         {
             return MinDimensions[dim];
         }

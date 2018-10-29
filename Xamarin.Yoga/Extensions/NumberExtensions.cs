@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 
 namespace Xamarin.Yoga
 {
@@ -24,14 +25,14 @@ namespace Xamarin.Yoga
             return !value.HasValue || Single.IsNaN(value.Value);
         }
 
-        public static YGValue Percent(this int value)
+        public static Value Percent(this int value)
         {
-            return new YGValue(value, ValueUnit.Percent);
+            return new Value(value, ValueUnit.Percent);
         }
 
-        public static YGValue Percent(this float value)
+        public static Value Percent(this float value)
         {
-            return new YGValue(value, ValueUnit.Percent);
+            return new Value(value, ValueUnit.Percent);
         }
 
         public static float RoundValueToPixelGrid(
@@ -121,6 +122,23 @@ namespace Xamarin.Yoga
         public static float FloatSanitize(float val)
         {
             return val.IsNaN() ? 0 : val;
+        }
+
+        // This function unwraps optional and returns float.NaN if not defined or op.value otherwise
+        public static float Unwrap(this float? op)
+        {
+            return op ?? Single.NaN;
+        }
+
+        public static bool ValueEqual(Value a, Value b)
+        {
+            if (a.Unit != b.Unit)
+                return false;
+
+            if (a.Unit == ValueUnit.Undefined || a.Number.IsNaN() && b.Number.IsNaN())
+                return true;
+
+            return NumberExtensions.FloatEqual(a.Number, b.Number);
         }
     }
 }

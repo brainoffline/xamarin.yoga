@@ -1,18 +1,26 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Runtime.CompilerServices;
 
 namespace Xamarin.Yoga
 {
     public static class YogaGlobal
     {
-        public static void YGAssert(bool condition, string message)
+        public static void Log(YogaNode node, LogLevel level, string message)
         {
-            if (!condition)
-                Log((YGNode) null, LogLevel.Fatal, $"{message}\n");
+            Log(
+                node?.Config,
+                node,
+                level,
+                message);
         }
 
-        public static void YGAssert(
+        public static void YogaAssert(bool condition, string message)
+        {
+            if (!condition)
+                Log((YogaNode) null, LogLevel.Fatal, $"{message}\n");
+        }
+
+        public static void YogaAssert(
             YogaConfig config,
             bool       condition,
             string     message)
@@ -21,21 +29,13 @@ namespace Xamarin.Yoga
                 Log(config, LogLevel.Fatal, $"{message}\n");
         }
 
-        public static void YGAssert(
-            YGNode node,
+        public static void YogaAssert(
+            YogaNode node,
             bool   condition,
             string message)
         {
             if (!condition)
                 Log(node, LogLevel.Fatal, $"{message}\n");
-        }
-
-        public static void Log(YGNode node, LogLevel level, string message)
-        {
-            Log(node?.Config,
-                node,
-                level,
-                message);
         }
 
         private static void Log(YogaConfig config, LogLevel level, string message)
@@ -45,7 +45,7 @@ namespace Xamarin.Yoga
 
         private static void Log(
             YogaConfig config,
-            YGNode     node,
+            YogaNode     node,
             LogLevel   level,
             string     message)
         {
@@ -54,5 +54,25 @@ namespace Xamarin.Yoga
 
             if (level == LogLevel.Fatal) throw new SystemException();
         }
+
+        public static FlexDirectionType FlexDirectionCross(FlexDirectionType flexDirection, DirectionType direction)
+        {
+            return flexDirection.IsColumn()
+                ? ResolveFlexDirection(FlexDirectionType.Row, direction)
+                : FlexDirectionType.Column;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static FlexDirectionType ResolveFlexDirection(FlexDirectionType flexDirection, DirectionType direction)
+        {
+            if (direction == DirectionType.RTL)
+            {
+                if (flexDirection == FlexDirectionType.Row) return FlexDirectionType.RowReverse;
+                if (flexDirection == FlexDirectionType.RowReverse) return FlexDirectionType.Row;
+            }
+
+            return flexDirection;
+        }
+
     }
 }

@@ -1,46 +1,65 @@
-﻿// ReSharper disable InconsistentNaming
-
-using System;
+﻿using System;
 using System.Drawing;
 
 namespace Xamarin.Yoga
 {
-    using static YGGlobal;
+    using static YogaGlobal;
 
     public delegate SizeF MeasureFunc(
-        YGNode node,
-        float width,
+        YogaNode      node,
+        float       width,
         MeasureMode widthMode,
-        float height,
+        float       height,
         MeasureMode heightMode);
 
-    public delegate float BaselineFunc(YGNode node, float width, float height);
+    public delegate float BaselineFunc(YogaNode node, float width, float height);
 
-    public delegate void DirtiedFunc(YGNode node);
+    public delegate void DirtiedFunc(YogaNode node);
 
-    public delegate void PrintFunc(YGNode node);
+    public delegate void PrintFunc(YogaNode node);
 
     public delegate void LoggerFunc(
         YogaConfig config,
-        YGNode node,
-        LogLevel level,
-        string message);
+        YogaNode     node,
+        LogLevel   level,
+        string     message);
 
     public class YogaConfig : IEquatable<YogaConfig>
     {
-        public static readonly YogaConfig DefaultConfig = new YogaConfig(YGDefaultLog)
+        public static readonly YogaConfig DefaultConfig = new YogaConfig(LogToConsole)
         {
-            printTree = true
+#if DEBUG
+            PrintTree = true
+#endif
         };
 
         private float _pointScaleFactor = 1.0f;
+
+        public bool PrintTree;
+
+        public YogaConfig(LoggerFunc logger = null)
+        {
+            Logger = logger ?? LogToConsole;
+        }
+
+        public YogaConfig(YogaConfig config)
+        {
+            ExperimentalFeatures = config.ExperimentalFeatures;
+            UseWebDefaults       = config.UseWebDefaults;
+            PointScaleFactor     = config.PointScaleFactor;
+            Logger               = config.Logger;
+            PrintTree            = config.PrintTree;
+        }
+
+        public ExperimentalFeatures ExperimentalFeatures { get; set; }
+        public LoggerFunc           Logger               { get; set; }
 
         public float PointScaleFactor
         {
             get => _pointScaleFactor;
             set
             {
-                YogaGlobal.YGAssert(
+                YogaAssert(
                     value >= 0.0f,
                     "Scale factor should not be less than zero");
 
@@ -49,24 +68,6 @@ namespace Xamarin.Yoga
             }
         }
 
-        public bool printTree;
-
-        public YogaConfig(LoggerFunc logger = null)
-        {
-            Logger = logger ?? YGDefaultLog;
-        }
-
-        public YogaConfig(YogaConfig config)
-        {
-            ExperimentalFeatures = config.ExperimentalFeatures;
-            UseWebDefaults = config.UseWebDefaults;
-            PointScaleFactor = config.PointScaleFactor;
-            Logger = config.Logger;
-            printTree = config.printTree;
-        }
-
-        public ExperimentalFeatures ExperimentalFeatures { get; set; }
-        public LoggerFunc Logger { get; set; }
         public bool UseWebDefaults { get; set; }
 
         public bool Equals(YogaConfig other)
@@ -74,11 +75,11 @@ namespace Xamarin.Yoga
             if (ReferenceEquals(this, other)) return true;
             if (ReferenceEquals(null, other)) return false;
 
-            bool result =
-                ExperimentalFeatures == other.ExperimentalFeatures &&
-                UseWebDefaults == other.UseWebDefaults &&
+            var result =
+                ExperimentalFeatures == other.ExperimentalFeatures                    &&
+                UseWebDefaults       == other.UseWebDefaults                          &&
                 NumberExtensions.FloatEqual(PointScaleFactor, other.PointScaleFactor) &&
-                printTree == other.printTree;
+                PrintTree == other.PrintTree;
             return result;
         }
 
@@ -92,6 +93,20 @@ namespace Xamarin.Yoga
             return false;
         }
 
+        /// <inheritdoc />
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = _pointScaleFactor.GetHashCode();
+                hashCode = (hashCode * 397) ^ PrintTree.GetHashCode();
+                hashCode = (hashCode * 397) ^ (int) ExperimentalFeatures;
+                hashCode = (hashCode * 397) ^ (Logger != null ? Logger.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ UseWebDefaults.GetHashCode();
+                return hashCode;
+            }
+        }
+
         public static bool operator ==(YogaConfig config1, YogaConfig config2)
         {
             return Equals(config1, config2);
@@ -102,26 +117,26 @@ namespace Xamarin.Yoga
             return !(config1 == config2);
         }
 
-        private static void YGDefaultLog(
+        private static void LogToConsole(
             YogaConfig config,
-            YGNode node,
-            LogLevel level,
-            string message)
+            YogaNode     node,
+            LogLevel   level,
+            string     message)
         {
             switch (level)
             {
-                case LogLevel.Error:
-                case LogLevel.Fatal:
-                    Console.Error.Write(message);
-                    return;
+            case LogLevel.Error:
+            case LogLevel.Fatal:
+                Console.Error.Write(message);
+                return;
 
-                case LogLevel.Warn:
-                case LogLevel.Info:
-                case LogLevel.Debug:
-                case LogLevel.Verbose:
-                default:
-                    Console.Write(message);
-                    return;
+            case LogLevel.Warn:
+            case LogLevel.Info:
+            case LogLevel.Debug:
+            case LogLevel.Verbose:
+            default:
+                Console.Write(message);
+                return;
             }
         }
     }

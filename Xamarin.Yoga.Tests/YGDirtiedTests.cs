@@ -5,7 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Xamarin.Yoga.Tests
 {
-    using static YGGlobal;
+    
     using static YogaConst;
     
     
@@ -17,8 +17,8 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void dirtied()
         {
-            YGNode root = new YGNode();
-            root.Style.AlignItems = YGAlign.FlexStart;
+            YogaNode root = new YogaNode();
+            root.Style.AlignItems = AlignType.FlexStart;
             root.Style.Width = 100;
             root.Style.Height = 100;
 
@@ -42,17 +42,17 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void dirtied_propagation()
         {
-            YGNode root = new YGNode();
-            root.Style.AlignItems = YGAlign.FlexStart;
+            YogaNode root = new YogaNode();
+            root.Style.AlignItems = AlignType.FlexStart;
             root.Style.Width = 100;
             root.Style.Height = 100;
 
-            YGNode root_child0 = new YGNode();
+            YogaNode root_child0 = new YogaNode();
             root_child0.Style.Width = 50;
             root_child0.Style.Height = 20;
             root.Children.Add(root_child0);
 
-            YGNode root_child1 = new YGNode();
+            YogaNode root_child1 = new YogaNode();
             root_child1.Style.Width = 50;
             root_child1.Style.Height = 20;
             root.Children.Insert(1, root_child1);
@@ -77,17 +77,17 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void dirtied_hierarchy()
         {
-            YGNode root = new YGNode();
-            root.Style.AlignItems = YGAlign.FlexStart;
+            YogaNode root = new YogaNode();
+            root.Style.AlignItems = AlignType.FlexStart;
             root.Style.Width = 100;
             root.Style.Height = 100;
 
-            YGNode root_child0 = new YGNode();
+            YogaNode root_child0 = new YogaNode();
             root_child0.Style.Width = 50;
             root_child0.Style.Height = 20;
             root.Children.Add(root_child0);
 
-            YGNode root_child1 = new YGNode();
+            YogaNode root_child1 = new YogaNode();
             root_child1.Style.Width = 50;
             root_child1.Style.Height = 20;
             root.Children.Insert(1, root_child1);

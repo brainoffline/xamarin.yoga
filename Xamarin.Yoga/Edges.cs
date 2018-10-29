@@ -6,16 +6,16 @@ namespace Xamarin.Yoga
 {
     public class Edges : IEquatable<Edges>
     {
-        private static readonly YGValue YGValueUndefined = new YGValue(float.NaN, ValueUnit.Undefined);
-        private YGValue _all = YGValueUndefined;
-        private YGValue _bottom = YGValueUndefined;
-        private YGValue _end = YGValueUndefined;
-        private YGValue _horizontal = YGValueUndefined;
-        private YGValue _left = YGValueUndefined;
-        private YGValue _right = YGValueUndefined;
-        private YGValue _start = YGValueUndefined;
-        private YGValue _top = YGValueUndefined;
-        private YGValue _vertical = YGValueUndefined;
+        private static readonly Value ValueUndefined = new Value(float.NaN, ValueUnit.Undefined);
+        private Value _all = ValueUndefined;
+        private Value _bottom = ValueUndefined;
+        private Value _end = ValueUndefined;
+        private Value _horizontal = ValueUndefined;
+        private Value _left = ValueUndefined;
+        private Value _right = ValueUndefined;
+        private Value _start = ValueUndefined;
+        private Value _top = ValueUndefined;
+        private Value _vertical = ValueUndefined;
 
         public Edges() { }
 
@@ -27,31 +27,31 @@ namespace Xamarin.Yoga
             Bottom = bottom;
         }
 
-        public YGValue All
+        public Value All
         {
             get => _all;
             set => Change(ref _all, value);
         }
 
-        public YGValue Bottom
+        public Value Bottom
         {
             get => _bottom;
             set => Change(ref _bottom, value);
         }
 
-        public YGValue End
+        public Value End
         {
             get => _end;
             set => Change(ref _end, value);
         }
 
-        public YGValue Horizontal
+        public Value Horizontal
         {
             get => _horizontal;
             set => Change(ref _horizontal, value);
         }
 
-        public YGValue this[EdgeType key]
+        public Value this[EdgeType key]
         {
             get
             {
@@ -67,7 +67,7 @@ namespace Xamarin.Yoga
                 case EdgeType.Vertical:   return Vertical;
                 case EdgeType.All:        return All;
                 default:
-                    return YGValueUndefined;
+                    return ValueUndefined;
                 }
             }
             set
@@ -105,33 +105,33 @@ namespace Xamarin.Yoga
             }
         }
 
-        public YGValue Left
+        public Value Left
         {
             get => _left;
             set => Change(ref _left, value);
         }
 
-        internal YGNode Owner { get; set; }
+        internal YogaNode Owner { get; set; }
 
-        public YGValue Right
+        public Value Right
         {
             get => _right;
             set => Change(ref _right, value);
         }
 
-        public YGValue Start
+        public Value Start
         {
             get => _start;
             set => Change(ref _start, value);
         }
 
-        public YGValue Top
+        public Value Top
         {
             get => _top;
             set => Change(ref _top, value);
         }
 
-        public YGValue Vertical
+        public Value Vertical
         {
             get => _vertical;
             set => Change(ref _vertical, value);
@@ -170,9 +170,9 @@ namespace Xamarin.Yoga
             };
         }
 
-        public YGValue ComputedEdgeValue(
+        public Value ComputedEdgeValue(
             EdgeType edge,
-            YGValue  defaultValue)
+            Value  defaultValue)
         {
             if (this[edge].Unit != ValueUnit.Undefined)
                 return this[edge];
@@ -188,7 +188,7 @@ namespace Xamarin.Yoga
                 return All;
 
             if (edge == EdgeType.Start || edge == EdgeType.End)
-                return YogaConst.YGValueUndefined;
+                return YogaConst.ValueUndefined;
 
             return defaultValue;
         }
@@ -237,7 +237,7 @@ namespace Xamarin.Yoga
             return $"<{Left}, ^{Top}, >{Right}, v{Bottom}  <{Start}={End}>  _{Horizontal}|{Vertical}  ({All})";
         }
 
-        private void Change(ref YGValue val, YGValue value)
+        private void Change(ref Value val, Value value)
         {
             if (val != value)
             {

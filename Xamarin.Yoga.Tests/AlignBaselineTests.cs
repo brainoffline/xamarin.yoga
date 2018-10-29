@@ -4,19 +4,17 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Xamarin.Yoga.Tests
 {
-    using static YGGlobal;
-
     [TestClass]
     public class AlignBaselineTests
     {
-        private static float _baselineFunc(YGNode node, float width, float height)
+        private static float _baselineFunc(YogaNode node, float width, float height)
         {
             return height / 2;
         }
 
         [SuppressMessage("ReSharper", "RedundantAssignment")]
         private static SizeF _measure1(
-            YGNode        node,
+            YogaNode        node,
             float         width,
             MeasureMode widthMode,
             float         height,
@@ -27,7 +25,7 @@ namespace Xamarin.Yoga.Tests
 
         [SuppressMessage("ReSharper", "RedundantAssignment")]
         private static SizeF _measure2(
-            YGNode        node,
+            YogaNode        node,
             float         width,
             MeasureMode widthMode,
             float         height,
@@ -40,27 +38,27 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void align_baseline_parent_ht_not_specified()
         {
-            var root = new YGNode
+            var root = new YogaNode
             {
                 Style =
                 {
                     FlexDirection = FlexDirectionType.Row,
-                    AlignContent  = YGAlign.Stretch,
-                    AlignItems    = YGAlign.Baseline,
+                    AlignContent  = AlignType.Stretch,
+                    AlignItems    = AlignType.Baseline,
                     Width         = 340,
                     MaxHeight     = 170,
                     MinHeight     = 0
                 }
             };
 
-            var root_child0 = new YGNode
+            var root_child0 = new YogaNode
             {
                 Style       = {FlexGrow = 0, FlexShrink = 1},
                 MeasureFunc = _measure1
             };
             root.Children.Add(root_child0);
 
-            var root_child1 = new YGNode
+            var root_child1 = new YogaNode
             {
                 Style       = {FlexGrow = 0, FlexShrink = 1},
                 MeasureFunc = _measure2
@@ -88,20 +86,20 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void align_baseline_with_no_parent_ht()
         {
-            var root = new YGNode
+            var root = new YogaNode
             {
                 Style =
                 {
                     FlexDirection = FlexDirectionType.Row,
-                    AlignItems    = YGAlign.Baseline,
+                    AlignItems    = AlignType.Baseline,
                     Width         = 150
                 }
             };
 
-            var root_child0 = new YGNode {Style = {Width = 50, Height = 50}};
+            var root_child0 = new YogaNode {Style = {Width = 50, Height = 50}};
             root.Children.Add(root_child0);
 
-            var root_child1 = new YGNode {Style = {Width = 50, Height = 40}};
+            var root_child1 = new YogaNode {Style = {Width = 50, Height = 40}};
 
             root_child1.BaselineFunc = _baselineFunc;
             root.Children.Insert(1, root_child1);
@@ -127,23 +125,23 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void align_baseline_with_no_baseline_func_and_no_parent_ht()
         {
-            var root = new YGNode
+            var root = new YogaNode
             {
                 Style =
                 {
                     FlexDirection = FlexDirectionType.Row,
-                    AlignItems    = YGAlign.Baseline,
+                    AlignItems    = AlignType.Baseline,
                     Width         = 150
                 }
             };
 
-            var root_child0 = new YGNode
+            var root_child0 = new YogaNode
             {
                 Style = {Width = 50, Height = 80}
             };
             root.Children.Add(root_child0);
 
-            var root_child1 = new YGNode {Style = {Width = 50, Height = 50}};
+            var root_child1 = new YogaNode {Style = {Width = 50, Height = 50}};
             root.Children.Insert(1, root_child1);
 
             root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);

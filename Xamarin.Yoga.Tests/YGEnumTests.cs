@@ -4,7 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Xamarin.Yoga.Tests
 {
-    using static YGGlobal;
+    
     using static YogaConst;
     
     
@@ -17,7 +17,7 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void ConvertEnumToString()
         {
-            var result = YGAlign.Auto.ToDescription();
+            var result = AlignType.Auto.ToDescription();
 
             Assert.AreEqual("auto", result);
         }

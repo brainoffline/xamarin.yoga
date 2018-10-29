@@ -3,6 +3,8 @@ using System.Diagnostics;
 
 namespace Xamarin.Yoga
 {
+    using static NumberExtensions;
+
     // This struct is an helper model to hold the data for step 4 of flexbox
     // algo, which is collecting the flex items in a line.
     //
@@ -43,7 +45,7 @@ namespace Xamarin.Yoga
         // and border of flex items. This is used to calculate maxLineDim after going
         // through all the rows to decide on the main axis size of owner.
         public float        MainDim;
-        public List<YGNode> RelativeChildren;
+        public List<YogaNode> RelativeChildren;
         public float        RemainingFreeSpace;
         public float        SizeConsumedOnCurrentLine;
         public float        TotalFlexGrowFactors;
@@ -67,12 +69,11 @@ namespace Xamarin.Yoga
 
             foreach (var currentRelativeChild in RelativeChildren)
             {
-                var childFlexBasis = YGGlobal.UnwrapFloatOptional(
-                    currentRelativeChild.YGNodeBoundAxisWithinMinAndMax(
+                var childFlexBasis = 
+                    currentRelativeChild.BoundAxisWithinMinAndMax(
                         mainAxis,
-                        YGGlobal.UnwrapFloatOptional(
-                            currentRelativeChild.Layout.ComputedFlexBasis),
-                        mainAxisownerSize));
+                        currentRelativeChild.Layout.ComputedFlexBasis.Unwrap(),
+                        mainAxisownerSize);
 
                 if (RemainingFreeSpace < 0)
                 {
@@ -83,7 +84,7 @@ namespace Xamarin.Yoga
                     if (flexShrinkScaledFactor.HasValue() && flexShrinkScaledFactor != 0)
                     {
                         baseMainSize = childFlexBasis + RemainingFreeSpace / TotalFlexShrinkScaledFactors * flexShrinkScaledFactor;
-                        boundMainSize = currentRelativeChild.YGNodeBoundAxis(
+                        boundMainSize = currentRelativeChild.BoundAxis(
                             mainAxis,
                             baseMainSize,
                             availableInnerMainDim,
@@ -111,7 +112,7 @@ namespace Xamarin.Yoga
                     if (flexGrowFactor.HasValue() && flexGrowFactor != 0)
                     {
                         baseMainSize = childFlexBasis + RemainingFreeSpace / TotalFlexGrowFactors * flexGrowFactor;
-                        boundMainSize = currentRelativeChild.YGNodeBoundAxis(
+                        boundMainSize = currentRelativeChild.BoundAxis(
                             mainAxis,
                             baseMainSize,
                             availableInnerMainDim,
@@ -143,7 +144,7 @@ namespace Xamarin.Yoga
         // please ensure that YGDistributeFreeSpaceFirstPass is called.
 
         private float YGDistributeFreeSpaceSecondPass(
-            YGNode            node,
+            YogaNode            node,
             FlexDirectionType mainAxis,
             FlexDirectionType crossAxis,
             float             mainAxisOwnerSize,
@@ -165,11 +166,11 @@ namespace Xamarin.Yoga
 
             foreach (var currentRelativeChild in RelativeChildren)
             {
-                childFlexBasis = YGGlobal.UnwrapFloatOptional(
-                    currentRelativeChild.YGNodeBoundAxisWithinMinAndMax(
+                childFlexBasis = 
+                    currentRelativeChild.BoundAxisWithinMinAndMax(
                         mainAxis,
-                        YGGlobal.UnwrapFloatOptional(currentRelativeChild.Layout.ComputedFlexBasis),
-                        mainAxisOwnerSize));
+                        currentRelativeChild.Layout.ComputedFlexBasis.Unwrap(),
+                        mainAxisOwnerSize);
                 var updatedMainSize = childFlexBasis;
 
                 if (RemainingFreeSpace.HasValue() && RemainingFreeSpace < 0)
@@ -185,7 +186,7 @@ namespace Xamarin.Yoga
                         else
                             childSize = childFlexBasis + RemainingFreeSpace / TotalFlexShrinkScaledFactors * flexShrinkScaledFactor;
 
-                        updatedMainSize = currentRelativeChild.YGNodeBoundAxis(
+                        updatedMainSize = currentRelativeChild.BoundAxis(
                             mainAxis,
                             childSize,
                             availableInnerMainDim,
@@ -198,7 +199,7 @@ namespace Xamarin.Yoga
 
                     // Is this child able to grow?
                     if (flexGrowFactor.HasValue() && flexGrowFactor != 0)
-                        updatedMainSize = currentRelativeChild.YGNodeBoundAxis(
+                        updatedMainSize = currentRelativeChild.BoundAxis(
                             mainAxis,
                             childFlexBasis + RemainingFreeSpace / TotalFlexGrowFactors * flexGrowFactor,
                             availableInnerMainDim,
@@ -207,8 +208,8 @@ namespace Xamarin.Yoga
 
                 deltaFreeSpace += updatedMainSize - childFlexBasis;
 
-                var marginMain  = YGGlobal.UnwrapFloatOptional(currentRelativeChild.GetMarginForAxis(mainAxis,  availableInnerWidth));
-                var marginCross = YGGlobal.UnwrapFloatOptional(currentRelativeChild.GetMarginForAxis(crossAxis, availableInnerWidth));
+                var marginMain  = currentRelativeChild.GetMarginForAxis(mainAxis,  availableInnerWidth);
+                var marginCross = currentRelativeChild.GetMarginForAxis(crossAxis, availableInnerWidth);
 
                 float       childCrossSize;
                 var         childMainSize = updatedMainSize + marginMain;
@@ -226,10 +227,10 @@ namespace Xamarin.Yoga
                 }
                 else if (
                     availableInnerCrossDim.HasValue()                                                &&
-                    !currentRelativeChild.YGNodeIsStyleDimDefined(crossAxis, availableInnerCrossDim) &&
+                    !currentRelativeChild.IsStyleDimensionDefined(crossAxis, availableInnerCrossDim) &&
                     measureModeCrossDim == MeasureMode.Exactly                                       &&
                     !(isNodeFlexWrap && flexBasisOverflows)                                          &&
-                    node.YGNodeAlignItem(currentRelativeChild) == YGAlign.Stretch                    &&
+                    node.AlignChild(currentRelativeChild) == AlignType.Stretch                    &&
                     currentRelativeChild.MarginLeadingValue(crossAxis).Unit !=
                     ValueUnit.Auto &&
                     currentRelativeChild.MarginTrailingValue(crossAxis).Unit !=
@@ -238,7 +239,7 @@ namespace Xamarin.Yoga
                     childCrossSize        = availableInnerCrossDim;
                     childCrossMeasureMode = MeasureMode.Exactly;
                 }
-                else if (!currentRelativeChild.YGNodeIsStyleDimDefined(crossAxis, availableInnerCrossDim))
+                else if (!currentRelativeChild.IsStyleDimensionDefined(crossAxis, availableInnerCrossDim))
                 {
                     childCrossSize = availableInnerCrossDim;
                     childCrossMeasureMode = childCrossSize.IsNaN()
@@ -272,8 +273,8 @@ namespace Xamarin.Yoga
                     ref childCrossSize);
 
                 var requiresStretchLayout =
-                    !currentRelativeChild.YGNodeIsStyleDimDefined(crossAxis, availableInnerCrossDim) &&
-                    node.YGNodeAlignItem(currentRelativeChild) == YGAlign.Stretch                    &&
+                    !currentRelativeChild.IsStyleDimensionDefined(crossAxis, availableInnerCrossDim) &&
+                    node.AlignChild(currentRelativeChild) == AlignType.Stretch                    &&
                     currentRelativeChild.MarginLeadingValue(crossAxis).Unit !=
                     ValueUnit.Auto &&
                     currentRelativeChild.MarginTrailingValue(crossAxis).Unit != ValueUnit.Auto;
@@ -328,7 +329,7 @@ namespace Xamarin.Yoga
         // assigned to them.
         //
         internal void YGResolveFlexibleLength(
-            YGNode            node,
+            YogaNode            node,
             FlexDirectionType mainAxis,
             FlexDirectionType crossAxis,
             float             mainAxisownerSize,
@@ -368,7 +369,7 @@ namespace Xamarin.Yoga
         }
 
         internal void YGJustifyMainAxis(
-            YGNode            node,
+            YogaNode            node,
             int               startOfLineIndex,
             FlexDirectionType mainAxis,
             FlexDirectionType crossAxis,
@@ -382,8 +383,8 @@ namespace Xamarin.Yoga
             bool              performLayout)
         {
             var style                        = node.Style;
-            var leadingPaddingAndBorderMain  = YGGlobal.UnwrapFloatOptional(node.GetLeadingPaddingAndBorder(mainAxis, ownerWidth));
-            var trailingPaddingAndBorderMain = YGGlobal.UnwrapFloatOptional(node.GetTrailingPaddingAndBorder(mainAxis, ownerWidth));
+            var leadingPaddingAndBorderMain  = node.GetLeadingPaddingAndBorder(mainAxis, ownerWidth);
+            var trailingPaddingAndBorderMain = node.GetTrailingPaddingAndBorder(mainAxis, ownerWidth);
             // If we are using "at most" rules in the main axis, make sure that
             // remainingFreeSpace is 0 when min main dimension is not given
             if (measureModeMainDim == MeasureMode.AtMost && RemainingFreeSpace > 0)
@@ -398,10 +399,12 @@ namespace Xamarin.Yoga
 
                     // `minAvailableMainDim` denotes minimum available space in which child
                     // can be laid out, it will exclude space consumed by padding and border.
-                    var minAvailableMainDim = YGGlobal.UnwrapFloatOptional(
-                        style.MinDimension(mainAxis.ToDimension()).ResolveValue(mainAxisOwnerSize)) - leadingPaddingAndBorderMain - trailingPaddingAndBorderMain;
+                    var minAvailableMainDim = 
+                        style.MinDimension(mainAxis.ToDimension()).ResolveValue(mainAxisOwnerSize) 
+                        - leadingPaddingAndBorderMain 
+                        - trailingPaddingAndBorderMain;
                     var occupiedSpaceByChildNodes = availableInnerMainDim - RemainingFreeSpace;
-                    RemainingFreeSpace = NumberExtensions.FloatMax(0, minAvailableMainDim - occupiedSpaceByChildNodes);
+                    RemainingFreeSpace = FloatMax(0, minAvailableMainDim - occupiedSpaceByChildNodes);
                 }
                 else
                 {
@@ -439,7 +442,7 @@ namespace Xamarin.Yoga
                     break;
                 case JustifyType.SpaceBetween:
                     if (ItemsOnLine > 1)
-                        betweenMainDim = NumberExtensions.FloatMax(RemainingFreeSpace, 0) /
+                        betweenMainDim = FloatMax(RemainingFreeSpace, 0) /
                             (ItemsOnLine - 1);
                     else
                         betweenMainDim = 0;
@@ -464,7 +467,7 @@ namespace Xamarin.Yoga
 
             float maxAscentForCurrentLine  = 0;
             float maxDescentForCurrentLine = 0;
-            var   isNodeBaselineLayout     = node.YGIsBaselineLayout();
+            var   isNodeBaselineLayout     = node.IsBaselineLayout();
             for (var i = startOfLineIndex; i < EndOfLineIndex; i++)
             {
                 var child       = node.Children[i];
@@ -477,11 +480,9 @@ namespace Xamarin.Yoga
                 {
                     if (performLayout)
                         child.Layout.Position[mainAxis.ToPositionEdge()] =
-                            YGGlobal.UnwrapFloatOptional(
-                                child.GetLeadingPosition(mainAxis, availableInnerMainDim)) +
-                            node.GetLeadingBorder(mainAxis)                                +
-                            YGGlobal.UnwrapFloatOptional(
-                                child.GetLeadingMargin(mainAxis, availableInnerWidth));
+                            child.GetLeadingPosition(mainAxis, availableInnerMainDim) 
+                            + node.GetLeadingBorder(mainAxis)                                
+                            + child.GetLeadingMargin(mainAxis, availableInnerWidth);
                 }
                 else
                 {
@@ -508,54 +509,46 @@ namespace Xamarin.Yoga
                             // measuredDims because
                             // they weren't computed. This means we can't call
                             // YGNodeDimWithMargin.
-                            MainDim += betweenMainDim +
-                                YGGlobal.UnwrapFloatOptional(
-                                    child.GetMarginForAxis(
-                                        mainAxis,
-                                        availableInnerWidth)) +
-                                YGGlobal.UnwrapFloatOptional(childLayout.ComputedFlexBasis);
+                            MainDim += betweenMainDim 
+                                + child.GetMarginForAxis(mainAxis, availableInnerWidth) 
+                                + childLayout.ComputedFlexBasis.Unwrap();
                             CrossDim = availableInnerCrossDim;
                         }
                         else
                         {
                             // The main dimension is the sum of all the elements dimension plus
                             // the spacing.
-                            MainDim += betweenMainDim + child.YGNodeDimWithMargin(mainAxis, availableInnerWidth);
+                            MainDim += betweenMainDim + child.DimensionWithMargin(mainAxis, availableInnerWidth);
 
                             if (isNodeBaselineLayout)
                             {
                                 // If the child is baseline aligned then the cross dimension is
                                 // calculated by adding maxAscent and maxDescent from the baseline.
                                 var ascent = child.Baseline() +
-                                    YGGlobal.UnwrapFloatOptional(
-                                        child.GetLeadingMargin(
-                                            FlexDirectionType.Column,
-                                            availableInnerWidth));
+                                    child.GetLeadingMargin(FlexDirectionType.Column, availableInnerWidth);
                                 var descent =
-                                    child.Layout.MeasuredHeight +
-                                    YGGlobal.UnwrapFloatOptional(
-                                        child.GetMarginForAxis(
-                                            FlexDirectionType.Column,
-                                            availableInnerWidth)) -
-                                    ascent;
+                                    child.Layout.MeasuredHeight 
+                                    + child.GetMarginForAxis(FlexDirectionType.Column, availableInnerWidth) 
+                                    - ascent;
 
-                                maxAscentForCurrentLine  = NumberExtensions.FloatMax(maxAscentForCurrentLine,  ascent);
-                                maxDescentForCurrentLine = NumberExtensions.FloatMax(maxDescentForCurrentLine, descent);
+                                maxAscentForCurrentLine  = FloatMax(maxAscentForCurrentLine,  ascent);
+                                maxDescentForCurrentLine = FloatMax(maxDescentForCurrentLine, descent);
                             }
                             else
                             {
                                 // The cross dimension is the max of the elements dimension since
                                 // there can only be one element in that cross dimension in the case
                                 // when the items are not baseline aligned
-                                CrossDim = NumberExtensions.FloatMax(CrossDim, child.YGNodeDimWithMargin(crossAxis, availableInnerWidth));
+                                CrossDim = FloatMax(CrossDim, child.DimensionWithMargin(crossAxis, availableInnerWidth));
                             }
                         }
                     }
                     else if (performLayout)
                     {
                         child.Layout.Position[mainAxis.ToPositionEdge()] =
-                            childLayout.Position[mainAxis.ToPositionEdge()] +
-                            node.GetLeadingBorder(mainAxis)                 + leadingMainDim;
+                            childLayout.Position[mainAxis.ToPositionEdge()] 
+                            + node.GetLeadingBorder(mainAxis)                 
+                            + leadingMainDim;
                     }
                 }
             }

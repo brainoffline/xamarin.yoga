@@ -2,7 +2,7 @@
 
 namespace Xamarin.Yoga.Tests
 {
-    using static YGGlobal;
+    
 
     [TestClass]
     public class YGPersistenceTests
@@ -10,14 +10,14 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void cloning_shared_root()
         {
-            YGNode root_child0, root_child1;
-            YGNode root = new YGNode
+            YogaNode root_child0, root_child1;
+            YogaNode root = new YogaNode
             {
                 Style = {Width = 100, Height = 100},
                 Children =
                 {
-                    (root_child0 = new YGNode {Style = {FlexGrow = 1, FlexBasis = 50}}),
-                    (root_child1 = new YGNode {Style = {FlexGrow = 1}})
+                    (root_child0 = new YogaNode {Style = {FlexGrow = 1, FlexBasis = 50}}),
+                    (root_child1 = new YogaNode {Style = {FlexGrow = 1}})
                 }
             };
 
@@ -38,7 +38,7 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(100, root_child1.Layout.Width);
             Assert.AreEqual(25,  root_child1.Layout.Height);
 
-            YGNode root2 = new YGNode(root) {Style = {Width = 100}};
+            YogaNode root2 = new YogaNode(root) {Style = {Width = 100}};
 
             Assert.AreEqual(2, root2.Children.Count);
 
@@ -62,8 +62,8 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(2, root2.Children.Count);
 
             // Re-layout with changed input should result in cloned children.
-            YGNode root2_child0 = root2.Children[0];
-            YGNode root2_child1 = root2.Children[1];
+            YogaNode root2_child0 = root2.Children[0];
+            YogaNode root2_child1 = root2.Children[1];
             Assert.AreNotEqual(root_child0, root2_child0);
             Assert.AreNotEqual(root_child1, root2_child1);
 
@@ -106,31 +106,31 @@ namespace Xamarin.Yoga.Tests
         {
             YogaConfig config = new YogaConfig();
 
-            YGNode root = new YGNode(config);
+            YogaNode root = new YogaNode(config);
             Assert.AreEqual(0, root.Children.Count);
 
-            YGNode root2 = new YGNode(root);
+            YogaNode root2 = new YogaNode(root);
             Assert.AreEqual(0, root2.Children.Count);
 
-            YGNode root2_child0 = new YGNode(config);
+            YogaNode root2_child0 = new YogaNode(config);
             root2.Children.Add(root2_child0);
 
             Assert.AreEqual(0, root.Children.Count);
             Assert.AreEqual(1, root2.Children.Count);
 
-            YGNode root3 = new YGNode(root2);
+            YogaNode root3 = new YogaNode(root2);
             Assert.AreEqual(1,                 root2.Children.Count);
             Assert.AreEqual(1,                 root3.Children.Count);
             Assert.AreEqual(root2.Children[0], root3.Children[0]);
 
-            YGNode root3_child1 = new YGNode(config);
+            YogaNode root3_child1 = new YogaNode(config);
             root3.Children.Insert(1, root3_child1);
             Assert.AreEqual(1,            root2.Children.Count);
             Assert.AreEqual(2,            root3.Children.Count);
             Assert.AreEqual(root3_child1, root3.Children[1]);
             Assert.AreNotEqual(root2.Children[0], root3.Children[0]);
 
-            YGNode root4 = new YGNode(root3);
+            YogaNode root4 = new YogaNode(root3);
             Assert.AreEqual(root3_child1, root4.Children[1]);
 
             root4.Children.Remove(root3_child1);
@@ -144,25 +144,25 @@ namespace Xamarin.Yoga.Tests
         {
             YogaConfig config = new YogaConfig();
 
-            YGNode root = new YGNode(config);
+            YogaNode root = new YogaNode(config);
             root.Style.Width = 100;
             root.Style.Height = 100;
 
-            YGNode root_child0 = new YGNode(config);
+            YogaNode root_child0 = new YogaNode(config);
             root_child0.Style.FlexGrow = 1;
             root_child0.Style.FlexBasis = 15;
             root.Children.Add(root_child0);
 
-            YGNode root_child1 = new YGNode(config);
+            YogaNode root_child1 = new YogaNode(config);
             root_child1.Style.FlexGrow = 1;
             root.Children.Insert(1, root_child1);
 
-            YGNode root_child1_0 = new YGNode(config);
+            YogaNode root_child1_0 = new YogaNode(config);
             root_child1_0.Style.FlexBasis = 10;
             root_child1_0.Style.FlexGrow = 1;
             root_child1.Children.Add(root_child1_0);
 
-            YGNode root_child1_1 = new YGNode(config);
+            YogaNode root_child1_1 = new YogaNode(config);
             root_child1_1.Style.FlexBasis = 25;
             root_child1.Children.Insert(1, root_child1_1);
 
@@ -173,9 +173,9 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(35, root_child1_0.Layout.Height);
             Assert.AreEqual(25, root_child1_1.Layout.Height);
 
-            YGNode root2_child0 = new YGNode(root_child0);
-            YGNode root2_child1 = new YGNode(root_child1);
-            YGNode root2        = new YGNode(root);
+            YogaNode root2_child0 = new YogaNode(root_child0);
+            YogaNode root2_child1 = new YogaNode(root_child1);
+            YogaNode root2        = new YogaNode(root);
 
             root2_child0.Style.FlexGrow = 0;
             root2_child0.Style.FlexBasis = 40;
@@ -207,17 +207,17 @@ namespace Xamarin.Yoga.Tests
         {
             YogaConfig config = new YogaConfig();
 
-            YGNode root = new YGNode(config);
+            YogaNode root = new YogaNode(config);
             root.Style.Width = 100;
             root.Style.Height = 100;
-            YGNode root_child0 = new YGNode(config);
+            YogaNode root_child0 = new YogaNode(config);
             root.Children.Add(root_child0);
-            YGNode root_child1 = new YGNode(config);
+            YogaNode root_child1 = new YogaNode(config);
             root.Children.Insert(1, root_child1);
 
             root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
-            YGNode root2 = new YGNode(root);
+            YogaNode root2 = new YogaNode(root);
 
             // Freeing the original root should be safe as long as we don't free its
             // children.

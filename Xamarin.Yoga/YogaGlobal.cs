@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Xamarin.Yoga
 {
-    public static partial class YogaGlobal
+    public static class YogaGlobal
     {
         public static void YGAssert(bool condition, string message)
         {

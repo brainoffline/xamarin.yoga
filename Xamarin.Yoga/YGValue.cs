@@ -112,20 +112,20 @@ namespace Xamarin.Yoga
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public float? ResolveValue(float ownerSize)
+        public float ResolveValue(float ownerSize)
         {
             switch (Unit)
             {
             case ValueUnit.Undefined:
             case ValueUnit.Auto:
-                return null;
+                return float.NaN;
             case ValueUnit.Point:
                 return Value;
             case ValueUnit.Percent:
                 return Value * ownerSize * 0.01f;
             }
 
-            return null;
+            return float.NaN;
         }
 
     }

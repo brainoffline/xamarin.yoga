@@ -222,7 +222,7 @@ namespace Xamarin.Yoga
             return NumberExtensions.FloatMax(computedEdgeValue, 0.0f);
         }
 
-        public float? GetLeadingMargin(FlexDirectionType axis, float widthSize)
+        public float GetLeadingMargin(FlexDirectionType axis, float widthSize)
         {
             if (axis.IsRow() &&
                 Style.Margin.Start.Unit != ValueUnit.Undefined)
@@ -233,25 +233,25 @@ namespace Xamarin.Yoga
                 widthSize);
         }
 
-        public float? GetLeadingPadding(FlexDirectionType axis, float widthSize)
+        public float GetLeadingPadding(FlexDirectionType axis, float widthSize)
         {
             var paddingEdgeStart =
                 Style.Padding.Start.ResolveValue(widthSize);
             if (axis.IsRow()                                    &&
                 Style.Padding.Start.Unit != ValueUnit.Undefined &&
-                paddingEdgeStart.HasValue                       && paddingEdgeStart > 0.0f)
+                paddingEdgeStart.HasValue()                     && paddingEdgeStart > 0.0f)
                 return paddingEdgeStart;
 
             var resolvedValue = Style.Padding.ComputedEdgeValue(axis.ToLeadingEdge(), YGValueZero).ResolveValue(widthSize);
-            return NumberExtensions.FloatOptionalMax(resolvedValue, 0.0f);
+            return NumberExtensions.FloatMax(resolvedValue, 0.0f);
         }
 
-        public float? GetLeadingPaddingAndBorder(FlexDirectionType axis, float widthSize)
+        public float GetLeadingPaddingAndBorder(FlexDirectionType axis, float widthSize)
         {
             return GetLeadingPadding(axis, widthSize) + GetLeadingBorder(axis);
         }
 
-        public float? GetLeadingPosition(FlexDirectionType axis, float axisSize)
+        public float GetLeadingPosition(FlexDirectionType axis, float axisSize)
         {
             if (axis.IsRow())
             {
@@ -269,7 +269,7 @@ namespace Xamarin.Yoga
                 : leadingPos.ResolveValue(axisSize);
         }
 
-        public float? GetMarginForAxis(FlexDirectionType axis, float widthSize)
+        public float GetMarginForAxis(FlexDirectionType axis, float widthSize)
         {
             return GetLeadingMargin(axis, widthSize) + GetTrailingMargin(axis, widthSize);
         }
@@ -286,7 +286,7 @@ namespace Xamarin.Yoga
             return NumberExtensions.FloatMax(computedEdgeValue, 0.0f);
         }
 
-        public float? GetTrailingMargin(FlexDirectionType axis, float widthSize)
+        public float GetTrailingMargin(FlexDirectionType axis, float widthSize)
         {
             if (axis.IsRow() &&
                 Style.Margin.End.Unit != ValueUnit.Undefined)
@@ -297,25 +297,25 @@ namespace Xamarin.Yoga
                 widthSize);
         }
 
-        public float? GetTrailingPadding(FlexDirectionType axis, float widthSize)
+        public float GetTrailingPadding(FlexDirectionType axis, float widthSize)
         {
             if (axis.IsRow()                                        &&
                 Style.Padding.End.Unit != ValueUnit.Undefined       &&
-                Style.Padding.End.ResolveValue(widthSize).HasValue &&
+                Style.Padding.End.ResolveValue(widthSize).HasValue() &&
                 Style.Padding.End.ResolveValue(widthSize) >= 0.0f)
                 return Style.Padding.End.ResolveValue(widthSize);
 
             var resolvedValue = Style.Padding.ComputedEdgeValue(axis.ToTrailingEdge(), YGValueZero).ResolveValue(widthSize);
 
-            return NumberExtensions.FloatOptionalMax(resolvedValue, 0.0f);
+            return NumberExtensions.FloatMax(resolvedValue, 0.0f);
         }
 
-        public float? GetTrailingPaddingAndBorder(FlexDirectionType axis, float widthSize)
+        public float GetTrailingPaddingAndBorder(FlexDirectionType axis, float widthSize)
         {
             return GetTrailingPadding(axis, widthSize) + GetTrailingBorder(axis);
         }
 
-        public float? GetTrailingPosition(FlexDirectionType axis, float axisSize)
+        public float GetTrailingPosition(FlexDirectionType axis, float axisSize)
         {
             if (axis.IsRow())
             {
@@ -419,7 +419,7 @@ namespace Xamarin.Yoga
 
         // If both left and right are defined, then use left. Otherwise return
         // +left or -right depending on which is defined.
-        public float? RelativePosition(
+        public float RelativePosition(
             FlexDirectionType axis,
             float             axisSize)
         {
@@ -427,7 +427,7 @@ namespace Xamarin.Yoga
                 return GetLeadingPosition(axis, axisSize);
 
             var trailingPosition = GetTrailingPosition(axis, axisSize);
-            if (trailingPosition.HasValue)
+            if (trailingPosition.HasValue())
                 trailingPosition = -1 * trailingPosition;
             return trailingPosition;
         }
@@ -661,13 +661,13 @@ namespace Xamarin.Yoga
                 YGNodePaddingAndBorderForAxis(axis, widthSize));
         }
 
-        internal float? YGNodeBoundAxisWithinMinAndMax(
+        internal float YGNodeBoundAxisWithinMinAndMax(
             FlexDirectionType axis,
             float             value,
             float             axisSize)
         {
-            float? min = null;
-            float? max = null;
+            float min = Single.NaN;
+            float max = Single.NaN;
 
             if (axis.IsColumn())
             {
@@ -680,10 +680,10 @@ namespace Xamarin.Yoga
                 max = Style.MaxWidth.ResolveValue(axisSize);
             }
 
-            if (max.HasValue && max >= 0 && value > max)
+            if (max.HasValue() && max >= 0 && value > max)
                 return max;
 
-            if (min.HasValue && min >= 0 && value < min)
+            if (min.HasValue() && min >= 0 && value < min)
                 return min;
 
             return value;
@@ -697,5 +697,91 @@ namespace Xamarin.Yoga
                 GetLeadingPaddingAndBorder(axis, widthSize) +
                 GetTrailingPaddingAndBorder(axis, widthSize));
         }
+
+        internal float YGNodeCalculateAvailableInnerDim(
+            FlexDirectionType axis,
+            float             availableDim,
+            float             ownerDim)
+        {
+            var direction = axis.IsRow() ? FlexDirectionType.Row : FlexDirectionType.Column;
+            var dimension = axis.IsRow() ? DimensionType.Width : DimensionType.Height;
+
+            var margin           = GetMarginForAxis(direction, ownerDim);
+            var paddingAndBorder = YGNodePaddingAndBorderForAxis(direction, ownerDim);
+
+            var availableInnerDim = availableDim - margin - paddingAndBorder;
+            // Max dimension overrides predefined dimension value; Min dimension in turn
+            // overrides both of the above
+            if (availableInnerDim.HasValue())
+            {
+                // We want to make sure our available height does not violate min and max
+                // constraints
+                var minDimensionOptional = Style.MinDimension(dimension).ResolveValue(ownerDim);
+                var minInnerDim = minDimensionOptional.IsNaN()
+                    ? 0.0f
+                    : minDimensionOptional - paddingAndBorder;
+
+                var maxDimensionOptional = Style.MaxDimension(dimension).ResolveValue(ownerDim);
+
+                var maxInnerDim = maxDimensionOptional.IsNaN()
+                    ? Single.MaxValue
+                    : maxDimensionOptional - paddingAndBorder;
+                availableInnerDim = NumberExtensions.FloatMax(NumberExtensions.FloatMin(availableInnerDim, maxInnerDim), minInnerDim);
+            }
+
+            return availableInnerDim;
+        }
+
+
+        // inline
+
+        internal float YGNodeDimWithMargin(FlexDirectionType axis, float             widthSize)
+        {
+            return Layout.GetMeasuredDimension(axis.ToDimension()) + 
+                GetLeadingMargin(axis, widthSize) +
+                GetTrailingMargin(axis, widthSize);
+        }
+
+        // inline
+
+        internal bool YGNodeIsLayoutDimDefined(FlexDirectionType axis)
+        {
+            var value = Layout.GetMeasuredDimension(axis.ToDimension());
+            return value.HasValue() && value >= 0.0f;
+        }
+
+        // inline
+
+        internal bool YGNodeIsStyleDimDefined(
+            FlexDirectionType axis,
+            float             ownerSize)
+        {
+            var isUndefined = ResolvedDimension[axis.ToDimension()].IsNaN();
+            return !(
+                ResolvedDimension[axis.ToDimension()].Unit == ValueUnit.Auto      ||
+                ResolvedDimension[axis.ToDimension()].Unit == ValueUnit.Undefined ||
+                ResolvedDimension[axis.ToDimension()].Unit == ValueUnit.Point &&
+                !isUndefined                                                       &&
+                ResolvedDimension[axis.ToDimension()].Value < 0.0f ||
+                ResolvedDimension[axis.ToDimension()].Unit == ValueUnit.Percent &&
+                !isUndefined                                                         &&
+                (ResolvedDimension[axis.ToDimension()].Value < 0.0f || ownerSize.IsNaN()));
+        }
+
+        internal void YGZeroOutLayoutRecursively()
+        {
+            Layout = new NodeLayout
+            {
+                MeasuredWidth  = 0,
+                MeasuredHeight = 0,
+                Width          = 0,
+                Height         = 0
+            };
+            HasNewLayout = true;
+
+            foreach (var child in Children)
+                child.YGZeroOutLayoutRecursively();
+        }
+
     }
 }

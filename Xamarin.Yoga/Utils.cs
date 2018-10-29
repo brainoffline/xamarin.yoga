@@ -48,7 +48,7 @@ namespace Xamarin.Yoga
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static float? ResolveValueMargin(YGValue value, float ownerSize)
+        internal static float ResolveValueMargin(YGValue value, float ownerSize)
         {
             return value.Unit == ValueUnit.Auto
                 ? 0

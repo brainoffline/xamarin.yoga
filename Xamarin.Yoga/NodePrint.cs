@@ -4,11 +4,11 @@ using System.Text;
 
 namespace Xamarin.Yoga
 {
-    using static NumberExtensions;    
+    using static NumberExtensions;
 
-    public class NodePrint
+    internal class NodePrint
     {
-        private readonly YogaNode          _node;
+        private readonly YogaNode        _node;
         private readonly PrintOptionType _options;
 
         public NodePrint(YogaNode node, PrintOptionType options)
@@ -70,7 +70,7 @@ namespace Xamarin.Yoga
         private void AppendNumberIfNotUndefined(
             StringBuilder sb,
             string        key,
-            Value       number)
+            Value         number)
         {
             if (number.Unit != ValueUnit.Undefined)
             {
@@ -111,7 +111,7 @@ namespace Xamarin.Yoga
 
         private StringBuilder NodeToString(
             StringBuilder   sb,
-            YogaNode          node,
+            YogaNode        node,
             PrintOptionType options,
             int             level = 0)
         {

@@ -60,15 +60,15 @@ namespace Xamarin.Yoga
         // cache some information to break early when nothing changed
         public int           GenerationCount             { get; set; }
         public bool          HadOverflow                 { get; set; }
-        public float         Height                      { get; set; } = Single.NaN;
+        public float         Height                      { get; set; } = float.NaN;
         public DirectionType LastOwnerDirection          { get; set; }
         public LayoutEdges   Margin                      { get; }      = new LayoutEdges();
-        public float         MeasuredHeight              { get; set; } = Single.NaN;
-        public float         MeasuredWidth               { get; set; } = Single.NaN;
+        public float         MeasuredHeight              { get; set; } = float.NaN;
+        public float         MeasuredWidth               { get; set; } = float.NaN;
         public int           NextCachedMeasurementsIndex { get; private set; }
         public LayoutEdges   Padding                     { get; }      = new LayoutEdges();
         public Position      Position                    { get; }      = new Position();
-        public float         Width                       { get; set; } = Single.NaN;
+        public float         Width                       { get; set; } = float.NaN;
 
         /// <inheritdoc />
         public bool Equals(NodeLayout other)
@@ -110,6 +110,27 @@ namespace Xamarin.Yoga
             return false;
         }
 
+        public float GetBorder(EdgeType edge)
+        {
+            YogaGlobal.YogaAssert(
+                edge <= EdgeType.End,
+                "Cannot get layout properties of multi-edge shorthands");
+
+            switch (edge)
+            {
+            case EdgeType.Left when Direction == DirectionType.RTL:
+                return Border.End;
+            case EdgeType.Left:
+                return Border.Start;
+            case EdgeType.Right when Direction == DirectionType.RTL:
+                return Border.Start;
+            case EdgeType.Right:
+                return Border.End;
+            }
+
+            return Border[edge];
+        }
+
         /// <inheritdoc />
         public override int GetHashCode()
         {
@@ -136,6 +157,27 @@ namespace Xamarin.Yoga
             }
         }
 
+        public float GetMargin(EdgeType edge)
+        {
+            YogaGlobal.YogaAssert(
+                edge <= EdgeType.End,
+                "Cannot get layout properties of multi-edge shorthands");
+
+            switch (edge)
+            {
+            case EdgeType.Left when Direction == DirectionType.RTL:
+                return Margin.End;
+            case EdgeType.Left:
+                return Margin.Start;
+            case EdgeType.Right when Direction == DirectionType.RTL:
+                return Margin.Start;
+            case EdgeType.Right:
+                return Margin.End;
+            }
+
+            return Margin[edge];
+        }
+
         public float GetMeasuredDimension(DimensionType dim)
         {
             return dim == DimensionType.Width ? MeasuredWidth : MeasuredHeight;
@@ -148,6 +190,27 @@ namespace Xamarin.Yoga
                 cache = CachedMeasurements[NextCachedMeasurementsIndex] = new CachedMeasurement();
             NextCachedMeasurementsIndex++;
             return cache;
+        }
+
+        public float GetPadding(EdgeType edge)
+        {
+            YogaGlobal.YogaAssert(
+                edge <= EdgeType.End,
+                "Cannot get layout properties of multi-edge shorthands");
+
+            switch (edge)
+            {
+            case EdgeType.Left when Direction == DirectionType.RTL:
+                return Padding.End;
+            case EdgeType.Left:
+                return Padding.Start;
+            case EdgeType.Right when Direction == DirectionType.RTL:
+                return Padding.Start;
+            case EdgeType.Right:
+                return Padding.End;
+            }
+
+            return Padding[edge];
         }
 
         public void InvalidateCache()
@@ -192,69 +255,5 @@ namespace Xamarin.Yoga
             else
                 MeasuredHeight = value;
         }
-
-        public float YGNodeLayoutGetBorder(EdgeType edge)
-        {
-            YogaGlobal.YogaAssert(
-                edge <= EdgeType.End,
-                "Cannot get layout properties of multi-edge shorthands");
-
-            switch (edge)
-            {
-            case EdgeType.Left when Direction == DirectionType.RTL:
-                return Border.End;
-            case EdgeType.Left:
-                return Border.Start;
-            case EdgeType.Right when Direction == DirectionType.RTL:
-                return Border.Start;
-            case EdgeType.Right:
-                return Border.End;
-            }
-
-            return Border[edge];
-        }
-
-        public float YGNodeLayoutGetPadding(EdgeType edge)
-        {
-            YogaGlobal.YogaAssert(
-                edge <= EdgeType.End,
-                "Cannot get layout properties of multi-edge shorthands");
-
-            switch (edge)
-            {
-            case EdgeType.Left when Direction == DirectionType.RTL:
-                return Padding.End;
-            case EdgeType.Left:
-                return Padding.Start;
-            case EdgeType.Right when Direction == DirectionType.RTL:
-                return Padding.Start;
-            case EdgeType.Right:
-                return Padding.End;
-            }
-
-            return Padding[edge];
-        }
-
-        public float GetMargin(EdgeType edge)
-        {
-            YogaGlobal.YogaAssert(
-                edge <= EdgeType.End,
-                "Cannot get layout properties of multi-edge shorthands");
-
-            switch (edge)
-            {
-            case EdgeType.Left when Direction == DirectionType.RTL:
-                return Margin.End;
-            case EdgeType.Left:
-                return Margin.Start;
-            case EdgeType.Right when Direction == DirectionType.RTL:
-                return Margin.Start;
-            case EdgeType.Right:
-                return Margin.End;
-            }
-
-            return Margin[edge];
-        }
-
     }
 }

@@ -23,13 +23,13 @@ namespace Xamarin.Yoga.Tests
 
             root.Calc.CalculateLayout(100, 100, DirectionType.LTR);
 
-            Assert.AreEqual(10, root.Layout.YGNodeLayoutGetPadding(EdgeType.Left));
-            Assert.AreEqual(0,  root.Layout.YGNodeLayoutGetPadding(EdgeType.Right));
+            Assert.AreEqual(10, root.Layout.GetPadding(EdgeType.Left));
+            Assert.AreEqual(0,  root.Layout.GetPadding(EdgeType.Right));
 
             root.Calc.CalculateLayout(100, 100, DirectionType.RTL);
 
-            Assert.AreEqual(0,  root.Layout.YGNodeLayoutGetPadding(EdgeType.Left));
-            Assert.AreEqual(10, root.Layout.YGNodeLayoutGetPadding(EdgeType.Right));
+            Assert.AreEqual(0,  root.Layout.GetPadding(EdgeType.Left));
+            Assert.AreEqual(10, root.Layout.GetPadding(EdgeType.Right));
 
             
         }

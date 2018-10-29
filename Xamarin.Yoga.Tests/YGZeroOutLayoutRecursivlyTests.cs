@@ -24,14 +24,14 @@ namespace Xamarin.Yoga.Tests
             root.Calc.CalculateLayout(100, 100, DirectionType.LTR);
 
             Assert.AreEqual(10, child.Layout.GetMargin(EdgeType.Top));
-            Assert.AreEqual(10, child.Layout.YGNodeLayoutGetPadding(EdgeType.Top));
+            Assert.AreEqual(10, child.Layout.GetPadding(EdgeType.Top));
 
             child.Style.Display = DisplayType.None;
 
             root.Calc.CalculateLayout(100, 100, DirectionType.LTR);
 
             Assert.AreEqual(0, child.Layout.GetMargin(EdgeType.Top));
-            Assert.AreEqual(0, child.Layout.YGNodeLayoutGetPadding(EdgeType.Top));
+            Assert.AreEqual(0, child.Layout.GetPadding(EdgeType.Top));
         }
     }
 }

@@ -259,13 +259,13 @@ namespace Xamarin.Yoga
                             : MeasureMode.Exactly;
                 }
 
-                currentRelativeChild.Calc.YGConstrainMaxSizeForMode(
+                currentRelativeChild.Calc.ConstrainMaxSizeForMode(
                     mainAxis,
                     availableInnerMainDim,
                     availableInnerWidth,
                     ref childMainMeasureMode,
                     ref childMainSize);
-                currentRelativeChild.Calc.YGConstrainMaxSizeForMode(
+                currentRelativeChild.Calc.ConstrainMaxSizeForMode(
                     crossAxis,
                     availableInnerCrossDim,
                     availableInnerWidth,

@@ -78,15 +78,15 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(0, root.Layout.GetMargin(EdgeType.Right));
             Assert.AreEqual(0, root.Layout.GetMargin(EdgeType.Bottom));
 
-            Assert.AreEqual(0, root.Layout.YGNodeLayoutGetPadding(EdgeType.Left));
-            Assert.AreEqual(0, root.Layout.YGNodeLayoutGetPadding(EdgeType.Top));
-            Assert.AreEqual(0, root.Layout.YGNodeLayoutGetPadding(EdgeType.Right));
-            Assert.AreEqual(0, root.Layout.YGNodeLayoutGetPadding(EdgeType.Bottom));
+            Assert.AreEqual(0, root.Layout.GetPadding(EdgeType.Left));
+            Assert.AreEqual(0, root.Layout.GetPadding(EdgeType.Top));
+            Assert.AreEqual(0, root.Layout.GetPadding(EdgeType.Right));
+            Assert.AreEqual(0, root.Layout.GetPadding(EdgeType.Bottom));
 
-            Assert.AreEqual(0, root.Layout.YGNodeLayoutGetBorder(EdgeType.Left));
-            Assert.AreEqual(0, root.Layout.YGNodeLayoutGetBorder(EdgeType.Top));
-            Assert.AreEqual(0, root.Layout.YGNodeLayoutGetBorder(EdgeType.Right));
-            Assert.AreEqual(0, root.Layout.YGNodeLayoutGetBorder(EdgeType.Bottom));
+            Assert.AreEqual(0, root.Layout.GetBorder(EdgeType.Left));
+            Assert.AreEqual(0, root.Layout.GetBorder(EdgeType.Top));
+            Assert.AreEqual(0, root.Layout.GetBorder(EdgeType.Right));
+            Assert.AreEqual(0, root.Layout.GetBorder(EdgeType.Bottom));
 
             Assert.IsTrue(root.Layout.Width.IsNaN());
             Assert.IsTrue(root.Layout.Height.IsNaN());

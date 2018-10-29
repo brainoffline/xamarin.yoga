@@ -12,9 +12,9 @@ namespace Xamarin.Yoga
         private static readonly Value ValueAuto      = new Value(0, ValueUnit.Auto);
         private static readonly Value ValueUndefined = new Value(0, ValueUnit.Undefined);
 
-        private          AlignType       _alignContent = AlignType.FlexStart;
-        private          AlignType       _alignItems   = AlignType.Stretch;
-        private          AlignType       _alignSelf    = AlignType.Auto;
+        private          AlignType     _alignContent = AlignType.FlexStart;
+        private          AlignType     _alignItems   = AlignType.Stretch;
+        private          AlignType     _alignSelf    = AlignType.Auto;
         private          float?        _aspectRatio;
         private          Edges         _border     = new Edges();
         private readonly Dimensions    _dimensions = new Dimensions(ValueAuto, ValueAuto);
@@ -22,7 +22,7 @@ namespace Xamarin.Yoga
         private          DisplayType   _display    = DisplayType.Flex;
 
         internal float?            _flex;
-        private  Value           _flexBasis     = ValueAuto;
+        private  Value             _flexBasis     = ValueAuto;
         private  FlexDirectionType _flexDirection = FlexDirectionType.Column;
         internal float?            _flexGrow;
         internal float?            _flexShrink;
@@ -30,7 +30,7 @@ namespace Xamarin.Yoga
         private  JustifyType       _justifyContent = JustifyType.FlexStart;
         private  Edges             _margin         = new Edges();
         private  OverflowType      _overflow       = OverflowType.Visible;
-        private  YogaNode            _owner;
+        private  YogaNode          _owner;
         private  Edges             _padding      = new Edges();
         private  Edges             _position     = new Edges();
         private  PositionType      _positionType = PositionType.Relative;

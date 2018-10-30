@@ -16,7 +16,6 @@ namespace Xamarin.Yoga
     public class NodeCalculator
     {
         [ThreadStatic] private static int      _depth;
-        private static readonly       string   _spacer = "                                                            ";
         private static                int      _currentGenerationCount;
         private readonly              YogaNode _node;
 
@@ -104,7 +103,7 @@ namespace Xamarin.Yoga
             }
         }
 
-        public bool CanUseCachedMeasurement(
+        private bool CanUseCachedMeasurement(
             MeasureMode widthMode,
             float       width,
             MeasureMode heightMode,
@@ -1264,7 +1263,7 @@ namespace Xamarin.Yoga
 
                 if (!canSkipFlex)
                 {
-                    collectedFlexItemsValues.YGResolveFlexibleLength(
+                    collectedFlexItemsValues.ResolveFlexibleLength(
                         _node,
                         mainAxis,
                         crossAxis,
@@ -1290,7 +1289,7 @@ namespace Xamarin.Yoga
                 // that are aligned "stretch". We need to compute these stretch values and
                 // set the final positions.
 
-                collectedFlexItemsValues.YGJustifyMainAxis(
+                collectedFlexItemsValues.JustifyMainAxis(
                     _node,
                     startOfLineIndex,
                     mainAxis,
@@ -1926,14 +1925,6 @@ namespace Xamarin.Yoga
                     pointScaleFactor,
                     absoluteNodeLeft,
                     absoluteNodeTop);
-        }
-
-        private static string Spacer(int level)
-        {
-            var spacerLen = _spacer.Length;
-            if (level > spacerLen)
-                return _spacer;
-            return _spacer.Substring(spacerLen - level);
         }
 
         // inline

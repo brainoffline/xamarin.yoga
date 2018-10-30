@@ -9,7 +9,7 @@ namespace Xamarin.Yoga
     // algo, which is collecting the flex items in a line.
     //
     // - itemsOnLine: Number of items which can fit in a line considering the
-    // available Inner dimension, the flex items computed flexbasis and their
+    // available Inner dimension, the flex items computed flexBasis and their
     // margin. It may be different than the difference between start and end
     // indicates because we skip over absolute-positioned items.
     //
@@ -19,14 +19,14 @@ namespace Xamarin.Yoga
     // remaining space left for the flexible children.
     //
     // - totalFlexGrowFactors: total flex grow factors of flex items which are to be
-    // layed in the current line
+    // laid in the current line
     //
     // - totalFlexShrinkFactors: total flex shrink factors of flex items which are
-    // to be layed in the current line
+    // to be laid in the current line
     //
     // - endOfLineIndex: Its the end index of the last flex item which was examined
     // and it may or may not be part of the current line(as it may be absolutely
-    // positioned or inculding it may have caused to overshoot availableInnerDim)
+    // positioned or including it may have caused to overshoot availableInnerDim)
     //
     // - relativeChildren: Maintain a vector of the child nodes that can shrink
     // and/or grow.
@@ -53,35 +53,32 @@ namespace Xamarin.Yoga
 
         // It distributes the free space to the flexible items.For those flexible items
         // whose min and max constraints are triggered, those flex item's clamped size
-        // is removed from the remaingfreespace.
+        // is removed from the remainingFreeSpace.
 
-        internal void YGDistributeFreeSpaceFirstPass(
+        private void DistributeFreeSpaceFirstPass(
             FlexDirectionType mainAxis,
-            float             mainAxisownerSize,
+            float             mainAxisOwnerSize,
             float             availableInnerMainDim,
             float             availableInnerWidth)
         {
-            float flexShrinkScaledFactor = 0;
-            float flexGrowFactor         = 0;
-            float baseMainSize           = 0;
-            float boundMainSize          = 0;
             float deltaFreeSpace         = 0;
 
             foreach (var currentRelativeChild in RelativeChildren)
             {
                 var childFlexBasis = 
-                    currentRelativeChild.BoundAxisWithinMinAndMax(
+                    currentRelativeChild.BoundAxisWithinMinAndMax( 
                         mainAxis,
                         currentRelativeChild.Layout.ComputedFlexBasis.Unwrap(),
-                        mainAxisownerSize);
+                        mainAxisOwnerSize);
 
+                float baseMainSize = 0;
+                float boundMainSize = 0;
                 if (RemainingFreeSpace < 0)
                 {
-                    flexShrinkScaledFactor =
-                        -currentRelativeChild.ResolveFlexShrink() * childFlexBasis;
+                    var flexShrinkScaledFactor = -currentRelativeChild.ResolveFlexShrink() * childFlexBasis;
 
                     // Is this child able to shrink?
-                    if (flexShrinkScaledFactor.HasValue() && flexShrinkScaledFactor != 0)
+                    if (flexShrinkScaledFactor.HasValue() && !FloatEqual(flexShrinkScaledFactor, 0))
                     {
                         baseMainSize = childFlexBasis + RemainingFreeSpace / TotalFlexShrinkScaledFactors * flexShrinkScaledFactor;
                         boundMainSize = currentRelativeChild.BoundAxis(
@@ -106,7 +103,7 @@ namespace Xamarin.Yoga
                 }
                 else if (RemainingFreeSpace.HasValue() && RemainingFreeSpace > 0)
                 {
-                    flexGrowFactor = currentRelativeChild.ResolveFlexGrow();
+                    var flexGrowFactor = currentRelativeChild.ResolveFlexGrow();
 
                     // Is this child able to grow?
                     if (flexGrowFactor.HasValue() && flexGrowFactor != 0)
@@ -143,7 +140,7 @@ namespace Xamarin.Yoga
         // function the child nodes would have proper size. Prior using this function
         // please ensure that YGDistributeFreeSpaceFirstPass is called.
 
-        private float YGDistributeFreeSpaceSecondPass(
+        private float DistributeFreeSpaceSecondPass(
             YogaNode            node,
             FlexDirectionType mainAxis,
             FlexDirectionType crossAxis,
@@ -157,25 +154,21 @@ namespace Xamarin.Yoga
             bool              performLayout,
             YogaConfig        config)
         {
-            float childFlexBasis         = 0;
-            float flexShrinkScaledFactor = 0;
-            float flexGrowFactor         = 0;
             float deltaFreeSpace         = 0;
             var   isMainAxisRow          = mainAxis.IsRow();
             var   isNodeFlexWrap         = node.Style.FlexWrap != WrapType.NoWrap;
 
             foreach (var currentRelativeChild in RelativeChildren)
             {
-                childFlexBasis = 
-                    currentRelativeChild.BoundAxisWithinMinAndMax(
-                        mainAxis,
-                        currentRelativeChild.Layout.ComputedFlexBasis.Unwrap(),
-                        mainAxisOwnerSize);
+                var childFlexBasis = currentRelativeChild.BoundAxisWithinMinAndMax(
+                    mainAxis,
+                    currentRelativeChild.Layout.ComputedFlexBasis.Unwrap(),
+                    mainAxisOwnerSize);
                 var updatedMainSize = childFlexBasis;
 
                 if (RemainingFreeSpace.HasValue() && RemainingFreeSpace < 0)
                 {
-                    flexShrinkScaledFactor = -currentRelativeChild.ResolveFlexShrink() * childFlexBasis;
+                    var flexShrinkScaledFactor = -currentRelativeChild.ResolveFlexShrink() * childFlexBasis;
                     // Is this child able to shrink?
                     if (flexShrinkScaledFactor != 0f)
                     {
@@ -195,7 +188,7 @@ namespace Xamarin.Yoga
                 }
                 else if (RemainingFreeSpace.HasValue() && RemainingFreeSpace > 0)
                 {
-                    flexGrowFactor = currentRelativeChild.ResolveFlexGrow();
+                    var flexGrowFactor = currentRelativeChild.ResolveFlexGrow();
 
                     // Is this child able to grow?
                     if (flexGrowFactor.HasValue() && flexGrowFactor != 0)
@@ -328,11 +321,11 @@ namespace Xamarin.Yoga
         // At the end of this function the child nodes would have the proper size
         // assigned to them.
         //
-        internal void YGResolveFlexibleLength(
-            YogaNode            node,
+        internal void ResolveFlexibleLength(
+            YogaNode          node,
             FlexDirectionType mainAxis,
             FlexDirectionType crossAxis,
-            float             mainAxisownerSize,
+            float             mainAxisOwnerSize,
             float             availableInnerMainDim,
             float             availableInnerCrossDim,
             float             availableInnerWidth,
@@ -344,18 +337,18 @@ namespace Xamarin.Yoga
         {
             var originalFreeSpace = RemainingFreeSpace;
             // First pass: detect the flex items whose min/max constraints trigger
-            YGDistributeFreeSpaceFirstPass(
+            DistributeFreeSpaceFirstPass(
                 mainAxis,
-                mainAxisownerSize,
+                mainAxisOwnerSize,
                 availableInnerMainDim,
                 availableInnerWidth);
 
             // Second pass: resolve the sizes of the flexible items
-            var distributedFreeSpace = YGDistributeFreeSpaceSecondPass(
+            var distributedFreeSpace = DistributeFreeSpaceSecondPass(
                 node,
                 mainAxis,
                 crossAxis,
-                mainAxisownerSize,
+                mainAxisOwnerSize,
                 availableInnerMainDim,
                 availableInnerCrossDim,
                 availableInnerWidth,
@@ -368,8 +361,8 @@ namespace Xamarin.Yoga
             RemainingFreeSpace = originalFreeSpace - distributedFreeSpace;
         }
 
-        internal void YGJustifyMainAxis(
-            YogaNode            node,
+        internal void JustifyMainAxis(
+            YogaNode          node,
             int               startOfLineIndex,
             FlexDirectionType mainAxis,
             FlexDirectionType crossAxis,
@@ -432,6 +425,7 @@ namespace Xamarin.Yoga
             var   justifyContent = node.Style.JustifyContent;
 
             if (numberOfAutoMarginsOnCurrentLine == 0)
+            {
                 switch (justifyContent)
                 {
                 case JustifyType.Center:
@@ -442,8 +436,7 @@ namespace Xamarin.Yoga
                     break;
                 case JustifyType.SpaceBetween:
                     if (ItemsOnLine > 1)
-                        betweenMainDim = FloatMax(RemainingFreeSpace, 0) /
-                            (ItemsOnLine - 1);
+                        betweenMainDim = FloatMax(RemainingFreeSpace, 0) / (ItemsOnLine - 1);
                     else
                         betweenMainDim = 0;
 
@@ -461,6 +454,7 @@ namespace Xamarin.Yoga
                 case JustifyType.FlexStart:
                     break;
                 }
+            }
 
             MainDim  = leadingPaddingAndBorderMain + leadingMainDim;
             CrossDim = 0;
@@ -473,7 +467,9 @@ namespace Xamarin.Yoga
                 var child       = node.Children[i];
                 var childStyle  = child.Style;
                 var childLayout = child.Layout;
-                if (childStyle.Display == DisplayType.None) continue;
+
+                if (childStyle.Display == DisplayType.None)
+                    continue;
 
                 if (childStyle.PositionType == PositionType.Absolute &&
                     child.IsLeadingPositionDefined(mainAxis))

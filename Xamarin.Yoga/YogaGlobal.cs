@@ -63,7 +63,7 @@ namespace Xamarin.Yoga
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static FlexDirectionType ResolveFlexDirection(FlexDirectionType flexDirection, DirectionType direction)
+        private static FlexDirectionType ResolveFlexDirection(FlexDirectionType flexDirection, DirectionType direction)
         {
             if (direction == DirectionType.RTL)
             {

@@ -4,14 +4,11 @@ using System.Text;
 
 namespace Xamarin.Yoga.Tests.Utils
 {
-    using static YGGlobal;
-    using YGConfigRef = YGConfig;
-    using YGNodeRef = YGNode;
-    using YGVector = List<YGNode>;
+    
 
     public static class TestHelper
     {
-        public static bool AreEqual(YGVector left, YGVector right)
+        public static bool AreEqual(IReadOnlyList<YogaNode> left, IReadOnlyList<YogaNode> right)
         {
             if (ReferenceEquals(left, right))
                 return true;

@@ -5,11 +5,11 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Xamarin.Yoga.Tests
 {
-    using static YGGlobal;
-    using static YGConst;
-    using YGConfigRef = YGConfig;
-    using YGNodeRef = YGNode;
-    using YGVector = List<YGNode>;
+    
+    using static YogaConst;
+    
+    
+    
 
     [TestClass]
     public class YGRelayoutTests
@@ -17,46 +17,46 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void dont_cache_computed_flex_basis_between_layouts()
         {
-             YGConfigRef config = YGConfigNew();
-            YGConfigSetExperimentalFeatureEnabled(config, YGExperimentalFeature.WebFlexBasis, true);
+            YogaConfig config = new YogaConfig();
+            config.ExperimentalFeatures |= ExperimentalFeatures.WebFlexBasis;
 
-             YGNodeRef root = YGNodeNewWithConfig(config);
-            YGNodeStyleSetHeightPercent(root, 100);
-            YGNodeStyleSetWidthPercent(root, 100);
+             YogaNode root = new YogaNode(config);
+            root.Style.Width = 100.Percent();
+            root.Style.Height = 100.Percent();
 
-             YGNodeRef root_child0 = YGNodeNewWithConfig(config);
-            YGNodeStyleSetFlexBasisPercent(root_child0, 100);
-            YGNodeInsertChild(root, root_child0, 0);
+             YogaNode root_child0 = new YogaNode(config);
+            root_child0.Style.FlexBasis = 100.Percent();
+            root.Children.Add(root_child0);
 
-            YGNodeCalculateLayout(root, 100, YGUndefined, YGDirection.LTR);
-            YGNodeCalculateLayout(root, 100, 100,         YGDirection.LTR);
+            root.Calc.CalculateLayout(100, float.NaN, DirectionType.LTR);
+            root.Calc.CalculateLayout(100, 100,         DirectionType.LTR);
 
-            Assert.AreEqual(100, YGNodeLayoutGetHeight(root_child0));
+            Assert.AreEqual(100, root_child0.Layout.Height);
 
-            YGNodeFreeRecursive(root);
+            
 
-            YGConfigFree(config);
+            
         }
 
         [TestMethod]
         public void recalculate_resolvedDimonsion_onchange()
         {
-             YGNodeRef root = YGNodeNew();
+             YogaNode root = new YogaNode();
 
-             YGNodeRef root_child0 = YGNodeNew();
-            YGNodeStyleSetMinHeight(root_child0, 10);
-            YGNodeStyleSetMaxHeight(root_child0, 10);
-            YGNodeInsertChild(root, root_child0, 0);
+             YogaNode root_child0 = new YogaNode();
+            root_child0.Style.MinHeight = 10;
+            root_child0.Style.MaxHeight = 10;
+            root.Children.Add(root_child0);
 
-            YGNodeCalculateLayout(root, YGUndefined, YGUndefined, YGDirection.LTR);
-            Assert.AreEqual(10, YGNodeLayoutGetHeight(root_child0));
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
+            Assert.AreEqual(10, root_child0.Layout.Height);
 
-            YGNodeStyleSetMinHeight(root_child0, YGUndefined);
-            YGNodeCalculateLayout(root, YGUndefined, YGUndefined, YGDirection.LTR);
+            root_child0.Style.MinHeight = float.NaN;
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
-            Assert.AreEqual(0, YGNodeLayoutGetHeight(root_child0));
+            Assert.AreEqual(0, root_child0.Layout.Height);
 
-            YGNodeFreeRecursive(root);
+            
         }
 
     }

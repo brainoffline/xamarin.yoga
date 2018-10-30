@@ -1,168 +1,149 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Xamarin.Yoga.Tests.Utils;
 
 namespace Xamarin.Yoga.Tests
 {
-    using static YGGlobal;
-    using YGConfigRef = YGConfig;
-    using YGNodeRef = YGNode;
-    using YGVector = List<YGNode>;
+    
+
 
     [TestClass]
     public class YGTreeMutationTests
     {
-        static List<YGNodeRef> getChildren(YGNodeRef node)
-        {
-            var             count    = YGNodeGetChildCount(node);
-            List<YGNodeRef> children = new YGVector(count);
-            for (int i = 0; i < count; i++)
-            {
-                children.Add(YGNodeGetChild(node, i));
-            }
-
-            return children;
-        }
-
         [TestMethod]
         public void set_children_adds_children_to_parent()
         {
-            YGNodeRef root        = YGNodeNew();
-            YGNodeRef root_child0 = YGNodeNew();
-            YGNodeRef root_child1 = YGNodeNew();
+            YogaNode root        = new YogaNode();
+            YogaNode root_child0 = new YogaNode();
+            YogaNode root_child1 = new YogaNode();
 
-            YGNodeSetChildren(root,  new YGVector{root_child0, root_child1});
+            root.SetChildren(new List<YogaNode> {root_child0, root_child1});
 
-            List<YGNodeRef> children         = getChildren(root);
-            List<YGNodeRef> expectedChildren = new YGVector{root_child0, root_child1};
+            var children         = root.Children;
+            var expectedChildren = new List<YogaNode> {root_child0, root_child1};
             Assert.IsTrue(
                 TestHelper.AreEqual(children, expectedChildren));
 
-            List<YGNodeRef> owners = new YGVector{
-                    YGNodeGetOwner(root_child0),
-                    YGNodeGetOwner(root_child1)};
+            List<YogaNode> owners = new List<YogaNode>
+            {
+                root_child0.Owner,
+                root_child1.Owner
+            };
 
-            List<YGNodeRef> expectedOwners = new YGVector{
+            List<YogaNode> expectedOwners = new List<YogaNode>
+            {
                 root, root
             };
             Assert.IsTrue(
                 TestHelper.AreEqual(owners, expectedOwners));
 
-            YGNodeFreeRecursive(root);
+            
         }
 
         [TestMethod]
         public void set_children_to_empty_removes_old_children()
         {
-            YGNodeRef root         = YGNodeNew();
-            YGNodeRef root_child0  = YGNodeNew();
-            YGNodeRef root_child1  = YGNodeNew();
+            YogaNode root        = new YogaNode();
+            YogaNode root_child0 = new YogaNode();
+            YogaNode root_child1 = new YogaNode();
 
-            YGNodeSetChildren(root, new YGVector {
-                root_child0, root_child1
-            });
-            YGNodeSetChildren(root, new YGVector(){ });
+            root.SetChildren(new List<YogaNode> {root_child0, root_child1});
+            root.SetChildren(new List<YogaNode>());
 
-            List<YGNodeRef> children         = getChildren(root);
-            List<YGNodeRef> expectedChildren = new YGVector();
-            ;
+            var children         = root.Children;
+            var expectedChildren = new List<YogaNode>();
+
             Assert.IsTrue(
                 TestHelper.AreEqual(children, expectedChildren));
 
-            List<YGNodeRef> owners = new YGVector{
-                YGNodeGetOwner(root_child0), YGNodeGetOwner(root_child1)
+            List<YogaNode> owners = new List<YogaNode>
+            {
+                root_child0.Owner, root_child1.Owner
             };
-            List<YGNodeRef> expectedOwners = new YGVector{
+            List<YogaNode> expectedOwners = new List<YogaNode>
+            {
                 null, null
             };
             Assert.IsTrue(
                 TestHelper.AreEqual(owners, expectedOwners));
 
-            YGNodeFreeRecursive(root);
+            
         }
 
         [TestMethod]
         public void set_children_replaces_non_common_children()
         {
-            YGNodeRef root         = YGNodeNew();
-            YGNodeRef root_child0  = YGNodeNew();
-            YGNodeRef root_child1  = YGNodeNew();
+            YogaNode root        = new YogaNode();
+            YogaNode root_child0 = new YogaNode();
+            YogaNode root_child1 = new YogaNode();
 
-            YGNodeSetChildren(root, new YGVector {
-                root_child0, root_child1
-            });
+            root.SetChildren(new List<YogaNode> {root_child0, root_child1});
 
-            YGNodeRef root_child2  = YGNodeNew();
-            YGNodeRef root_child3  = YGNodeNew();
+            YogaNode root_child2 = new YogaNode();
+            YogaNode root_child3 = new YogaNode();
 
-            YGNodeSetChildren(root, new YGVector {
-                root_child2, root_child3
-            });
+            root.SetChildren(new List<YogaNode> {root_child2, root_child3});
 
-            List<YGNodeRef> children         = getChildren(root);
-            List<YGNodeRef> expectedChildren = new YGVector{
-                root_child2, root_child3
-            };
+            var children         = root.Children;
+            var expectedChildren = new List<YogaNode> {root_child2, root_child3};
             Assert.IsTrue(
                 TestHelper.AreEqual(children, expectedChildren));
 
-            List<YGNodeRef> owners = new YGVector{
-                YGNodeGetOwner(root_child0), YGNodeGetOwner(root_child1)
+            List<YogaNode> owners = new List<YogaNode>
+            {
+                root_child0.Owner,
+                root_child1.Owner
             };
-            List<YGNodeRef> expectedOwners = new YGVector{
-                null, null};
+            List<YogaNode> expectedOwners = new List<YogaNode> {null, null};
             Assert.IsTrue(
                 TestHelper.AreEqual(owners, expectedOwners));
-
-            YGNodeFreeRecursive(root);
-            YGNodeFree(root_child0);
-            YGNodeFree(root_child1);
         }
 
         [TestMethod]
         public void set_children_keeps_and_reorders_common_children()
         {
-            YGNodeRef root         = YGNodeNew();
-            YGNodeRef root_child0  = YGNodeNew();
-            YGNodeRef root_child1  = YGNodeNew();
-            YGNodeRef root_child2  = YGNodeNew();
-            YGNodeRef root_child3  = YGNodeNew();
+            YogaNode root        = new YogaNode();
+            YogaNode root_child0 = new YogaNode();
+            YogaNode root_child1 = new YogaNode();
+            YogaNode root_child2 = new YogaNode();
+            YogaNode root_child3 = new YogaNode();
 
             root_child0.Name = "Child0";
             root_child1.Name = "Child1";
             root_child2.Name = "Child2";
             root_child3.Name = "Child3";
 
-            YGNodeSetChildren(root, new YGVector {
-                root_child0, root_child1, root_child2
-            });
+            root.SetChildren(
+                new List<YogaNode>
+                {
+                    root_child0, root_child1, root_child2
+                });
 
-            YGNodeSetChildren(root, new YGVector {
-                root_child2, root_child1, root_child3
-            });
+            root.SetChildren(
+                new List<YogaNode>
+                {
+                    root_child2, root_child1, root_child3
+                });
 
-            List<YGNodeRef> children         = getChildren(root);
-            List<YGNodeRef> expectedChildren = new YGVector{
+            var children = root.Children;
+            var expectedChildren = new List<YogaNode>
+            {
                 root_child2, root_child1, root_child3
             };
             Assert.IsTrue(
                 TestHelper.AreEqual(children, expectedChildren));
 
-            List<YGNodeRef> owners = new YGVector{
-                YGNodeGetOwner(root_child0),
-                YGNodeGetOwner(root_child1),
-                YGNodeGetOwner(root_child2),
-                YGNodeGetOwner(root_child3)
+            List<YogaNode> owners = new List<YogaNode>
+            {
+                root_child0.Owner,
+                root_child1.Owner,
+                root_child2.Owner,
+                root_child3.Owner
             };
 
-            List<YGNodeRef> expectedOwners = new YGVector {null, root, root, root};
+            List<YogaNode> expectedOwners = new List<YogaNode> {null, root, root, root};
             Assert.IsTrue(
                 TestHelper.AreEqual(owners, expectedOwners));
-
-            YGNodeFreeRecursive(root);
-            YGNodeFree(root_child0);
         }
     }
 }

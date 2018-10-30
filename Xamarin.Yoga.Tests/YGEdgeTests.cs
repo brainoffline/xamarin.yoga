@@ -5,11 +5,9 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Xamarin.Yoga.Tests
 {
-    using static YGGlobal;
-    using static YGConst;
-    using YGConfigRef = YGConfig;
-    using YGNodeRef = YGNode;
-    using YGVector = List<YGNode>;
+    
+    using static YogaConst;
+
 
     [TestClass]
     public class YGEdgeTests
@@ -17,167 +15,153 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void start_overrides()
         {
-            YGNodeRef root = YGNodeNew();
-            YGNodeStyleSetFlexDirection(root, YGFlexDirection.Row);
-            YGNodeStyleSetWidth(root, 100);
-            YGNodeStyleSetHeight(root, 100);
+            YogaNode root = new YogaNode();
+            root.Style.FlexDirection = FlexDirectionType.Row;
+            root.Style.Width = 100;
+            root.Style.Height = 100;
 
-            YGNodeRef root_child0 = YGNodeNew();
-            YGNodeStyleSetFlexGrow(root_child0, 1);
-            YGNodeStyleSetMargin(root_child0, YGEdge.Start, 10);
-            YGNodeStyleSetMargin(root_child0, YGEdge.Left,  20);
-            YGNodeStyleSetMargin(root_child0, YGEdge.Right, 20);
-            YGNodeInsertChild(root, root_child0, 0);
+            YogaNode root_child0 = new YogaNode();
+            root_child0.Style.FlexGrow = 1;
+            root_child0.Style.Margin.Start = 10;
+            root_child0.Style.Margin.Left =  20;
+            root_child0.Style.Margin.Right = 20;
+            root.Children.Add(root_child0);
 
-            YGNodeCalculateLayout(root, YGUndefined, YGUndefined, YGDirection.LTR);
-            Assert.AreEqual(10, YGNodeLayoutGetLeft(root_child0));
-            Assert.AreEqual(20, YGNodeLayoutGetRight(root_child0));
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
+            Assert.AreEqual(10, root_child0.Layout.Position.Left);
+            Assert.AreEqual(20, root_child0.Layout.Position.Right);
 
-            YGNodeCalculateLayout(root, YGUndefined, YGUndefined, YGDirection.RTL);
-            Assert.AreEqual(20, YGNodeLayoutGetLeft(root_child0));
-            Assert.AreEqual(10, YGNodeLayoutGetRight(root_child0));
-
-            YGNodeFreeRecursive(root);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.RTL);
+            Assert.AreEqual(20, root_child0.Layout.Position.Left);
+            Assert.AreEqual(10, root_child0.Layout.Position.Right);
         }
 
         [TestMethod]
         public void end_overrides()
         {
-            YGNodeRef root = YGNodeNew();
-            YGNodeStyleSetFlexDirection(root, YGFlexDirection.Row);
-            YGNodeStyleSetWidth(root, 100);
-            YGNodeStyleSetHeight(root, 100);
+            YogaNode root = new YogaNode();
+            root.Style.FlexDirection = FlexDirectionType.Row;
+            root.Style.Width = 100;
+            root.Style.Height = 100;
 
-            YGNodeRef root_child0 = YGNodeNew();
-            YGNodeStyleSetFlexGrow(root_child0, 1);
-            YGNodeStyleSetMargin(root_child0, YGEdge.End,   10);
-            YGNodeStyleSetMargin(root_child0, YGEdge.Left,  20);
-            YGNodeStyleSetMargin(root_child0, YGEdge.Right, 20);
-            YGNodeInsertChild(root, root_child0, 0);
+            YogaNode root_child0 = new YogaNode();
+            root_child0.Style.FlexGrow = 1;
+            root_child0.Style.Margin.End =   10;
+            root_child0.Style.Margin.Left =  20;
+            root_child0.Style.Margin.Right = 20;
+            root.Children.Add(root_child0);
 
-            YGNodeCalculateLayout(root, YGUndefined, YGUndefined, YGDirection.LTR);
-            Assert.AreEqual(20, YGNodeLayoutGetLeft(root_child0));
-            Assert.AreEqual(10, YGNodeLayoutGetRight(root_child0));
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
+            Assert.AreEqual(20, root_child0.Layout.Position.Left);
+            Assert.AreEqual(10, root_child0.Layout.Position.Right);
 
-            YGNodeCalculateLayout(root, YGUndefined, YGUndefined, YGDirection.RTL);
-            Assert.AreEqual(10, YGNodeLayoutGetLeft(root_child0));
-            Assert.AreEqual(20, YGNodeLayoutGetRight(root_child0));
-
-            YGNodeFreeRecursive(root);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.RTL);
+            Assert.AreEqual(10, root_child0.Layout.Position.Left);
+            Assert.AreEqual(20, root_child0.Layout.Position.Right);
         }
 
         [TestMethod]
         public void horizontal_overridden()
         {
-            YGNodeRef root = YGNodeNew();
-            YGNodeStyleSetFlexDirection(root, YGFlexDirection.Row);
-            YGNodeStyleSetWidth(root, 100);
-            YGNodeStyleSetHeight(root, 100);
+            YogaNode root = new YogaNode();
+            root.Style.FlexDirection = FlexDirectionType.Row;
+            root.Style.Width = 100;
+            root.Style.Height = 100;
 
-            YGNodeRef root_child0 = YGNodeNew();
-            YGNodeStyleSetFlexGrow(root_child0, 1);
-            YGNodeStyleSetMargin(root_child0, YGEdge.Horizontal, 10);
-            YGNodeStyleSetMargin(root_child0, YGEdge.Left,       20);
-            YGNodeInsertChild(root, root_child0, 0);
+            YogaNode root_child0 = new YogaNode();
+            root_child0.Style.FlexGrow = 1;
+            root_child0.Style.Margin.Horizontal = 10;
+            root_child0.Style.Margin.Left =       20;
+            root.Children.Add(root_child0);
 
-            YGNodeCalculateLayout(root, YGUndefined, YGUndefined, YGDirection.LTR);
-            Assert.AreEqual(20, YGNodeLayoutGetLeft(root_child0));
-            Assert.AreEqual(10, YGNodeLayoutGetRight(root_child0));
-
-            YGNodeFreeRecursive(root);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
+            Assert.AreEqual(20, root_child0.Layout.Position.Left);
+            Assert.AreEqual(10, root_child0.Layout.Position.Right);
         }
 
         [TestMethod]
         public void vertical_overridden()
         {
-            YGNodeRef root = YGNodeNew();
-            YGNodeStyleSetFlexDirection(root, YGFlexDirection.Column);
-            YGNodeStyleSetWidth(root, 100);
-            YGNodeStyleSetHeight(root, 100);
+            YogaNode root = new YogaNode();
+            root.Style.FlexDirection = FlexDirectionType.Column;
+            root.Style.Width = 100;
+            root.Style.Height = 100;
 
-            YGNodeRef root_child0 = YGNodeNew();
-            YGNodeStyleSetFlexGrow(root_child0, 1);
-            YGNodeStyleSetMargin(root_child0, YGEdge.Vertical, 10);
-            YGNodeStyleSetMargin(root_child0, YGEdge.Top,      20);
-            YGNodeInsertChild(root, root_child0, 0);
+            YogaNode root_child0 = new YogaNode();
+            root_child0.Style.FlexGrow = 1;
+            root_child0.Style.Margin.Vertical = 10;
+            root_child0.Style.Margin.Top =      20;
+            root.Children.Add(root_child0);
 
-            YGNodeCalculateLayout(root, YGUndefined, YGUndefined, YGDirection.LTR);
-            Assert.AreEqual(20, YGNodeLayoutGetTop(root_child0));
-            Assert.AreEqual(10, YGNodeLayoutGetBottom(root_child0));
-
-            YGNodeFreeRecursive(root);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
+            Assert.AreEqual(20, root_child0.Layout.Position.Top);
+            Assert.AreEqual(10, root_child0.Layout.Position.Bottom);
         }
 
         [TestMethod]
         public void horizontal_overrides_all()
         {
-            YGNodeRef root = YGNodeNew();
-            YGNodeStyleSetFlexDirection(root, YGFlexDirection.Column);
-            YGNodeStyleSetWidth(root, 100);
-            YGNodeStyleSetHeight(root, 100);
+            YogaNode root = new YogaNode();
+            root.Style.FlexDirection = FlexDirectionType.Column;
+            root.Style.Width = 100;
+            root.Style.Height = 100;
 
-            YGNodeRef root_child0 = YGNodeNew();
-            YGNodeStyleSetFlexGrow(root_child0, 1);
-            YGNodeStyleSetMargin(root_child0, YGEdge.Horizontal, 10);
-            YGNodeStyleSetMargin(root_child0, YGEdge.All,        20);
-            YGNodeInsertChild(root, root_child0, 0);
+            YogaNode root_child0 = new YogaNode();
+            root_child0.Style.FlexGrow = 1;
+            root_child0.Style.Margin.Horizontal = 10;
+            root_child0.Style.Margin.All =        20;
+            root.Children.Add(root_child0);
 
-            YGNodeCalculateLayout(root, YGUndefined, YGUndefined, YGDirection.LTR);
-            Assert.AreEqual(10, YGNodeLayoutGetLeft(root_child0));
-            Assert.AreEqual(20, YGNodeLayoutGetTop(root_child0));
-            Assert.AreEqual(10, YGNodeLayoutGetRight(root_child0));
-            Assert.AreEqual(20, YGNodeLayoutGetBottom(root_child0));
-
-            YGNodeFreeRecursive(root);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
+            Assert.AreEqual(10, root_child0.Layout.Position.Left);
+            Assert.AreEqual(20, root_child0.Layout.Position.Top);
+            Assert.AreEqual(10, root_child0.Layout.Position.Right);
+            Assert.AreEqual(20, root_child0.Layout.Position.Bottom);
         }
 
         [TestMethod]
         public void vertical_overrides_all()
         {
-            YGNodeRef root = YGNodeNew();
-            YGNodeStyleSetFlexDirection(root, YGFlexDirection.Column);
-            YGNodeStyleSetWidth(root, 100);
-            YGNodeStyleSetHeight(root, 100);
+            YogaNode root = new YogaNode();
+            root.Style.FlexDirection = FlexDirectionType.Column;
+            root.Style.Width = 100;
+            root.Style.Height = 100;
 
-            YGNodeRef root_child0 = YGNodeNew();
-            YGNodeStyleSetFlexGrow(root_child0, 1);
-            YGNodeStyleSetMargin(root_child0, YGEdge.Vertical, 10);
-            YGNodeStyleSetMargin(root_child0, YGEdge.All,      20);
-            YGNodeInsertChild(root, root_child0, 0);
+            YogaNode root_child0 = new YogaNode();
+            root_child0.Style.FlexGrow = 1;
+            root_child0.Style.Margin.Vertical = 10;
+            root_child0.Style.Margin.All =      20;
+            root.Children.Add(root_child0);
 
-            YGNodeCalculateLayout(root, YGUndefined, YGUndefined, YGDirection.LTR);
-            Assert.AreEqual(20, YGNodeLayoutGetLeft(root_child0));
-            Assert.AreEqual(10, YGNodeLayoutGetTop(root_child0));
-            Assert.AreEqual(20, YGNodeLayoutGetRight(root_child0));
-            Assert.AreEqual(10, YGNodeLayoutGetBottom(root_child0));
-
-            YGNodeFreeRecursive(root);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
+            Assert.AreEqual(20, root_child0.Layout.Position.Left);
+            Assert.AreEqual(10, root_child0.Layout.Position.Top);
+            Assert.AreEqual(20, root_child0.Layout.Position.Right);
+            Assert.AreEqual(10, root_child0.Layout.Position.Bottom);
         }
 
         [TestMethod]
         public void all_overridden()
         {
-            YGNodeRef root = YGNodeNew();
-            YGNodeStyleSetFlexDirection(root, YGFlexDirection.Column);
-            YGNodeStyleSetWidth(root, 100);
-            YGNodeStyleSetHeight(root, 100);
+            YogaNode root = new YogaNode();
+            root.Style.FlexDirection = FlexDirectionType.Column;
+            root.Style.Width = 100;
+            root.Style.Height = 100;
 
-            YGNodeRef root_child0 = YGNodeNew();
-            YGNodeStyleSetFlexGrow(root_child0, 1);
-            YGNodeStyleSetMargin(root_child0, YGEdge.Left,   10);
-            YGNodeStyleSetMargin(root_child0, YGEdge.Top,    10);
-            YGNodeStyleSetMargin(root_child0, YGEdge.Right,  10);
-            YGNodeStyleSetMargin(root_child0, YGEdge.Bottom, 10);
-            YGNodeStyleSetMargin(root_child0, YGEdge.All,    20);
-            YGNodeInsertChild(root, root_child0, 0);
+            YogaNode root_child0 = new YogaNode();
+            root_child0.Style.FlexGrow = 1;
+            root_child0.Style.Margin.Left =   10;
+            root_child0.Style.Margin.Top =    10;
+            root_child0.Style.Margin.Right =  10;
+            root_child0.Style.Margin.Bottom = 10;
+            root_child0.Style.Margin.All =    20;
+            root.Children.Add(root_child0);
 
-            YGNodeCalculateLayout(root, YGUndefined, YGUndefined, YGDirection.LTR);
-            Assert.AreEqual(10, YGNodeLayoutGetLeft(root_child0));
-            Assert.AreEqual(10, YGNodeLayoutGetTop(root_child0));
-            Assert.AreEqual(10, YGNodeLayoutGetRight(root_child0));
-            Assert.AreEqual(10, YGNodeLayoutGetBottom(root_child0));
-
-            YGNodeFreeRecursive(root);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
+            Assert.AreEqual(10, root_child0.Layout.Position.Left);
+            Assert.AreEqual(10, root_child0.Layout.Position.Top);
+            Assert.AreEqual(10, root_child0.Layout.Position.Right);
+            Assert.AreEqual(10, root_child0.Layout.Position.Bottom);
         }
     }
 }

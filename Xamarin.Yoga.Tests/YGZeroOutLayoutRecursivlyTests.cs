@@ -1,47 +1,37 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Xamarin.Yoga.Tests
 {
-    using static YGGlobal;
-    using YGConfigRef = YGConfig;
-    using YGNodeRef = YGNode;
-    using YGVector = List<YGNode>;
-
     [TestClass]
     public class YGZeroOutLayoutRecursivlyTests
     {
         [TestMethod]
         public void zero_out_layout()
         {
-            YGNodeRef root = YGNodeNew();
-            YGNodeStyleSetFlexDirection(root, YGFlexDirection.Row);
-            YGNodeStyleSetWidth(root, 200);
-            YGNodeStyleSetHeight(root, 200);
+            YogaNode child;
+            var root = new YogaNode
+            {
+                Style = {FlexDirection = FlexDirectionType.Row, Width = 200, Height = 200},
+                Children =
+                {
+                    (child = new YogaNode
+                    {
+                        Style = {Width = 100, Height = 100, Margin = {Top = 10}, Padding = {Top = 10}}
+                    })
+                }
+            };
 
-            YGNodeRef child = YGNodeNew();
-            YGNodeInsertChild(root, child, 0);
-            YGNodeStyleSetWidth(child, 100);
-            YGNodeStyleSetHeight(child, 100);
-            YGNodeStyleSetMargin(child, YGEdge.Top, 10);
-            YGNodeStyleSetPadding(child, YGEdge.Top, 10);
+            root.Calc.CalculateLayout(100, 100, DirectionType.LTR);
 
-            YGNodeCalculateLayout(root, 100, 100, YGDirection.LTR);
+            Assert.AreEqual(10, child.Layout.GetMargin(EdgeType.Top));
+            Assert.AreEqual(10, child.Layout.GetPadding(EdgeType.Top));
 
-            Assert.AreEqual(10, YGNodeLayoutGetMargin(child, YGEdge.Top));
-            Assert.AreEqual(10, YGNodeLayoutGetPadding(child, YGEdge.Top));
+            child.Style.Display = DisplayType.None;
 
-            YGNodeStyleSetDisplay(child, YGDisplay.None);
+            root.Calc.CalculateLayout(100, 100, DirectionType.LTR);
 
-            YGNodeCalculateLayout(root, 100, 100, YGDirection.LTR);
-
-            Assert.AreEqual(0, YGNodeLayoutGetMargin(child, YGEdge.Top));
-            Assert.AreEqual(0, YGNodeLayoutGetPadding(child, YGEdge.Top));
-
-            YGNodeFreeRecursive(root);
+            Assert.AreEqual(0, child.Layout.GetMargin(EdgeType.Top));
+            Assert.AreEqual(0, child.Layout.GetPadding(EdgeType.Top));
         }
-
     }
 }

@@ -6,10 +6,10 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Xamarin.Yoga.Tests
 {
-    using static YGGlobal;
-    using YGConfigRef = YGConfig;
-    using YGNodeRef = YGNode;
-    using YGVector = List<YGNode>;
+    
+    
+    
+    
 
     [TestClass]
     public class YGComputedMarginTests
@@ -17,22 +17,22 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void computed_layout_margin()
         {
-            var root = YGNodeNew();
-            YGNodeStyleSetWidth(root, 100);
-            YGNodeStyleSetHeight(root, 100);
-            YGNodeStyleSetMarginPercent(root, YGEdge.Start, 10);
+            var root = new YogaNode();
+            root.Style.Width = 100;
+            root.Style.Height = 100;
+            root.Style.Margin.Start = 10;
 
-            YGNodeCalculateLayout(root, 100, 100, YGDirection.LTR);
+            root.Calc.CalculateLayout(100, 100, DirectionType.LTR);
 
-            Assert.AreEqual(10, YGNodeLayoutGetMargin(root, YGEdge.Left));
-            Assert.AreEqual(0,  YGNodeLayoutGetMargin(root, YGEdge.Right));
+            Assert.AreEqual(10, root.Layout.GetMargin(EdgeType.Left));
+            Assert.AreEqual(0,  root.Layout.GetMargin(EdgeType.Right));
 
-            YGNodeCalculateLayout(root, 100, 100, YGDirection.RTL);
+            root.Calc.CalculateLayout(100, 100, DirectionType.RTL);
 
-            Assert.AreEqual(0,  YGNodeLayoutGetMargin(root, YGEdge.Left));
-            Assert.AreEqual(10, YGNodeLayoutGetMargin(root, YGEdge.Right));
+            Assert.AreEqual(0,  root.Layout.GetMargin(EdgeType.Left));
+            Assert.AreEqual(10, root.Layout.GetMargin(EdgeType.Right));
 
-            YGNodeFreeRecursive(root);
+            
         }
 
     }

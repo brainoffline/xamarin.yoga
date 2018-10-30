@@ -1,190 +1,173 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Xamarin.Yoga.Tests
 {
-    using static YGGlobal;
-    using static YGConst;
-    using YGConfigRef = YGConfig;
-    using YGNodeRef = YGNode;
-    using YGVector = List<YGNode>;
+    
+    using static YogaConst;
+
 
     [TestClass]
     public class YGMeasureCacheTests
     {
-        static YGSize _measureMax(YGNodeRef node,
-            float                           width,
-            YGMeasureMode                   widthMode,
-            float                           height,
-            YGMeasureMode                   heightMode)
+        static SizeF _measureMax(YogaNode node,
+            float                        width,
+            MeasureMode                widthMode,
+            float                        height,
+            MeasureMode                heightMode)
         {
-            int measureCount = (int) node.getContext();
-            node.setContext(++measureCount);
+            int measureCount = (int) node.Context;
+            node.Context = ++measureCount;
 
-            return new YGSize(
-                width = widthMode   == YGMeasureMode.Undefined ? 10 : width,
-                height = heightMode == YGMeasureMode.Undefined ? 10 : height
+            return new SizeF(
+                width = widthMode   == MeasureMode.Undefined ? 10 : width,
+                height = heightMode == MeasureMode.Undefined ? 10 : height
             );
         }
 
-        static YGSize _measureMin(YGNodeRef node,
-            float                           width,
-            YGMeasureMode                   widthMode,
-            float                           height,
-            YGMeasureMode                   heightMode)
+        static SizeF _measureMin(YogaNode node,
+            float                        width,
+            MeasureMode                widthMode,
+            float                        height,
+            MeasureMode                heightMode)
         {
-            int measureCount = (int) node.getContext();
-            node.setContext(++measureCount);
-            return new YGSize(
-                width = widthMode   == YGMeasureMode.Undefined || (widthMode  == YGMeasureMode.AtMost && width  > 10) ? 10 : width,
-                height = heightMode == YGMeasureMode.Undefined || (heightMode == YGMeasureMode.AtMost && height > 10) ? 10 : height
+            int measureCount = (int) node.Context;
+            node.Context = ++measureCount;
+            return new SizeF(
+                width = widthMode   == MeasureMode.Undefined || (widthMode  == MeasureMode.AtMost && width  > 10) ? 10 : width,
+                height = heightMode == MeasureMode.Undefined || (heightMode == MeasureMode.AtMost && height > 10) ? 10 : height
             );
         }
 
-        static YGSize _measure_84_49(YGNodeRef node,
-            float                              width,
-            YGMeasureMode                      widthMode,
-            float                              height,
-            YGMeasureMode                      heightMode)
+        static SizeF _measure_84_49(YogaNode node,
+            float                           width,
+            MeasureMode                   widthMode,
+            float                           height,
+            MeasureMode                   heightMode)
         {
-            int measureCount = (int) node.getContext();
-            node.setContext(++measureCount);
+            int measureCount = (int) node.Context;
+            node.Context = ++measureCount;
 
-            return new YGSize(
-                width = 84f,
-                height = 49f
-            );
+            return new SizeF(width = 84f, height = 49f);
         }
 
         [TestMethod]
         public void measure_once_single_flexible_child()
         {
-            YGNodeRef root = YGNodeNew();
-            YGNodeStyleSetFlexDirection(root, YGFlexDirection.Row);
-            YGNodeStyleSetAlignItems(root, YGAlign.FlexStart);
-            YGNodeStyleSetWidth(root, 100);
-            YGNodeStyleSetHeight(root, 100);
+            YogaNode root = new YogaNode();
+            root.Style.FlexDirection = FlexDirectionType.Row;
+            root.Style.AlignItems = AlignType.FlexStart;
+            root.Style.Width = 100;
+            root.Style.Height = 100;
 
-            YGNodeRef root_child0  = YGNodeNew();
-            int       measureCount = 0;
-            root_child0.setContext(measureCount);
-            root_child0.setMeasureFunc(_measureMax);
-            YGNodeStyleSetFlexGrow(root_child0, 1);
-            YGNodeInsertChild(root, root_child0, 0);
+            YogaNode root_child0  = new YogaNode();
+            root_child0.Context     = 0;
+            root_child0.MeasureFunc = _measureMax;
+            root_child0.Style.FlexGrow = 1;
+            root.Children.Add(root_child0);
 
-            YGNodeCalculateLayout(root, YGUndefined, YGUndefined, YGDirection.LTR);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
+            int measureCount = (int) root_child0.Context;
             Assert.AreEqual(1, measureCount);
-
-            YGNodeFreeRecursive(root);
         }
 
         [TestMethod]
         public void remeasure_with_same_exact_width_larger_than_needed_height()
         {
-            YGNodeRef root = YGNodeNew();
+            YogaNode root = new YogaNode();
 
-            YGNodeRef root_child0  = YGNodeNew();
-            int       measureCount = 0;
-            root_child0.setContext(measureCount);
-            root_child0.setMeasureFunc(_measureMin);
-            YGNodeInsertChild(root, root_child0, 0);
+            YogaNode root_child0  = new YogaNode();
+            root_child0.Context     = 0;
+            root_child0.MeasureFunc = _measureMin;
+            root.Children.Add(root_child0);
 
-            YGNodeCalculateLayout(root, 100, 100, YGDirection.LTR);
-            YGNodeCalculateLayout(root, 100, 50,  YGDirection.LTR);
+            root.Calc.CalculateLayout(100, 100, DirectionType.LTR);
+            root.Calc.CalculateLayout(100, 50,  DirectionType.LTR);
 
+            int measureCount = (int)root_child0.Context;
             Assert.AreEqual(1, measureCount);
-
-            YGNodeFreeRecursive(root);
         }
 
         [TestMethod]
         public void remeasure_with_same_atmost_width_larger_than_needed_height()
         {
-            YGNodeRef root = YGNodeNew();
-            YGNodeStyleSetAlignItems(root, YGAlign.FlexStart);
+            YogaNode root = new YogaNode();
+            root.Style.AlignItems = AlignType.FlexStart;
 
-            YGNodeRef root_child0  = YGNodeNew();
-            int       measureCount = 0;
-            root_child0.setContext(measureCount);
-            root_child0.setMeasureFunc(_measureMin);
-            YGNodeInsertChild(root, root_child0, 0);
+            YogaNode root_child0  = new YogaNode();
+            root_child0.Context     = 0;
+            root_child0.MeasureFunc = _measureMin;
+            root.Children.Add(root_child0);
 
-            YGNodeCalculateLayout(root, 100, 100, YGDirection.LTR);
-            YGNodeCalculateLayout(root, 100, 50,  YGDirection.LTR);
+            root.Calc.CalculateLayout(100, 100, DirectionType.LTR);
+            root.Calc.CalculateLayout(100, 50,  DirectionType.LTR);
 
+            int measureCount = (int)root_child0.Context;
             Assert.AreEqual(1, measureCount);
-
-            YGNodeFreeRecursive(root);
         }
 
         [TestMethod]
         public void remeasure_with_computed_width_larger_than_needed_height()
         {
-            YGNodeRef root = YGNodeNew();
-            YGNodeStyleSetAlignItems(root, YGAlign.FlexStart);
+            YogaNode root = new YogaNode();
+            root.Style.AlignItems = AlignType.FlexStart;
 
-            YGNodeRef root_child0  = YGNodeNew();
-            int       measureCount = 0;
-            root_child0.setContext(measureCount);
-            root_child0.setMeasureFunc(_measureMin);
-            YGNodeInsertChild(root, root_child0, 0);
+            YogaNode root_child0  = new YogaNode();
+            root_child0.Context     = 0;
+            root_child0.MeasureFunc = _measureMin;
+            root.Children.Add(root_child0);
 
-            YGNodeCalculateLayout(root, 100, 100, YGDirection.LTR);
-            YGNodeStyleSetAlignItems(root, YGAlign.Stretch);
-            YGNodeCalculateLayout(root, 10, 50, YGDirection.LTR);
+            root.Calc.CalculateLayout(100, 100, DirectionType.LTR);
+            root.Style.AlignItems = AlignType.Stretch;
+            root.Calc.CalculateLayout(10, 50, DirectionType.LTR);
 
+            int measureCount = (int)root_child0.Context;
             Assert.AreEqual(1, measureCount);
-
-            YGNodeFreeRecursive(root);
         }
 
         [TestMethod]
         public void remeasure_with_atmost_computed_width_undefined_height()
         {
-            YGNodeRef root = YGNodeNew();
-            YGNodeStyleSetAlignItems(root, YGAlign.FlexStart);
+            YogaNode root = new YogaNode();
+            root.Style.AlignItems = AlignType.FlexStart;
 
-            YGNodeRef root_child0  = YGNodeNew();
-            int       measureCount = 0;
-            root_child0.setContext(measureCount);
-            root_child0.setMeasureFunc(_measureMin);
-            YGNodeInsertChild(root, root_child0, 0);
+            YogaNode root_child0  = new YogaNode();
+            root_child0.Context     = 0;
+            root_child0.MeasureFunc = _measureMin;
+            root.Children.Add(root_child0);
 
-            YGNodeCalculateLayout(root, 100, YGUndefined, YGDirection.LTR);
-            YGNodeCalculateLayout(root, 10,  YGUndefined, YGDirection.LTR);
+            root.Calc.CalculateLayout(100, float.NaN, DirectionType.LTR);
+            root.Calc.CalculateLayout(10,  float.NaN, DirectionType.LTR);
 
+            int measureCount = (int)root_child0.Context;
             Assert.AreEqual(1, measureCount);
-
-            YGNodeFreeRecursive(root);
         }
 
         [TestMethod]
         public void remeasure_with_already_measured_value_smaller_but_still_float_equal()
         {
-            int measureCount = 0;
+            YogaNode root = new YogaNode();
+            root.Style.Width = 288f;
+            root.Style.Height = 288f;
+            root.Style.FlexDirection = FlexDirectionType.Row;
 
-            YGNodeRef root = YGNodeNew();
-            YGNodeStyleSetWidth(root, 288f);
-            YGNodeStyleSetHeight(root, 288f);
-            YGNodeStyleSetFlexDirection(root, YGFlexDirection.Row);
+            YogaNode root_child0 = new YogaNode();
+            root_child0.Style.Padding.All = 2.88f;
+            root_child0.Style.FlexDirection = FlexDirectionType.Row;
+            root.Children.Add(root_child0);
 
-            YGNodeRef root_child0 = YGNodeNew();
-            YGNodeStyleSetPadding(root_child0, YGEdge.All, 2.88f);
-            YGNodeStyleSetFlexDirection(root_child0, YGFlexDirection.Row);
-            YGNodeInsertChild(root, root_child0, 0);
+            YogaNode root_child0_child0 = new YogaNode();
+            root_child0_child0.Context     = 0;
+            root_child0_child0.MeasureFunc = _measure_84_49;
+            root_child0.Children.Add(root_child0_child0);
 
-            YGNodeRef root_child0_child0 = YGNodeNew();
-            root_child0_child0.setContext(measureCount);
-            root_child0_child0.setMeasureFunc(_measure_84_49);
-            YGNodeInsertChild(root_child0, root_child0_child0, 0);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
-            YGNodeCalculateLayout(root, YGUndefined, YGUndefined, YGDirection.LTR);
-
-            YGNodeFreeRecursive(root);
-
+            int measureCount = (int)root_child0_child0.Context;
             Assert.AreEqual(1, measureCount);
         }
     }

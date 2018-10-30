@@ -1,139 +1,135 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Xamarin.Yoga.Tests
 {
-    using static YGGlobal;
-    using static YGConst;
-    using YGConfigRef = YGConfig;
-    using YGNodeRef = YGNode;
-    using YGVector = List<YGNode>;
+    
+    using static YogaConst;
+    
+    
+    
 
     [TestClass]
     public class YGRoundingMeasureFuncTests
     {
-        static YGSize _measureFloor(YGNodeRef node,
+        static SizeF _measureFloor(YogaNode node,
             float                             width,
-            YGMeasureMode                     widthMode,
+            MeasureMode                     widthMode,
             float                             height,
-            YGMeasureMode                     heightMode)
+            MeasureMode                     heightMode)
         {
-            return new YGSize(width = 10.2f, height = 10.2f);
+            return new SizeF(width = 10.2f, height = 10.2f);
         }
 
-        static YGSize _measureCeil(YGNodeRef node,
+        static SizeF _measureCeil(YogaNode node,
             float                            width,
-            YGMeasureMode                    widthMode,
+            MeasureMode                    widthMode,
             float                            height,
-            YGMeasureMode                    heightMode)
+            MeasureMode                    heightMode)
         {
-            return new YGSize(width = 10.5f, height = 10.5f);
+            return new SizeF(width = 10.5f, height = 10.5f);
         }
 
-        static YGSize _measureFractial(YGNodeRef node,
+        static SizeF _measureFractial(YogaNode node,
             float                                width,
-            YGMeasureMode                        widthMode,
+            MeasureMode                        widthMode,
             float                                height,
-            YGMeasureMode                        heightMode)
+            MeasureMode                        heightMode)
         {
-            return new YGSize(width = 0.5f, height = 0.5f);
+            return new SizeF(width = 0.5f, height = 0.5f);
         }
 
         [TestMethod]
         public void rounding_feature_with_custom_measure_func_floor()
         {
-            YGConfigRef config = YGConfigNew();
-            YGNodeRef   root   = YGNodeNewWithConfig(config);
+            YogaConfig config = new YogaConfig();
+            YogaNode root_child0;
+            YogaNode root = new YogaNode(config)
+            {
+                Children =
+                {
+                    (root_child0 = new YogaNode(config) {MeasureFunc = _measureFloor})
+                }
+            };
 
-            YGNodeRef root_child0 = YGNodeNewWithConfig(config);
-            root_child0.setMeasureFunc(_measureFloor);
-            YGNodeInsertChild(root, root_child0, 0);
+            config.PointScaleFactor = 0.0f;
 
-            YGConfigSetPointScaleFactor(config, 0.0f);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.RTL);
 
-            YGNodeCalculateLayout(root, YGUndefined, YGUndefined, YGDirection.RTL);
+            Assert.AreEqual(10.2f, root_child0.Layout.Width);
+            Assert.AreEqual(10.2f, root_child0.Layout.Height);
 
-            Assert.AreEqual(10.2f, YGNodeLayoutGetWidth(root_child0));
-            Assert.AreEqual(10.2f, YGNodeLayoutGetHeight(root_child0));
+            config.PointScaleFactor = 1.0f;
 
-            YGConfigSetPointScaleFactor(config, 1.0f);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
-            YGNodeCalculateLayout(root, YGUndefined, YGUndefined, YGDirection.LTR);
+            Assert.AreEqual(11f, root_child0.Layout.Width);
+            Assert.AreEqual(11f, root_child0.Layout.Height);
 
-            Assert.AreEqual(11f, YGNodeLayoutGetWidth(root_child0));
-            Assert.AreEqual(11f, YGNodeLayoutGetHeight(root_child0));
+            config.PointScaleFactor = 2.0f;
 
-            YGConfigSetPointScaleFactor(config, 2.0f);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.RTL);
 
-            YGNodeCalculateLayout(root, YGUndefined, YGUndefined, YGDirection.RTL);
+            Assert.AreEqual(10.5f, root_child0.Layout.Width);
+            Assert.AreEqual(10.5f, root_child0.Layout.Height);
 
-            Assert.AreEqual(10.5f, YGNodeLayoutGetWidth(root_child0));
-            Assert.AreEqual(10.5f, YGNodeLayoutGetHeight(root_child0));
+            config.PointScaleFactor = 4.0f;
 
-            YGConfigSetPointScaleFactor(config, 4.0f);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
-            YGNodeCalculateLayout(root, YGUndefined, YGUndefined, YGDirection.LTR);
+            Assert.AreEqual(10.25f, root_child0.Layout.Width);
+            Assert.AreEqual(10.25f, root_child0.Layout.Height);
 
-            Assert.AreEqual(10.25f, YGNodeLayoutGetWidth(root_child0));
-            Assert.AreEqual(10.25f, YGNodeLayoutGetHeight(root_child0));
+            config.PointScaleFactor = (1.0f / 3.0f);
 
-            YGConfigSetPointScaleFactor(config, 1.0f / 3.0f);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.RTL);
 
-            YGNodeCalculateLayout(root, YGUndefined, YGUndefined, YGDirection.RTL);
-
-            Assert.AreEqual(12.0f, YGNodeLayoutGetWidth(root_child0));
-            Assert.AreEqual(12.0f, YGNodeLayoutGetHeight(root_child0));
-
-            YGNodeFreeRecursive(root);
-
-            YGConfigFree(config);
+            Assert.AreEqual(12.0f, root_child0.Layout.Width);
+            Assert.AreEqual(12.0f, root_child0.Layout.Height);
         }
 
         [TestMethod]
         public void rounding_feature_with_custom_measure_func_ceil()
         {
-            YGConfigRef config      = YGConfigNew();
-            YGNodeRef   root        = YGNodeNewWithConfig(config);
-            YGNodeRef   root_child0 = YGNodeNewWithConfig(config);
+            YogaConfig config      = new YogaConfig();
+            YogaNode   root        = new YogaNode(config);
+            YogaNode   root_child0 = new YogaNode(config);
 
-            root_child0.setMeasureFunc(_measureCeil);
-            YGNodeInsertChild(root, root_child0, 0);
-            YGConfigSetPointScaleFactor(config, 1.0f);
+            root_child0.MeasureFunc = _measureCeil;
+            root.Children.Add(root_child0);
+            config.PointScaleFactor = 1.0f;
 
-            YGNodeCalculateLayout(root, YGUndefined, YGUndefined, YGDirection.LTR);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
-            Assert.AreEqual(11, YGNodeLayoutGetWidth(root_child0));
-            Assert.AreEqual(11, YGNodeLayoutGetHeight(root_child0));
+            Assert.AreEqual(11, root_child0.Layout.Width);
+            Assert.AreEqual(11, root_child0.Layout.Height);
 
-            YGNodeFreeRecursive(root);
-
-            YGConfigFree(config);
+            
         }
 
         [TestMethod]
         public void rounding_feature_with_custom_measure_and_fractial_matching_scale()
         {
-            YGConfigRef config = YGConfigNew();
-            YGNodeRef   root   = YGNodeNewWithConfig(config);
+            YogaConfig config = new YogaConfig();
+            YogaNode   root   = new YogaNode(config);
 
-            YGNodeRef root_child0 = YGNodeNewWithConfig(config);
-            YGNodeStyleSetPosition(root_child0, YGEdge.Left, 73.625f);
-            root_child0.setMeasureFunc(_measureFractial);
-            YGNodeInsertChild(root, root_child0, 0);
+            YogaNode root_child0 = new YogaNode(config);
+            root_child0.Style.Position.Left = 73.625f;
+            root_child0.MeasureFunc = _measureFractial;
+            root.Children.Add(root_child0);
 
-            YGConfigSetPointScaleFactor(config, 2.0f);
+            config.PointScaleFactor = 2.0f;
 
-            YGNodeCalculateLayout(root, YGUndefined, YGUndefined, YGDirection.LTR);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
-            Assert.AreEqual(0.5f,  YGNodeLayoutGetWidth(root_child0));
-            Assert.AreEqual(0.5f,  YGNodeLayoutGetHeight(root_child0));
-            Assert.AreEqual(73.5f, YGNodeLayoutGetLeft(root_child0));
+            Assert.AreEqual(0.5f,  root_child0.Layout.Width);
+            Assert.AreEqual(0.5f,  root_child0.Layout.Height);
+            Assert.AreEqual(73.5f, root_child0.Layout.Position.Left);
 
-            YGNodeFreeRecursive(root);
-
-            YGConfigFree(config);
+            
         }
     }
 }

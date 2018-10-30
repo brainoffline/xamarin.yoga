@@ -5,11 +5,9 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Xamarin.Yoga.Tests
 {
-    using static YGGlobal;
-    using static YGConst;
-    using YGConfigRef = YGConfig;
-    using YGNodeRef = YGNode;
-    using YGVector = List<YGNode>;
+    
+    using static YogaConst;
+
 
     [TestClass]
     public class YGInfiniteHeightTests
@@ -20,45 +18,40 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void percent_absolute_position_infinite_height()
         {
-             YGConfigRef config = YGConfigNew();
+            YogaConfig config = new YogaConfig();
 
-             YGNodeRef root = YGNodeNewWithConfig(config);
-            YGNodeStyleSetFlexDirection(root, YGFlexDirection.Row);
-            YGNodeStyleSetWidth(root, 300);
+            YogaNode root = new YogaNode(config);
+            root.Style.FlexDirection = FlexDirectionType.Row;
+            root.Style.Width = 300;
 
-             YGNodeRef root_child0 = YGNodeNewWithConfig(config);
-            YGNodeStyleSetWidth(root_child0, 300);
-            YGNodeStyleSetHeight(root_child0, 300);
-            YGNodeInsertChild(root, root_child0, 0);
+            YogaNode root_child0 = new YogaNode(config);
+            root_child0.Style.Width = 300;
+            root_child0.Style.Height = 300;
+            root.Children.Add(root_child0);
 
-             YGNodeRef root_child1 = YGNodeNewWithConfig(config);
-            YGNodeStyleSetPositionType(root_child1, YGPositionType.Absolute);
-            YGNodeStyleSetPositionPercent(root_child1, YGEdge.Left, 20);
-            YGNodeStyleSetPositionPercent(root_child1, YGEdge.Top,  20);
-            YGNodeStyleSetWidthPercent(root_child1, 20);
-            YGNodeStyleSetHeightPercent(root_child1, 20);
-            YGNodeInsertChild(root, root_child1, 1);
-            YGNodeCalculateLayout(root, YGUndefined, YGUndefined, YGDirection.LTR);
+            YogaNode root_child1 = new YogaNode(config);
+            root_child1.Style.PositionType = PositionType.Absolute;
+            root_child1.Style.Position.Left = 20.Percent();
+            root_child1.Style.Position.Top = 20.Percent();
+            root_child1.Style.Width = 20.Percent();
+            root_child1.Style.Height = 20.Percent();
+            root.Children.Insert(1, root_child1);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
-            Assert.AreEqual(0,   YGNodeLayoutGetLeft(root));
-            Assert.AreEqual(0,   YGNodeLayoutGetTop(root));
-            Assert.AreEqual(300, YGNodeLayoutGetWidth(root));
-            Assert.AreEqual(300, YGNodeLayoutGetHeight(root));
+            Assert.AreEqual(0,   root.Layout.Position.Left);
+            Assert.AreEqual(0,   root.Layout.Position.Top);
+            Assert.AreEqual(300, root.Layout.Width);
+            Assert.AreEqual(300, root.Layout.Height);
 
-            Assert.AreEqual(0,   YGNodeLayoutGetLeft(root_child0));
-            Assert.AreEqual(0,   YGNodeLayoutGetTop(root_child0));
-            Assert.AreEqual(300, YGNodeLayoutGetWidth(root_child0));
-            Assert.AreEqual(300, YGNodeLayoutGetHeight(root_child0));
+            Assert.AreEqual(0,   root_child0.Layout.Position.Left);
+            Assert.AreEqual(0,   root_child0.Layout.Position.Top);
+            Assert.AreEqual(300, root_child0.Layout.Width);
+            Assert.AreEqual(300, root_child0.Layout.Height);
 
-            Assert.AreEqual(60, YGNodeLayoutGetLeft(root_child1));
-            Assert.AreEqual(0,  YGNodeLayoutGetTop(root_child1));
-            Assert.AreEqual(60, YGNodeLayoutGetWidth(root_child1));
-            Assert.AreEqual(0,  YGNodeLayoutGetHeight(root_child1));
-
-            YGNodeFreeRecursive(root);
-
-            YGConfigFree(config);
+            Assert.AreEqual(60, root_child1.Layout.Position.Left);
+            Assert.AreEqual(0,  root_child1.Layout.Position.Top);
+            Assert.AreEqual(60, root_child1.Layout.Width);
+            Assert.AreEqual(0,  root_child1.Layout.Height);
         }
-
     }
 }

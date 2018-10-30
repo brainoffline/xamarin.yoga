@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Xamarin.Yoga.Tests
 {
-    using static YGGlobal;
-    using static YGConst;
-    using YGConfigRef = YGConfig;
-    using YGNodeRef = YGNode;
-    using YGVector = List<YGNode>;
+    
+    using static YogaConst;
+
 
     [TestClass]
     public class YGMeasureModeTests
@@ -17,18 +16,18 @@ namespace Xamarin.Yoga.Tests
         public class _MeasureConstraint
         {
             public float         width;
-            public YGMeasureMode widthMode;
+            public MeasureMode widthMode;
             public float         height;
-            public YGMeasureMode heightMode;
+            public MeasureMode heightMode;
         };
 
-        private static YGSize _measure(YGNodeRef node,
-            float                                width,
-            YGMeasureMode                        widthMode,
-            float                                height,
-            YGMeasureMode                        heightMode)
+        private static SizeF _measure(YogaNode node,
+            float                             width,
+            MeasureMode                     widthMode,
+            float                             height,
+            MeasureMode                     heightMode)
         {
-            var constraintList = (List<_MeasureConstraint>) node.getContext();
+            var constraintList = (List<_MeasureConstraint>) node.Context;
             var constraint = new _MeasureConstraint
             {
                 width      = width,
@@ -38,9 +37,9 @@ namespace Xamarin.Yoga.Tests
             };
             constraintList.Add(constraint);
 
-            return new YGSize(
-                width = widthMode   == YGMeasureMode.Undefined ? 10 : width,
-                height = heightMode == YGMeasureMode.Undefined ? 10 : width
+            return new SizeF(
+                width = widthMode   == MeasureMode.Undefined ? 10 : width,
+                height = heightMode == MeasureMode.Undefined ? 10 : width
             );
         }
 
@@ -49,26 +48,25 @@ namespace Xamarin.Yoga.Tests
         {
             var constraintList = new List<_MeasureConstraint>(10);
 
-            YGNodeRef root = YGNodeNew();
-            YGNodeStyleSetWidth(root, 100);
-            YGNodeStyleSetHeight(root, 100);
+            YogaNode root = new YogaNode();
+            root.Style.Width = 100;
+            root.Style.Height = 100;
 
-            YGNodeRef root_child0 = YGNodeNew();
+            YogaNode root_child0 = new YogaNode();
             //  root_child0.setContext(&constraintList);
-            root_child0.setContext(constraintList);
-            root_child0.setMeasureFunc(_measure);
-            //  root_child0.setMeasureFunc(_measure);
-            YGNodeInsertChild(root, root_child0, 0);
+            root_child0.Context     = constraintList;
+            root_child0.MeasureFunc = _measure;
+            //  root_child0.MeasureFunc = _measure;
+            root.Children.Add(root_child0);
 
-            YGNodeCalculateLayout(root, YGUndefined, YGUndefined, YGDirection.LTR);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(1, constraintList.Count);
 
             Assert.AreEqual(100,                   constraintList[0].width);
-            Assert.AreEqual(YGMeasureMode.Exactly, constraintList[0].widthMode);
+            Assert.AreEqual(MeasureMode.Exactly, constraintList[0].widthMode);
 
             ////free(constraintList.constraints);
-            YGNodeFreeRecursive(root);
         }
 
         [TestMethod]
@@ -76,26 +74,25 @@ namespace Xamarin.Yoga.Tests
         {
             var constraintList = new List<_MeasureConstraint>(10);
 
-            YGNodeRef root = YGNodeNew();
-            YGNodeStyleSetFlexDirection(root, YGFlexDirection.Row);
-            YGNodeStyleSetWidth(root, 100);
-            YGNodeStyleSetHeight(root, 100);
+            YogaNode root = new YogaNode();
+            root.Style.FlexDirection = FlexDirectionType.Row;
+            root.Style.Width = 100;
+            root.Style.Height = 100;
 
-            YGNodeRef root_child0 = YGNodeNew();
+            YogaNode root_child0 = new YogaNode();
             //  root_child0.setContext(&constraintList);
-            root_child0.setContext(constraintList);
-            root_child0.setMeasureFunc(_measure);
-            YGNodeInsertChild(root, root_child0, 0);
+            root_child0.Context     = constraintList;
+            root_child0.MeasureFunc = _measure;
+            root.Children.Add(root_child0);
 
-            YGNodeCalculateLayout(root, YGUndefined, YGUndefined, YGDirection.LTR);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(1, constraintList.Count);
 
             Assert.AreEqual(100,                   constraintList[0].height);
-            Assert.AreEqual(YGMeasureMode.Exactly, constraintList[0].heightMode);
+            Assert.AreEqual(MeasureMode.Exactly, constraintList[0].heightMode);
 
             ////free(constraintList.constraints);
-            YGNodeFreeRecursive(root);
         }
 
         [TestMethod]
@@ -103,24 +100,23 @@ namespace Xamarin.Yoga.Tests
         {
             var constraintList = new List<_MeasureConstraint>(10);
 
-            YGNodeRef root = YGNodeNew();
-            YGNodeStyleSetWidth(root, 100);
-            YGNodeStyleSetHeight(root, 100);
+            YogaNode root = new YogaNode();
+            root.Style.Width = 100;
+            root.Style.Height = 100;
 
-            YGNodeRef root_child0 = YGNodeNew();
-            root_child0.setContext(constraintList);
-            root_child0.setMeasureFunc(_measure);
-            YGNodeInsertChild(root, root_child0, 0);
+            YogaNode root_child0 = new YogaNode();
+            root_child0.Context     = constraintList;
+            root_child0.MeasureFunc = _measure;
+            root.Children.Add(root_child0);
 
-            YGNodeCalculateLayout(root, YGUndefined, YGUndefined, YGDirection.LTR);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(1, constraintList.Count);
 
             Assert.AreEqual(100,                  constraintList[0].height);
-            Assert.AreEqual(YGMeasureMode.AtMost, constraintList[0].heightMode);
+            Assert.AreEqual(MeasureMode.AtMost, constraintList[0].heightMode);
 
             ////free(constraintList.constraints);
-            YGNodeFreeRecursive(root);
         }
 
         [TestMethod]
@@ -128,25 +124,24 @@ namespace Xamarin.Yoga.Tests
         {
             var constraintList = new List<_MeasureConstraint>(10);
 
-            YGNodeRef root = YGNodeNew();
-            YGNodeStyleSetAlignItems(root, YGAlign.FlexStart);
-            YGNodeStyleSetWidth(root, 100);
-            YGNodeStyleSetHeight(root, 100);
+            YogaNode root = new YogaNode();
+            root.Style.AlignItems = AlignType.FlexStart;
+            root.Style.Width = 100;
+            root.Style.Height = 100;
 
-            YGNodeRef root_child0 = YGNodeNew();
-            root_child0.setContext(constraintList);
-            root_child0.setMeasureFunc(_measure);
-            YGNodeInsertChild(root, root_child0, 0);
+            YogaNode root_child0 = new YogaNode();
+            root_child0.Context     = constraintList;
+            root_child0.MeasureFunc = _measure;
+            root.Children.Add(root_child0);
 
-            YGNodeCalculateLayout(root, YGUndefined, YGUndefined, YGDirection.LTR);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(1, constraintList.Count);
 
             Assert.AreEqual(100,                  constraintList[0].width);
-            Assert.AreEqual(YGMeasureMode.AtMost, constraintList[0].widthMode);
+            Assert.AreEqual(MeasureMode.AtMost, constraintList[0].widthMode);
 
             ////free(constraintList.constraints);
-            YGNodeFreeRecursive(root);
         }
 
         [TestMethod]
@@ -154,25 +149,24 @@ namespace Xamarin.Yoga.Tests
         {
             var constraintList = new List<_MeasureConstraint>(10);
 
-            YGNodeRef root = YGNodeNew();
-            YGNodeStyleSetFlexDirection(root, YGFlexDirection.Row);
-            YGNodeStyleSetWidth(root, 100);
-            YGNodeStyleSetHeight(root, 100);
+            YogaNode root = new YogaNode();
+            root.Style.FlexDirection = FlexDirectionType.Row;
+            root.Style.Width = 100;
+            root.Style.Height = 100;
 
-            YGNodeRef root_child0 = YGNodeNew();
-            root_child0.setContext(constraintList);
-            root_child0.setMeasureFunc(_measure);
-            YGNodeInsertChild(root, root_child0, 0);
+            YogaNode root_child0 = new YogaNode();
+            root_child0.Context     = constraintList;
+            root_child0.MeasureFunc = _measure;
+            root.Children.Add(root_child0);
 
-            YGNodeCalculateLayout(root, YGUndefined, YGUndefined, YGDirection.LTR);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(1, constraintList.Count);
 
             Assert.AreEqual(100,                  constraintList[0].width);
-            Assert.AreEqual(YGMeasureMode.AtMost, constraintList[0].widthMode);
+            Assert.AreEqual(MeasureMode.AtMost, constraintList[0].widthMode);
 
             //free(constraintList.constraints);
-            YGNodeFreeRecursive(root);
         }
 
         [TestMethod]
@@ -180,26 +174,25 @@ namespace Xamarin.Yoga.Tests
         {
             var constraintList = new List<_MeasureConstraint>(10);
 
-            YGNodeRef root = YGNodeNew();
-            YGNodeStyleSetFlexDirection(root, YGFlexDirection.Row);
-            YGNodeStyleSetAlignItems(root, YGAlign.FlexStart);
-            YGNodeStyleSetWidth(root, 100);
-            YGNodeStyleSetHeight(root, 100);
+            YogaNode root = new YogaNode();
+            root.Style.FlexDirection = FlexDirectionType.Row;
+            root.Style.AlignItems = AlignType.FlexStart;
+            root.Style.Width = 100;
+            root.Style.Height = 100;
 
-            YGNodeRef root_child0 = YGNodeNew();
-            root_child0.setContext(constraintList);
-            root_child0.setMeasureFunc(_measure);
-            YGNodeInsertChild(root, root_child0, 0);
+            YogaNode root_child0 = new YogaNode();
+            root_child0.Context     = constraintList;
+            root_child0.MeasureFunc = _measure;
+            root.Children.Add(root_child0);
 
-            YGNodeCalculateLayout(root, YGUndefined, YGUndefined, YGDirection.LTR);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(1, constraintList.Count);
 
             Assert.AreEqual(100,                  constraintList[0].height);
-            Assert.AreEqual(YGMeasureMode.AtMost, constraintList[0].heightMode);
+            Assert.AreEqual(MeasureMode.AtMost, constraintList[0].heightMode);
 
             //free(constraintList.constraints);
-            YGNodeFreeRecursive(root);
         }
 
         [TestMethod]
@@ -207,27 +200,26 @@ namespace Xamarin.Yoga.Tests
         {
             var constraintList = new List<_MeasureConstraint>(10);
 
-            YGNodeRef root = YGNodeNew();
-            YGNodeStyleSetHeight(root, 100);
+            YogaNode root = new YogaNode();
+            root.Style.Height = 100;
 
-            YGNodeRef root_child0 = YGNodeNew();
-            YGNodeStyleSetFlexGrow(root_child0, 1);
-            root_child0.setContext(constraintList);
-            root_child0.setMeasureFunc(_measure);
-            YGNodeInsertChild(root, root_child0, 0);
+            YogaNode root_child0 = new YogaNode();
+            root_child0.Style.FlexGrow = 1;
+            root_child0.Context     = constraintList;
+            root_child0.MeasureFunc = _measure;
+            root.Children.Add(root_child0);
 
-            YGNodeCalculateLayout(root, YGUndefined, YGUndefined, YGDirection.LTR);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(2, constraintList.Count);
 
             Assert.AreEqual(100,                  constraintList[0].height);
-            Assert.AreEqual(YGMeasureMode.AtMost, constraintList[0].heightMode);
+            Assert.AreEqual(MeasureMode.AtMost, constraintList[0].heightMode);
 
             Assert.AreEqual(100,                   constraintList[1].height);
-            Assert.AreEqual(YGMeasureMode.Exactly, constraintList[1].heightMode);
+            Assert.AreEqual(MeasureMode.Exactly, constraintList[1].heightMode);
 
             //free(constraintList.constraints);
-            YGNodeFreeRecursive(root);
         }
 
         [TestMethod]
@@ -235,25 +227,24 @@ namespace Xamarin.Yoga.Tests
         {
             var constraintList = new List<_MeasureConstraint>(10);
 
-            YGNodeRef root = YGNodeNew();
-            YGNodeStyleSetHeight(root, 100);
+            YogaNode root = new YogaNode();
+            root.Style.Height = 100;
 
-            YGNodeRef root_child0 = YGNodeNew();
-            YGNodeStyleSetFlexGrow(root_child0, 1);
-            YGNodeStyleSetFlexBasis(root_child0, 0);
-            root_child0.setContext(constraintList);
-            root_child0.setMeasureFunc(_measure);
-            YGNodeInsertChild(root, root_child0, 0);
+            YogaNode root_child0 = new YogaNode();
+            root_child0.Style.FlexGrow = 1;
+            root_child0.Style.FlexBasis = 0;
+            root_child0.Context     = constraintList;
+            root_child0.MeasureFunc = _measure;
+            root.Children.Add(root_child0);
 
-            YGNodeCalculateLayout(root, YGUndefined, YGUndefined, YGDirection.LTR);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(1, constraintList.Count);
 
             Assert.AreEqual(100,                   constraintList[0].height);
-            Assert.AreEqual(YGMeasureMode.Exactly, constraintList[0].heightMode);
+            Assert.AreEqual(MeasureMode.Exactly, constraintList[0].heightMode);
 
             //free(constraintList.constraints);
-            YGNodeFreeRecursive(root);
         }
 
         [TestMethod]
@@ -261,29 +252,28 @@ namespace Xamarin.Yoga.Tests
         {
             var constraintList = new List<_MeasureConstraint>(10);
 
-            YGNodeRef root = YGNodeNew();
-            YGNodeStyleSetAlignItems(root, YGAlign.FlexStart);
-            YGNodeStyleSetOverflow(root, YGOverflow.Scroll);
-            YGNodeStyleSetHeight(root, 100);
-            YGNodeStyleSetWidth(root, 100);
+            YogaNode root = new YogaNode();
+            root.Style.AlignItems = AlignType.FlexStart;
+            root.Style.Overflow = OverflowType.Scroll;
+            root.Style.Height = 100;
+            root.Style.Width = 100;
 
-            YGNodeRef root_child0 = YGNodeNew();
-            root_child0.setContext(constraintList);
-            root_child0.setMeasureFunc(_measure);
-            YGNodeInsertChild(root, root_child0, 0);
+            YogaNode root_child0 = new YogaNode();
+            root_child0.Context     = constraintList;
+            root_child0.MeasureFunc = _measure;
+            root.Children.Add(root_child0);
 
-            YGNodeCalculateLayout(root, YGUndefined, YGUndefined, YGDirection.LTR);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(1, constraintList.Count);
 
             Assert.AreEqual(100,                  constraintList[0].width);
-            Assert.AreEqual(YGMeasureMode.AtMost, constraintList[0].widthMode);
+            Assert.AreEqual(MeasureMode.AtMost, constraintList[0].widthMode);
 
-            Assert.IsTrue(YGFloatIsUndefined(constraintList[0].height));
-            Assert.AreEqual(YGMeasureMode.Undefined, constraintList[0].heightMode);
+            Assert.IsTrue(constraintList[0].height.IsNaN());
+            Assert.AreEqual(MeasureMode.Undefined, constraintList[0].heightMode);
 
             //free(constraintList.constraints);
-            YGNodeFreeRecursive(root);
         }
 
         [TestMethod]
@@ -291,30 +281,29 @@ namespace Xamarin.Yoga.Tests
         {
             var constraintList = new List<_MeasureConstraint>(10);
 
-            YGNodeRef root = YGNodeNew();
-            YGNodeStyleSetAlignItems(root, YGAlign.FlexStart);
-            YGNodeStyleSetFlexDirection(root, YGFlexDirection.Row);
-            YGNodeStyleSetOverflow(root, YGOverflow.Scroll);
-            YGNodeStyleSetHeight(root, 100);
-            YGNodeStyleSetWidth(root, 100);
+            YogaNode root = new YogaNode();
+            root.Style.AlignItems = AlignType.FlexStart;
+            root.Style.FlexDirection = FlexDirectionType.Row;
+            root.Style.Overflow = OverflowType.Scroll;
+            root.Style.Height = 100;
+            root.Style.Width = 100;
 
-            YGNodeRef root_child0 = YGNodeNew();
-            root_child0.setContext(constraintList);
-            root_child0.setMeasureFunc(_measure);
-            YGNodeInsertChild(root, root_child0, 0);
+            YogaNode root_child0 = new YogaNode();
+            root_child0.Context     = constraintList;
+            root_child0.MeasureFunc = _measure;
+            root.Children.Add(root_child0);
 
-            YGNodeCalculateLayout(root, YGUndefined, YGUndefined, YGDirection.LTR);
+            root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(1, constraintList.Count);
 
-            Assert.IsTrue(YGFloatIsUndefined(constraintList[0].width));
-            Assert.AreEqual(YGMeasureMode.Undefined, constraintList[0].widthMode);
+            Assert.IsTrue(constraintList[0].width.IsNaN());
+            Assert.AreEqual(MeasureMode.Undefined, constraintList[0].widthMode);
 
             Assert.AreEqual(100,                  constraintList[0].height);
-            Assert.AreEqual(YGMeasureMode.AtMost, constraintList[0].heightMode);
+            Assert.AreEqual(MeasureMode.AtMost, constraintList[0].heightMode);
 
             //free(constraintList.constraints);
-            YGNodeFreeRecursive(root);
         }
     }
 }

@@ -13,7 +13,7 @@ namespace Xamarin.Yoga.Tests
             {
                 Children =
                 {
-                    (root_child0 = new YogaNode {Style = {Width = 100, Height = 100}})
+                    (root_child0 = new YogaNode {Width = 100, Height = 100})
                 }
             };
 
@@ -53,8 +53,8 @@ namespace Xamarin.Yoga.Tests
             root.Children.Add(root_child0);
 
             var root_child0_child0 = new YogaNode(config);
-            root_child0_child0.Style.Width  = 100;
-            root_child0_child0.Style.Height = 100;
+            root_child0_child0.Width  = 100;
+            root_child0_child0.Height = 100;
             root_child0.Children.Add(root_child0_child0);
             root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 

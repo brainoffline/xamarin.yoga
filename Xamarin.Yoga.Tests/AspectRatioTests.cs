@@ -12,18 +12,18 @@ namespace Xamarin.Yoga.Tests
             YogaNode root_child0;
             var root = new YogaNode
             {
-                Style = {Width = 100, Height = 100},
+                Width = 100, Height = 100,
                 Children =
                 {
                     (root_child0 = new YogaNode
                     {
-                        Style =
-                        {
+                        
+                        
                             PositionType = PositionType.Absolute,
                             Position = {Left = 0, Top = 0},
                             Height = 50,
                             AspectRatio = 1
-                        }
+                        
                     })
                 }
             };
@@ -39,9 +39,9 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void aspect_ratio_absolute_layout_width_defined()
         {
-            var root = new YogaNode {Style = {Width = 100, Height = 100}};
+            var root = new YogaNode {Width = 100, Height = 100};
 
-            var root_child0 = new YogaNode {Style = {PositionType = PositionType.Absolute, Position = {Left = 0, Top = 0}, Width = 50, AspectRatio = 1}};
+            var root_child0 = new YogaNode {PositionType = PositionType.Absolute, Position = {Left = 0, Top = 0}, Width = 50, AspectRatio = 1};
             root.Children.Add(root_child0);
 
             root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
@@ -56,11 +56,11 @@ namespace Xamarin.Yoga.Tests
         public void aspect_ratio_align_stretch()
         {
             var root = new YogaNode();
-            root.Style.Width  = 100;
-            root.Style.Height = 100;
+            root.Width  = 100;
+            root.Height = 100;
 
             var root_child0 = new YogaNode();
-            root_child0.Style.AspectRatio = 1;
+            root_child0.AspectRatio = 1;
             root.Children.Add(root_child0);
 
             root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
@@ -75,12 +75,12 @@ namespace Xamarin.Yoga.Tests
         public void aspect_ratio_allow_child_overflow_parent_size()
         {
             var root = new YogaNode();
-            root.Style.AlignItems = AlignType.FlexStart;
-            root.Style.Width      = 100;
+            root.AlignItems = AlignType.FlexStart;
+            root.Width      = 100;
 
             var root_child0 = new YogaNode();
-            root_child0.Style.Height      = 50;
-            root_child0.Style.AspectRatio = 4;
+            root_child0.Height      = 50;
+            root_child0.AspectRatio = 4;
             root.Children.Add(root_child0);
 
             root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
@@ -96,13 +96,13 @@ namespace Xamarin.Yoga.Tests
         public void aspect_ratio_basis()
         {
             var root = new YogaNode();
-            root.Style.AlignItems = AlignType.FlexStart;
-            root.Style.Width      = 100;
-            root.Style.Height     = 100;
+            root.AlignItems = AlignType.FlexStart;
+            root.Width      = 100;
+            root.Height     = 100;
 
             var root_child0 = new YogaNode();
-            root_child0.Style.FlexBasis   = 50;
-            root_child0.Style.AspectRatio = 1;
+            root_child0.FlexBasis   = 50;
+            root_child0.AspectRatio = 1;
             root.Children.Add(root_child0);
 
             root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
@@ -117,14 +117,14 @@ namespace Xamarin.Yoga.Tests
         public void aspect_ratio_both_dimensions_defined_column()
         {
             var root = new YogaNode();
-            root.Style.AlignItems = AlignType.FlexStart;
-            root.Style.Width      = 100;
-            root.Style.Height     = 100;
+            root.AlignItems = AlignType.FlexStart;
+            root.Width      = 100;
+            root.Height     = 100;
 
             var root_child0 = new YogaNode();
-            root_child0.Style.Width       = 100;
-            root_child0.Style.Height      = 50;
-            root_child0.Style.AspectRatio = 1;
+            root_child0.Width       = 100;
+            root_child0.Height      = 50;
+            root_child0.AspectRatio = 1;
             root.Children.Add(root_child0);
 
             root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
@@ -139,15 +139,15 @@ namespace Xamarin.Yoga.Tests
         public void aspect_ratio_both_dimensions_defined_row()
         {
             var root = new YogaNode();
-            root.Style.FlexDirection = FlexDirectionType.Row;
-            root.Style.AlignItems    = AlignType.FlexStart;
-            root.Style.Width         = 100;
-            root.Style.Height        = 100;
+            root.FlexDirection = FlexDirectionType.Row;
+            root.AlignItems    = AlignType.FlexStart;
+            root.Width         = 100;
+            root.Height        = 100;
 
             var root_child0 = new YogaNode();
-            root_child0.Style.Width       = 100;
-            root_child0.Style.Height      = 50;
-            root_child0.Style.AspectRatio = 1;
+            root_child0.Width       = 100;
+            root_child0.Height      = 50;
+            root_child0.AspectRatio = 1;
             root.Children.Add(root_child0);
 
             root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
@@ -162,13 +162,13 @@ namespace Xamarin.Yoga.Tests
         public void aspect_ratio_cross_defined()
         {
             var root = new YogaNode();
-            root.Style.AlignItems = AlignType.FlexStart;
-            root.Style.Width      = 100;
-            root.Style.Height     = 100;
+            root.AlignItems = AlignType.FlexStart;
+            root.Width      = 100;
+            root.Height     = 100;
 
             var root_child0 = new YogaNode();
-            root_child0.Style.Width       = 50;
-            root_child0.Style.AspectRatio = 1;
+            root_child0.Width       = 50;
+            root_child0.AspectRatio = 1;
             root.Children.Add(root_child0);
 
             root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
@@ -183,16 +183,16 @@ namespace Xamarin.Yoga.Tests
         public void aspect_ratio_defined_cross_with_main_margin()
         {
             var root = new YogaNode();
-            root.Style.AlignItems     = AlignType.Center;
-            root.Style.JustifyContent = JustifyType.Center;
-            root.Style.Width          = 100;
-            root.Style.Height         = 100;
+            root.AlignItems     = AlignType.Center;
+            root.JustifyContent = JustifyType.Center;
+            root.Width          = 100;
+            root.Height         = 100;
 
             var root_child0 = new YogaNode();
-            root_child0.Style.Width         = 50;
-            root_child0.Style.AspectRatio   = 1;
-            root_child0.Style.Margin.Top    = 10;
-            root_child0.Style.Margin.Bottom = 10;
+            root_child0.Width         = 50;
+            root_child0.AspectRatio   = 1;
+            root_child0.Margin.Top    = 10;
+            root_child0.Margin.Bottom = 10;
             root.Children.Add(root_child0);
 
             root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
@@ -208,16 +208,16 @@ namespace Xamarin.Yoga.Tests
         public void aspect_ratio_defined_cross_with_margin()
         {
             var root = new YogaNode();
-            root.Style.AlignItems     = AlignType.Center;
-            root.Style.JustifyContent = JustifyType.Center;
-            root.Style.Width          = 100;
-            root.Style.Height         = 100;
+            root.AlignItems     = AlignType.Center;
+            root.JustifyContent = JustifyType.Center;
+            root.Width          = 100;
+            root.Height         = 100;
 
             var root_child0 = new YogaNode();
-            root_child0.Style.Width        = 50;
-            root_child0.Style.AspectRatio  = 1;
-            root_child0.Style.Margin.Left  = 10;
-            root_child0.Style.Margin.Right = 10;
+            root_child0.Width        = 50;
+            root_child0.AspectRatio  = 1;
+            root_child0.Margin.Left  = 10;
+            root_child0.Margin.Right = 10;
             root.Children.Add(root_child0);
 
             root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
@@ -233,16 +233,16 @@ namespace Xamarin.Yoga.Tests
         public void aspect_ratio_defined_main_with_margin()
         {
             var root = new YogaNode();
-            root.Style.AlignItems     = AlignType.Center;
-            root.Style.JustifyContent = JustifyType.Center;
-            root.Style.Width          = 100;
-            root.Style.Height         = 100;
+            root.AlignItems     = AlignType.Center;
+            root.JustifyContent = JustifyType.Center;
+            root.Width          = 100;
+            root.Height         = 100;
 
             var root_child0 = new YogaNode();
-            root_child0.Style.Height       = 50;
-            root_child0.Style.AspectRatio  = 1;
-            root_child0.Style.Margin.Left  = 10;
-            root_child0.Style.Margin.Right = 10;
+            root_child0.Height       = 50;
+            root_child0.AspectRatio  = 1;
+            root_child0.Margin.Left  = 10;
+            root_child0.Margin.Right = 10;
             root.Children.Add(root_child0);
 
             root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
@@ -258,13 +258,13 @@ namespace Xamarin.Yoga.Tests
         public void aspect_ratio_double_cross()
         {
             var root = new YogaNode();
-            root.Style.AlignItems = AlignType.FlexStart;
-            root.Style.Width      = 100;
-            root.Style.Height     = 100;
+            root.AlignItems = AlignType.FlexStart;
+            root.Width      = 100;
+            root.Height     = 100;
 
             var root_child0 = new YogaNode();
-            root_child0.Style.Height      = 50;
-            root_child0.Style.AspectRatio = 2;
+            root_child0.Height      = 50;
+            root_child0.AspectRatio = 2;
             root.Children.Add(root_child0);
 
             root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
@@ -279,13 +279,13 @@ namespace Xamarin.Yoga.Tests
         public void aspect_ratio_double_main()
         {
             var root = new YogaNode();
-            root.Style.AlignItems = AlignType.FlexStart;
-            root.Style.Width      = 100;
-            root.Style.Height     = 100;
+            root.AlignItems = AlignType.FlexStart;
+            root.Width      = 100;
+            root.Height     = 100;
 
             var root_child0 = new YogaNode();
-            root_child0.Style.Width       = 50;
-            root_child0.Style.AspectRatio = 0.5f;
+            root_child0.Width       = 50;
+            root_child0.AspectRatio = 0.5f;
             root.Children.Add(root_child0);
 
             root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
@@ -300,14 +300,14 @@ namespace Xamarin.Yoga.Tests
         public void aspect_ratio_flex_grow()
         {
             var root = new YogaNode();
-            root.Style.AlignItems = AlignType.FlexStart;
-            root.Style.Width      = 100;
-            root.Style.Height     = 100;
+            root.AlignItems = AlignType.FlexStart;
+            root.Width      = 100;
+            root.Height     = 100;
 
             var root_child0 = new YogaNode();
-            root_child0.Style.Height      = 50;
-            root_child0.Style.FlexGrow    = 1;
-            root_child0.Style.AspectRatio = 1;
+            root_child0.Height      = 50;
+            root_child0.FlexGrow    = 1;
+            root_child0.AspectRatio = 1;
             root.Children.Add(root_child0);
 
             root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
@@ -322,14 +322,14 @@ namespace Xamarin.Yoga.Tests
         public void aspect_ratio_flex_shrink()
         {
             var root = new YogaNode();
-            root.Style.AlignItems = AlignType.FlexStart;
-            root.Style.Width      = 100;
-            root.Style.Height     = 100;
+            root.AlignItems = AlignType.FlexStart;
+            root.Width      = 100;
+            root.Height     = 100;
 
             var root_child0 = new YogaNode();
-            root_child0.Style.Height      = 150;
-            root_child0.Style.FlexShrink  = 1;
-            root_child0.Style.AspectRatio = 1;
+            root_child0.Height      = 150;
+            root_child0.FlexShrink  = 1;
+            root_child0.AspectRatio = 1;
             root.Children.Add(root_child0);
 
             root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
@@ -344,19 +344,19 @@ namespace Xamarin.Yoga.Tests
         public void aspect_ratio_flex_shrink_2()
         {
             var root = new YogaNode();
-            root.Style.Width  = 100;
-            root.Style.Height = 100;
+            root.Width  = 100;
+            root.Height = 100;
 
             var root_child0 = new YogaNode();
-            root_child0.Style.Height      = 100.Percent();
-            root_child0.Style.FlexShrink  = 1;
-            root_child0.Style.AspectRatio = 1;
+            root_child0.Height      = 100.Percent();
+            root_child0.FlexShrink  = 1;
+            root_child0.AspectRatio = 1;
             root.Children.Add(root_child0);
 
             var root_child1 = new YogaNode();
-            root_child1.Style.Height      = 100.Percent();
-            root_child1.Style.FlexShrink  = 1;
-            root_child1.Style.AspectRatio = 1;
+            root_child1.Height      = 100.Percent();
+            root_child1.FlexShrink  = 1;
+            root_child1.AspectRatio = 1;
             root.Children.Insert(1, root_child1);
 
             root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
@@ -376,13 +376,13 @@ namespace Xamarin.Yoga.Tests
         public void aspect_ratio_half_cross()
         {
             var root = new YogaNode();
-            root.Style.AlignItems = AlignType.FlexStart;
-            root.Style.Width      = 100;
-            root.Style.Height     = 100;
+            root.AlignItems = AlignType.FlexStart;
+            root.Width      = 100;
+            root.Height     = 100;
 
             var root_child0 = new YogaNode();
-            root_child0.Style.Height      = 100;
-            root_child0.Style.AspectRatio = 0.5f;
+            root_child0.Height      = 100;
+            root_child0.AspectRatio = 0.5f;
             root.Children.Add(root_child0);
 
             root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
@@ -397,13 +397,13 @@ namespace Xamarin.Yoga.Tests
         public void aspect_ratio_half_main()
         {
             var root = new YogaNode();
-            root.Style.AlignItems = AlignType.FlexStart;
-            root.Style.Width      = 100;
-            root.Style.Height     = 100;
+            root.AlignItems = AlignType.FlexStart;
+            root.Width      = 100;
+            root.Height     = 100;
 
             var root_child0 = new YogaNode();
-            root_child0.Style.Width       = 100;
-            root_child0.Style.AspectRatio = 2;
+            root_child0.Width       = 100;
+            root_child0.AspectRatio = 2;
             root.Children.Add(root_child0);
 
             root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
@@ -418,21 +418,21 @@ namespace Xamarin.Yoga.Tests
         public void aspect_ratio_height_as_flex_basis()
         {
             var root = new YogaNode();
-            root.Style.AlignItems    = AlignType.FlexStart;
-            root.Style.FlexDirection = FlexDirectionType.Row;
-            root.Style.Width         = 200;
-            root.Style.Height        = 200;
+            root.AlignItems    = AlignType.FlexStart;
+            root.FlexDirection = FlexDirectionType.Row;
+            root.Width         = 200;
+            root.Height        = 200;
 
             var root_child0 = new YogaNode();
-            root_child0.Style.Height      = 50;
-            root_child0.Style.FlexGrow    = 1;
-            root_child0.Style.AspectRatio = 1;
+            root_child0.Height      = 50;
+            root_child0.FlexGrow    = 1;
+            root_child0.AspectRatio = 1;
             root.Children.Add(root_child0);
 
             var root_child1 = new YogaNode();
-            root_child1.Style.Height      = 100;
-            root_child1.Style.FlexGrow    = 1;
-            root_child1.Style.AspectRatio = 1;
+            root_child1.Height      = 100;
+            root_child1.FlexGrow    = 1;
+            root_child1.AspectRatio = 1;
             root.Children.Insert(1, root_child1);
 
             root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
@@ -452,12 +452,12 @@ namespace Xamarin.Yoga.Tests
         public void aspect_ratio_height_overrides_align_stretch_column()
         {
             var root = new YogaNode();
-            root.Style.Width  = 100;
-            root.Style.Height = 100;
+            root.Width  = 100;
+            root.Height = 100;
 
             var root_child0 = new YogaNode();
-            root_child0.Style.Height      = 50;
-            root_child0.Style.AspectRatio = 1;
+            root_child0.Height      = 50;
+            root_child0.AspectRatio = 1;
             root.Children.Add(root_child0);
 
             root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
@@ -472,15 +472,15 @@ namespace Xamarin.Yoga.Tests
         public void aspect_ratio_left_right_absolute()
         {
             var root = new YogaNode();
-            root.Style.Width  = 100;
-            root.Style.Height = 100;
+            root.Width  = 100;
+            root.Height = 100;
 
             var root_child0 = new YogaNode();
-            root_child0.Style.PositionType   = PositionType.Absolute;
-            root_child0.Style.Position.Left  = 10;
-            root_child0.Style.Position.Top   = 10;
-            root_child0.Style.Position.Right = 10;
-            root_child0.Style.AspectRatio    = 1;
+            root_child0.PositionType   = PositionType.Absolute;
+            root_child0.Position.Left  = 10;
+            root_child0.Position.Top   = 10;
+            root_child0.Position.Right = 10;
+            root_child0.AspectRatio    = 1;
             root.Children.Add(root_child0);
 
             root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
@@ -495,13 +495,13 @@ namespace Xamarin.Yoga.Tests
         public void aspect_ratio_main_defined()
         {
             var root = new YogaNode();
-            root.Style.AlignItems = AlignType.FlexStart;
-            root.Style.Width      = 100;
-            root.Style.Height     = 100;
+            root.AlignItems = AlignType.FlexStart;
+            root.Width      = 100;
+            root.Height     = 100;
 
             var root_child0 = new YogaNode();
-            root_child0.Style.Height      = 50;
-            root_child0.Style.AspectRatio = 1;
+            root_child0.Height      = 50;
+            root_child0.AspectRatio = 1;
             root.Children.Add(root_child0);
 
             root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
@@ -516,14 +516,14 @@ namespace Xamarin.Yoga.Tests
         public void aspect_ratio_overrides_flex_grow_column()
         {
             var root = new YogaNode();
-            root.Style.AlignItems = AlignType.FlexStart;
-            root.Style.Width      = 100;
-            root.Style.Height     = 100;
+            root.AlignItems = AlignType.FlexStart;
+            root.Width      = 100;
+            root.Height     = 100;
 
             var root_child0 = new YogaNode();
-            root_child0.Style.Height      = 50;
-            root_child0.Style.FlexGrow    = 1;
-            root_child0.Style.AspectRatio = 2;
+            root_child0.Height      = 50;
+            root_child0.FlexGrow    = 1;
+            root_child0.AspectRatio = 2;
             root.Children.Add(root_child0);
 
             root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
@@ -538,15 +538,15 @@ namespace Xamarin.Yoga.Tests
         public void aspect_ratio_overrides_flex_grow_row()
         {
             var root = new YogaNode();
-            root.Style.AlignItems    = AlignType.FlexStart;
-            root.Style.FlexDirection = FlexDirectionType.Row;
-            root.Style.Width         = 100;
-            root.Style.Height        = 100;
+            root.AlignItems    = AlignType.FlexStart;
+            root.FlexDirection = FlexDirectionType.Row;
+            root.Width         = 100;
+            root.Height        = 100;
 
             var root_child0 = new YogaNode();
-            root_child0.Style.Width       = 50;
-            root_child0.Style.FlexGrow    = 1;
-            root_child0.Style.AspectRatio = 0.5f;
+            root_child0.Width       = 50;
+            root_child0.FlexGrow    = 1;
+            root_child0.AspectRatio = 0.5f;
             root.Children.Add(root_child0);
 
             root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
@@ -563,16 +563,16 @@ namespace Xamarin.Yoga.Tests
             var config = new YogaConfig {UseWebDefaults = true};
 
             var root = new YogaNode(config);
-            root.Style.FlexDirection = FlexDirectionType.Column;
+            root.FlexDirection = FlexDirectionType.Column;
 
             var root_child0 = new YogaNode(config);
-            root_child0.Style.FlexDirection = FlexDirectionType.Column;
+            root_child0.FlexDirection = FlexDirectionType.Column;
             root.Children.Add(root_child0);
 
             var root_child0_child0 = new YogaNode(config);
-            root_child0_child0.Style.FlexDirection = FlexDirectionType.Column;
-            root_child0_child0.Style.Height        = 100;
-            root_child0_child0.Style.AspectRatio   = 2;
+            root_child0_child0.FlexDirection = FlexDirectionType.Column;
+            root_child0_child0.Height        = 100;
+            root_child0_child0.AspectRatio   = 2;
             root_child0.Children.Add(root_child0_child0);
 
             root.Calc.CalculateLayout(100, 200, DirectionType.LTR);
@@ -593,16 +593,16 @@ namespace Xamarin.Yoga.Tests
             var config = new YogaConfig {UseWebDefaults = true};
 
             var root = new YogaNode(config);
-            root.Style.FlexDirection = FlexDirectionType.Row;
+            root.FlexDirection = FlexDirectionType.Row;
 
             var root_child0 = new YogaNode(config);
-            root_child0.Style.FlexDirection = FlexDirectionType.Row;
+            root_child0.FlexDirection = FlexDirectionType.Row;
             root.Children.Add(root_child0);
 
             var root_child0_child0 = new YogaNode(config);
-            root_child0_child0.Style.FlexDirection = FlexDirectionType.Row;
-            root_child0_child0.Style.Width         = 100;
-            root_child0_child0.Style.AspectRatio   = 0.5f;
+            root_child0_child0.FlexDirection = FlexDirectionType.Row;
+            root_child0_child0.Width         = 100;
+            root_child0_child0.AspectRatio   = 0.5f;
             root_child0.Children.Add(root_child0_child0);
 
             root.Calc.CalculateLayout(200, 100, DirectionType.LTR);
@@ -625,14 +625,14 @@ namespace Xamarin.Yoga.Tests
             var root = new YogaNode(config);
 
             var root_child0 = new YogaNode(config);
-            root_child0.Style.FlexDirection = FlexDirectionType.Column;
-            root_child0.Style.AspectRatio   = 2;
-            root_child0.Style.FlexGrow      = 1;
+            root_child0.FlexDirection = FlexDirectionType.Column;
+            root_child0.AspectRatio   = 2;
+            root_child0.FlexGrow      = 1;
             root.Children.Add(root_child0);
 
             var root_child0_child0 = new YogaNode(config);
-            root_child0_child0.Style.AspectRatio = 4;
-            root_child0_child0.Style.FlexGrow    = 1;
+            root_child0_child0.AspectRatio = 4;
+            root_child0_child0.FlexGrow    = 1;
             root_child0.Children.Add(root_child0_child0);
 
             root.Calc.CalculateLayout(100, 100, DirectionType.LTR);
@@ -651,15 +651,15 @@ namespace Xamarin.Yoga.Tests
         public void aspect_ratio_top_bottom_absolute()
         {
             var root = new YogaNode();
-            root.Style.Width  = 100;
-            root.Style.Height = 100;
+            root.Width  = 100;
+            root.Height = 100;
 
             var root_child0 = new YogaNode();
-            root_child0.Style.PositionType    = PositionType.Absolute;
-            root_child0.Style.Position.Left   = 10;
-            root_child0.Style.Position.Top    = 10;
-            root_child0.Style.Position.Bottom = 10;
-            root_child0.Style.AspectRatio     = 1;
+            root_child0.PositionType    = PositionType.Absolute;
+            root_child0.Position.Left   = 10;
+            root_child0.Position.Top    = 10;
+            root_child0.Position.Bottom = 10;
+            root_child0.AspectRatio     = 1;
             root.Children.Add(root_child0);
 
             root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
@@ -674,20 +674,20 @@ namespace Xamarin.Yoga.Tests
         public void aspect_ratio_width_as_flex_basis()
         {
             var root = new YogaNode();
-            root.Style.AlignItems = AlignType.FlexStart;
-            root.Style.Width      = 200;
-            root.Style.Height     = 200;
+            root.AlignItems = AlignType.FlexStart;
+            root.Width      = 200;
+            root.Height     = 200;
 
             var root_child0 = new YogaNode();
-            root_child0.Style.Width       = 50;
-            root_child0.Style.FlexGrow    = 1;
-            root_child0.Style.AspectRatio = 1;
+            root_child0.Width       = 50;
+            root_child0.FlexGrow    = 1;
+            root_child0.AspectRatio = 1;
             root.Children.Add(root_child0);
 
             var root_child1 = new YogaNode();
-            root_child1.Style.Width       = 100;
-            root_child1.Style.FlexGrow    = 1;
-            root_child1.Style.AspectRatio = 1;
+            root_child1.Width       = 100;
+            root_child1.FlexGrow    = 1;
+            root_child1.AspectRatio = 1;
             root.Children.Insert(1, root_child1);
 
             root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
@@ -707,15 +707,15 @@ namespace Xamarin.Yoga.Tests
         public void aspect_ratio_width_height_flex_grow_column()
         {
             var root = new YogaNode();
-            root.Style.AlignItems = AlignType.FlexStart;
-            root.Style.Width      = 200;
-            root.Style.Height     = 100;
+            root.AlignItems = AlignType.FlexStart;
+            root.Width      = 200;
+            root.Height     = 100;
 
             var root_child0 = new YogaNode();
-            root_child0.Style.Width       = 50;
-            root_child0.Style.Height      = 50;
-            root_child0.Style.FlexGrow    = 1;
-            root_child0.Style.AspectRatio = 1;
+            root_child0.Width       = 50;
+            root_child0.Height      = 50;
+            root_child0.FlexGrow    = 1;
+            root_child0.AspectRatio = 1;
             root.Children.Add(root_child0);
 
             root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
@@ -730,16 +730,16 @@ namespace Xamarin.Yoga.Tests
         public void aspect_ratio_width_height_flex_grow_row()
         {
             var root = new YogaNode();
-            root.Style.FlexDirection = FlexDirectionType.Row;
-            root.Style.AlignItems    = AlignType.FlexStart;
-            root.Style.Width         = 100;
-            root.Style.Height        = 200;
+            root.FlexDirection = FlexDirectionType.Row;
+            root.AlignItems    = AlignType.FlexStart;
+            root.Width         = 100;
+            root.Height        = 200;
 
             var root_child0 = new YogaNode();
-            root_child0.Style.Width       = 50;
-            root_child0.Style.Height      = 50;
-            root_child0.Style.FlexGrow    = 1;
-            root_child0.Style.AspectRatio = 1;
+            root_child0.Width       = 50;
+            root_child0.Height      = 50;
+            root_child0.FlexGrow    = 1;
+            root_child0.AspectRatio = 1;
             root.Children.Add(root_child0);
 
             root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
@@ -754,13 +754,13 @@ namespace Xamarin.Yoga.Tests
         public void aspect_ratio_width_overrides_align_stretch_row()
         {
             var root = new YogaNode();
-            root.Style.FlexDirection = FlexDirectionType.Row;
-            root.Style.Width         = 100;
-            root.Style.Height        = 100;
+            root.FlexDirection = FlexDirectionType.Row;
+            root.Width         = 100;
+            root.Height        = 100;
 
             var root_child0 = new YogaNode();
-            root_child0.Style.Width       = 50;
-            root_child0.Style.AspectRatio = 1;
+            root_child0.Width       = 50;
+            root_child0.AspectRatio = 1;
             root.Children.Add(root_child0);
 
             root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
@@ -775,14 +775,14 @@ namespace Xamarin.Yoga.Tests
         public void aspect_ratio_with_max_cross_defined()
         {
             var root = new YogaNode();
-            root.Style.AlignItems = AlignType.FlexStart;
-            root.Style.Width      = 100;
-            root.Style.Height     = 100;
+            root.AlignItems = AlignType.FlexStart;
+            root.Width      = 100;
+            root.Height     = 100;
 
             var root_child0 = new YogaNode();
-            root_child0.Style.Height      = 50;
-            root_child0.Style.MaxWidth    = 40;
-            root_child0.Style.AspectRatio = 1;
+            root_child0.Height      = 50;
+            root_child0.MaxWidth    = 40;
+            root_child0.AspectRatio = 1;
             root.Children.Add(root_child0);
 
             root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
@@ -797,14 +797,14 @@ namespace Xamarin.Yoga.Tests
         public void aspect_ratio_with_max_main_defined()
         {
             var root = new YogaNode();
-            root.Style.AlignItems = AlignType.FlexStart;
-            root.Style.Width      = 100;
-            root.Style.Height     = 100;
+            root.AlignItems = AlignType.FlexStart;
+            root.Width      = 100;
+            root.Height     = 100;
 
             var root_child0 = new YogaNode();
-            root_child0.Style.Width       = 50;
-            root_child0.Style.MaxHeight   = 40;
-            root_child0.Style.AspectRatio = 1;
+            root_child0.Width       = 50;
+            root_child0.MaxHeight   = 40;
+            root_child0.AspectRatio = 1;
             root.Children.Add(root_child0);
 
             root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
@@ -819,13 +819,13 @@ namespace Xamarin.Yoga.Tests
         public void aspect_ratio_with_measure_func()
         {
             var root = new YogaNode();
-            root.Style.AlignItems = AlignType.FlexStart;
-            root.Style.Width      = 100;
-            root.Style.Height     = 100;
+            root.AlignItems = AlignType.FlexStart;
+            root.Width      = 100;
+            root.Height     = 100;
 
             var root_child0 = new YogaNode();
             root_child0.MeasureFunc       = _measure;
-            root_child0.Style.AspectRatio = 1;
+            root_child0.AspectRatio = 1;
             root.Children.Add(root_child0);
 
             root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
@@ -840,14 +840,14 @@ namespace Xamarin.Yoga.Tests
         public void aspect_ratio_with_min_cross_defined()
         {
             var root = new YogaNode();
-            root.Style.AlignItems = AlignType.FlexStart;
-            root.Style.Width      = 100;
-            root.Style.Height     = 100;
+            root.AlignItems = AlignType.FlexStart;
+            root.Width      = 100;
+            root.Height     = 100;
 
             var root_child0 = new YogaNode();
-            root_child0.Style.Height      = 30;
-            root_child0.Style.MinWidth    = 40;
-            root_child0.Style.AspectRatio = 1;
+            root_child0.Height      = 30;
+            root_child0.MinWidth    = 40;
+            root_child0.AspectRatio = 1;
             root.Children.Add(root_child0);
 
             root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
@@ -862,14 +862,14 @@ namespace Xamarin.Yoga.Tests
         public void aspect_ratio_with_min_main_defined()
         {
             var root = new YogaNode();
-            root.Style.AlignItems = AlignType.FlexStart;
-            root.Style.Width      = 100;
-            root.Style.Height     = 100;
+            root.AlignItems = AlignType.FlexStart;
+            root.Width      = 100;
+            root.Height     = 100;
 
             var root_child0 = new YogaNode();
-            root_child0.Style.Width       = 30;
-            root_child0.Style.MinHeight   = 40;
-            root_child0.Style.AspectRatio = 1;
+            root_child0.Width       = 30;
+            root_child0.MinHeight   = 40;
+            root_child0.AspectRatio = 1;
             root.Children.Add(root_child0);
 
             root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);

@@ -7,36 +7,60 @@ using System.Runtime.CompilerServices;
 
 namespace Xamarin.Yoga
 {
-    using static YogaConst;
     using static NumberExtensions;
+    using static YogaConst;
 
 
-    public class YogaNode : IEquatable<YogaNode>
+    public class YogaNode : IEquatable<YogaNode>, INodeStyle
     {
-        private readonly ObservableCollection<YogaNode> _children = new ObservableCollection<YogaNode>();
-        private          bool                           _isDirty;
-        private          NodeLayout                     _layout = new NodeLayout();
+        private static readonly Value ValueAuto      = new Value(float.NaN, ValueUnit.Auto);
+        private static readonly Value ValueUndefined = new Value(float.NaN, ValueUnit.Undefined);
 
-        private MeasureFunc    _measureFunc;
-        private NodeCalculator _nodeCalculator;
-        private YogaNode       _owner;
-        private NodeStyle      _style;
+
+        private          AlignType                      _alignContent = AlignType.FlexStart;
+        private          AlignType                      _alignItems   = AlignType.Stretch;
+        private          AlignType                      _alignSelf    = AlignType.Auto;
+        private          float?                         _aspectRatio;
+        private          Edges                          _border;
+        private readonly ObservableCollection<YogaNode> _children   = new ObservableCollection<YogaNode>();
+        private readonly Dimensions                     _dimensions = new Dimensions(ValueAuto, ValueAuto);
+        private          DirectionType                  _direction  = DirectionType.Inherit;
+        private          DisplayType                    _display    = DisplayType.Flex;
+        private          float?                         _flex;
+        private          Value                          _flexBasis     = ValueAuto;
+        private          FlexDirectionType              _flexDirection = FlexDirectionType.Column;
+        private          float?                         _flexGrow;
+        private          float?                         _flexShrink;
+        private          WrapType                       _flexWrap = WrapType.NoWrap;
+        private          bool                           _isDirty;
+        private          JustifyType                    _justifyContent = JustifyType.FlexStart;
+        private          NodeLayout                     _layout         = new NodeLayout();
+        private          Edges                          _margin;
+        private readonly Dimensions                     _maxDimensions = new Dimensions(ValueUndefined, ValueUndefined);
+        private          MeasureFunc                    _measureFunc;
+        private readonly Dimensions                     _minDimensions = new Dimensions(ValueUndefined, ValueUndefined);
+        private          NodeCalculator                 _nodeCalculator;
+        private          OverflowType                   _overflow = OverflowType.Visible;
+        private          YogaNode                       _owner;
+        private          Edges                          _padding;
+        private          Edges                          _position;
+        private          PositionType                   _positionType = PositionType.Relative;
 
         public YogaNode() : this(YogaConfig.DefaultConfig) { }
 
         public YogaNode(YogaConfig newConfig)
         {
-            _style = new NodeStyle
-            {
-                Owner = this
-            };
+            _border   = new Edges {Owner = this};
+            _margin   = new Edges {Owner = this};
+            _padding  = new Edges {Owner = this};
+            _position = new Edges {Owner = this};
 
             Config = newConfig;
 
             if (Config.UseWebDefaults)
             {
-                Style.FlexDirection = FlexDirectionType.Row;
-                Style.AlignContent  = AlignType.Stretch;
+                FlexDirection = FlexDirectionType.Row;
+                AlignContent  = AlignType.Stretch;
             }
 
             _children.CollectionChanged += ChildrenChanged;
@@ -47,7 +71,32 @@ namespace Xamarin.Yoga
             if (ReferenceEquals(node, this))
                 return;
 
-            _style = new NodeStyle(node.Style) {Owner = this};
+            //_style = new NodeStyle(node.Style) {Owner = this};
+            AlignContent   = node.AlignContent;
+            AlignItems     = node.AlignItems;
+            AlignSelf      = node.AlignSelf;
+            AspectRatio    = node.AspectRatio;
+            Border         = node.Border.Clone();
+            Direction      = node.Direction;
+            Display        = node.Display;
+            Flex           = node.Flex;
+            FlexBasis      = node.FlexBasis;
+            FlexDirection  = node.FlexDirection;
+            FlexGrow       = node.FlexGrow;
+            FlexShrink     = node.GetFlexShrink();
+            FlexWrap       = node.FlexWrap;
+            Height         = node.Height;
+            JustifyContent = node.JustifyContent;
+            Margin         = node.Margin.Clone();
+            MaxHeight      = node.MaxHeight;
+            MaxWidth       = node.MaxWidth;
+            MinHeight      = node.MinHeight;
+            MinWidth       = node.MinWidth;
+            Overflow       = node.Overflow;
+            Padding        = node.Padding.Clone();
+            Position       = node.Position.Clone();
+            PositionType   = node.PositionType;
+            Width          = node.Width;
 
             Context           = node.Context;
             PrintFunc         = node.PrintFunc;
@@ -141,22 +190,22 @@ namespace Xamarin.Yoga
         public PrintFunc  PrintFunc         { get; set; }
         public Dimensions ResolvedDimension { get; } = new Dimensions(ValueUndefined, ValueUndefined);
 
-        public NodeStyle Style
-        {
-            get => _style;
-            set
-            {
-                if (_style != value)
-                {
-                    if (_style != null)
-                        _style.Owner = null;
+        //public NodeStyle Style
+        //{
+        //    get => _style;
+        //    set
+        //    {
+        //        if (_style != value)
+        //        {
+        //            if (_style != null)
+        //                _style.Owner = null;
 
-                    _style       = value;
-                    _style.Owner = this;
-                    MarkDirtyAndPropagate();
-                }
-            }
-        }
+        //            _style       = value;
+        //            _style.Owner = this;
+        //            MarkDirtyAndPropagate();
+        //        }
+        //    }
+        //}
 
         /// <inheritdoc />
         public bool Equals(YogaNode other)
@@ -170,8 +219,38 @@ namespace Xamarin.Yoga
                 _isDirty     == other._isDirty     &&
                 NodeType     == other.NodeType     &&
                 LineIndex    == other.LineIndex;
-            result = result &&
-                Equals(_style, other._style);
+            result = result                         &&
+                Flex.Equals(other.Flex)             &&
+                FlexGrow.Equals(other.FlexGrow)     &&
+                FlexShrink.Equals(other.FlexShrink) &&
+                AlignContent == other.AlignContent;
+            result = result                      &&
+                Equals(Margin,   other.Margin)   &&
+                Equals(Position, other.Position) &&
+                Equals(Padding,  other.Padding)  &&
+                Equals(Border,   other.Border);
+            result = result                    &&
+                AlignItems == other.AlignItems &&
+                AlignSelf  == other.AlignSelf  &&
+                Direction  == other.Direction  &&
+                Display    == other.Display;
+            result = result                            &&
+                Equals(FlexBasis, other.FlexBasis)     &&
+                FlexDirection  == other.FlexDirection  &&
+                FlexWrap       == other.FlexWrap       &&
+                JustifyContent == other.JustifyContent &&
+                Overflow       == other.Overflow       &&
+                PositionType   == other.PositionType   &&
+                AspectRatio.Equals(other.AspectRatio);
+            result = result                        &&
+                Equals(Width,     other.Width)     &&
+                Equals(Height,    other.Height)    &&
+                Equals(MinWidth,  other.MinWidth)  &&
+                Equals(MinHeight, other.MinHeight) &&
+                Equals(MaxWidth,  other.MaxWidth)  &&
+                Equals(MaxHeight, other.MaxHeight);
+
+
             result = result &&
                 Equals(_layout, other._layout);
             result = result &&
@@ -182,6 +261,418 @@ namespace Xamarin.Yoga
             return result;
         }
 
+
+        /// <inheritdoc />
+        public AlignType AlignContent
+        {
+            get => _alignContent;
+            set
+            {
+                if (_alignContent != value)
+                {
+                    _alignContent = value;
+                    MarkDirtyAndPropagate();
+                }
+            }
+        }
+
+        /// <inheritdoc />
+        public AlignType AlignItems
+        {
+            get => _alignItems;
+            set
+            {
+                if (_alignItems != value)
+                {
+                    _alignItems = value;
+                    MarkDirtyAndPropagate();
+                }
+            }
+        }
+
+        /// <inheritdoc />
+        public AlignType AlignSelf
+        {
+            get => _alignSelf;
+            set
+            {
+                if (_alignSelf != value)
+                {
+                    _alignSelf = value;
+                    MarkDirtyAndPropagate();
+                }
+            }
+        }
+
+
+        /// <inheritdoc />
+        // Yoga specific properties, not compatible with flexbox specification
+        public float? AspectRatio
+        {
+            get => _aspectRatio;
+            set
+            {
+                if (!FloatOptionalEqual(_aspectRatio, value))
+                {
+                    _aspectRatio = value;
+                    MarkDirtyAndPropagate();
+                }
+            }
+        }
+
+        /// <inheritdoc />
+        public Edges Border
+        {
+            get => _border;
+            set
+            {
+                if (_border != value)
+                {
+                    _border       = value;
+                    _border.Owner = this;
+                    MarkDirtyAndPropagate();
+                }
+            }
+        }
+
+        /// <inheritdoc />
+        public DirectionType Direction
+        {
+            get => _direction;
+            set
+            {
+                if (_direction != value)
+                {
+                    _direction = value;
+                    MarkDirtyAndPropagate();
+                }
+            }
+        }
+
+        /// <inheritdoc />
+        public DisplayType Display
+        {
+            get => _display;
+            set
+            {
+                if (_display != value)
+                {
+                    _display = value;
+                    MarkDirtyAndPropagate();
+                }
+            }
+        }
+
+        /// <inheritdoc />
+        public float? Flex
+        {
+            get => _flex;
+            set
+            {
+                if (!FloatOptionalEqual(_flex, value))
+                {
+                    _flex = value;
+                    MarkDirtyAndPropagate();
+                }
+            }
+        }
+
+        /// <inheritdoc />
+        public Value FlexBasis
+        {
+            get => _flexBasis;
+            set
+            {
+                if ((value.Unit == ValueUnit.Undefined || value.Unit == ValueUnit.Auto) && !value.Number.IsNaN())
+                    value = new Value(float.NaN, value.Unit);
+                if (value.Unit == ValueUnit.Percent && value.Number.IsNaN())
+                    value = Value.Auto;
+
+                if (_flexBasis != value)
+                {
+                    _flexBasis = value;
+                    MarkDirtyAndPropagate();
+                }
+            }
+        }
+
+        /// <inheritdoc />
+        public FlexDirectionType FlexDirection
+        {
+            get => _flexDirection;
+            set
+            {
+                if (_flexDirection != value)
+                {
+                    _flexDirection = value;
+                    MarkDirtyAndPropagate();
+                }
+            }
+        }
+
+        /// <inheritdoc />
+        public float? FlexGrow
+        {
+            get => _flexGrow;
+            set
+            {
+                if (!FloatOptionalEqual(_flexGrow, value))
+                {
+                    _flexGrow = value.IsNaN() ? null : value;
+                    MarkDirtyAndPropagate();
+                }
+            }
+        }
+
+
+        /// <inheritdoc />
+        public float? FlexShrink
+        {
+            get
+            {
+                if (!_flexShrink.HasValue)
+                {
+                    if (Config?.UseWebDefaults ?? false)
+                        return WebDefaultFlexShrink;
+                    return DefaultFlexShrink;
+                }
+
+                return _flexShrink;
+            }
+            set
+            {
+                if (!FloatOptionalEqual(_flexShrink, value))
+                {
+                    _flexShrink = value.IsNaN() ? null : value;
+                    MarkDirtyAndPropagate();
+                }
+            }
+        }
+
+        /// <inheritdoc />
+        public WrapType FlexWrap
+        {
+            get => _flexWrap;
+            set
+            {
+                if (_flexWrap != value)
+                {
+                    _flexWrap = value;
+                    MarkDirtyAndPropagate();
+                }
+            }
+        }
+
+        /// <inheritdoc />
+        public Value Height
+        {
+            get => _dimensions.Height;
+            set
+            {
+                if ((value.Unit == ValueUnit.Undefined || value.Unit == ValueUnit.Auto) && !value.Number.IsNaN())
+                    value = new Value(float.NaN, value.Unit);
+                if (value.Unit == ValueUnit.Percent && value.Number.IsNaN())
+                    value = Value.Auto;
+
+                if (_dimensions.Height != value)
+                {
+                    _dimensions.Height = value;
+                    MarkDirtyAndPropagate();
+                }
+            }
+        }
+
+        /// <inheritdoc />
+        public JustifyType JustifyContent
+        {
+            get => _justifyContent;
+            set
+            {
+                if (_justifyContent != value)
+                {
+                    _justifyContent = value;
+                    MarkDirtyAndPropagate();
+                }
+            }
+        }
+
+        /// <inheritdoc />
+        public Edges Margin
+        {
+            get => _margin;
+            set
+            {
+                if (_margin != value)
+                {
+                    _margin       = value;
+                    _margin.Owner = this;
+                    MarkDirtyAndPropagate();
+                }
+            }
+        }
+
+        /// <inheritdoc />
+        public Value MaxHeight
+        {
+            get => _maxDimensions.Height;
+            set
+            {
+                if ((value.Unit == ValueUnit.Undefined || value.Unit == ValueUnit.Auto) && !value.Number.IsNaN())
+                    value = new Value(float.NaN, value.Unit);
+                if (_maxDimensions.Height != value)
+                {
+                    _maxDimensions.Height = value;
+                    MarkDirtyAndPropagate();
+                }
+            }
+        }
+
+        /// <inheritdoc />
+        public Value MaxWidth
+        {
+            get => _maxDimensions.Width;
+            set
+            {
+                if ((value.Unit == ValueUnit.Undefined || value.Unit == ValueUnit.Auto) && !value.Number.IsNaN())
+                    value = new Value(float.NaN, value.Unit);
+                if (_maxDimensions.Width != value)
+                {
+                    _maxDimensions.Width = value;
+                    MarkDirtyAndPropagate();
+                }
+            }
+        }
+
+        /// <inheritdoc />
+        public Value MinHeight
+        {
+            get => _minDimensions.Height;
+            set
+            {
+                if ((value.Unit == ValueUnit.Undefined || value.Unit == ValueUnit.Auto) && !value.Number.IsNaN())
+                    value = new Value(float.NaN, value.Unit);
+                if (_minDimensions.Height != value)
+                {
+                    _minDimensions.Height = value;
+                    MarkDirtyAndPropagate();
+                }
+            }
+        }
+
+        /// <inheritdoc />
+        public Value MinWidth
+        {
+            get => _minDimensions.Width;
+            set
+            {
+                if ((value.Unit == ValueUnit.Undefined || value.Unit == ValueUnit.Auto) && !value.Number.IsNaN())
+                    value = new Value(float.NaN, value.Unit);
+                if (_minDimensions.Width != value)
+                {
+                    _minDimensions.Width = value;
+                    MarkDirtyAndPropagate();
+                }
+            }
+        }
+
+        /// <inheritdoc />
+        public OverflowType Overflow
+        {
+            get => _overflow;
+            set
+            {
+                if (_overflow != value)
+                {
+                    _overflow = value;
+                    MarkDirtyAndPropagate();
+                }
+            }
+        }
+
+        /// <inheritdoc />
+        public Edges Padding
+        {
+            get => _padding;
+            set
+            {
+                if (_padding != value)
+                {
+                    _padding       = value;
+                    _padding.Owner = this;
+                    MarkDirtyAndPropagate();
+                }
+            }
+        }
+
+        /// <inheritdoc />
+        public Edges Position
+        {
+            get => _position;
+            set
+            {
+                if (_position != value)
+                {
+                    _position       = value;
+                    _position.Owner = this;
+                    MarkDirtyAndPropagate();
+                }
+            }
+        }
+
+        /// <inheritdoc />
+        public PositionType PositionType
+        {
+            get => _positionType;
+            set
+            {
+                if (_positionType != value)
+                {
+                    _positionType = value;
+                    MarkDirtyAndPropagate();
+                }
+            }
+        }
+
+        /// <inheritdoc />
+        public Value Width
+        {
+            get => _dimensions.Width;
+            set
+            {
+                if ((value.Unit == ValueUnit.Undefined || value.Unit == ValueUnit.Auto) && !value.Number.IsNaN())
+                    value = new Value(float.NaN, value.Unit);
+                if (value.Unit == ValueUnit.Percent && value.Number.IsNaN())
+                    value = Value.Auto;
+
+                if (_dimensions.Width != value)
+                {
+                    _dimensions.Width = value;
+                    MarkDirtyAndPropagate();
+                }
+            }
+        }
+
+        public Value Dimension(DimensionType dim)
+        {
+            return _dimensions[dim];
+        }
+
+        public Value MaxDimension(DimensionType dim)
+        {
+            return _maxDimensions[dim];
+        }
+
+        public Value MinDimension(DimensionType dim)
+        {
+            return _minDimensions[dim];
+        }
+
+        /// <inheritdoc />
+        public float? GetFlexShrink()
+        {
+            return _flexShrink;
+        }
+
         public void ClearChildren()
         {
             if (Children.Count == 0)
@@ -190,6 +681,7 @@ namespace Xamarin.Yoga
             _children.Clear();
             MarkDirtyAndPropagate();
         }
+
 
         /// <inheritdoc />
         public override bool Equals(object obj)
@@ -211,38 +703,38 @@ namespace Xamarin.Yoga
 
         public float GetLeadingBorder(FlexDirectionType axis)
         {
-            if (axis.IsRow()                                   &&
-                Style.Border.Start.Unit != ValueUnit.Undefined &&
-                Style.Border.Start.Number.HasValue()           &&
-                Style.Border.Start.Number >= 0.0f)
-                return Style.Border.Start.Number;
+            if (axis.IsRow()                             &&
+                Border.Start.Unit != ValueUnit.Undefined &&
+                Border.Start.Number.HasValue()           &&
+                Border.Start.Number >= 0.0f)
+                return Border.Start.Number;
 
             var computedEdgeValue =
-                Style.Border.ComputedEdgeValue(axis.ToLeadingEdge(), ValueZero).Number;
+                Border.ComputedEdgeValue(axis.ToLeadingEdge(), ValueZero).Number;
             return FloatMax(computedEdgeValue, 0.0f);
         }
 
         public float GetLeadingMargin(FlexDirectionType axis, float widthSize)
         {
             if (axis.IsRow() &&
-                Style.Margin.Start.Unit != ValueUnit.Undefined)
-                return ResolveValueMargin(Style.Margin.Start, widthSize);
+                Margin.Start.Unit != ValueUnit.Undefined)
+                return ResolveValueMargin(Margin.Start, widthSize);
 
             return ResolveValueMargin(
-                Style.Margin.ComputedEdgeValue(axis.ToLeadingEdge(), ValueZero),
+                Margin.ComputedEdgeValue(axis.ToLeadingEdge(), ValueZero),
                 widthSize);
         }
 
         public float GetLeadingPadding(FlexDirectionType axis, float widthSize)
         {
             var paddingEdgeStart =
-                Style.Padding.Start.ResolveValue(widthSize);
-            if (axis.IsRow()                                    &&
-                Style.Padding.Start.Unit != ValueUnit.Undefined &&
-                paddingEdgeStart.HasValue()                     && paddingEdgeStart > 0.0f)
+                Padding.Start.ResolveValue(widthSize);
+            if (axis.IsRow()                              &&
+                Padding.Start.Unit != ValueUnit.Undefined &&
+                paddingEdgeStart.HasValue()               && paddingEdgeStart > 0.0f)
                 return paddingEdgeStart;
 
-            var resolvedValue = Style.Padding.ComputedEdgeValue(axis.ToLeadingEdge(), ValueZero).ResolveValue(widthSize);
+            var resolvedValue = Padding.ComputedEdgeValue(axis.ToLeadingEdge(), ValueZero).ResolveValue(widthSize);
             return FloatMax(resolvedValue, 0.0f);
         }
 
@@ -256,13 +748,13 @@ namespace Xamarin.Yoga
             if (axis.IsRow())
             {
                 var leadingPosition =
-                    Style.Position.ComputedEdgeValue(EdgeType.Start, ValueUndefined);
+                    Position.ComputedEdgeValue(EdgeType.Start, ValueUndefined);
                 if (leadingPosition.Unit != ValueUnit.Undefined)
                     return leadingPosition.ResolveValue(axisSize);
             }
 
             var leadingPos =
-                Style.Position.ComputedEdgeValue(axis.ToLeadingEdge(), ValueUndefined);
+                Position.ComputedEdgeValue(axis.ToLeadingEdge(), ValueUndefined);
 
             return leadingPos.Unit == ValueUnit.Undefined
                 ? 0
@@ -276,36 +768,36 @@ namespace Xamarin.Yoga
 
         public float GetTrailingBorder(FlexDirectionType flexDirection)
         {
-            if (flexDirection.IsRow()                        &&
-                Style.Border.End.Unit != ValueUnit.Undefined &&
-                Style.Border.End.Number.HasValue()           &&
-                Style.Border.End.Number >= 0.0f)
-                return Style.Border.End.Number;
+            if (flexDirection.IsRow()                  &&
+                Border.End.Unit != ValueUnit.Undefined &&
+                Border.End.Number.HasValue()           &&
+                Border.End.Number >= 0.0f)
+                return Border.End.Number;
 
-            var computedEdgeValue = Style.Border.ComputedEdgeValue(flexDirection.ToTrailingEdge(), ValueZero).Number;
+            var computedEdgeValue = Border.ComputedEdgeValue(flexDirection.ToTrailingEdge(), ValueZero).Number;
             return FloatMax(computedEdgeValue, 0.0f);
         }
 
         public float GetTrailingMargin(FlexDirectionType axis, float widthSize)
         {
             if (axis.IsRow() &&
-                Style.Margin.End.Unit != ValueUnit.Undefined)
-                return ResolveValueMargin(Style.Margin.End, widthSize);
+                Margin.End.Unit != ValueUnit.Undefined)
+                return ResolveValueMargin(Margin.End, widthSize);
 
             return ResolveValueMargin(
-                Style.Margin.ComputedEdgeValue(axis.ToTrailingEdge(), ValueZero),
+                Margin.ComputedEdgeValue(axis.ToTrailingEdge(), ValueZero),
                 widthSize);
         }
 
         public float GetTrailingPadding(FlexDirectionType axis, float widthSize)
         {
-            if (axis.IsRow()                                         &&
-                Style.Padding.End.Unit != ValueUnit.Undefined        &&
-                Style.Padding.End.ResolveValue(widthSize).HasValue() &&
-                Style.Padding.End.ResolveValue(widthSize) >= 0.0f)
-                return Style.Padding.End.ResolveValue(widthSize);
+            if (axis.IsRow()                                   &&
+                Padding.End.Unit != ValueUnit.Undefined        &&
+                Padding.End.ResolveValue(widthSize).HasValue() &&
+                Padding.End.ResolveValue(widthSize) >= 0.0f)
+                return Padding.End.ResolveValue(widthSize);
 
-            var resolvedValue = Style.Padding.ComputedEdgeValue(axis.ToTrailingEdge(), ValueZero).ResolveValue(widthSize);
+            var resolvedValue = Padding.ComputedEdgeValue(axis.ToTrailingEdge(), ValueZero).ResolveValue(widthSize);
 
             return FloatMax(resolvedValue, 0.0f);
         }
@@ -319,15 +811,12 @@ namespace Xamarin.Yoga
         {
             if (axis.IsRow())
             {
-                var trailingPosition =
-                    Style.Position.ComputedEdgeValue(EdgeType.End, ValueUndefined);
+                var trailingPosition = Position.ComputedEdgeValue(EdgeType.End, ValueUndefined);
                 if (trailingPosition.Unit != ValueUnit.Undefined)
                     return trailingPosition.ResolveValue(axisSize);
             }
 
-            var trailingPos =
-                Style.Position.ComputedEdgeValue(axis.ToTrailingEdge(), ValueUndefined);
-
+            var trailingPos = Position.ComputedEdgeValue(axis.ToTrailingEdge(), ValueUndefined);
             return trailingPos.Unit == ValueUnit.Undefined
                 ? 0
                 : trailingPos.ResolveValue(axisSize);
@@ -358,38 +847,36 @@ namespace Xamarin.Yoga
         public bool IsLeadingPositionDefined(FlexDirectionType axis)
         {
             return axis.IsRow() &&
-                Style.Position.ComputedEdgeValue(EdgeType.Start, ValueUndefined)
-                    .Unit != ValueUnit.Undefined ||
-                Style.Position.ComputedEdgeValue(axis.ToLeadingEdge(), ValueUndefined)
-                    .Unit != ValueUnit.Undefined;
+                Position.ComputedEdgeValue(EdgeType.Start, ValueUndefined).Unit != ValueUnit.Undefined ||
+                Position.ComputedEdgeValue(axis.ToLeadingEdge(), ValueUndefined).Unit != ValueUnit.Undefined;
         }
 
         public bool IsNodeFlexible()
         {
-            return Style.PositionType == PositionType.Relative &&
+            return PositionType == PositionType.Relative &&
                 (!FloatEqual(ResolveFlexGrow(), 0) || !FloatEqual(ResolveFlexShrink(), 0));
         }
 
         public bool IsTrailingPosDefined(FlexDirectionType axis)
         {
             return axis.IsRow() &&
-                Style.Position.ComputedEdgeValue(EdgeType.End, ValueUndefined).Unit != ValueUnit.Undefined ||
-                Style.Position.ComputedEdgeValue(axis.ToTrailingEdge(), ValueUndefined).Unit !=
+                Position.ComputedEdgeValue(EdgeType.End, ValueUndefined).Unit != ValueUnit.Undefined ||
+                Position.ComputedEdgeValue(axis.ToTrailingEdge(), ValueUndefined).Unit !=
                 ValueUnit.Undefined;
         }
 
         public Value MarginLeadingValue(FlexDirectionType axis)
         {
-            if (axis.IsRow() && Style.Margin.Start.Unit != ValueUnit.Undefined)
-                return Style.Margin.Start;
-            return Style.Margin[axis.ToLeadingEdge()];
+            if (axis.IsRow() && Margin.Start.Unit != ValueUnit.Undefined)
+                return Margin.Start;
+            return Margin[axis.ToLeadingEdge()];
         }
 
         public Value MarginTrailingValue(FlexDirectionType axis)
         {
-            if (axis.IsRow() && Style.Margin.End.Unit != ValueUnit.Undefined)
-                return Style.Margin.End;
-            return Style.Margin[axis.ToTrailingEdge()];
+            if (axis.IsRow() && Margin.End.Unit != ValueUnit.Undefined)
+                return Margin.End;
+            return Margin[axis.ToTrailingEdge()];
         }
 
         public void MarkDirty()
@@ -419,34 +906,34 @@ namespace Xamarin.Yoga
 
         public void ResolveDimension()
         {
-            if (Style.MaxWidth.Unit != ValueUnit.Undefined &&
-                ValueEqual(Style.MaxWidth, Style.MinWidth))
-                ResolvedDimension.Width = Style.MaxWidth;
+            if (MaxWidth.Unit != ValueUnit.Undefined &&
+                ValueEqual(MaxWidth, MinWidth))
+                ResolvedDimension.Width = MaxWidth;
             else
-                ResolvedDimension.Width = Style.Width;
+                ResolvedDimension.Width = Width;
 
-            if (Style.MaxHeight.Unit != ValueUnit.Undefined &&
-                ValueEqual(Style.MaxHeight, Style.MinHeight))
-                ResolvedDimension.Height = Style.MaxHeight;
+            if (MaxHeight.Unit != ValueUnit.Undefined &&
+                ValueEqual(MaxHeight, MinHeight))
+                ResolvedDimension.Height = MaxHeight;
             else
-                ResolvedDimension.Height = Style.Height;
+                ResolvedDimension.Height = Height;
         }
 
         public DirectionType ResolveDirection(DirectionType ownerDirection)
         {
-            if (Style.Direction == DirectionType.Inherit)
+            if (Direction == DirectionType.Inherit)
                 return ownerDirection > DirectionType.Inherit
                     ? ownerDirection
                     : DirectionType.LTR;
-            return Style.Direction;
+            return Direction;
         }
 
         public Value ResolveFlexBasisPtr()
         {
-            var flexBasis = Style.FlexBasis;
+            var flexBasis = FlexBasis;
             if (flexBasis.Unit != ValueUnit.Auto && flexBasis.Unit != ValueUnit.Undefined)
                 return flexBasis;
-            if (Style.Flex.HasValue && Style.Flex > 0.0f)
+            if (Flex.HasValue && Flex > 0.0f)
                 return Config.UseWebDefaults ? ValueAuto : ValueZero;
             return ValueAuto;
         }
@@ -455,21 +942,21 @@ namespace Xamarin.Yoga
         {
             // Root nodes flexGrow should always be 0
             if (Owner == null) return 0.0f;
-            if (Style.FlexGrow.HasValue)
-                return Style.FlexGrow.Value;
-            if (Style.Flex.HasValue && Style.Flex > 0.0f)
-                return Style.Flex.Value;
+            if (FlexGrow.HasValue)
+                return FlexGrow.Value;
+            if (Flex.HasValue && Flex > 0.0f)
+                return Flex.Value;
             return DefaultFlexGrow;
         }
 
         public float ResolveFlexShrink()
         {
             if (Owner == null) return 0.0f;
-            if (Style.FlexShrink.HasValue)
-                return Style.FlexShrink.Value;
-            if (!Config.UseWebDefaults && Style.Flex.HasValue &&
-                Style.Flex < 0.0f)
-                return -Style.Flex.Value;
+            if (FlexShrink.HasValue)
+                return FlexShrink.Value;
+            if (!Config.UseWebDefaults && Flex.HasValue &&
+                Flex < 0.0f)
+                return -Flex.Value;
             return Config.UseWebDefaults ? WebDefaultFlexShrink : DefaultFlexShrink;
         }
 
@@ -490,7 +977,7 @@ namespace Xamarin.Yoga
         {
             // Root nodes should be always laid-out as LTR, so we don't return negative values. 
             var directionRespectingRoot = Owner != null ? direction : DirectionType.LTR;
-            var mainAxis                = EnumExtensions.ResolveFlexDirection(Style.FlexDirection, directionRespectingRoot);
+            var mainAxis                = EnumExtensions.ResolveFlexDirection(FlexDirection, directionRespectingRoot);
             var crossAxis               = EnumExtensions.FlexDirectionCross(mainAxis, directionRespectingRoot);
 
             var relativePositionMain  = RelativePosition(mainAxis,  mainSize);
@@ -502,6 +989,35 @@ namespace Xamarin.Yoga
             Layout.Position[crossAxis.ToTrailingEdge()] = GetTrailingMargin(crossAxis, ownerWidth) + relativePositionCross;
         }
 
+        public void SetStyle(INodeStyle style)
+        {
+            Direction      = style.Direction;
+            FlexDirection  = style.FlexDirection;
+            JustifyContent = style.JustifyContent;
+            AlignContent   = style.AlignContent;
+            AlignItems     = style.AlignItems;
+            AlignSelf      = style.AlignSelf;
+            PositionType   = style.PositionType;
+            FlexWrap       = style.FlexWrap;
+            Overflow       = style.Overflow;
+            Display        = style.Display;
+            Flex           = style.Flex;
+            FlexGrow       = style.FlexGrow;
+            FlexShrink     = style.GetFlexShrink();
+            FlexBasis      = style.FlexBasis;
+            Margin         = style.Margin.Clone();
+            Position       = style.Position.Clone();
+            Padding        = style.Padding.Clone();
+            Border         = style.Border.Clone();
+            Width          = style.Width;
+            Height         = style.Height;
+            MinWidth       = style.MinWidth;
+            MinHeight      = style.MinHeight;
+            MaxWidth       = style.MaxWidth;
+            MaxHeight      = style.MaxHeight;
+            AspectRatio    = style.AspectRatio;
+        }
+
         public void Traverse(Action<YogaNode> f)
         {
             f(this);
@@ -511,10 +1027,10 @@ namespace Xamarin.Yoga
 
         internal AlignType AlignChild(YogaNode child)
         {
-            var align = child.Style.AlignSelf == AlignType.Auto
-                ? Style.AlignItems
-                : child.Style.AlignSelf;
-            if (align == AlignType.Baseline && Style.FlexDirection.IsColumn())
+            var align = child.AlignSelf == AlignType.Auto
+                ? AlignItems
+                : child.AlignSelf;
+            if (align == AlignType.Baseline && FlexDirection.IsColumn())
                 return AlignType.FlexStart;
 
             return align;
@@ -542,7 +1058,7 @@ namespace Xamarin.Yoga
             {
                 if (child.LineIndex > 0) break;
 
-                if (child.Style.PositionType == PositionType.Absolute) continue;
+                if (child.PositionType == PositionType.Absolute) continue;
 
                 if (AlignChild(child) == AlignType.Baseline)
                 {
@@ -585,13 +1101,13 @@ namespace Xamarin.Yoga
 
             if (axis.IsColumn())
             {
-                min = Style.MinHeight.ResolveValue(axisSize);
-                max = Style.MaxHeight.ResolveValue(axisSize);
+                min = MinHeight.ResolveValue(axisSize);
+                max = MaxHeight.ResolveValue(axisSize);
             }
             else if (axis.IsRow())
             {
-                min = Style.MinWidth.ResolveValue(axisSize);
-                max = Style.MaxWidth.ResolveValue(axisSize);
+                min = MinWidth.ResolveValue(axisSize);
+                max = MaxWidth.ResolveValue(axisSize);
             }
 
             if (max.HasValue() && max >= 0 && value > max)
@@ -614,16 +1130,16 @@ namespace Xamarin.Yoga
 
         internal bool IsBaselineLayout()
         {
-            if (Style.FlexDirection.IsColumn())
+            if (FlexDirection.IsColumn())
                 return false;
 
-            if (Style.AlignItems == AlignType.Baseline)
+            if (AlignItems == AlignType.Baseline)
                 return true;
 
             foreach (var child in Children)
             {
-                if (child.Style.PositionType == PositionType.Relative &&
-                    child.Style.AlignSelf    == AlignType.Baseline)
+                if (child.PositionType == PositionType.Relative &&
+                    child.AlignSelf    == AlignType.Baseline)
                     return true;
             }
 
@@ -738,6 +1254,5 @@ namespace Xamarin.Yoga
                 ? 0
                 : value.ResolveValue(ownerSize);
         }
-
     }
 }

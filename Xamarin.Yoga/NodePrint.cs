@@ -137,56 +137,56 @@ namespace Xamarin.Yoga
 
             if (options.HasFlag(PrintOptionType.Style))
             {
-                var defaultStyle = new YogaNode().Style;
+                var defaultStyle = (INodeStyle)(new YogaNode());
 
                 sb.Append("style=\"");
-                if (node.Style.FlexDirection != defaultStyle.FlexDirection)
-                    sb.Append($"flex-direction: {node.Style.FlexDirection.ToDescription()}; ");
+                if (node.FlexDirection != defaultStyle.FlexDirection)
+                    sb.Append($"flex-direction: {node.FlexDirection.ToDescription()}; ");
 
-                if (node.Style.JustifyContent != defaultStyle.JustifyContent)
-                    sb.Append($"justify-content: {node.Style.JustifyContent.ToDescription()}; ");
+                if (node.JustifyContent != defaultStyle.JustifyContent)
+                    sb.Append($"justify-content: {node.JustifyContent.ToDescription()}; ");
 
-                if (node.Style.AlignItems != defaultStyle.AlignItems)
-                    sb.Append($"align-items: {node.Style.AlignItems.ToDescription()}; ");
+                if (node.AlignItems != defaultStyle.AlignItems)
+                    sb.Append($"align-items: {node.AlignItems.ToDescription()}; ");
 
-                if (node.Style.AlignContent != defaultStyle.AlignContent)
-                    sb.Append($"align-content: {node.Style.AlignContent.ToDescription()}; ");
+                if (node.AlignContent != defaultStyle.AlignContent)
+                    sb.Append($"align-content: {node.AlignContent.ToDescription()}; ");
 
-                if (node.Style.AlignSelf != defaultStyle.AlignSelf)
-                    sb.Append($"align-self: {node.Style.AlignSelf.ToDescription()}; ");
+                if (node.AlignSelf != defaultStyle.AlignSelf)
+                    sb.Append($"align-self: {node.AlignSelf.ToDescription()}; ");
 
-                AppendFloatOptionalIfDefined(sb, "flex-grow",   node.Style._flexGrow);
-                AppendFloatOptionalIfDefined(sb, "flex-shrink", node.Style._flexShrink);
-                AppendNumberIfNotAuto(sb, "flex-basis", node.Style.FlexBasis);
-                AppendFloatOptionalIfDefined(sb, "flex", node.Style._flex);
+                AppendFloatOptionalIfDefined(sb, "flex-grow",   node.FlexGrow);
+                AppendFloatOptionalIfDefined(sb, "flex-shrink", node.GetFlexShrink());
+                AppendNumberIfNotAuto(sb, "flex-basis", node.FlexBasis);
+                AppendFloatOptionalIfDefined(sb, "flex", node.Flex);
 
-                if (node.Style.FlexWrap != defaultStyle.FlexWrap)
-                    sb.Append($"flexWrap: {node.Style.FlexWrap.ToDescription()}; ");
+                if (node.FlexWrap != defaultStyle.FlexWrap)
+                    sb.Append($"flexWrap: {node.FlexWrap.ToDescription()}; ");
 
-                if (node.Style.Overflow != defaultStyle.Overflow)
-                    sb.Append($"overflow: {node.Style.Overflow.ToDescription()}; ");
+                if (node.Overflow != defaultStyle.Overflow)
+                    sb.Append($"overflow: {node.Overflow.ToDescription()}; ");
 
-                if (node.Style.Display != defaultStyle.Display)
-                    sb.Append($"display: {node.Style.Display.ToDescription()}; ");
+                if (node.Display != defaultStyle.Display)
+                    sb.Append($"display: {node.Display.ToDescription()}; ");
 
-                AppendEdges(sb, "margin",  node.Style.Margin);
-                AppendEdges(sb, "padding", node.Style.Padding);
-                AppendEdges(sb, "border",  node.Style.Border);
+                AppendEdges(sb, "margin",  node.Margin);
+                AppendEdges(sb, "padding", node.Padding);
+                AppendEdges(sb, "border",  node.Border);
 
-                AppendNumberIfNotAuto(sb, "width",      node.Style.Width);
-                AppendNumberIfNotAuto(sb, "height",     node.Style.Height);
-                AppendNumberIfNotAuto(sb, "max-width",  node.Style.MaxWidth);
-                AppendNumberIfNotAuto(sb, "max-height", node.Style.MaxHeight);
-                AppendNumberIfNotAuto(sb, "min-width",  node.Style.MinWidth);
-                AppendNumberIfNotAuto(sb, "min-height", node.Style.MinHeight);
+                AppendNumberIfNotAuto(sb, "width",      node.Width);
+                AppendNumberIfNotAuto(sb, "height",     node.Height);
+                AppendNumberIfNotAuto(sb, "max-width",  node.MaxWidth);
+                AppendNumberIfNotAuto(sb, "max-height", node.MaxHeight);
+                AppendNumberIfNotAuto(sb, "min-width",  node.MinWidth);
+                AppendNumberIfNotAuto(sb, "min-height", node.MinHeight);
 
-                if (node.Style.PositionType != defaultStyle.PositionType)
-                    sb.Append($"position: {node.Style.PositionType.ToDescription()}; ");
+                if (node.PositionType != defaultStyle.PositionType)
+                    sb.Append($"position: {node.PositionType.ToDescription()}; ");
 
-                AppendEdgeIfNotUndefined(sb, "left",   node.Style.Position, EdgeType.Left);
-                AppendEdgeIfNotUndefined(sb, "right",  node.Style.Position, EdgeType.Right);
-                AppendEdgeIfNotUndefined(sb, "top",    node.Style.Position, EdgeType.Top);
-                AppendEdgeIfNotUndefined(sb, "bottom", node.Style.Position, EdgeType.Bottom);
+                AppendEdgeIfNotUndefined(sb, "left",   node.Position, EdgeType.Left);
+                AppendEdgeIfNotUndefined(sb, "right",  node.Position, EdgeType.Right);
+                AppendEdgeIfNotUndefined(sb, "top",    node.Position, EdgeType.Top);
+                AppendEdgeIfNotUndefined(sb, "bottom", node.Position, EdgeType.Bottom);
                 sb.Append("\" ");
 
                 if (node.MeasureFunc != null)

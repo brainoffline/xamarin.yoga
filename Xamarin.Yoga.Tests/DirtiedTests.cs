@@ -10,10 +10,10 @@ namespace Xamarin.Yoga.Tests
         {
             var root = new YogaNode
             {
-                Style =
-                {
+                
+                
                     AlignItems = AlignType.FlexStart, Width = 100, Height = 100
-                }
+                
             };
 
             root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
@@ -40,11 +40,11 @@ namespace Xamarin.Yoga.Tests
             YogaNode root_child1;
             var root = new YogaNode
             {
-                Style = {AlignItems = AlignType.FlexStart, Width = 100, Height = 100},
+                AlignItems = AlignType.FlexStart, Width = 100, Height = 100,
                 Children =
                 {
-                    (root_child0 = new YogaNode {Style = {Width = 50, Height = 20}}),
-                    (root_child1 = new YogaNode {Style = {Width = 50, Height = 20}})
+                    (root_child0 = new YogaNode {Width = 50, Height = 20}),
+                    (root_child1 = new YogaNode {Width = 50, Height = 20})
                 }
             };
 
@@ -73,18 +73,18 @@ namespace Xamarin.Yoga.Tests
         public void dirtied_propagation()
         {
             var root = new YogaNode();
-            root.Style.AlignItems = AlignType.FlexStart;
-            root.Style.Width      = 100;
-            root.Style.Height     = 100;
+            root.AlignItems = AlignType.FlexStart;
+            root.Width      = 100;
+            root.Height     = 100;
 
             var root_child0 = new YogaNode();
-            root_child0.Style.Width  = 50;
-            root_child0.Style.Height = 20;
+            root_child0.Width  = 50;
+            root_child0.Height = 20;
             root.Children.Add(root_child0);
 
             var root_child1 = new YogaNode();
-            root_child1.Style.Width  = 50;
-            root_child1.Style.Height = 20;
+            root_child1.Width  = 50;
+            root_child1.Height = 20;
             root.Children.Insert(1, root_child1);
 
             root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);

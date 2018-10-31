@@ -26,7 +26,7 @@ namespace Xamarin.Yoga.Tests
             YogaNode root_child0_child0_child1_child0_child1_child1;
             var root = new YogaNode
             {
-                Style = {AlignContent = AlignType.Stretch, Width = 1080},
+                AlignContent = AlignType.Stretch, Width = 1080,
                 Children =
                 {
                     (root_child0 = new YogaNode
@@ -35,64 +35,58 @@ namespace Xamarin.Yoga.Tests
                         {
                             (root_child0_child0 = new YogaNode
                             {
-                                Style = {AlignContent = AlignType.Stretch},
+                                AlignContent = AlignType.Stretch,
                                 Children =
                                 {
                                     (root_child0_child0_child0 = new YogaNode
                                     {
-                                        Style = {AlignContent = AlignType.Stretch},
+                                        AlignContent = AlignType.Stretch,
                                         Children =
                                         {
                                             (root_child0_child0_child0_child0 = new YogaNode
                                             {
-                                                Style =
-                                                {
                                                     FlexDirection = FlexDirectionType.Row,
                                                     AlignContent = AlignType.Stretch,
                                                     AlignItems = AlignType.FlexStart,
-                                                    Margin = {Start = 36, Top = 24}
-                                                },
+                                                    Margin = {Start = 36, Top = 24},
                                                 Children =
                                                 {
                                                     (root_child0_child0_child0_child0_child0 = new YogaNode
                                                     {
-                                                        Style =
-                                                        {
                                                             FlexDirection = FlexDirectionType.Row,
-                                                            AlignContent = AlignType.Stretch
-                                                        },
+                                                            AlignContent = AlignType.Stretch,
                                                         Children =
                                                         {
                                                             (root_child0_child0_child0_child0_child0_child0 = new YogaNode
                                                             {
-                                                                Style = {AlignContent = AlignType.Stretch, Width = 120, Height = 120},
+                                                                AlignContent = AlignType.Stretch, Width = 120, Height = 120,
 
                                                             })
                                                         }
                                                     }),
                                                     (root_child0_child0_child0_child0_child1 = new YogaNode
                                                     {
-                                                        Style =
-                                                        {
+                                                        
+                                                        
                                                             AlignContent = AlignType.Stretch,
                                                             FlexShrink = 1,
                                                             Margin = {Right = 36},
                                                             Padding = new Edges(36, 21, 36, 18)
-                                                        },
+                                                        ,
                                                         Children =
                                                         {
                                                             (root_child0_child0_child0_child0_child1_child0 = new YogaNode
                                                             {
-                                                                Style =
-                                                                {
+                                                                
+                                                                
                                                                     FlexDirection = FlexDirectionType.Row,
                                                                     AlignContent = AlignType.Stretch,
                                                                     FlexShrink = 1
-                                                                }
+                                                                
                                                             }),
                                                             (root_child0_child0_child0_child0_child1_child1 = new YogaNode
                                                             {
-                                                                Style = {AlignContent = AlignType.Stretch, FlexShrink = 1}
+                                                                AlignContent = AlignType.Stretch, FlexShrink = 1
                                                             })
                                                         }
                                                     })
@@ -102,53 +96,54 @@ namespace Xamarin.Yoga.Tests
                                     }),
                                     (root_child0_child0_child1 = new YogaNode
                                     {
-                                        Style = {AlignContent = AlignType.Stretch},
+                                        AlignContent = AlignType.Stretch,
                                         Children =
                                         {
                                             (root_child0_child0_child1_child0 = new YogaNode
                                             {
-                                                Style =
-                                                {
+                                                
+                                                
                                                     FlexDirection = FlexDirectionType.Row,
                                                     AlignContent = AlignType.Stretch,
                                                     AlignItems = AlignType.FlexStart,
-                                                    Margin = {Start = 174, Top = 24}
-                                                },
+                                                    Margin = {Start = 174, Top = 24},
                                                 Children =
                                                 {
                                                     (root_child0_child0_child1_child0_child0 = new YogaNode
                                                     {
-                                                        Style =
-                                                        {
+                                                        
+                                                        
                                                             FlexDirection = FlexDirectionType.Row,
                                                             AlignContent = AlignType.Stretch
-                                                        },
+                                                        ,
                                                         Children =
                                                         {
                                                             (root_child0_child0_child1_child0_child0_child0 = new YogaNode
                                                             {
-                                                                Style = {AlignContent = AlignType.Stretch, Width = 72, Height = 72}
+                                                                AlignContent = AlignType.Stretch, Width = 72, Height = 72
                                                             })
                                                         }
                                                     }),
                                                     (root_child0_child0_child1_child0_child1 = new YogaNode
                                                     {
-                                                        Style =
-                                                        {
+                                                        
+                                                        
                                                             AlignContent = AlignType.Stretch,
                                                             FlexShrink = 1,
                                                             Margin = {Right = 36},
                                                             Padding = new Edges(36, 21, 36, 18)
-                                                        },
+                                                        ,
                                                         Children =
                                                         {
                                                             (root_child0_child0_child1_child0_child1_child0 = new YogaNode
                                                             {
-                                                                Style = {FlexDirection = FlexDirectionType.Row, AlignContent = AlignType.Stretch, FlexShrink = 1}
+                                                                FlexDirection = FlexDirectionType.Row,
+                                                                AlignContent = AlignType.Stretch,
+                                                                FlexShrink = 1
                                                             }),
                                                             (root_child0_child0_child1_child0_child1_child1 = new YogaNode
                                                             {
-                                                                Style = {AlignContent = AlignType.Stretch, FlexShrink = 1}
+                                                                AlignContent = AlignType.Stretch, FlexShrink = 1
                                                             })
                                                         }
                                                     })

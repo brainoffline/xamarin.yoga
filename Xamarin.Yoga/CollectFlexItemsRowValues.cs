@@ -156,7 +156,7 @@ namespace Xamarin.Yoga
         {
             float deltaFreeSpace         = 0;
             var   isMainAxisRow          = mainAxis.IsRow();
-            var   isNodeFlexWrap         = node.Style.FlexWrap != WrapType.NoWrap;
+            var   isNodeFlexWrap         = node.FlexWrap != WrapType.NoWrap;
 
             foreach (var currentRelativeChild in RelativeChildren)
             {
@@ -209,11 +209,11 @@ namespace Xamarin.Yoga
                 MeasureMode childCrossMeasureMode;
                 var         childMainMeasureMode = MeasureMode.Exactly;
 
-                if (currentRelativeChild.Style.AspectRatio.HasValue)
+                if (currentRelativeChild.AspectRatio.HasValue)
                 {
                     childCrossSize = isMainAxisRow
-                        ? (childMainSize - marginMain) / currentRelativeChild.Style.AspectRatio.Value
-                        : (childMainSize - marginMain) * currentRelativeChild.Style.AspectRatio.Value;
+                        ? (childMainSize - marginMain) / currentRelativeChild.AspectRatio.Value
+                        : (childMainSize - marginMain) * currentRelativeChild.AspectRatio.Value;
                     childCrossMeasureMode = MeasureMode.Exactly;
 
                     childCrossSize += marginCross;
@@ -375,7 +375,7 @@ namespace Xamarin.Yoga
             float             availableInnerWidth,
             bool              performLayout)
         {
-            var style                        = node.Style;
+            var style                        = (INodeStyle)node;
             var leadingPaddingAndBorderMain  = node.GetLeadingPaddingAndBorder(mainAxis, ownerWidth);
             var trailingPaddingAndBorderMain = node.GetTrailingPaddingAndBorder(mainAxis, ownerWidth);
             // If we are using "at most" rules in the main axis, make sure that
@@ -409,7 +409,7 @@ namespace Xamarin.Yoga
             for (var i = startOfLineIndex; i < EndOfLineIndex; i++)
             {
                 var child = node.Children[i];
-                if (child.Style.PositionType == PositionType.Relative)
+                if (child.PositionType == PositionType.Relative)
                 {
                     if (child.MarginLeadingValue(mainAxis).Unit == ValueUnit.Auto) numberOfAutoMarginsOnCurrentLine++;
 
@@ -422,7 +422,7 @@ namespace Xamarin.Yoga
             // and the space between each two elements.
             float leadingMainDim = 0;
             float betweenMainDim = 0;
-            var   justifyContent = node.Style.JustifyContent;
+            var   justifyContent = node.JustifyContent;
 
             if (numberOfAutoMarginsOnCurrentLine == 0)
             {
@@ -465,7 +465,7 @@ namespace Xamarin.Yoga
             for (var i = startOfLineIndex; i < EndOfLineIndex; i++)
             {
                 var child       = node.Children[i];
-                var childStyle  = child.Style;
+                var childStyle  = (INodeStyle)child;
                 var childLayout = child.Layout;
 
                 if (childStyle.Display == DisplayType.None)

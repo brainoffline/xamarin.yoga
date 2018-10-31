@@ -14,19 +14,19 @@ namespace Xamarin.Yoga.Tests
             YogaNode root_child1_child0;
             var root = new YogaNode
             {
-                Style = {FlexDirection = FlexDirectionType.Row, AlignItems = AlignType.Baseline, Width = 100, Height = 100},
+                FlexDirection = FlexDirectionType.Row, AlignItems = AlignType.Baseline, Width = 100, Height = 100,
                 Children =
                 {
-                    (root_child0 = new YogaNode {Style = {Width = 50, Height = 50}}),
+                    (root_child0 = new YogaNode {Width = 50, Height = 50}),
                     (root_child1 = new YogaNode
                     {
-                        Style = {Width = 50, Height = 20},
+                        Width = 50, Height = 20,
                         Children =
                         {
                             (root_child1_child0 = new YogaNode
                             {
                                 Context      = baselineValue,
-                                Style        = {Width = 50, Height = 20},
+                                Width = 50, Height = 20,
                                 BaselineFunc = _baseline
                             })
                         }

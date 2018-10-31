@@ -10,15 +10,15 @@ namespace Xamarin.Yoga.Tests
         public void measure_once_single_flexible_child()
         {
             var root = new YogaNode();
-            root.Style.FlexDirection = FlexDirectionType.Row;
-            root.Style.AlignItems    = AlignType.FlexStart;
-            root.Style.Width         = 100;
-            root.Style.Height        = 100;
+            root.FlexDirection = FlexDirectionType.Row;
+            root.AlignItems    = AlignType.FlexStart;
+            root.Width         = 100;
+            root.Height        = 100;
 
             var root_child0 = new YogaNode();
             root_child0.Context        = 0;
             root_child0.MeasureFunc    = _measureMax;
-            root_child0.Style.FlexGrow = 1;
+            root_child0.FlexGrow = 1;
             root.Children.Add(root_child0);
 
             root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
@@ -31,13 +31,13 @@ namespace Xamarin.Yoga.Tests
         public void remeasure_with_already_measured_value_smaller_but_still_float_equal()
         {
             var root = new YogaNode();
-            root.Style.Width         = 288f;
-            root.Style.Height        = 288f;
-            root.Style.FlexDirection = FlexDirectionType.Row;
+            root.Width         = 288f;
+            root.Height        = 288f;
+            root.FlexDirection = FlexDirectionType.Row;
 
             var root_child0 = new YogaNode();
-            root_child0.Style.Padding.All   = 2.88f;
-            root_child0.Style.FlexDirection = FlexDirectionType.Row;
+            root_child0.Padding.All   = 2.88f;
+            root_child0.FlexDirection = FlexDirectionType.Row;
             root.Children.Add(root_child0);
 
             var root_child0_child0 = new YogaNode();
@@ -55,7 +55,7 @@ namespace Xamarin.Yoga.Tests
         public void remeasure_with_atmost_computed_width_undefined_height()
         {
             var root = new YogaNode();
-            root.Style.AlignItems = AlignType.FlexStart;
+            root.AlignItems = AlignType.FlexStart;
 
             var root_child0 = new YogaNode();
             root_child0.Context     = 0;
@@ -73,7 +73,7 @@ namespace Xamarin.Yoga.Tests
         public void remeasure_with_computed_width_larger_than_needed_height()
         {
             var root = new YogaNode();
-            root.Style.AlignItems = AlignType.FlexStart;
+            root.AlignItems = AlignType.FlexStart;
 
             var root_child0 = new YogaNode();
             root_child0.Context     = 0;
@@ -81,7 +81,7 @@ namespace Xamarin.Yoga.Tests
             root.Children.Add(root_child0);
 
             root.Calc.CalculateLayout(100, 100, DirectionType.LTR);
-            root.Style.AlignItems = AlignType.Stretch;
+            root.AlignItems = AlignType.Stretch;
             root.Calc.CalculateLayout(10, 50, DirectionType.LTR);
 
             var measureCount = (int) root_child0.Context;
@@ -92,7 +92,7 @@ namespace Xamarin.Yoga.Tests
         public void remeasure_with_same_atmost_width_larger_than_needed_height()
         {
             var root = new YogaNode();
-            root.Style.AlignItems = AlignType.FlexStart;
+            root.AlignItems = AlignType.FlexStart;
 
             var root_child0 = new YogaNode();
             root_child0.Context     = 0;

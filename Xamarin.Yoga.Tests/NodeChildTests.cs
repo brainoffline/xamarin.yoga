@@ -11,8 +11,8 @@ namespace Xamarin.Yoga.Tests
             var root = new YogaNode();
 
             var root_child0 = new YogaNode();
-            root_child0.Style.Width  = 100;
-            root_child0.Style.Height = 100;
+            root_child0.Width  = 100;
+            root_child0.Height = 100;
             root.Children.Add(root_child0);
 
             root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);

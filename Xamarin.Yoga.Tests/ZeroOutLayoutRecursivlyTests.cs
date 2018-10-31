@@ -11,12 +11,12 @@ namespace Xamarin.Yoga.Tests
             YogaNode child;
             var root = new YogaNode
             {
-                Style = {FlexDirection = FlexDirectionType.Row, Width = 200, Height = 200},
+                FlexDirection = FlexDirectionType.Row, Width = 200, Height = 200,
                 Children =
                 {
                     (child = new YogaNode
                     {
-                        Style = {Width = 100, Height = 100, Margin = {Top = 10}, Padding = {Top = 10}}
+                        Width = 100, Height = 100, Margin = {Top = 10}, Padding = {Top = 10}
                     })
                 }
             };
@@ -26,7 +26,7 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(10, child.Layout.GetMargin(EdgeType.Top));
             Assert.AreEqual(10, child.Layout.GetPadding(EdgeType.Top));
 
-            child.Style.Display = DisplayType.None;
+            child.Display = DisplayType.None;
 
             root.Calc.CalculateLayout(100, 100, DirectionType.LTR);
 

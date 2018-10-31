@@ -11,14 +11,17 @@ namespace Xamarin.Yoga.Tests
             YogaNode root_child0, root_child1, root_child2, root_child3, root_child4;
             var root = new YogaNode
             {
-                Style = {AlignContent = AlignType.FlexEnd, FlexWrap = WrapType.Wrap, Width = 100, Height = 100},
+                AlignContent = AlignType.FlexEnd,
+                FlexWrap = WrapType.Wrap,
+                Width = 100,
+                Height = 100,
                 Children =
                 {
-                    (root_child0 = new YogaNode {Style = {Width = 50, Height = 10}}),
-                    (root_child1 = new YogaNode {Style = {Width = 50, Height = 10}}),
-                    (root_child2 = new YogaNode {Style = {Width = 50, Height = 10}}),
-                    (root_child3 = new YogaNode {Style = {Width = 50, Height = 10}}),
-                    (root_child4 = new YogaNode {Style = {Width = 50, Height = 10}})
+                    (root_child0 = new YogaNode {Width = 50, Height = 10}),
+                    (root_child1 = new YogaNode {Width = 50, Height = 10}),
+                    (root_child2 = new YogaNode {Width = 50, Height = 10}),
+                    (root_child3 = new YogaNode {Width = 50, Height = 10}),
+                    (root_child4 = new YogaNode {Width = 50, Height = 10})
                 }
             };
 
@@ -93,19 +96,16 @@ namespace Xamarin.Yoga.Tests
             YogaNode root_child0, root_child1, root_child2, root_child3, root_child4;
             var root = new YogaNode
             {
-                Style =
-                {
-                    FlexDirection = FlexDirectionType.Row,
-                    FlexWrap      = WrapType.Wrap,
-                    Width         = 130, Height = 100
-                },
+                FlexDirection = FlexDirectionType.Row,
+                FlexWrap      = WrapType.Wrap,
+                Width         = 130, Height = 100,
                 Children =
                 {
-                    (root_child0 = new YogaNode {Style = {Width = 50, Height = 10}}),
-                    (root_child1 = new YogaNode {Style = {Width = 50, Height = 10}}),
-                    (root_child2 = new YogaNode {Style = {Width = 50, Height = 10}}),
-                    (root_child3 = new YogaNode {Style = {Width = 50, Height = 10}}),
-                    (root_child4 = new YogaNode {Style = {Width = 50, Height = 10}})
+                    (root_child0 = new YogaNode {Width = 50, Height = 10}),
+                    (root_child1 = new YogaNode {Width = 50, Height = 10}),
+                    (root_child2 = new YogaNode {Width = 50, Height = 10}),
+                    (root_child3 = new YogaNode {Width = 50, Height = 10}),
+                    (root_child4 = new YogaNode {Width = 50, Height = 10})
                 }
             };
 
@@ -177,27 +177,27 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void align_content_flex_start_with_flex()
         {
-            var root = new YogaNode {Style = {FlexWrap = WrapType.Wrap, Width = 100, Height = 120}};
+            var root = new YogaNode {FlexWrap = WrapType.Wrap, Width = 100, Height = 120};
 
-            var root_child0 = new YogaNode {Style = {FlexGrow = 1, FlexBasis = 0.Percent(), Width = 50}};
+            var root_child0 = new YogaNode {FlexGrow = 1, FlexBasis = 0.Percent(), Width = 50};
             root.Children.Add(root_child0);
 
             var root_child1 = new YogaNode
             {
-                Style = {FlexGrow = 1, FlexBasis = 0.Percent(), Width = 50, Height = 10}
+                FlexGrow = 1, FlexBasis = 0.Percent(), Width = 50, Height = 10
             };
             root.Children.Insert(1, root_child1);
 
-            var root_child2 = new YogaNode {Style = {Width = 50}};
+            var root_child2 = new YogaNode {Width = 50};
             root.Children.Insert(2, root_child2);
 
             var root_child3 = new YogaNode
             {
-                Style = {FlexGrow = 1, FlexShrink = 1, FlexBasis = 0.Percent(), Width = 50}
+                FlexGrow = 1, FlexShrink = 1, FlexBasis = 0.Percent(), Width = 50
             };
             root.Children.Insert(3, root_child3);
 
-            var root_child4 = new YogaNode {Style = {Width = 50}};
+            var root_child4 = new YogaNode {Width = 50};
             root.Children.Insert(4, root_child4);
             root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
@@ -267,21 +267,21 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void align_content_flex_start_without_height_on_children()
         {
-            var root = new YogaNode {Style = {FlexWrap = WrapType.Wrap, Width = 100, Height = 100}};
+            var root = new YogaNode {FlexWrap = WrapType.Wrap, Width = 100, Height = 100};
 
-            var root_child0 = new YogaNode {Style = {Width = 50}};
+            var root_child0 = new YogaNode {Width = 50};
             root.Children.Add(root_child0);
 
-            var root_child1 = new YogaNode {Style = {Width = 50, Height = 10}};
+            var root_child1 = new YogaNode {Width = 50, Height = 10};
             root.Children.Insert(1, root_child1);
 
-            var root_child2 = new YogaNode {Style = {Width = 50}};
+            var root_child2 = new YogaNode {Width = 50};
             root.Children.Insert(2, root_child2);
 
-            var root_child3 = new YogaNode {Style = {Width = 50, Height = 10}};
+            var root_child3 = new YogaNode {Width = 50, Height = 10};
             root.Children.Insert(3, root_child3);
 
-            var root_child4 = new YogaNode {Style = {Width = 50}};
+            var root_child4 = new YogaNode {Width = 50};
             root.Children.Insert(4, root_child4);
             root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
@@ -353,29 +353,26 @@ namespace Xamarin.Yoga.Tests
         {
             var root = new YogaNode
             {
-                Style =
-                {
-                    FlexDirection = FlexDirectionType.Row,
-                    AlignContent  = AlignType.SpaceAround,
-                    FlexWrap      = WrapType.Wrap,
-                    Width         = 140,
-                    Height        = 120
-                }
+                FlexDirection = FlexDirectionType.Row,
+                AlignContent  = AlignType.SpaceAround,
+                FlexWrap      = WrapType.Wrap,
+                Width         = 140,
+                Height        = 120
             };
 
-            var root_child0 = new YogaNode {Style = {Width = 50, Height = 10}};
+            var root_child0 = new YogaNode {Width = 50, Height = 10};
             root.Children.Add(root_child0);
 
-            var root_child1 = new YogaNode {Style = {Width = 50, Height = 10}};
+            var root_child1 = new YogaNode {Width = 50, Height = 10};
             root.Children.Insert(1, root_child1);
 
-            var root_child2 = new YogaNode {Style = {Width = 50, Height = 10}};
+            var root_child2 = new YogaNode {Width = 50, Height = 10};
             root.Children.Insert(2, root_child2);
 
-            var root_child3 = new YogaNode {Style = {Width = 50, Height = 10}};
+            var root_child3 = new YogaNode {Width = 50, Height = 10};
             root.Children.Insert(3, root_child3);
 
-            var root_child4 = new YogaNode {Style = {Width = 50, Height = 10}};
+            var root_child4 = new YogaNode {Width = 50, Height = 10};
             root.Children.Insert(4, root_child4);
             root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
@@ -447,29 +444,26 @@ namespace Xamarin.Yoga.Tests
         {
             var root = new YogaNode
             {
-                Style =
-                {
-                    FlexDirection = FlexDirectionType.Row,
-                    AlignContent  = AlignType.SpaceBetween,
-                    FlexWrap      = WrapType.Wrap,
-                    Width         = 130,
-                    Height        = 100
-                }
+                FlexDirection = FlexDirectionType.Row,
+                AlignContent  = AlignType.SpaceBetween,
+                FlexWrap      = WrapType.Wrap,
+                Width         = 130,
+                Height        = 100
             };
 
-            var root_child0 = new YogaNode {Style = {Width = 50, Height = 10}};
+            var root_child0 = new YogaNode {Width = 50, Height = 10};
             root.Children.Add(root_child0);
 
-            var root_child1 = new YogaNode {Style = {Width = 50, Height = 10}};
+            var root_child1 = new YogaNode {Width = 50, Height = 10};
             root.Children.Insert(1, root_child1);
 
-            var root_child2 = new YogaNode {Style = {Width = 50, Height = 10}};
+            var root_child2 = new YogaNode {Width = 50, Height = 10};
             root.Children.Insert(2, root_child2);
 
-            var root_child3 = new YogaNode {Style = {Width = 50, Height = 10}};
+            var root_child3 = new YogaNode {Width = 50, Height = 10};
             root.Children.Insert(3, root_child3);
 
-            var root_child4 = new YogaNode {Style = {Width = 50, Height = 10}};
+            var root_child4 = new YogaNode {Width = 50, Height = 10};
             root.Children.Insert(4, root_child4);
             root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
@@ -541,22 +535,22 @@ namespace Xamarin.Yoga.Tests
         {
             var root = new YogaNode
             {
-                Style = {AlignContent = AlignType.Stretch, FlexWrap = WrapType.Wrap, Width = 150, Height = 100}
+                AlignContent = AlignType.Stretch, FlexWrap = WrapType.Wrap, Width = 150, Height = 100
             };
 
-            var root_child0 = new YogaNode {Style = {Width = 50}};
+            var root_child0 = new YogaNode {Width = 50};
             root.Children.Add(root_child0);
 
-            var root_child1 = new YogaNode {Style = {Width = 50}};
+            var root_child1 = new YogaNode {Width = 50};
             root.Children.Insert(1, root_child1);
 
-            var root_child2 = new YogaNode {Style = {Width = 50}};
+            var root_child2 = new YogaNode {Width = 50};
             root.Children.Insert(2, root_child2);
 
-            var root_child3 = new YogaNode {Style = {Width = 50}};
+            var root_child3 = new YogaNode {Width = 50};
             root.Children.Insert(3, root_child3);
 
-            var root_child4 = new YogaNode {Style = {Width = 50}};
+            var root_child4 = new YogaNode {Width = 50};
             root.Children.Insert(4, root_child4);
             root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
@@ -634,37 +628,34 @@ namespace Xamarin.Yoga.Tests
             YogaNode root_child4;
             var root = new YogaNode
             {
-                Name = "root",
-                Style =
-                {
-                    AlignContent = AlignType.Stretch,
-                    FlexWrap     = WrapType.Wrap,
-                    Width        = 100,
-                    Height       = 150
-                },
+                Name         = "root",
+                AlignContent = AlignType.Stretch,
+                FlexWrap     = WrapType.Wrap,
+                Width        = 100,
+                Height       = 150,
                 Children =
                 {
                     (root_child0 = new YogaNode
                     {
-                        Name  = "root_child0",
-                        Style = {Height = 50},
+                        Name   = "root_child0",
+                        Height = 50,
                         Children =
                         {
                             (root_child0_child0 = new YogaNode
                             {
-                                Name  = "root_child0_child0",
-                                Style = {FlexGrow = 1, FlexShrink = 1, FlexBasis = 0.Percent()}
+                                Name     = "root_child0_child0",
+                                FlexGrow = 1, FlexShrink = 1, FlexBasis = 0.Percent()
                             })
                         }
                     }),
                     (root_child1 = new YogaNode
                     {
-                        Name  = "root_child1",
-                        Style = {FlexGrow = 1, FlexShrink = 1, FlexBasis = 0.Percent(), Height = 50}
+                        Name     = "root_child1",
+                        FlexGrow = 1, FlexShrink = 1, FlexBasis = 0.Percent(), Height = 50
                     }),
-                    (root_child2 = new YogaNode {Name = "root_child2", Style = {Height = 50}}),
-                    (root_child3 = new YogaNode {Name = "root_child3", Style = {Height = 50}}),
-                    (root_child4 = new YogaNode {Name = "root_child4", Style = {Height = 50}})
+                    (root_child2 = new YogaNode {Name = "root_child2", Height = 50}),
+                    (root_child3 = new YogaNode {Name = "root_child3", Height = 50}),
+                    (root_child4 = new YogaNode {Name = "root_child4", Height = 50})
                 }
             };
 
@@ -746,24 +737,21 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void align_content_stretch_is_not_overriding_align_items()
         {
-            var root = new YogaNode {Style = {AlignContent = AlignType.Stretch}};
+            var root = new YogaNode {AlignContent = AlignType.Stretch};
 
             var root_child0 = new YogaNode
             {
-                Style =
-                {
-                    FlexDirection = FlexDirectionType.Row,
-                    AlignContent  = AlignType.Stretch,
-                    AlignItems    = AlignType.Center,
-                    Width         = 100,
-                    Height        = 100
-                }
+                FlexDirection = FlexDirectionType.Row,
+                AlignContent  = AlignType.Stretch,
+                AlignItems    = AlignType.Center,
+                Width         = 100,
+                Height        = 100
             };
             root.Children.Add(root_child0);
 
             var root_child0_child0 = new YogaNode
             {
-                Style = {AlignContent = AlignType.Stretch, Width = 10, Height = 10}
+                AlignContent = AlignType.Stretch, Width = 10, Height = 10
             };
             root_child0.Children.Add(root_child0_child0);
             root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
@@ -806,29 +794,26 @@ namespace Xamarin.Yoga.Tests
         {
             var root = new YogaNode
             {
-                Style =
-                {
-                    FlexDirection = FlexDirectionType.Row,
-                    AlignContent  = AlignType.Stretch,
-                    FlexWrap      = WrapType.Wrap,
-                    Width         = 150,
-                    Height        = 100
-                }
+                FlexDirection = FlexDirectionType.Row,
+                AlignContent  = AlignType.Stretch,
+                FlexWrap      = WrapType.Wrap,
+                Width         = 150,
+                Height        = 100
             };
 
-            var root_child0 = new YogaNode {Style = {Width = 50}};
+            var root_child0 = new YogaNode {Width = 50};
             root.Children.Add(root_child0);
 
-            var root_child1 = new YogaNode {Style = {Width = 50}};
+            var root_child1 = new YogaNode {Width = 50};
             root.Children.Insert(1, root_child1);
 
-            var root_child2 = new YogaNode {Style = {Width = 50}};
+            var root_child2 = new YogaNode {Width = 50};
             root.Children.Insert(2, root_child2);
 
-            var root_child3 = new YogaNode {Style = {Width = 50}};
+            var root_child3 = new YogaNode {Width = 50};
             root.Children.Insert(3, root_child3);
 
-            var root_child4 = new YogaNode {Style = {Width = 50}};
+            var root_child4 = new YogaNode {Width = 50};
             root.Children.Insert(4, root_child4);
             root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
@@ -900,35 +885,32 @@ namespace Xamarin.Yoga.Tests
         {
             var root = new YogaNode
             {
-                Style =
-                {
-                    FlexDirection = FlexDirectionType.Row,
-                    AlignContent  = AlignType.Stretch,
-                    FlexWrap      = WrapType.Wrap,
-                    Width         = 150,
-                    Height        = 100
-                }
+                FlexDirection = FlexDirectionType.Row,
+                AlignContent  = AlignType.Stretch,
+                FlexWrap      = WrapType.Wrap,
+                Width         = 150,
+                Height        = 100
             };
 
-            var root_child0 = new YogaNode {Style = {Width = 50}};
+            var root_child0 = new YogaNode {Width = 50};
             root.Children.Add(root_child0);
 
             var root_child0_child0 = new YogaNode
             {
-                Style = {FlexGrow = 1, FlexShrink = 1, FlexBasis = 0.Percent()}
+                FlexGrow = 1, FlexShrink = 1, FlexBasis = 0.Percent()
             };
             root_child0.Children.Add(root_child0_child0);
 
-            var root_child1 = new YogaNode {Style = {Width = 50}};
+            var root_child1 = new YogaNode {Width = 50};
             root.Children.Insert(1, root_child1);
 
-            var root_child2 = new YogaNode {Style = {Width = 50}};
+            var root_child2 = new YogaNode {Width = 50};
             root.Children.Insert(2, root_child2);
 
-            var root_child3 = new YogaNode {Style = {Width = 50}};
+            var root_child3 = new YogaNode {Width = 50};
             root.Children.Insert(3, root_child3);
 
-            var root_child4 = new YogaNode {Style = {Width = 50}};
+            var root_child4 = new YogaNode {Width = 50};
             root.Children.Insert(4, root_child4);
             root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
@@ -1010,29 +992,26 @@ namespace Xamarin.Yoga.Tests
         {
             var root = new YogaNode
             {
-                Style =
-                {
-                    FlexDirection = FlexDirectionType.Row,
-                    AlignContent  = AlignType.Stretch,
-                    FlexWrap      = WrapType.Wrap,
-                    Width         = 150,
-                    Height        = 100
-                }
+                FlexDirection = FlexDirectionType.Row,
+                AlignContent  = AlignType.Stretch,
+                FlexWrap      = WrapType.Wrap,
+                Width         = 150,
+                Height        = 100
             };
 
-            var root_child0 = new YogaNode {Style = {Width = 50}};
+            var root_child0 = new YogaNode {Width = 50};
             root.Children.Add(root_child0);
 
-            var root_child1 = new YogaNode {Style = {Width = 50, Height = 60}};
+            var root_child1 = new YogaNode {Width = 50, Height = 60};
             root.Children.Insert(1, root_child1);
 
-            var root_child2 = new YogaNode {Style = {Width = 50}};
+            var root_child2 = new YogaNode {Width = 50};
             root.Children.Insert(2, root_child2);
 
-            var root_child3 = new YogaNode {Style = {Width = 50}};
+            var root_child3 = new YogaNode {Width = 50};
             root.Children.Insert(3, root_child3);
 
-            var root_child4 = new YogaNode {Style = {Width = 50}};
+            var root_child4 = new YogaNode {Width = 50};
             root.Children.Insert(4, root_child4);
             root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
@@ -1104,35 +1083,32 @@ namespace Xamarin.Yoga.Tests
         {
             var root = new YogaNode
             {
-                Style =
-                {
-                    FlexDirection = FlexDirectionType.Row,
-                    AlignContent  = AlignType.Stretch,
-                    FlexWrap      = WrapType.Wrap,
-                    Width         = 150,
-                    Height        = 100
-                }
+                FlexDirection = FlexDirectionType.Row,
+                AlignContent  = AlignType.Stretch,
+                FlexWrap      = WrapType.Wrap,
+                Width         = 150,
+                Height        = 100
             };
 
-            var root_child0 = new YogaNode {Style = {Width = 50}};
+            var root_child0 = new YogaNode {Width = 50};
             root.Children.Add(root_child0);
 
             var root_child1 = new YogaNode
             {
-                Style = {FlexGrow = 1, FlexShrink = 1, FlexBasis = 0.Percent(), Width = 50}
+                FlexGrow = 1, FlexShrink = 1, FlexBasis = 0.Percent(), Width = 50
             };
             root.Children.Insert(1, root_child1);
 
-            var root_child2 = new YogaNode {Style = {Width = 50}};
+            var root_child2 = new YogaNode {Width = 50};
             root.Children.Insert(2, root_child2);
 
             var root_child3 = new YogaNode
             {
-                Style = {FlexGrow = 1, FlexShrink = 1, FlexBasis = 0.Percent(), Width = 50}
+                FlexGrow = 1, FlexShrink = 1, FlexBasis = 0.Percent(), Width = 50
             };
             root.Children.Insert(3, root_child3);
 
-            var root_child4 = new YogaNode {Style = {Width = 50}};
+            var root_child4 = new YogaNode {Width = 50};
             root.Children.Insert(4, root_child4);
             root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
@@ -1204,32 +1180,29 @@ namespace Xamarin.Yoga.Tests
         {
             var root = new YogaNode
             {
-                Style =
-                {
-                    FlexDirection = FlexDirectionType.Row,
-                    AlignContent  = AlignType.Stretch,
-                    FlexWrap      = WrapType.Wrap,
-                    Width         = 150,
-                    Height        = 100
-                }
+                FlexDirection = FlexDirectionType.Row,
+                AlignContent  = AlignType.Stretch,
+                FlexWrap      = WrapType.Wrap,
+                Width         = 150,
+                Height        = 100
             };
 
-            var root_child0 = new YogaNode {Style = {Width = 50}};
+            var root_child0 = new YogaNode {Width = 50};
             root.Children.Add(root_child0);
 
             var root_child1 = new YogaNode
             {
-                Style = {FlexGrow = 1, FlexShrink = 1, FlexBasis = 0.Percent(), Width = 50}
+                FlexGrow = 1, FlexShrink = 1, FlexBasis = 0.Percent(), Width = 50
             };
             root.Children.Insert(1, root_child1);
 
-            var root_child2 = new YogaNode {Style = {Width = 50}};
+            var root_child2 = new YogaNode {Width = 50};
             root.Children.Insert(2, root_child2);
 
-            var root_child3 = new YogaNode {Style = {FlexGrow = 1, FlexBasis = 0.Percent(), Width = 50}};
+            var root_child3 = new YogaNode {FlexGrow = 1, FlexBasis = 0.Percent(), Width = 50};
             root.Children.Insert(3, root_child3);
 
-            var root_child4 = new YogaNode {Style = {Width = 50}};
+            var root_child4 = new YogaNode {Width = 50};
             root.Children.Insert(4, root_child4);
             root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
@@ -1301,29 +1274,26 @@ namespace Xamarin.Yoga.Tests
         {
             var root = new YogaNode
             {
-                Style =
-                {
-                    FlexDirection = FlexDirectionType.Row,
-                    AlignContent  = AlignType.Stretch,
-                    FlexWrap      = WrapType.Wrap,
-                    Width         = 150,
-                    Height        = 100
-                }
+                FlexDirection = FlexDirectionType.Row,
+                AlignContent  = AlignType.Stretch,
+                FlexWrap      = WrapType.Wrap,
+                Width         = 150,
+                Height        = 100
             };
 
-            var root_child0 = new YogaNode {Style = {Width = 50}};
+            var root_child0 = new YogaNode {Width = 50};
             root.Children.Add(root_child0);
 
-            var root_child1 = new YogaNode {Style = {Margin = new Edges(10, 10, 10, 10), Width = 50}};
+            var root_child1 = new YogaNode {Margin = new Edges(10, 10, 10, 10), Width = 50};
             root.Children.Insert(1, root_child1);
 
-            var root_child2 = new YogaNode {Style = {Width = 50}};
+            var root_child2 = new YogaNode {Width = 50};
             root.Children.Insert(2, root_child2);
 
-            var root_child3 = new YogaNode {Style = {Margin = new Edges(10, 10, 10, 10), Width = 50}};
+            var root_child3 = new YogaNode {Margin = new Edges(10, 10, 10, 10), Width = 50};
             root.Children.Insert(3, root_child3);
 
-            var root_child4 = new YogaNode {Style = {Width = 50}};
+            var root_child4 = new YogaNode {Width = 50};
             root.Children.Insert(4, root_child4);
             root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
@@ -1395,29 +1365,26 @@ namespace Xamarin.Yoga.Tests
         {
             var root = new YogaNode
             {
-                Style =
-                {
-                    FlexDirection = FlexDirectionType.Row,
-                    AlignContent  = AlignType.Stretch,
-                    FlexWrap      = WrapType.Wrap,
-                    Width         = 150,
-                    Height        = 100
-                }
+                FlexDirection = FlexDirectionType.Row,
+                AlignContent  = AlignType.Stretch,
+                FlexWrap      = WrapType.Wrap,
+                Width         = 150,
+                Height        = 100
             };
 
-            var root_child0 = new YogaNode {Style = {Width = 50}};
+            var root_child0 = new YogaNode {Width = 50};
             root.Children.Add(root_child0);
 
-            var root_child1 = new YogaNode {Style = {Width = 50, MaxHeight = 20}};
+            var root_child1 = new YogaNode {Width = 50, MaxHeight = 20};
             root.Children.Insert(1, root_child1);
 
-            var root_child2 = new YogaNode {Style = {Width = 50}};
+            var root_child2 = new YogaNode {Width = 50};
             root.Children.Insert(2, root_child2);
 
-            var root_child3 = new YogaNode {Style = {Width = 50}};
+            var root_child3 = new YogaNode {Width = 50};
             root.Children.Insert(3, root_child3);
 
-            var root_child4 = new YogaNode {Style = {Width = 50}};
+            var root_child4 = new YogaNode {Width = 50};
             root.Children.Insert(4, root_child4);
             root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
@@ -1489,29 +1456,26 @@ namespace Xamarin.Yoga.Tests
         {
             var root = new YogaNode
             {
-                Style =
-                {
-                    FlexDirection = FlexDirectionType.Row,
-                    AlignContent  = AlignType.Stretch,
-                    FlexWrap      = WrapType.Wrap,
-                    Width         = 150,
-                    Height        = 100
-                }
+                FlexDirection = FlexDirectionType.Row,
+                AlignContent  = AlignType.Stretch,
+                FlexWrap      = WrapType.Wrap,
+                Width         = 150,
+                Height        = 100
             };
 
-            var root_child0 = new YogaNode {Style = {Width = 50}};
+            var root_child0 = new YogaNode {Width = 50};
             root.Children.Add(root_child0);
 
-            var root_child1 = new YogaNode {Style = {Width = 50, MinHeight = 80}};
+            var root_child1 = new YogaNode {Width = 50, MinHeight = 80};
             root.Children.Insert(1, root_child1);
 
-            var root_child2 = new YogaNode {Style = {Width = 50}};
+            var root_child2 = new YogaNode {Width = 50};
             root.Children.Insert(2, root_child2);
 
-            var root_child3 = new YogaNode {Style = {Width = 50}};
+            var root_child3 = new YogaNode {Width = 50};
             root.Children.Insert(3, root_child3);
 
-            var root_child4 = new YogaNode {Style = {Width = 50}};
+            var root_child4 = new YogaNode {Width = 50};
             root.Children.Insert(4, root_child4);
             root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
@@ -1583,29 +1547,26 @@ namespace Xamarin.Yoga.Tests
         {
             var root = new YogaNode
             {
-                Style =
-                {
-                    FlexDirection = FlexDirectionType.Row,
-                    AlignContent  = AlignType.Stretch,
-                    FlexWrap      = WrapType.Wrap,
-                    Width         = 150,
-                    Height        = 100
-                }
+                FlexDirection = FlexDirectionType.Row,
+                AlignContent  = AlignType.Stretch,
+                FlexWrap      = WrapType.Wrap,
+                Width         = 150,
+                Height        = 100
             };
 
-            var root_child0 = new YogaNode {Style = {Width = 50}};
+            var root_child0 = new YogaNode {Width = 50};
             root.Children.Add(root_child0);
 
-            var root_child1 = new YogaNode {Style = {Padding = new Edges(10, 10, 10, 10), Width = 50}};
+            var root_child1 = new YogaNode {Padding = new Edges(10, 10, 10, 10), Width = 50};
             root.Children.Insert(1, root_child1);
 
-            var root_child2 = new YogaNode {Style = {Width = 50}};
+            var root_child2 = new YogaNode {Width = 50};
             root.Children.Insert(2, root_child2);
 
-            var root_child3 = new YogaNode {Style = {Padding = new Edges(10, 10, 10, 10), Width = 50}};
+            var root_child3 = new YogaNode {Padding = new Edges(10, 10, 10, 10), Width = 50};
             root.Children.Insert(3, root_child3);
 
-            var root_child4 = new YogaNode {Style = {Width = 50}};
+            var root_child4 = new YogaNode {Width = 50};
             root.Children.Insert(4, root_child4);
             root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
@@ -1677,20 +1638,17 @@ namespace Xamarin.Yoga.Tests
         {
             var root = new YogaNode
             {
-                Style =
-                {
-                    FlexDirection = FlexDirectionType.Row,
-                    AlignContent  = AlignType.Stretch,
-                    FlexWrap      = WrapType.Wrap,
-                    Width         = 150,
-                    Height        = 100
-                }
+                FlexDirection = FlexDirectionType.Row,
+                AlignContent  = AlignType.Stretch,
+                FlexWrap      = WrapType.Wrap,
+                Width         = 150,
+                Height        = 100
             };
 
-            var root_child0 = new YogaNode {Style = {Width = 50}};
+            var root_child0 = new YogaNode {Width = 50};
             root.Children.Add(root_child0);
 
-            var root_child1 = new YogaNode {Style = {Width = 50}};
+            var root_child1 = new YogaNode {Width = 50};
             root.Children.Insert(1, root_child1);
             root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 

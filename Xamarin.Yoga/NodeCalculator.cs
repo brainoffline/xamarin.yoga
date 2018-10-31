@@ -44,9 +44,9 @@ namespace Xamarin.Yoga
                     _node.GetMarginForAxis(FlexDirectionType.Row, ownerWidth);
                 widthMeasureMode = MeasureMode.Exactly;
             }
-            else if (!_node.Style.MaxWidth.ResolveValue(ownerWidth).IsNaN())
+            else if (!_node.MaxWidth.ResolveValue(ownerWidth).IsNaN())
             {
-                width            = _node.Style.MaxWidth.ResolveValue(ownerWidth);
+                width            = _node.MaxWidth.ResolveValue(ownerWidth);
                 widthMeasureMode = MeasureMode.AtMost;
             }
             else
@@ -66,9 +66,9 @@ namespace Xamarin.Yoga
                     _node.GetMarginForAxis(FlexDirectionType.Column, ownerWidth);
                 heightMeasureMode = MeasureMode.Exactly;
             }
-            else if (!_node.Style.MaxHeight.ResolveValue(ownerHeight).IsNaN())
+            else if (!_node.MaxHeight.ResolveValue(ownerHeight).IsNaN())
             {
-                height            = _node.Style.MaxHeight.ResolveValue(ownerHeight);
+                height            = _node.MaxHeight.ResolveValue(ownerHeight);
                 heightMeasureMode = MeasureMode.AtMost;
             }
             else
@@ -208,16 +208,16 @@ namespace Xamarin.Yoga
             };
 
             float sizeConsumedOnCurrentLineIncludingMinConstraint = 0;
-            var   mainAxis                                        = ResolveFlexDirection(_node.Style.FlexDirection, _node.ResolveDirection(ownerDirection));
-            var   isNodeFlexWrap                                  = _node.Style.FlexWrap != WrapType.NoWrap;
+            var   mainAxis                                        = ResolveFlexDirection(_node.FlexDirection, _node.ResolveDirection(ownerDirection));
+            var   isNodeFlexWrap                                  = _node.FlexWrap != WrapType.NoWrap;
 
             // Add items to the current line until it's full or we run out of items.
             var endOfLineIndex = startOfLineIndex;
             for (; endOfLineIndex < _node.Children.Count; endOfLineIndex++)
             {
                 var child = _node.Children[endOfLineIndex];
-                if (child.Style.Display      == DisplayType.None ||
-                    child.Style.PositionType == PositionType.Absolute)
+                if (child.Display      == DisplayType.None ||
+                    child.PositionType == PositionType.Absolute)
                     continue;
 
                 child.LineIndex = lineCount;
@@ -496,7 +496,7 @@ namespace Xamarin.Yoga
             ref float         size)
         {
             var maxSize =
-                _node.Style.MaxDimension(axis.ToDimension()).ResolveValue(ownerAxisSize) +
+                _node.MaxDimension(axis.ToDimension()).ResolveValue(ownerAxisSize) +
                 _node.GetMarginForAxis(axis, ownerWidth);
             switch (mode)
             {
@@ -524,7 +524,7 @@ namespace Xamarin.Yoga
             DirectionType direction,
             YogaConfig    config)
         {
-            var mainAxis      = ResolveFlexDirection(_node.Style.FlexDirection, direction);
+            var mainAxis      = ResolveFlexDirection(_node.FlexDirection, direction);
             var crossAxis     = FlexDirectionCross(mainAxis, direction);
             var isMainAxisRow = mainAxis.IsRow();
 
@@ -585,12 +585,12 @@ namespace Xamarin.Yoga
             // ratio calculation. One dimension being the anchor and the other being
             // flexible.
             if (childWidth.IsNaN() ^ childHeight.IsNaN())
-                if (child.Style.AspectRatio.HasValue)
+                if (child.AspectRatio.HasValue)
                 {
                     if (childWidth.IsNaN())
-                        childWidth = marginRow + ((childHeight - marginColumn) * child.Style.AspectRatio.Value);
+                        childWidth = marginRow + ((childHeight - marginColumn) * child.AspectRatio.Value);
                     else if (childHeight.IsNaN())
-                        childHeight = marginColumn + ((childWidth - marginRow) / child.Style.AspectRatio.Value);
+                        childHeight = marginColumn + ((childWidth - marginRow) / child.AspectRatio.Value);
                 }
 
             // If we're still missing one or the other dimension, measure the content.
@@ -648,13 +648,13 @@ namespace Xamarin.Yoga
                     child.GetTrailingPosition(mainAxis, isMainAxisRow ? width : height);
             else if (
                 !child.IsLeadingPositionDefined(mainAxis) &&
-                _node.Style.JustifyContent == JustifyType.Center)
+                _node.JustifyContent == JustifyType.Center)
                 child.Layout.Position[mainAxis.ToLeadingEdge()] =
                     (_node.Layout.GetMeasuredDimension(mainAxis.ToDimension()) -
                         child.Layout.GetMeasuredDimension(mainAxis.ToDimension())) / 2.0f;
             else if (
                 !child.IsLeadingPositionDefined(mainAxis) &&
-                _node.Style.JustifyContent == JustifyType.FlexEnd)
+                _node.JustifyContent == JustifyType.FlexEnd)
                 child.Layout.Position[mainAxis.ToLeadingEdge()] =
                     _node.Layout.GetMeasuredDimension(mainAxis.ToDimension()) -
                     child.Layout.GetMeasuredDimension(mainAxis.ToDimension());
@@ -678,7 +678,7 @@ namespace Xamarin.Yoga
             else if (
                 !child.IsLeadingPositionDefined(crossAxis) &&
                 (_node.AlignChild(child) == AlignType.FlexEnd) ^
-                (_node.Style.FlexWrap    == WrapType.WrapReverse))
+                (_node.FlexWrap    == WrapType.WrapReverse))
                 child.Layout.Position[crossAxis.ToLeadingEdge()] =
                     _node.Layout.GetMeasuredDimension(crossAxis.ToDimension()) -
                     child.Layout.GetMeasuredDimension(crossAxis.ToDimension());
@@ -702,12 +702,12 @@ namespace Xamarin.Yoga
             {
                 // We want to make sure our available height does not violate min and max
                 // constraints
-                var minDimensionOptional = _node.Style.MinDimension(dimension).ResolveValue(ownerDim);
+                var minDimensionOptional = _node.MinDimension(dimension).ResolveValue(ownerDim);
                 var minInnerDim = minDimensionOptional.IsNaN()
                     ? 0.0f
                     : minDimensionOptional - paddingAndBorder;
 
-                var maxDimensionOptional = _node.Style.MaxDimension(dimension).ResolveValue(ownerDim);
+                var maxDimensionOptional = _node.MaxDimension(dimension).ResolveValue(ownerDim);
 
                 var maxInnerDim = maxDimensionOptional.IsNaN()
                     ? float.MaxValue
@@ -729,7 +729,7 @@ namespace Xamarin.Yoga
             DirectionType direction,
             YogaConfig    config)
         {
-            var mainAxis          = ResolveFlexDirection(_node.Style.FlexDirection, direction);
+            var mainAxis          = ResolveFlexDirection(_node.FlexDirection, direction);
             var isMainAxisRow     = mainAxis.IsRow();
             var mainAxisSize      = isMainAxisRow ? width : height;
             var mainAxisOwnerSize = isMainAxisRow ? ownerWidth : ownerHeight;
@@ -792,28 +792,28 @@ namespace Xamarin.Yoga
 
                 // The W3C spec doesn't say anything about the 'overflow' property,
                 // but all major browsers appear to implement the following logic.
-                if (!isMainAxisRow && _node.Style.Overflow == OverflowType.Scroll ||
-                    _node.Style.Overflow != OverflowType.Scroll)
+                if (!isMainAxisRow && _node.Overflow == OverflowType.Scroll ||
+                    _node.Overflow != OverflowType.Scroll)
                     if (childWidth.IsNaN() && width.HasValue())
                     {
                         childWidth            = width;
                         childWidthMeasureMode = MeasureMode.AtMost;
                     }
 
-                if (isMainAxisRow && _node.Style.Overflow == OverflowType.Scroll ||
-                    _node.Style.Overflow != OverflowType.Scroll)
+                if (isMainAxisRow && _node.Overflow == OverflowType.Scroll ||
+                    _node.Overflow != OverflowType.Scroll)
                     if (childHeight.IsNaN() && height.HasValue())
                     {
                         childHeight            = height;
                         childHeightMeasureMode = MeasureMode.AtMost;
                     }
 
-                if (child.Style.AspectRatio.HasValue)
+                if (child.AspectRatio.HasValue)
                 {
                     if (!isMainAxisRow && childWidthMeasureMode == MeasureMode.Exactly)
                     {
                         childHeight = marginColumn +
-                            ((childWidth - marginRow) / child.Style.AspectRatio.Value);
+                            ((childWidth - marginRow) / child.AspectRatio.Value);
                         childHeightMeasureMode = MeasureMode.Exactly;
                     }
                     else if (
@@ -821,7 +821,7 @@ namespace Xamarin.Yoga
                     {
                         childWidth = marginRow +
                             ((childHeight - marginColumn) *
-                                child.Style.AspectRatio.Value);
+                                child.AspectRatio.Value);
                         childWidthMeasureMode = MeasureMode.Exactly;
                     }
                 }
@@ -838,9 +838,9 @@ namespace Xamarin.Yoga
                 {
                     childWidth            = width;
                     childWidthMeasureMode = MeasureMode.Exactly;
-                    if (child.Style.AspectRatio.HasValue)
+                    if (child.AspectRatio.HasValue)
                     {
-                        childHeight            = (childWidth - marginRow) / child.Style.AspectRatio.Value;
+                        childHeight            = (childWidth - marginRow) / child.AspectRatio.Value;
                         childHeightMeasureMode = MeasureMode.Exactly;
                     }
                 }
@@ -854,10 +854,10 @@ namespace Xamarin.Yoga
                     childHeight            = height;
                     childHeightMeasureMode = MeasureMode.Exactly;
 
-                    if (child.Style.AspectRatio.HasValue)
+                    if (child.AspectRatio.HasValue)
                     {
                         childWidth = (childHeight - marginColumn) *
-                            child.Style.AspectRatio.Value;
+                            child.AspectRatio.Value;
                         childWidthMeasureMode = MeasureMode.Exactly;
                     }
                 }
@@ -1126,10 +1126,10 @@ namespace Xamarin.Yoga
             _node.Layout.HadOverflow = false;
 
             // STEP 1: CALCULATE VALUES FOR REMAINDER OF ALGORITHM
-            var mainAxis       = ResolveFlexDirection(_node.Style.FlexDirection, direction);
+            var mainAxis       = ResolveFlexDirection(_node.FlexDirection, direction);
             var crossAxis      = FlexDirectionCross(mainAxis, direction);
             var isMainAxisRow  = mainAxis.IsRow();
-            var isNodeFlexWrap = _node.Style.FlexWrap != WrapType.NoWrap;
+            var isNodeFlexWrap = _node.FlexWrap != WrapType.NoWrap;
 
             var mainAxisOwnerSize  = isMainAxisRow ? ownerWidth : ownerHeight;
             var crossAxisOwnerSize = isMainAxisRow ? ownerHeight : ownerWidth;
@@ -1147,10 +1147,10 @@ namespace Xamarin.Yoga
             var marginAxisRow    = _node.GetMarginForAxis(FlexDirectionType.Row,    ownerWidth);
             var marginAxisColumn = _node.GetMarginForAxis(FlexDirectionType.Column, ownerWidth);
 
-            var minInnerWidth  = _node.Style.MinWidth.ResolveValue(ownerWidth)   - paddingAndBorderAxisRow;
-            var maxInnerWidth  = _node.Style.MaxWidth.ResolveValue(ownerWidth)   - paddingAndBorderAxisRow;
-            var minInnerHeight = _node.Style.MinHeight.ResolveValue(ownerHeight) - paddingAndBorderAxisColumn;
-            var maxInnerHeight = _node.Style.MaxHeight.ResolveValue(ownerHeight) - paddingAndBorderAxisColumn;
+            var minInnerWidth  = _node.MinWidth.ResolveValue(ownerWidth)   - paddingAndBorderAxisRow;
+            var maxInnerWidth  = _node.MaxWidth.ResolveValue(ownerWidth)   - paddingAndBorderAxisRow;
+            var minInnerHeight = _node.MinHeight.ResolveValue(ownerHeight) - paddingAndBorderAxisColumn;
+            var maxInnerHeight = _node.MaxHeight.ResolveValue(ownerHeight) - paddingAndBorderAxisColumn;
 
             var minInnerMainDim = isMainAxisRow ? minInnerWidth : minInnerHeight;
             var maxInnerMainDim = isMainAxisRow ? maxInnerWidth : maxInnerHeight;
@@ -1330,9 +1330,9 @@ namespace Xamarin.Yoga
                     for (var i = startOfLineIndex; i < endOfLineIndex; i++)
                     {
                         var child = _node.Children[i];
-                        if (child.Style.Display == DisplayType.None) continue;
+                        if (child.Display == DisplayType.None) continue;
 
-                        if (child.Style.PositionType == PositionType.Absolute)
+                        if (child.PositionType == PositionType.Absolute)
                         {
                             // If the child is absolutely positioned and has a
                             // top/left/bottom/right set, override
@@ -1375,11 +1375,11 @@ namespace Xamarin.Yoga
                                 {
                                     var childMainSize = child.Layout.GetMeasuredDimension(mainAxis.ToDimension());
                                     var childCrossSize =
-                                        child.Style.AspectRatio.HasValue
+                                        child.AspectRatio.HasValue
                                             ? child.GetMarginForAxis(crossAxis, availableInnerWidth) +
                                             (isMainAxisRow
-                                                ? childMainSize / child.Style.AspectRatio.Value
-                                                : childMainSize * child.Style.AspectRatio.Value)
+                                                ? childMainSize / child.AspectRatio.Value
+                                                : childMainSize * child.AspectRatio.Value)
                                             : collectedFlexItemsValues.CrossDim;
 
                                     childMainSize += child.GetMarginForAxis(mainAxis, availableInnerWidth);
@@ -1473,7 +1473,7 @@ namespace Xamarin.Yoga
                 if (availableInnerCrossDim.HasValue())
                 {
                     var remainingAlignContentDim = availableInnerCrossDim - totalLineCrossDim;
-                    switch (_node.Style.AlignContent)
+                    switch (_node.AlignContent)
                     {
                     case AlignType.FlexEnd:
                         currentLead += remainingAlignContentDim;
@@ -1521,10 +1521,10 @@ namespace Xamarin.Yoga
                     for (ii = startIndex; ii < childCount; ii++)
                     {
                         var child = _node.Children[ii];
-                        if (child.Style.Display == DisplayType.None)
+                        if (child.Display == DisplayType.None)
                             continue;
 
-                        if (child.Style.PositionType == PositionType.Relative)
+                        if (child.PositionType == PositionType.Relative)
                         {
                             if (child.LineIndex != i)
                                 break;
@@ -1556,9 +1556,9 @@ namespace Xamarin.Yoga
                         for (ii = startIndex; ii < endIndex; ii++)
                         {
                             var child = _node.Children[ii];
-                            if (child.Style.Display == DisplayType.None) continue;
+                            if (child.Display == DisplayType.None) continue;
 
-                            if (child.Style.PositionType == PositionType.Relative)
+                            if (child.PositionType == PositionType.Relative)
                                 switch (_node.AlignChild(child))
                                 {
                                 case AlignType.FlexStart:
@@ -1666,7 +1666,7 @@ namespace Xamarin.Yoga
             // If the user didn't specify a width or height for the node, set the
             // dimensions based on the children.
             if (measureModeMainDim == MeasureMode.Undefined ||
-                _node.Style.Overflow != OverflowType.Scroll &&
+                _node.Overflow != OverflowType.Scroll &&
                 measureModeMainDim  == MeasureMode.AtMost)
                 _node.Layout.SetMeasuredDimension(
                     mainAxis.ToDimension(),
@@ -1678,7 +1678,7 @@ namespace Xamarin.Yoga
                 );
             else if (
                 measureModeMainDim  == MeasureMode.AtMost &&
-                _node.Style.Overflow == OverflowType.Scroll)
+                _node.Overflow == OverflowType.Scroll)
                 _node.Layout.SetMeasuredDimension(
                     mainAxis.ToDimension(),
                     FloatMax(
@@ -1689,7 +1689,7 @@ namespace Xamarin.Yoga
                 );
 
             if (measureModeCrossDim == MeasureMode.Undefined ||
-                _node.Style.Overflow != OverflowType.Scroll &&
+                _node.Overflow != OverflowType.Scroll &&
                 measureModeCrossDim == MeasureMode.AtMost)
             {
                 _node.Layout.SetMeasuredDimension(
@@ -1703,7 +1703,7 @@ namespace Xamarin.Yoga
             }
             else if (
                 measureModeCrossDim == MeasureMode.AtMost &&
-                _node.Style.Overflow == OverflowType.Scroll)
+                _node.Overflow == OverflowType.Scroll)
             {
                 _node.Layout.SetMeasuredDimension(
                     crossAxis.ToDimension(),
@@ -1720,11 +1720,11 @@ namespace Xamarin.Yoga
 
             // As we only wrapped in normal direction yet, we need to reverse the
             // positions on wrap-reverse.
-            if (performLayout && _node.Style.FlexWrap == WrapType.WrapReverse)
+            if (performLayout && _node.FlexWrap == WrapType.WrapReverse)
                 for (var i = 0; i < childCount; i++)
                 {
                     var child = _node.Children[i];
-                    if (child.Style.PositionType == PositionType.Relative)
+                    if (child.PositionType == PositionType.Relative)
                         child.Layout.Position[crossAxis.ToPositionEdge()] =
                             _node.Layout.GetMeasuredDimension(crossAxis.ToDimension()) -
                             child.Layout.Position[crossAxis.ToPositionEdge()]         -
@@ -1736,7 +1736,7 @@ namespace Xamarin.Yoga
                 // STEP 10: SIZING AND POSITIONING ABSOLUTE CHILDREN
                 foreach (var child in _node.Children)
                 {
-                    if (child.Style.PositionType != PositionType.Absolute) continue;
+                    if (child.PositionType != PositionType.Absolute) continue;
 
                     _node.Calc.AbsoluteLayoutChild(
                         child,
@@ -1758,7 +1758,7 @@ namespace Xamarin.Yoga
                     for (var i = 0; i < childCount; i++)
                     {
                         var child = _node.Children[i];
-                        if (child.Style.Display == DisplayType.None) continue;
+                        if (child.Display == DisplayType.None) continue;
 
                         if (needsMainTrailingPos)
                             SetChildTrailingPosition(child, mainAxis);
@@ -2001,7 +2001,7 @@ namespace Xamarin.Yoga
             foreach (var child in children)
             {
                 child.ResolveDimension();
-                if (child.Style.Display == DisplayType.None)
+                if (child.Display == DisplayType.None)
                 {
                     child.ZeroOutLayoutRecursively();
                     child.HasNewLayout = true;
@@ -2026,7 +2026,7 @@ namespace Xamarin.Yoga
                         availableInnerWidth);
                 }
 
-                if (child.Style.PositionType == PositionType.Absolute) continue;
+                if (child.PositionType == PositionType.Absolute) continue;
 
                 if (child == singleFlexChild)
                 {

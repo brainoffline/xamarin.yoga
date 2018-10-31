@@ -14,20 +14,20 @@ namespace Xamarin.Yoga.Tests
             var config = new YogaConfig();
 
             var root = new YogaNode(config);
-            root.Style.FlexDirection = FlexDirectionType.Row;
-            root.Style.Width         = 300;
+            root.FlexDirection = FlexDirectionType.Row;
+            root.Width         = 300;
 
             var root_child0 = new YogaNode(config);
-            root_child0.Style.Width  = 300;
-            root_child0.Style.Height = 300;
+            root_child0.Width  = 300;
+            root_child0.Height = 300;
             root.Children.Add(root_child0);
 
             var root_child1 = new YogaNode(config);
-            root_child1.Style.PositionType  = PositionType.Absolute;
-            root_child1.Style.Position.Left = 20.Percent();
-            root_child1.Style.Position.Top  = 20.Percent();
-            root_child1.Style.Width         = 20.Percent();
-            root_child1.Style.Height        = 20.Percent();
+            root_child1.PositionType  = PositionType.Absolute;
+            root_child1.Position.Left = 20.Percent();
+            root_child1.Position.Top  = 20.Percent();
+            root_child1.Width         = 20.Percent();
+            root_child1.Height        = 20.Percent();
             root.Children.Insert(1, root_child1);
             root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 

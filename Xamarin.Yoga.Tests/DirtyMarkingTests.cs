@@ -15,17 +15,18 @@ namespace Xamarin.Yoga.Tests
             var root = new YogaNode
             {
                 Name = "Root",
-                Style =
-                {
+                
+                
                     FlexDirection = FlexDirectionType.Row,
                     Height        = 100
-                },
+                ,
                 Children =
                 {
                     (child1 = new YogaNode
                     {
                         Name  = "Child1",
-                        Style = {FlexGrow = 1, Display = DisplayType.None},
+                        FlexGrow = 1,
+                        Display = DisplayType.None,
                         Children =
                         {
                             (child1_child0 = new YogaNode
@@ -33,12 +34,12 @@ namespace Xamarin.Yoga.Tests
                                 Name = "child1_child0",
                                 Children =
                                 {
-                                    (child1_child0_child0 = new YogaNode {Name = "child1_child0_child0", Style = {Width = 8, Height = 16}})
+                                    (child1_child0_child0 = new YogaNode {Name = "child1_child0_child0", Width = 8, Height = 16})
                                 }
                             })
                         }
                     }),
-                    (child0 = new YogaNode {Style = {FlexGrow = 1, Display = DisplayType.Flex}})
+                    (child0 = new YogaNode {FlexGrow = 1, Display = DisplayType.Flex})
                 }
             };
 
@@ -47,24 +48,24 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(0, child1_child0_child0.Layout.Width);
             Assert.AreEqual(0, child1_child0_child0.Layout.Height);
 
-            child0.Style.Display = DisplayType.None;
-            child1.Style.Display = DisplayType.Flex;
+            child0.Display = DisplayType.None;
+            child1.Display = DisplayType.Flex;
 
             root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(8,  child1_child0_child0.Layout.Width);
             Assert.AreEqual(16, child1_child0_child0.Layout.Height);
 
-            child0.Style.Display = DisplayType.Flex;
-            child1.Style.Display = DisplayType.None;
+            child0.Display = DisplayType.Flex;
+            child1.Display = DisplayType.None;
 
             root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(0, child1_child0_child0.Layout.Width);
             Assert.AreEqual(0, child1_child0_child0.Layout.Height);
 
-            child0.Style.Display = DisplayType.None;
-            child1.Style.Display = DisplayType.Flex;
+            child0.Display = DisplayType.None;
+            child1.Display = DisplayType.Flex;
 
             root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
@@ -76,13 +77,13 @@ namespace Xamarin.Yoga.Tests
         public void dirty_node_only_if_children_are_actually_removed()
         {
             var root = new YogaNode();
-            root.Style.AlignItems = AlignType.FlexStart;
-            root.Style.Width      = 50;
-            root.Style.Height     = 50;
+            root.AlignItems = AlignType.FlexStart;
+            root.Width      = 50;
+            root.Height     = 50;
 
             var child0 = new YogaNode();
-            child0.Style.Width  = 50;
-            child0.Style.Height = 25;
+            child0.Width  = 50;
+            child0.Height = 25;
             root.Children.Add(child0);
 
             root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
@@ -99,15 +100,15 @@ namespace Xamarin.Yoga.Tests
         public void dirty_node_only_if_undefined_values_gets_set_to_undefined()
         {
             var root = new YogaNode();
-            root.Style.Width    = 50;
-            root.Style.Height   = 50;
-            root.Style.MinWidth = float.NaN;
+            root.Width    = 50;
+            root.Height   = 50;
+            root.MinWidth = float.NaN;
 
             root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.IsFalse(root.IsDirty);
 
-            root.Style.MinWidth = float.NaN;
+            root.MinWidth = float.NaN;
 
             Assert.IsFalse(root.IsDirty);
         }
@@ -116,23 +117,23 @@ namespace Xamarin.Yoga.Tests
         public void dirty_propagation()
         {
             var root = new YogaNode();
-            root.Style.AlignItems = AlignType.FlexStart;
-            root.Style.Width      = 100;
-            root.Style.Height     = 100;
+            root.AlignItems = AlignType.FlexStart;
+            root.Width      = 100;
+            root.Height     = 100;
 
             var root_child0 = new YogaNode();
-            root_child0.Style.Width  = 50;
-            root_child0.Style.Height = 20;
+            root_child0.Width  = 50;
+            root_child0.Height = 20;
             root.Children.Add(root_child0);
 
             var root_child1 = new YogaNode();
-            root_child1.Style.Width  = 50;
-            root_child1.Style.Height = 20;
+            root_child1.Width  = 50;
+            root_child1.Height = 20;
             root.Children.Insert(1, root_child1);
 
             root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
-            root_child0.Style.Width = 20;
+            root_child0.Width = 20;
 
             Assert.IsTrue(root_child0.IsDirty);
             Assert.IsFalse(root_child1.IsDirty);
@@ -149,23 +150,23 @@ namespace Xamarin.Yoga.Tests
         public void dirty_propagation_only_if_prop_changed()
         {
             var root = new YogaNode();
-            root.Style.AlignItems = AlignType.FlexStart;
-            root.Style.Width      = 100;
-            root.Style.Height     = 100;
+            root.AlignItems = AlignType.FlexStart;
+            root.Width      = 100;
+            root.Height     = 100;
 
             var root_child0 = new YogaNode();
-            root_child0.Style.Width  = 50;
-            root_child0.Style.Height = 20;
+            root_child0.Width  = 50;
+            root_child0.Height = 20;
             root.Children.Add(root_child0);
 
             var root_child1 = new YogaNode();
-            root_child1.Style.Width  = 50;
-            root_child1.Style.Height = 20;
+            root_child1.Width  = 50;
+            root_child1.Height = 20;
             root.Children.Insert(1, root_child1);
 
             root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
-            root_child0.Style.Width = 50;
+            root_child0.Width = 50;
 
             Assert.IsFalse(root_child0.IsDirty);
             Assert.IsFalse(root_child1.IsDirty);

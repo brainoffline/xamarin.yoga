@@ -13,13 +13,13 @@ namespace Xamarin.Yoga.Tests
         {
             var child0 = new YogaNode
             {
-                Style = {Width = 80, Height = 40, Margin = {Top = 10, Bottom = 15}}
+                Width = 80, Height = 40, Margin = {Top = 10, Bottom = 15}
             };
             root.Children.Add(child0);
 
             var child1 = new YogaNode
             {
-                Style = {Width = 80, Height = 40, Margin = {Bottom = 5}}
+                Width = 80, Height = 40, Margin = {Bottom = 5}
             };
             root.Children.Insert(1, child1);
 
@@ -33,13 +33,13 @@ namespace Xamarin.Yoga.Tests
         {
             var child0 = new YogaNode
             {
-                Style = {Width = 80, Height = 40, Margin = {Top = 10, Bottom = 10}}
+                Width = 80, Height = 40, Margin = {Top = 10, Bottom = 10}
             };
             root.Children.Add(child0);
 
             var child1 = new YogaNode
             {
-                Style = {Width = 80, Height = 40, Margin = {Bottom = 5}}
+                Width = 80, Height = 40, Margin = {Bottom = 5}
             };
             root.Children.Insert(1, child1);
 
@@ -47,7 +47,7 @@ namespace Xamarin.Yoga.Tests
 
             Assert.IsTrue(root.Layout.HadOverflow);
 
-            child1.Style.FlexShrink = 1;
+            child1.FlexShrink = 1;
 
             root.Calc.CalculateLayout(200, 100, DirectionType.LTR);
 
@@ -59,13 +59,13 @@ namespace Xamarin.Yoga.Tests
         {
             var child0 = new YogaNode
             {
-                Style = {Width = 80, Height = 40, Margin = {Top = 10, Bottom = 10}}
+                Width = 80, Height = 40, Margin = {Top = 10, Bottom = 10}
             };
             root.Children.Add(child0);
 
             var child1 = new YogaNode
             {
-                Style = {Width = 80, Height = 40, Margin = {Bottom = 5}, FlexShrink = 1}
+                Width = 80, Height = 40, Margin = {Bottom = 5}, FlexShrink = 1
             };
             root.Children.Insert(1, child1);
 
@@ -79,19 +79,19 @@ namespace Xamarin.Yoga.Tests
         {
             var child0 = new YogaNode
             {
-                Style = {Width = 80, Height = 40, Margin = {Top = 10, Bottom = 10}}
+                Width = 80, Height = 40, Margin = {Top = 10, Bottom = 10}
             };
             root.Children.Add(child0);
 
             var child1 = new YogaNode
             {
-                Style = {Width = 80, Height = 40}
+                Width = 80, Height = 40
             };
             root.Children.Insert(1, child1);
 
             var child1_1 = new YogaNode
             {
-                Style = {Width = 80, Height = 40, Margin = {Bottom = 5}}
+                Width = 80, Height = 40, Margin = {Bottom = 5}
             };
             child1.Children.Add(child1_1);
 
@@ -105,13 +105,13 @@ namespace Xamarin.Yoga.Tests
         {
             var child0 = new YogaNode
             {
-                Style = {Width = 80, Height = 40, Margin = {Top = 10, Bottom = 10}}
+                Width = 80, Height = 40, Margin = {Top = 10, Bottom = 10}
             };
             root.Children.Add(child0);
 
             var child1 = new YogaNode
             {
-                Style = {Width = 80, Height = 40, Margin = {Bottom = 5}}
+                Width = 80, Height = 40, Margin = {Bottom = 5}
             };
             root.Children.Insert(1, child1);
 
@@ -128,13 +128,13 @@ namespace Xamarin.Yoga.Tests
         {
             root = new YogaNode
             {
-                Style =
-                {
+                
+                
                     Width = 200,
                     Height = 100,
                     FlexDirection = FlexDirectionType.Column,
                     FlexWrap = WrapType.NoWrap
-                }
+                
             };
         }
     }

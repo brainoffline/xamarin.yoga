@@ -11,15 +11,15 @@ namespace Xamarin.Yoga.Tests
             var config = new YogaConfig();
 
             var root = new YogaNode(config);
-            root.Style.Width  = 100;
-            root.Style.Height = 100;
+            root.Width  = 100;
+            root.Height = 100;
 
             var root_child0 = new YogaNode(config);
             root.Children.Add(root_child0);
 
             var root_child0_child0 = new YogaNode(config);
-            root_child0_child0.Style.Width  = 200;
-            root_child0_child0.Style.Height = 200;
+            root_child0_child0.Width  = 200;
+            root_child0_child0.Height = 200;
             root_child0.Children.Add(root_child0_child0);
             root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
@@ -62,17 +62,17 @@ namespace Xamarin.Yoga.Tests
             var config = new YogaConfig();
 
             var root = new YogaNode(config);
-            root.Style.Width  = 100;
-            root.Style.Height = 100;
+            root.Width  = 100;
+            root.Height = 100;
 
             var root_child0 = new YogaNode(config);
-            root_child0.Style.Width  = 100;
-            root_child0.Style.Height = 100;
+            root_child0.Width  = 100;
+            root_child0.Height = 100;
             root.Children.Add(root_child0);
 
             var root_child0_child0 = new YogaNode(config);
-            root_child0_child0.Style.Width  = 200;
-            root_child0_child0.Style.Height = 200;
+            root_child0_child0.Width  = 200;
+            root_child0_child0.Height = 200;
             root_child0.Children.Add(root_child0_child0);
             root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
@@ -115,16 +115,16 @@ namespace Xamarin.Yoga.Tests
             var config = new YogaConfig();
 
             var root = new YogaNode(config);
-            root.Style.Width  = 100;
-            root.Style.Height = 100;
+            root.Width  = 100;
+            root.Height = 100;
 
             var root_child0 = new YogaNode(config);
-            root_child0.Style.Width = 100;
+            root_child0.Width = 100;
             root.Children.Add(root_child0);
 
             var root_child0_child0 = new YogaNode(config);
-            root_child0_child0.Style.Width  = 100;
-            root_child0_child0.Style.Height = 200;
+            root_child0_child0.Width  = 100;
+            root_child0_child0.Height = 200;
             root_child0.Children.Add(root_child0_child0);
             root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 

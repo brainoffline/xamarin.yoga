@@ -11,13 +11,13 @@ namespace Xamarin.Yoga.Tests
             YogaNode root_child0;
             var root = new YogaNode
             {
-                Style = {FlexDirection = FlexDirectionType.Column, Width = 100, Height = 100},
+                FlexDirection = FlexDirectionType.Column, Width = 100, Height = 100,
                 Children =
                 {
                     (root_child0 = new YogaNode
                     {
-                        Style =
-                        {
+                        
+                        
                             FlexGrow = 1,
                             Margin =
                             {
@@ -27,7 +27,7 @@ namespace Xamarin.Yoga.Tests
                                 Bottom = 10,
                                 All    = 20
                             }
-                        }
+                        
                     })
                 }
             };
@@ -44,15 +44,15 @@ namespace Xamarin.Yoga.Tests
         public void end_overrides()
         {
             var root = new YogaNode();
-            root.Style.FlexDirection = FlexDirectionType.Row;
-            root.Style.Width         = 100;
-            root.Style.Height        = 100;
+            root.FlexDirection = FlexDirectionType.Row;
+            root.Width         = 100;
+            root.Height        = 100;
 
             var root_child0 = new YogaNode();
-            root_child0.Style.FlexGrow     = 1;
-            root_child0.Style.Margin.End   = 10;
-            root_child0.Style.Margin.Left  = 20;
-            root_child0.Style.Margin.Right = 20;
+            root_child0.FlexGrow     = 1;
+            root_child0.Margin.End   = 10;
+            root_child0.Margin.Left  = 20;
+            root_child0.Margin.Right = 20;
             root.Children.Add(root_child0);
 
             root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
@@ -68,14 +68,14 @@ namespace Xamarin.Yoga.Tests
         public void horizontal_overridden()
         {
             var root = new YogaNode();
-            root.Style.FlexDirection = FlexDirectionType.Row;
-            root.Style.Width         = 100;
-            root.Style.Height        = 100;
+            root.FlexDirection = FlexDirectionType.Row;
+            root.Width         = 100;
+            root.Height        = 100;
 
             var root_child0 = new YogaNode();
-            root_child0.Style.FlexGrow          = 1;
-            root_child0.Style.Margin.Horizontal = 10;
-            root_child0.Style.Margin.Left       = 20;
+            root_child0.FlexGrow          = 1;
+            root_child0.Margin.Horizontal = 10;
+            root_child0.Margin.Left       = 20;
             root.Children.Add(root_child0);
 
             root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
@@ -87,14 +87,14 @@ namespace Xamarin.Yoga.Tests
         public void horizontal_overrides_all()
         {
             var root = new YogaNode();
-            root.Style.FlexDirection = FlexDirectionType.Column;
-            root.Style.Width         = 100;
-            root.Style.Height        = 100;
+            root.FlexDirection = FlexDirectionType.Column;
+            root.Width         = 100;
+            root.Height        = 100;
 
             var root_child0 = new YogaNode();
-            root_child0.Style.FlexGrow          = 1;
-            root_child0.Style.Margin.Horizontal = 10;
-            root_child0.Style.Margin.All        = 20;
+            root_child0.FlexGrow          = 1;
+            root_child0.Margin.Horizontal = 10;
+            root_child0.Margin.All        = 20;
             root.Children.Add(root_child0);
 
             root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
@@ -108,15 +108,15 @@ namespace Xamarin.Yoga.Tests
         public void start_overrides()
         {
             var root = new YogaNode();
-            root.Style.FlexDirection = FlexDirectionType.Row;
-            root.Style.Width         = 100;
-            root.Style.Height        = 100;
+            root.FlexDirection = FlexDirectionType.Row;
+            root.Width         = 100;
+            root.Height        = 100;
 
             var root_child0 = new YogaNode();
-            root_child0.Style.FlexGrow     = 1;
-            root_child0.Style.Margin.Start = 10;
-            root_child0.Style.Margin.Left  = 20;
-            root_child0.Style.Margin.Right = 20;
+            root_child0.FlexGrow     = 1;
+            root_child0.Margin.Start = 10;
+            root_child0.Margin.Left  = 20;
+            root_child0.Margin.Right = 20;
             root.Children.Add(root_child0);
 
             root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
@@ -132,14 +132,14 @@ namespace Xamarin.Yoga.Tests
         public void vertical_overridden()
         {
             var root = new YogaNode();
-            root.Style.FlexDirection = FlexDirectionType.Column;
-            root.Style.Width         = 100;
-            root.Style.Height        = 100;
+            root.FlexDirection = FlexDirectionType.Column;
+            root.Width         = 100;
+            root.Height        = 100;
 
             var root_child0 = new YogaNode();
-            root_child0.Style.FlexGrow        = 1;
-            root_child0.Style.Margin.Vertical = 10;
-            root_child0.Style.Margin.Top      = 20;
+            root_child0.FlexGrow        = 1;
+            root_child0.Margin.Vertical = 10;
+            root_child0.Margin.Top      = 20;
             root.Children.Add(root_child0);
 
             root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
@@ -151,14 +151,14 @@ namespace Xamarin.Yoga.Tests
         public void vertical_overrides_all()
         {
             var root = new YogaNode();
-            root.Style.FlexDirection = FlexDirectionType.Column;
-            root.Style.Width         = 100;
-            root.Style.Height        = 100;
+            root.FlexDirection = FlexDirectionType.Column;
+            root.Width         = 100;
+            root.Height        = 100;
 
             var root_child0 = new YogaNode();
-            root_child0.Style.FlexGrow        = 1;
-            root_child0.Style.Margin.Vertical = 10;
-            root_child0.Style.Margin.All      = 20;
+            root_child0.FlexGrow        = 1;
+            root_child0.Margin.Vertical = 10;
+            root_child0.Margin.All      = 20;
             root.Children.Add(root_child0);
 
             root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);

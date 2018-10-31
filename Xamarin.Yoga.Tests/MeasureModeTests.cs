@@ -13,9 +13,9 @@ namespace Xamarin.Yoga.Tests
             var constraintList = new List<_MeasureConstraint>(10);
 
             var root = new YogaNode();
-            root.Style.AlignItems = AlignType.FlexStart;
-            root.Style.Width      = 100;
-            root.Style.Height     = 100;
+            root.AlignItems = AlignType.FlexStart;
+            root.Width      = 100;
+            root.Height     = 100;
 
             var root_child0 = new YogaNode();
             root_child0.Context     = constraintList;
@@ -36,10 +36,10 @@ namespace Xamarin.Yoga.Tests
             var constraintList = new List<_MeasureConstraint>(10);
 
             var root = new YogaNode();
-            root.Style.FlexDirection = FlexDirectionType.Row;
-            root.Style.AlignItems    = AlignType.FlexStart;
-            root.Style.Width         = 100;
-            root.Style.Height        = 100;
+            root.FlexDirection = FlexDirectionType.Row;
+            root.AlignItems    = AlignType.FlexStart;
+            root.Width         = 100;
+            root.Height        = 100;
 
             var root_child0 = new YogaNode();
             root_child0.Context     = constraintList;
@@ -62,8 +62,8 @@ namespace Xamarin.Yoga.Tests
             var constraintList = new List<_MeasureConstraint>(10);
 
             var root = new YogaNode();
-            root.Style.Width  = 100;
-            root.Style.Height = 100;
+            root.Width  = 100;
+            root.Height = 100;
 
             var root_child0 = new YogaNode();
             root_child0.Context     = constraintList;
@@ -86,9 +86,9 @@ namespace Xamarin.Yoga.Tests
             var constraintList = new List<_MeasureConstraint>(10);
 
             var root = new YogaNode();
-            root.Style.FlexDirection = FlexDirectionType.Row;
-            root.Style.Width         = 100;
-            root.Style.Height        = 100;
+            root.FlexDirection = FlexDirectionType.Row;
+            root.Width         = 100;
+            root.Height        = 100;
 
             var root_child0 = new YogaNode();
             root_child0.Context     = constraintList;
@@ -111,8 +111,8 @@ namespace Xamarin.Yoga.Tests
             var constraintList = new List<_MeasureConstraint>(10);
 
             var root = new YogaNode();
-            root.Style.Width  = 100;
-            root.Style.Height = 100;
+            root.Width  = 100;
+            root.Height = 100;
 
             var root_child0 = new YogaNode();
             //  root_child0.setContext(&constraintList);
@@ -137,9 +137,9 @@ namespace Xamarin.Yoga.Tests
             var constraintList = new List<_MeasureConstraint>(10);
 
             var root = new YogaNode();
-            root.Style.FlexDirection = FlexDirectionType.Row;
-            root.Style.Width         = 100;
-            root.Style.Height        = 100;
+            root.FlexDirection = FlexDirectionType.Row;
+            root.Width         = 100;
+            root.Height        = 100;
 
             var root_child0 = new YogaNode();
             //  root_child0.setContext(&constraintList);
@@ -163,10 +163,10 @@ namespace Xamarin.Yoga.Tests
             var constraintList = new List<_MeasureConstraint>(10);
 
             var root = new YogaNode();
-            root.Style.Height = 100;
+            root.Height = 100;
 
             var root_child0 = new YogaNode();
-            root_child0.Style.FlexGrow = 1;
+            root_child0.FlexGrow = 1;
             root_child0.Context        = constraintList;
             root_child0.MeasureFunc    = _measure;
             root.Children.Add(root_child0);
@@ -190,11 +190,11 @@ namespace Xamarin.Yoga.Tests
             var constraintList = new List<_MeasureConstraint>(10);
 
             var root = new YogaNode();
-            root.Style.Height = 100;
+            root.Height = 100;
 
             var root_child0 = new YogaNode();
-            root_child0.Style.FlexGrow  = 1;
-            root_child0.Style.FlexBasis = 0;
+            root_child0.FlexGrow  = 1;
+            root_child0.FlexBasis = 0;
             root_child0.Context         = constraintList;
             root_child0.MeasureFunc     = _measure;
             root.Children.Add(root_child0);
@@ -215,10 +215,10 @@ namespace Xamarin.Yoga.Tests
             var constraintList = new List<_MeasureConstraint>(10);
 
             var root = new YogaNode();
-            root.Style.AlignItems = AlignType.FlexStart;
-            root.Style.Overflow   = OverflowType.Scroll;
-            root.Style.Height     = 100;
-            root.Style.Width      = 100;
+            root.AlignItems = AlignType.FlexStart;
+            root.Overflow   = OverflowType.Scroll;
+            root.Height     = 100;
+            root.Width      = 100;
 
             var root_child0 = new YogaNode();
             root_child0.Context     = constraintList;
@@ -244,11 +244,11 @@ namespace Xamarin.Yoga.Tests
             var constraintList = new List<_MeasureConstraint>(10);
 
             var root = new YogaNode();
-            root.Style.AlignItems    = AlignType.FlexStart;
-            root.Style.FlexDirection = FlexDirectionType.Row;
-            root.Style.Overflow      = OverflowType.Scroll;
-            root.Style.Height        = 100;
-            root.Style.Width         = 100;
+            root.AlignItems    = AlignType.FlexStart;
+            root.FlexDirection = FlexDirectionType.Row;
+            root.Overflow      = OverflowType.Scroll;
+            root.Height        = 100;
+            root.Width         = 100;
 
             var root_child0 = new YogaNode();
             root_child0.Context     = constraintList;

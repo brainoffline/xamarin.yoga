@@ -101,14 +101,11 @@ namespace Xamarin.Yoga.Tests
 
             YogaNode root = new YogaNode(new YogaConfig {Logger = _unmanagedLogger})
             {
-                Style =
-                {
                     PositionType = PositionType.Absolute,
                     Width        = 50.Percent(),
                     Height       = 75.Percent(),
                     Flex         = 1,
                     Margin       = {Right = 10, Left = Value.Auto}
-                }
             };
 
             root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);

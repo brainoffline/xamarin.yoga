@@ -10,7 +10,7 @@ namespace Xamarin.Yoga.Tests
         {
             var root = new YogaNode
             {
-                Style = {Width = 100, Height = 100, Padding = {Start = 10.Percent()}}
+                Width = 100, Height = 100, Padding = {Start = 10.Percent()}
             };
 
             root.Calc.CalculateLayout(100, 100, DirectionType.LTR);

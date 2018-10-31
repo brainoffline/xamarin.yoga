@@ -13,7 +13,7 @@ namespace Xamarin.Yoga.Tests
             var root   = new YogaNode(config);
 
             var root_child0 = new YogaNode(config);
-            root_child0.Style.Position.Left = 73.625f;
+            root_child0.Position.Left = 73.625f;
             root_child0.MeasureFunc         = _measureFractional;
             root.Children.Add(root_child0);
 

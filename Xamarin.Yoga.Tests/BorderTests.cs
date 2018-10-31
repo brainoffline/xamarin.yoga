@@ -13,17 +13,17 @@ namespace Xamarin.Yoga.Tests
             YogaNode root_child0;
             var root = new YogaNode(config)
             {
-                Style =
-                {
+                
+                
                     JustifyContent = JustifyType.Center,
                     AlignItems     = AlignType.Center,
                     Border         = {Start = 10, End = 20, Bottom = 20},
                     Width          = 100,
                     Height         = 100
-                },
+                ,
                 Children =
                 {
-                    (root_child0 = new YogaNode(config) {Style = {Width = 10, Height = 10}})
+                    (root_child0 = new YogaNode(config) {Width = 10, Height = 10})
                 }
             };
 
@@ -58,11 +58,11 @@ namespace Xamarin.Yoga.Tests
             var config = new YogaConfig();
 
             var root = new YogaNode(config);
-            root.Style.Border = new Edges(10, 10, 10, 10);
+            root.Border = new Edges(10, 10, 10, 10);
 
             var root_child0 = new YogaNode(config);
-            root_child0.Style.Width  = 10;
-            root_child0.Style.Height = 10;
+            root_child0.Width  = 10;
+            root_child0.Height = 10;
             root.Children.Add(root_child0);
             root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
@@ -95,13 +95,13 @@ namespace Xamarin.Yoga.Tests
             var config = new YogaConfig();
 
             var root = new YogaNode(config);
-            root.Style.Border = new Edges(10, 10, 10, 10);
-            root.Style.Width  = 100;
-            root.Style.Height = 100;
+            root.Border = new Edges(10, 10, 10, 10);
+            root.Width  = 100;
+            root.Height = 100;
 
             var root_child0 = new YogaNode(config);
-            root_child0.Style.FlexGrow = 1;
-            root_child0.Style.Width    = 10;
+            root_child0.FlexGrow = 1;
+            root_child0.Width    = 10;
             root.Children.Add(root_child0);
             root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
@@ -134,7 +134,7 @@ namespace Xamarin.Yoga.Tests
             var config = new YogaConfig();
 
             var root = new YogaNode(config);
-            root.Style.Border = new Edges(10, 10, 10, 10);
+            root.Border = new Edges(10, 10, 10, 10);
             root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(0,  root.Layout.Position.Left);
@@ -156,12 +156,12 @@ namespace Xamarin.Yoga.Tests
             var config = new YogaConfig();
 
             var root = new YogaNode(config);
-            root.Style.Border = new Edges(10, 10, 10, 10);
-            root.Style.Width  = 100;
-            root.Style.Height = 100;
+            root.Border = new Edges(10, 10, 10, 10);
+            root.Width  = 100;
+            root.Height = 100;
 
             var root_child0 = new YogaNode(config);
-            root_child0.Style.Height = 10;
+            root_child0.Height = 10;
             root.Children.Add(root_child0);
             root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 

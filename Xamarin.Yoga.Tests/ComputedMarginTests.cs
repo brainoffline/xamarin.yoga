@@ -10,12 +10,9 @@ namespace Xamarin.Yoga.Tests
         {
             var root = new YogaNode
             {
-                Style =
-                {
                     Width = 100,
                     Height = 100,
                     Margin = {Start = 10}
-                }
             };
 
             root.Calc.CalculateLayout(100, 100, DirectionType.LTR);

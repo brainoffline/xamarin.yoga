@@ -12,11 +12,11 @@ namespace Xamarin.Yoga.Tests
             config.ExperimentalFeatures |= ExperimentalFeatures.WebFlexBasis;
 
             var root = new YogaNode(config);
-            root.Style.Width  = 100.Percent();
-            root.Style.Height = 100.Percent();
+            root.Width  = 100.Percent();
+            root.Height = 100.Percent();
 
             var root_child0 = new YogaNode(config);
-            root_child0.Style.FlexBasis = 100.Percent();
+            root_child0.FlexBasis = 100.Percent();
             root.Children.Add(root_child0);
 
             root.Calc.CalculateLayout(100, float.NaN, DirectionType.LTR);
@@ -31,14 +31,14 @@ namespace Xamarin.Yoga.Tests
             var root = new YogaNode();
 
             var root_child0 = new YogaNode();
-            root_child0.Style.MinHeight = 10;
-            root_child0.Style.MaxHeight = 10;
+            root_child0.MinHeight = 10;
+            root_child0.MaxHeight = 10;
             root.Children.Add(root_child0);
 
             root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
             Assert.AreEqual(10, root_child0.Layout.Height);
 
-            root_child0.Style.MinHeight = float.NaN;
+            root_child0.MinHeight = float.NaN;
             root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
             Assert.AreEqual(0, root_child0.Layout.Height);

@@ -5,4 +5,12 @@
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="NodeStyle.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="NodeStyle.cs" />
+  </ItemGroup>
+
 </Project>

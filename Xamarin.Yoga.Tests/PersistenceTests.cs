@@ -10,9 +10,10 @@ namespace Xamarin.Yoga.Tests
         {
             var config = new YogaConfig();
 
-            var root = new YogaNode(config);
-            root.Style.Width  = 100;
-            root.Style.Height = 100;
+            var root = new YogaNode(config)
+            {
+                Width = 100, Height = 100
+            };
             var root_child0 = new YogaNode(config);
             root.Children.Add(root_child0);
             var root_child1 = new YogaNode(config);
@@ -34,11 +35,11 @@ namespace Xamarin.Yoga.Tests
             YogaNode root_child0, root_child1;
             var root = new YogaNode
             {
-                Style = {Width = 100, Height = 100},
+                Width = 100, Height = 100,
                 Children =
                 {
-                    (root_child0 = new YogaNode {Style = {FlexGrow = 1, FlexBasis = 50}}),
-                    (root_child1 = new YogaNode {Style = {FlexGrow = 1}})
+                    (root_child0 = new YogaNode {FlexGrow = 1, FlexBasis = 50}),
+                    (root_child1 = new YogaNode {FlexGrow = 1})
                 }
             };
 
@@ -59,7 +60,7 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(100, root_child1.Layout.Width);
             Assert.AreEqual(25,  root_child1.Layout.Height);
 
-            var root2 = new YogaNode(root) {Style = {Width = 100}};
+            var root2 = new YogaNode(root) {Width = 100};
 
             Assert.AreEqual(2, root2.Children.Count);
 
@@ -75,8 +76,8 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(root_child0, root2.Children[0]);
             Assert.AreEqual(root_child1, root2.Children[1]);
 
-            root2.Style.Width  = 150;
-            root2.Style.Height = 200;
+            root2.Width  = 150;
+            root2.Height = 200;
 
             root2.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
 
@@ -124,28 +125,18 @@ namespace Xamarin.Yoga.Tests
         [TestMethod]
         public void cloning_two_levels()
         {
-            var config = new YogaConfig();
+            var root = new YogaNode {Width = 100, Height = 100};
 
-            var root = new YogaNode(config);
-            root.Style.Width  = 100;
-            root.Style.Height = 100;
-
-            var root_child0 = new YogaNode(config);
-            root_child0.Style.FlexGrow  = 1;
-            root_child0.Style.FlexBasis = 15;
+            var root_child0 = new YogaNode {FlexGrow = 1, FlexBasis = 15};
             root.Children.Add(root_child0);
 
-            var root_child1 = new YogaNode(config);
-            root_child1.Style.FlexGrow = 1;
+            var root_child1 = new YogaNode {FlexGrow = 1};
             root.Children.Insert(1, root_child1);
 
-            var root_child1_0 = new YogaNode(config);
-            root_child1_0.Style.FlexBasis = 10;
-            root_child1_0.Style.FlexGrow  = 1;
+            var root_child1_0 = new YogaNode {FlexBasis = 10, FlexGrow = 1};
             root_child1.Children.Add(root_child1_0);
 
-            var root_child1_1 = new YogaNode(config);
-            root_child1_1.Style.FlexBasis = 25;
+            var root_child1_1 = new YogaNode{FlexBasis = 25};
             root_child1.Children.Insert(1, root_child1_1);
 
             root.Calc.CalculateLayout(float.NaN, float.NaN, DirectionType.LTR);
@@ -155,12 +146,10 @@ namespace Xamarin.Yoga.Tests
             Assert.AreEqual(35, root_child1_0.Layout.Height);
             Assert.AreEqual(25, root_child1_1.Layout.Height);
 
-            var root2_child0 = new YogaNode(root_child0);
+            var root2_child0 = new YogaNode(root_child0) {FlexGrow = 0, FlexBasis = 40};
+
             var root2_child1 = new YogaNode(root_child1);
             var root2        = new YogaNode(root);
-
-            root2_child0.Style.FlexGrow  = 0;
-            root2_child0.Style.FlexBasis = 40;
 
             root2.ClearChildren();
             root2.Children.Add(root2_child0);
